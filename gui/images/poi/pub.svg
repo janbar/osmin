@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 19 19"
+   height="19"
+   width="19"
+   version="1.1"
+   id="svg10"
+   sodipodi:docname="pub.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>drinking-water-15.svg</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs14">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect861"
+       is_visible="true" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blend"
+       id="filter834">
+      <feBlend
+         in2="BackgroundImage"
+         mode="multiply"
+         result="fbSourceGraphic"
+         id="feBlend832" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix840" />
+      <feBlend
+         in2="BackgroundImage"
+         id="feBlend842"
+         mode="multiply"
+         result="fbSourceGraphic"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix848" />
+      <feBlend
+         in2="BackgroundImage"
+         id="feBlend850"
+         mode="multiply"
+         result="fbSourceGraphic"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix856" />
+      <feBlend
+         in2="BackgroundImage"
+         id="feBlend858"
+         mode="multiply"
+         result="fbSourceGraphic"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix864" />
+      <feBlend
+         in2="fbSourceGraphic"
+         id="feBlend866"
+         mode="multiply"
+         result="blend"
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blend"
+       id="filter838">
+      <feBlend
+         in2="BackgroundImage"
+         mode="multiply"
+         result="fbSourceGraphic"
+         id="feBlend836" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix844" />
+      <feBlend
+         in2="BackgroundImage"
+         id="feBlend846"
+         mode="multiply"
+         result="fbSourceGraphic"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix852" />
+      <feBlend
+         in2="BackgroundImage"
+         id="feBlend854"
+         mode="multiply"
+         result="fbSourceGraphic"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix860" />
+      <feBlend
+         in2="BackgroundImage"
+         id="feBlend862"
+         mode="multiply"
+         result="fbSourceGraphic"
+         in="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix868" />
+      <feBlend
+         in2="fbSourceGraphic"
+         id="feBlend870"
+         mode="multiply"
+         result="blend"
+         in="fbSourceGraphic" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1134"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="24.842105"
+     inkscape:cx="-1.1412168"
+     inkscape:cy="5.2004449"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg10"
+     inkscape:snap-grids="true" />
+  <title
+     id="title2">drinking-water-15.svg</title>
+  <rect
+     fill="none"
+     x="0"
+     y="0"
+     width="19"
+     height="19"
+     id="rect4" />
+  <path
+     style="fill:#ffffff;stroke-width:1.21701705;filter:url(#filter838)"
+     d="M 6.5179173,6.3907341 C 6.1852397,6.3764397 6.117088,6.3870333 6.156854,6.9003012 l 0.2259666,9.2197098 c 0.00924,0.331986 0.253181,0.560286 0.4824219,0.558594 l 5.5644535,-0.04102 c 0.236707,0.0101 0.447176,-0.221963 0.503906,-0.558594 L 13.217997,6.7996655 C 13.257763,6.4071605 13.187657,6.356313 12.85498,6.370607 Z m 0.7652939,1.4324021 h 0.9628907 l 0.060547,7.7746288 -0.8320313,7.66e-4 z m 3.8311708,0.080508 h 0.925781 V 15.712238 H 11.114382 Z M 9.182079,9.7962228 h 0.966797 l -0.0019,5.8359362 H 9.2211415 Z"
+     id="path8"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cccccccccccccccccccccccc"
+     transform="matrix(1.281556,0,0,1.1876666,-2.4054996,-3.0695486)" />
+  <path
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:0.99413488;fill-rule:nonzero;stroke:none;stroke-width:0.31746939;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.99413488;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate"
+     d="M 11.934675,2.2795454 A 1.4858859,1.0479796 0 0 0 10.50982,3.0334353 0.52006012,0.30425216 0 0 0 10.374726,3.0241567 0.52006012,0.30425216 0 0 0 9.8980755,3.2050903 1.3372974,0.94656225 0 0 0 9.4825987,3.1586971 1.3372974,0.94656225 0 0 0 8.921833,3.2468442 1.1515616,0.94656225 0 0 0 7.8130459,2.5509458 1.1515616,0.94656225 0 0 0 6.8113137,3.0311157 1.3001503,0.77753328 0 0 0 5.6948799,3.8012432 1.3001503,0.77753328 0 0 0 5.7407609,4.0030538 H 14.28989 A 1.3372974,0.67611585 0 0 0 13.283062,3.7664483 1.4858859,1.0479796 0 0 0 13.420703,3.3280323 1.4858859,1.0479796 0 0 0 11.934675,2.2795454 Z"
+     id="path902"
+     inkscape:connector-curvature="0" />
+</svg>

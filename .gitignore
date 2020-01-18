@@ -1,0 +1,6 @@
+build*/
+RPMS/
+*.user*
+*.qmlc
+*.list
+.DS_Store

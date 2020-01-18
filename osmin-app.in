@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Launch the GUI
+export QML2_IMPORT_PATH=@PLUGINS_DIR@
+exec @MAPPY_GUI@ $@

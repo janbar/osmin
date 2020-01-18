@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 17.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="86px"
+   height="86px"
+   viewBox="0 0 86 86"
+   enable-background="new 0 0 86 86"
+   xml:space="preserve"
+   id="svg33"
+   sodipodi:docname="icon-3.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"><metadata
+   id="metadata39"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs37">
+	
+		<linearGradient
+   gradientTransform="rotate(-90,423.0688,939.6071)"
+   y2="517.0571"
+   x2="1362.157"
+   y1="602.0194"
+   x1="1277.1947"
+   gradientUnits="userSpaceOnUse"
+   id="SVGID_1_"
+   osb:paint="gradient">
+		<stop
+   id="stop3"
+   style="stop-color:#E8CF13"
+   offset="0" />
+		<stop
+   id="stop5"
+   style="stop-color:#24A89E"
+   offset="0.9897" />
+	</linearGradient>
+	
+	
+	
+	
+	
+	
+<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_1_"
+   id="linearGradient2950"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="rotate(-90,423.0688,939.6071)"
+   x1="1277.1947"
+   y1="602.0194"
+   x2="1362.157"
+   y2="517.0571" /></defs><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1280"
+   inkscape:window-height="966"
+   id="namedview35"
+   showgrid="false"
+   inkscape:zoom="2.744186"
+   inkscape:cx="100.33367"
+   inkscape:cy="104.3861"
+   inkscape:window-x="153"
+   inkscape:window-y="86"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg33" />
+<g
+   id="Layer_2"
+   display="none">
+</g>
+<path
+   inkscape:connector-curvature="0"
+   style="fill:url(#linearGradient2950);fill-rule:nonzero;fill-opacity:1"
+   id="path8"
+   d="M 0.1,1.53 V 43 c 0,23.693 19.208,42.9 42.9,42.9 h 41.47 c 0.79,0 1.43,-0.64 1.43,-1.43 V 43 C 85.9,19.306 66.692,0.1 43,0.1 H 1.53 C 0.74,0.1 0.1,0.74 0.1,1.53 Z" />
+<path
+   style="fill:#ada5ae;stroke-width:0.99999994;fill-opacity:1"
+   d="m 38.183375,39.32969 15.40059,-8.959652 17.385091,-12.05814 c 1.642675,1.674884 3.223238,4.044542 3.223238,4.044542 1.095116,1.642675 2.097118,3.702884 2.097118,3.702884 2.21421,4.879517 3.706773,11.141658 3.706773,16.524892 0,12.408457 -6.06265,24.003905 -16.21771,31.017553 l -1.04778,0.723782 z"
+   id="path6"
+   inkscape:connector-curvature="0"
+   sodipodi:nodetypes="cccccsccc" /><path
+   style="fill:#3d9ae3;stroke-width:0.99999994"
+   d="m 42.998665,80.091921 c -12.63908,0 -24.28097,-6.458505 -31.14196,-17.276547 l -0.65425,-1.031462 20.56057,-17.572506 23.66387,33.716203 -1.50793,0.495951 c -3.52776,1.107064 -7.20177,1.668361 -10.9203,1.668361 z"
+   id="path10"
+   inkscape:connector-curvature="0" /><path
+   style="fill:#ffffff;stroke-width:0.99999994"
+   d="m 31.763025,44.211406 6.42035,-4.881716 24.68491,34.911175 -1.19982,0.713819 c -1.69508,1.008606 -3.47905,1.884323 -5.30247,2.602976 l -0.93924,0.370242 z"
+   id="path14"
+   inkscape:connector-curvature="0" /><path
+   style="fill:#ffce00;stroke-width:0.99999994"
+   d="M 10.575085,60.633041 C 9.5619938,58.76967 8.7015135,56.807108 8.0176435,54.79986 L 7.7124135,53.6191 64.475165,12.728269 c 4.099576,2.596398 6.493891,5.583629 6.493891,5.583629 L 11.202595,61.783766 Z"
+   id="path18"
+   inkscape:connector-curvature="0"
+   sodipodi:nodetypes="ccccccc" /><text
+   xml:space="preserve"
+   style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   x="21.644657"
+   y="-18.615849"
+   id="text974"><tspan
+     sodipodi:role="line"
+     id="tspan972"
+     x="21.644657"
+     y="16.774776"></tspan></text>
+<text
+   xml:space="preserve"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.01942253px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+   x="-14.915163"
+   y="40.743679"
+   id="text982"
+   transform="rotate(-35.415919)"><tspan
+     sodipodi:role="line"
+     id="tspan980"
+     x="-14.915163"
+     y="40.743679"
+     style="stroke-width:0.2;stroke:#000000;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">OSM</tspan></text>
+<path
+   style="fill:#404040;fill-opacity:1;stroke-width:1.33333337"
+   inkscape:connector-curvature="0"
+   d="m 59.090606,30.737365 c -2.314376,0 -4.197028,1.882654 -4.197028,4.197034 0,2.314381 1.882652,4.197037 4.197028,4.197037 2.314385,0 4.197038,-1.882656 4.197038,-4.197037 0,-2.31438 -1.882653,-4.197034 -4.197038,-4.197034 z m 0,0"
+   id="path2" /><path
+   inkscape:connector-curvature="0"
+   d="m 59.050067,24.54006 c -5.249723,0 -10.004236,4.462232 -10.004236,9.96823 0,5.504686 4.338087,12.076741 10.004236,21.502108 5.66615,-9.425367 10.004239,-15.997422 10.004239,-21.502108 0,-5.505998 -4.753265,-9.96823 -10.004239,-9.96823 z m 0,14.423905 c -2.072127,0 -3.751588,-1.761028 -3.751588,-3.933792 0,-2.172765 1.679461,-3.933793 3.751588,-3.933793 2.072128,0 3.751589,1.761028 3.751589,3.933793 0,2.172764 -1.679461,3.933792 -3.751589,3.933792 z"
+   id="path2-0"
+   style="stroke-width:0.99999994;fill:#d34040;fill-opacity:1" /></svg>

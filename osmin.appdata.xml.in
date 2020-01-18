@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2015 Jean-Luc Barriere <jlbarriere68@gmail.com> -->
+<component type="desktop-application">
+  <id>@APP_ID@</id>
+  <launchable type="desktop-id">@APP_DESKTOP_ID@.desktop</launchable>
+  <name>@APP_NAME@</name>
+  <project_license>GPL-3.0-only</project_license>
+  <developer_name>Jean-Luc Barriere</developer_name>
+  <update_contact>jlbarriere68_AT_gmail.com</update_contact>
+  <summary>Navigator</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <url type="homepage">http://janbar.github.io/osmin/</url>
+  <description>
+    <p>Navigator based on OSM maps</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The main window</caption>
+      <image type="source">http://janbar.github.io/osmin/download/osmin.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release date="2020-01-14" version="1.0.0"/>
+  </releases>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+</component>
