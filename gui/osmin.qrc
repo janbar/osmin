@@ -59,7 +59,6 @@
         <file>controls2/MainMenu.qml</file>
         <file>silica/MainMenu.qml</file>
         <file>images/map.svg</file>
-        <file>images/screen-settings.svg</file>
         <file>images/trip/measuring.svg</file>
         <file>images/help.svg</file>
         <file>controls2/ConfigureMap.qml</file>
@@ -272,5 +271,10 @@
         <file>images/font-scalling.svg</file>
         <file>images/graphic-scalling.svg</file>
         <file>images/trip/track.svg</file>
+        <file>controls2/TrackCollection.qml</file>
+        <file>images/trip/segment.svg</file>
+        <file>controls2/components/CompassSensor.qml</file>
+        <file>images/compass.svg</file>
+        <file>controls2/Tracking.qml</file>
     </qresource>
 </RCC>

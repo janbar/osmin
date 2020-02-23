@@ -84,33 +84,52 @@ PopOver {
             }
         }
 
-//        Column {
-//            width: parent.width
-//            MapIcon {
-//                source: "qrc:/images/trip/track.svg"
-//                color: foregroundColor
-//                height: units.gu(6)
-//                label.text: qsTr("Tracks")
-//                label.color: foregroundColor
-//                label.font.pointSize: units.fs("medium")
-//                label.elide: Text.ElideRight
-//                label.width: parent.width - units.gu(7)
-//                onClicked: {
-//                    mainMenu.close();
-//                }
-//            }
-//            Label {
-//                text: qsTr("Follow or manage your tracks.")
-//                width: parent.width
-//                verticalAlignment: Text.AlignVCenter
-//                horizontalAlignment: Text.AlignJustify
-//                maximumLineCount: 4
-//                wrapMode: Text.Wrap
-//                color: foregroundColor
-//                font.pointSize: units.fs("x-small")
-//                font.weight: Font.Normal
-//            }
-//        }
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/trip/track.svg"
+                color: foregroundColor
+                height: units.gu(6)
+                label.text: qsTr("Tracks")
+                label.color: foregroundColor
+                label.font.pointSize: units.fs("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    mainMenu.close();
+                    stackView.push("qrc:/controls2/TrackCollection.qml", { "mapView": mapView });
+                }
+            }
+            Label {
+                text: qsTr("Follow or manage your tracks.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pointSize: units.fs("x-small")
+                font.weight: Font.Normal
+            }
+        }
+
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/trip/navigation.svg"
+                color: foregroundColor
+                height: units.gu(6)
+                label.text: qsTr("Tracking")
+                label.color: foregroundColor
+                label.font.pointSize: units.fs("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    mainMenu.close();
+                    popTracking.show();
+                }
+            }
+        }
 
         Column {
             width: parent.width

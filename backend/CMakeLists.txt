@@ -10,11 +10,13 @@ endif()
 
 option(BUILD_DEPENDENCIES "Build dependencies from sources" OFF)
 
-find_package(Qt5Core    REQUIRED)
+find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui     REQUIRED)
-find_package(Qt5Qml     REQUIRED)
-find_package(Qt5Svg     REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Qml REQUIRED)
+find_package(Qt5Svg REQUIRED)
+find_package(Qt5Network REQUIRED)
+
 
 set(QML_IMPORT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/qml)
 set(QML_IMPORT_PATH ${QML_IMPORT_DIRECTORY} CACHE STRING "QML Import path" FORCE)
@@ -40,9 +42,9 @@ if(NOT ZLIB_FOUND)
         ${CMAKE_CURRENT_BINARY_DIR}/zlib-build
         EXCLUDE_FROM_ALL
     )
-    set(ZLIB_LIBRARIES zlib PARENT_SCOPE)
-    set(ZLIB_INCLUDE_DIRS "${zlib_SOURCE_DIR}" "${zlib_BINARY_DIR}" PARENT_SCOPE)
-    set(ZLIB_FOUND ON PARENT_SCOPE)
+    set(ZLIB_LIBRARIES zlib)
+    set(ZLIB_INCLUDE_DIRS "${zlib_SOURCE_DIR}" "${zlib_BINARY_DIR}")
+    set(ZLIB_FOUND ON)
     message(STATUS "Build ZLIB: ${zlib_BINARY_DIR}")
 endif()
 
@@ -94,7 +96,7 @@ endif()
 if(NOT ICONV_FOUND)
     download_project(PROJ iconv
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libiconv-1.16.tar.gz"
-#        URL_HASH MD5=96072613436d201ab9bb8e8a75a83b75
+        URL_HASH MD5=988dea3347947084606c00cb1eaf9b6f
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -137,7 +139,7 @@ endif()
 if(NOT LIBXML2_FOUND)
     download_project(PROJ xml2
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
-        URL_HASH MD5=96072613436d201ab9bb8e8a75a83b75
+        URL_HASH MD5=51408cd23448b2cdcc6a24d85f69c85c
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)

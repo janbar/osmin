@@ -26,7 +26,7 @@ MapPage {
     pageTitle: qsTr("Map Downloads")
     pageFlickable: availableList
 
-    MapDownloadsModel{
+    MapDownloadsModel {
         id:mapDownloadsModel
         property string msg: ""
         onMapDownloadFails: {
@@ -43,11 +43,11 @@ MapPage {
         }
     }
 
-    AvailableMapsModel{
+    AvailableMapsModel {
         id: availableMapsModel
     }
 
-    InstalledMapsModel{
+    InstalledMapsModel {
         id: installedMapsModel
     }
 
@@ -106,7 +106,7 @@ MapPage {
                                 text: (Math.round(progressRole * 1000) / 10).toFixed(1) + " %";
                             }
                         }
-                        Label{
+                        Label {
                             color: styleMap.view.secondaryColor
                             font.pointSize: units.fs("x-small")
                             text: errorString.length > 0 ? qsTranslate("message", errorString) : progressDescription
@@ -326,7 +326,7 @@ MapPage {
                     }
                 }
 
-                BusyIndicator{
+                BusyIndicator {
                     id: loadingIndicator
                     running: availableMapsModel.loading
                     height: units.gu(5)
@@ -360,7 +360,7 @@ MapPage {
                         text: name
                         elide: Text.ElideRight
                     }
-                    Label{
+                    Label {
                         font.pointSize: units.fs("x-small")
                         color: styleMap.view.secondaryColor
                         text: size

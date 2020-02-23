@@ -22,7 +22,7 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls.Universal 2.2
 import Qt.labs.settings 1.0
 import QtGraphicalEffects 1.0
-import Osmin 1.0 as MapEngine
+import Osmin 1.0 as Osmin
 import "./components"
 
 ApplicationWindow {
@@ -35,15 +35,22 @@ ApplicationWindow {
 
     Settings {
         id: settings
+        // General settings
         property string style: "Material"
         property int theme: 0
-
         property real scaleFactor: 1.0
         property real fontScaleFactor: 1.0
         property bool firstRun: true
         property int tabIndex: -1
         property int widthGU: Math.round(mainView.width / units.gridUnit)
         property int heightGU: Math.round(mainView.height / units.gridUnit)
+
+        // Navigation settings
+        property bool hillShadesEnabled: false
+        property bool renderingTypeTiled: false
+        property string lastVehicle: "car"
+        property int maximumRouteStep: 255
+        property int courseId: 0
     }
 
     Material.accent: Material.Grey
@@ -288,19 +295,19 @@ ApplicationWindow {
             mainView.height = (settings.heightGU >= minSizeGU ? units.gu(settings.heightGU) : units.gu(minSizeGU));
         }
         // setup Converter
-        MapEngine.Converter.meters = qsTr("meters");
-        MapEngine.Converter.km = qsTr("km");
-        MapEngine.Converter.feet = qsTr("feet");
-        MapEngine.Converter.miles = qsTr("miles");
-        MapEngine.Converter.north = qsTr("north");
-        MapEngine.Converter.south = qsTr("south");
-        MapEngine.Converter.west = qsTr("west");
-        MapEngine.Converter.east = qsTr("east");
-        MapEngine.Converter.northwest = qsTr("northwest");
-        MapEngine.Converter.northeast = qsTr("northeast");
-        MapEngine.Converter.southwest = qsTr("southwest");
-        MapEngine.Converter.southeast = qsTr("southeast");
-        MapEngine.Converter.system = "SI";
+        Osmin.Converter.meters = qsTr("meters");
+        Osmin.Converter.km = qsTr("km");
+        Osmin.Converter.feet = qsTr("feet");
+        Osmin.Converter.miles = qsTr("miles");
+        Osmin.Converter.north = qsTr("north");
+        Osmin.Converter.south = qsTr("south");
+        Osmin.Converter.west = qsTr("west");
+        Osmin.Converter.east = qsTr("east");
+        Osmin.Converter.northwest = qsTr("northwest");
+        Osmin.Converter.northeast = qsTr("northeast");
+        Osmin.Converter.southwest = qsTr("southwest");
+        Osmin.Converter.southeast = qsTr("southeast");
+        Osmin.Converter.system = "SI";
         positionSource.active = true;
         stackView.clear();
         mapPage = stackView.push("qrc:/controls2/MapView.qml");
@@ -359,26 +366,26 @@ ApplicationWindow {
 
     // Add a new favorite
     function createFavorite(lat, lon, label, type) {
-        var index = MapEngine.FavoritesModel.append();
-        var id = MapEngine.FavoritesModel.data(index, MapEngine.FavoritesModel.IdRole)
-        MapEngine.FavoritesModel.setData(index, lat, MapEngine.FavoritesModel.LatRole);
-        MapEngine.FavoritesModel.setData(index, lon, MapEngine.FavoritesModel.LonRole);
-        MapEngine.FavoritesModel.setData(index, 0.0, MapEngine.FavoritesModel.AltRole);
-        MapEngine.FavoritesModel.setData(index, new Date(), MapEngine.FavoritesModel.TimestampRole);
-        MapEngine.FavoritesModel.setData(index, label, MapEngine.FavoritesModel.LabelRole);
+        var index = Osmin.FavoritesModel.append();
+        var id = Osmin.FavoritesModel.data(index, Osmin.FavoritesModel.IdRole)
+        Osmin.FavoritesModel.setData(index, lat, Osmin.FavoritesModel.LatRole);
+        Osmin.FavoritesModel.setData(index, lon, Osmin.FavoritesModel.LonRole);
+        Osmin.FavoritesModel.setData(index, 0.0, Osmin.FavoritesModel.AltRole);
+        Osmin.FavoritesModel.setData(index, new Date(), Osmin.FavoritesModel.TimestampRole);
+        Osmin.FavoritesModel.setData(index, label, Osmin.FavoritesModel.LabelRole);
         if (type) // optional
-             MapEngine.FavoritesModel.setData(index, type, MapEngine.FavoritesModel.TypeRole);
-        if (MapEngine.FavoritesModel.storeData())
+             Osmin.FavoritesModel.setData(index, type, Osmin.FavoritesModel.TypeRole);
+        if (Osmin.FavoritesModel.storeData())
             return id;
         mainInfo.open(qsTr("Saving change failed"));
-        MapEngine.FavoritesModel.remove(id);
+        Osmin.FavoritesModel.remove(id);
         return 0;
     }
 
     // Remove a favorite
     function removeFavorite(id) {
-        MapEngine.FavoritesModel.remove(id);
-        if (MapEngine.FavoritesModel.storeData())
+        Osmin.FavoritesModel.remove(id);
+        if (Osmin.FavoritesModel.storeData())
             return true;
         mainInfo.open(qsTr("Saving change failed"));
         return false;
@@ -410,33 +417,39 @@ ApplicationWindow {
     //// Map
     ////
 
-    MapEngine.Settings {
-        id: mapEngineSettings
+    Osmin.Settings {
+        id: mapSettings
         //double   mapDPI
         //bool     onlineTiles
         //QString  onlineTileProviderId
         //bool     offlineMap
-        //bool     renderSea
-        //QString  styleSheetDirectory
         //QString  styleSheetFile
+        //bool     renderSea
         //QString  fontName
         //double   fontSize
         //bool     showAltLanguage
         //QString  units                    metrics|imperial
-        onlineTiles: false
         offlineMap: true
-    }
-
-    QtObject {
-        id: mapUserSettings
-        property bool rotateEnabled: false
-        property bool hillShadesEnabled: false
-        property bool renderingTypeTiled: false
-        property string lastVehicle: "car"
-        property int maximumRouteStep: 255
+        onlineTiles: false
     }
 
     MapPosition {
       id: positionSource
+    }
+
+    CompassSensor {
+        id: compass
+        active: false
+        signal polled(real azimuth, real rotation)
+        onAzimuthChanged: {
+            if (!poll.running) poll.start();
+        }
+        Timer {
+            id: poll
+            interval: 500
+            onTriggered: {
+                compass.polled(compass.azimuth, (360 - compass.azimuth) * Math.PI / 180.0);
+            }
+        }
     }
 }

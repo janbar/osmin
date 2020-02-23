@@ -50,3 +50,42 @@ double Utils::sphericalDistance(double aLat, double aLon, double bLat, double bL
   double c = 2*atan2(sqrt(aa),sqrt(1-aa));
   return r*c;
 }
+
+namespace osmin
+{
+  static inline void sincos(double x, double& resSin, double& resCos)
+  {
+    resSin = sin(x);
+    resCos = cos(x);
+  }
+}
+
+/**
+ * Taken the path from A to B over a sphere return the bearing at the destination point B.
+ */
+double Utils::sphericalBearingFinal(double aLat, double aLon, double bLat, double bLon)
+{
+  double aLonRad=DEGTORAD(aLon);
+  double aLatRad=DEGTORAD(aLat);
+  double bLonRad=DEGTORAD(bLon);
+  double bLatRad=DEGTORAD(bLat);
+
+  double dLonRad=aLonRad-bLonRad;
+  double sindLon, sinaLat, sinbLat;
+  double cosdLon, cosaLat, cosbLat;
+  sincos(dLonRad, sindLon, cosdLon);
+  sincos(aLatRad, sinaLat, cosaLat);
+  sincos(bLatRad, sinbLat, cosbLat);
+
+  double y=sindLon*cosaLat;
+  double x=cosbLat*sinaLat-sinbLat*cosaLat*cosdLon;
+
+  double bearing=atan2(y,x);
+
+  if (bearing>=0)
+    bearing-=M_PI;
+  else
+    bearing+=M_PI;
+
+  return bearing;
+}

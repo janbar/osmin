@@ -183,7 +183,7 @@ Item {
                 id: maxspeed
                 anchors.verticalCenter: parent.verticalCenter
                 text: navigator.maximumSpeed > 0 ? Converter.readableSpeed(navigator.maximumSpeed) : ""
-                color: styleMap.view.highlightedColor
+                color: styleMap.popover.highlightedColor
                 font.pointSize: units.fs("medium")
             }
             Label {

@@ -1,6 +1,9 @@
 OSS
  ORDER WAYS
   GROUP _route, _track
+  GROUP _trackBlack, _trackDarkRed, _trackDarkGreen, _trackDarkYellow, _trackDarkBlue,
+        _trackDarkMagenta, _trackDarkCyan, _trackDarkGray, _trackLightGray, _trackRed,
+        _trackGreen, _trackYellow, _trackBlue, _trackMagenta, _trackCyan, _trackWhite
   GROUP highway_motorway, highway_motorway_trunk, highway_motorway_primary
   GROUP highway_trunk
   GROUP highway_primary
@@ -69,6 +72,22 @@ CONST
   // Pseudo types
   COLOR routeColor                 = #ae00ff88;
   COLOR trackColor                 = #10a000a0;
+  COLOR trackBlackColor            = #000000;
+  COLOR trackDarkRedColor          = #8b0000;
+  COLOR trackDarkGreenColor        = #006400;
+  COLOR trackDarkYellowColor       = #ffd700;
+  COLOR trackDarkBlueColor         = #00008b;
+  COLOR trackDarkMagentaColor      = #8b008b;
+  COLOR trackDarkCyanColor         = #008b8b;
+  COLOR trackDarkGrayColor         = #a9a9a9;
+  COLOR trackLightGrayColor        = #d3d3d3;
+  COLOR trackRedColor              = #ff0000;
+  COLOR trackGreenColor            = #00ff00;
+  COLOR trackYellowColor           = #ffff00;
+  COLOR trackBlueColor             = #0000ff;
+  COLOR trackMagentaColor          = #ff00ff;
+  COLOR trackCyanColor             = #00ffff;
+  COLOR trackWhiteColor            = #f8f8ff;
   
   // Ground tiles
 
@@ -349,6 +368,22 @@ STYLE
  [MAG world-] {
   [TYPE _route] WAY {color: #ff000088; displayWidth: 1.5mm; }
   [TYPE _track] WAY {color: @trackColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackBlack] WAY {color: @trackBlackColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkRed] WAY {color: @trackDarkRedColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkGreen] WAY {color: @trackDarkGreenColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkYellow] WAY {color: @trackDarkYellowColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkBlue] WAY {color: @trackDarkBlueColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkMagenta] WAY {color: @trackDarkMagentaColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkCyan] WAY {color: @trackDarkCyanColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackDarkGray] WAY {color: @trackDarkGrayColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackLightGray] WAY {color: @trackLightGrayColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackRed] WAY {color: @trackRedColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackGreen] WAY {color: @trackGreenColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackYellow] WAY {color: @trackYellowColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackBlue] WAY {color: @trackBlueColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackMagenta] WAY {color: @trackMagentaColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackCyan] WAY {color: @trackCyanColor; displayWidth: 1.1mm; priority: 100; }
+  [TYPE _trackWhite] WAY {color: @trackWhiteColor; displayWidth: 1.1mm; priority: 100; }
   [TYPE _waypoint] {
     NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
     NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }

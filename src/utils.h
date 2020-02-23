@@ -20,6 +20,8 @@ namespace osmin
     Q_INVOKABLE static QString normalizedInputString(const QString& str);
 
     Q_INVOKABLE static double sphericalDistance(double aLat, double aLon, double bLat, double bLon);
+
+    Q_INVOKABLE static double sphericalBearingFinal(double aLat, double aLon, double bLat, double bLon);
   };
 
 }

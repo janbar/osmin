@@ -46,7 +46,10 @@
 #define APP_VERSION "Undefined"
 #endif
 
-#define OSMIN_MODULE      "Osmin"
+#define OSMIN_MODULE              "Osmin"
+#define RES_GPX_DIR               "GPX"
+#define RES_FAVORITES_FILE        "favorites.csv"
+#define RES_HILLSHADE_SERVER_FILE "hillshade-tile-server.json"
 
 #include <osmscout/OSMScoutQt.h>
 // Custom QML objects
@@ -57,21 +60,27 @@
 #include <osmscout/MapDownloadsModel.h>
 #include <osmscout/Settings.h>
 #include <osmscout/util/Logger.h>
-#include <osmscout/gpx/GPXFeatures.h>
 
 #include "platformextras.h"
 #include "converter.h"
 #include "favoritesmodel.h"
+#include "gpxlistmodel.h"
+#include "gpxfilemodel.h"
+#include "tracker.h"
 #include "qmlsortfiltermodel.h"
 #include "utils.h"
+#include "compass/plugin.h"
 
 void setupApp(QGuiApplication& app);
 void prepareTranslator(QGuiApplication& app, const QString& translationPath, const QString& translationPrefix, const QLocale& locale);
 void doExit(int code);
 
 QFile*            g_favoritesFile         = nullptr;
+GPXListModel*     g_GPXListModel          = nullptr;
+QString*          g_hillshadeProvider     = nullptr;
 
 QObject* getFavoritesModel(QQmlEngine *engine, QJSEngine *scriptEngine);
+QObject* getGPXListModel(QQmlEngine *engine, QJSEngine *scriptEngine);
 QObject* getUtils(QQmlEngine *engine, QJSEngine *scriptEngine);
 
 #if defined(QT_STATICPLUGIN)
@@ -163,8 +172,25 @@ int main(int argc, char *argv[])
     }
 #endif
     qInfo("Resource directory is %s", resDir.path().toUtf8().constData());
-    g_favoritesFile = new QFile(resDir.absoluteFilePath("favorites.csv"), &app);
+    g_favoritesFile = new QFile(resDir.absoluteFilePath(RES_FAVORITES_FILE), &app);
+    if (!resDir.exists("GPX"))
+      resDir.mkdir("GPX");
+    g_GPXListModel = new GPXListModel(&app);
+    g_GPXListModel->init(resDir.absoluteFilePath(RES_GPX_DIR));
 
+    g_hillshadeProvider = new QString();
+    if (resDir.exists(RES_HILLSHADE_SERVER_FILE))
+    {
+      QFile file(resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE));
+      if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+      {
+        qInfo("Found hillshade tile server file '%s'", file.fileName().toUtf8().constData());
+        QByteArray json;
+        json.append(file.read(0x7ff));
+        file.close();
+        g_hillshadeProvider->append(QString::fromUtf8(json));
+      }
+    }
 
     // initialize the map directories
     QStringList mapDirs;
@@ -223,25 +249,30 @@ int main(int argc, char *argv[])
     // register OSMScout library QML types
     osmscout::OSMScoutQt::RegisterQmlTypes(OSMIN_MODULE, 1, 0);
 
-    bool success = osmscout::OSMScoutQt::NewInstance()
-         .WithBasemapLookupDirectory(resDir.absoluteFilePath("world"))
-         .WithStyleSheetDirectory(resDir.absoluteFilePath("stylesheets"))
-         .WithStyleSheetFile("standard.oss")
-         .WithIconDirectory(resDir.absoluteFilePath("icons"))
-         .WithMapLookupDirectories(mapDirs)
-         .WithOnlineTileProviders(resDir.absoluteFilePath("online-tile-providers.json"))
-         .WithMapProviders(resDir.absoluteFilePath("map-providers.json"))
-         .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
-         .WithTileCacheSizes(60, 200)
-         .AddCustomPoiType("_waypoint")
-         .AddCustomPoiType("_track")
-         .Init();
-    if (!success)
     {
-        qWarning("Failed to initialize osmscout");
-        return EXIT_FAILURE;
+      osmscout::OSMScoutQtBuilder builder = osmscout::OSMScoutQt::NewInstance()
+           .WithUserAgent(OSMIN_MODULE, APP_VERSION)
+           .WithBasemapLookupDirectory(resDir.absoluteFilePath("world"))
+           .WithStyleSheetDirectory(resDir.absoluteFilePath("stylesheets"))
+           .WithIconDirectory(resDir.absoluteFilePath("icons"))
+           .WithMapLookupDirectories(mapDirs)
+           .WithOnlineTileProviders(resDir.absoluteFilePath("online-tile-providers.json"))
+           .WithMapProviders(resDir.absoluteFilePath("map-providers.json"))
+           .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
+           .WithTileCacheSizes(60, 200)
+           .AddCustomPoiType("_waypoint");
+
+      for (const QString& trk : GPXFileModel::trackTypeSet())
+        builder.AddCustomPoiType(trk);
+
+      if (!builder.Init())
+      {
+          qWarning("Failed to initialize osmscout");
+          return EXIT_FAILURE;
+      }
     }
 
+    qmlRegisterType<osmscout::QmlSettings>(OSMIN_MODULE, 1, 0, "Settings");
     qmlRegisterSingletonType<PlatformExtras>(OSMIN_MODULE, 1, 0, "PlatformExtras", PlatformExtras::createPlatformExtras);
     qmlRegisterSingletonType<Converter>(OSMIN_MODULE, 1, 0, "Converter", Converter::createConverter);
     qmlRegisterType<osmin::QSortFilterProxyModelQML>(OSMIN_MODULE, 1, 0, "SortFilterModel");
@@ -250,6 +281,17 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<osmin::Utils>(OSMIN_MODULE, 1, 0, "Utils", getUtils);
     qmlRegisterSingletonType<FavoritesModel>(OSMIN_MODULE, 1, 0, "FavoritesModel", getFavoritesModel);
     qRegisterMetaType<FavoritesModel::FavoriteRoles>("FavoritesModel::Roles");
+    qmlRegisterSingletonType<GPXListModel>(OSMIN_MODULE, 1, 0, "GPXListModel", getGPXListModel);
+    qRegisterMetaType<GPXListModel::GPXRoles>("GPXListModel::Roles");
+    qmlRegisterType<GPXFileModel>(OSMIN_MODULE, 1, 0, "GPXFileModel");
+    qRegisterMetaType<GPXFileModel::GPXObjectRoles>("GPXFileModel::Roles");
+    qRegisterMetaType<QList<osmscout::OverlayObject*> >("QList<osmscout::OverlayObject*>");
+    qmlRegisterType<Tracker>(OSMIN_MODULE, 1, 0, "Tracker");
+
+    // register the generic compass
+    qmlRegisterType<BuiltInCompass>(OSMIN_MODULE, 1, 0, "Compass");
+    QScopedPointer<BuiltInSensorPlugin> sensor(new BuiltInSensorPlugin());
+    sensor->registerSensors();
 
     QSettings settings;
 #ifndef SAILFISHOS
@@ -277,6 +319,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ApplicationArguments", app.arguments());
     // bind SCALE_FACTOR
     engine.rootContext()->setContextProperty("ScreenScaleFactor", QVariant(app.primaryScreen()->devicePixelRatio()));
+    // bind hillshade provider
+    engine.rootContext()->setContextProperty("HillshadeProvider", QVariant(*g_hillshadeProvider));
     // bind Android flag
 #if defined(Q_OS_ANDROID)
     engine.rootContext()->setContextProperty("Android", QVariant(true));
@@ -378,16 +422,23 @@ QObject* getFavoritesModel(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
   Q_UNUSED(engine)
   Q_UNUSED(scriptEngine)
-  static FavoritesModel* favoritesModel = nullptr;
-  if (favoritesModel == nullptr)
+  static FavoritesModel* _model = nullptr;
+  if (_model == nullptr)
   {
     qInfo("Initialize favorites");
-    favoritesModel = new FavoritesModel(g_favoritesFile);
-    favoritesModel->init(g_favoritesFile);
+    _model = new FavoritesModel(g_favoritesFile);
+    _model->init(g_favoritesFile);
     qInfo("Loading favorites");
-    favoritesModel->loadData();
+    _model->loadData();
   }
-  return favoritesModel;
+  return _model;
+}
+
+QObject* getGPXListModel(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+  Q_UNUSED(engine)
+  Q_UNUSED(scriptEngine)
+  return g_GPXListModel;
 }
 
 QObject* getUtils(QQmlEngine *engine, QJSEngine *scriptEngine)

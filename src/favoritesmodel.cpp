@@ -90,7 +90,8 @@ QVariant FavoritesModel::data(const QModelIndex& index, int role) const
   case AltRole:
     return item->alt();
   case TypeRole:
-    return item->type();  default:
+    return item->type();
+  default:
     return QVariant();
   }
 }
@@ -197,7 +198,7 @@ QHash<int, QByteArray> FavoritesModel::roleNames() const
   return roles;
 }
 
-QVariantMap FavoritesModel::get(int row)
+QVariantMap FavoritesModel::get(int row) const
 {
   osmin::LockGuard g(m_lock);
   if (row < 0 || row >= m_items.count())

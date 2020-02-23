@@ -40,7 +40,6 @@ MapPage {
             name: "place"
             PropertyChanges { target: searchPage; pageTitle: qsTr("Search Place");  isRoot: false; }
             PropertyChanges { target: searchField; visible: true; }
-            //PropertyChanges { target: postponeSearch; running: true; }
             PropertyChanges { target: suggestionView; visible: false; }
             PropertyChanges { target: searchView; visible: true; model: placeModel; }
             PropertyChanges { target: noData; visible: placeModel.noDataFound; }
@@ -156,7 +155,7 @@ MapPage {
         onTriggered: {
             if (searchPattern !== _old) {
                 _old = searchPattern;
-                if (searchPattern.length > 0) {
+                if (searchPattern.length > 2) {
                     console.log("Search expression: \"" + searchPattern + "\"");
                     placeModel.pattern = searchPattern;
                 } else {

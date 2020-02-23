@@ -23,18 +23,32 @@ import "./components"
 PopOver {
     id: configureMap
 
-    title: "Configure Map"
+    title: qsTr("Configure Map")
     contents: Column {
         spacing: units.gu(1)
 
-        MapCheckBox {
-            id: rotate
+        Column {
             width: parent.width
-            color: styleMap.popover.foregroundColor
-            text: qsTr("Map rotation")
-            checked: mapUserSettings.rotateEnabled
-            onClicked: {
-                mapUserSettings.rotateEnabled = !mapUserSettings.rotateEnabled;
+            MapCheckBox {
+                id: renderingType
+                width: parent.width
+                color: styleMap.popover.foregroundColor
+                text: qsTr("Tiled rendering")
+                checked: settings.renderingTypeTiled
+                onClicked: {
+                    settings.renderingTypeTiled = !settings.renderingTypeTiled;
+                }
+            }
+            Label {
+                text: "It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory."
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pointSize: units.fs("x-small")
+                font.weight: Font.Normal
             }
         }
 
@@ -43,9 +57,9 @@ PopOver {
             width: parent.width
             color: styleMap.popover.foregroundColor
             text: qsTr("Hill Shades")
-            checked: mapUserSettings.hillShadesEnabled
+            checked: settings.hillShadesEnabled
             onClicked: {
-                mapUserSettings.hillShadesEnabled = !mapUserSettings.hillShadesEnabled;
+                settings.hillShadesEnabled = !settings.hillShadesEnabled;
             }
         }
 
@@ -54,9 +68,9 @@ PopOver {
             width: parent.width
             color: styleMap.popover.foregroundColor
             text: qsTr("Render Sea")
-            checked: mapEngineSettings.renderSea
+            checked: mapSettings.renderSea
             onClicked: {
-                mapEngineSettings.renderSea = !mapEngineSettings.renderSea;
+                mapSettings.renderSea = !mapSettings.renderSea;
             }
         }
 
@@ -65,9 +79,9 @@ PopOver {
             width: parent.width
             color: styleMap.popover.foregroundColor
             text: qsTr("Prefer English names")
-            checked: mapEngineSettings.showAltLanguage
+            checked: mapSettings.showAltLanguage
             onClicked: {
-                mapEngineSettings.showAltLanguage = !mapEngineSettings.showAltLanguage;
+                mapSettings.showAltLanguage = !mapSettings.showAltLanguage;
             }
         }
 
@@ -89,12 +103,13 @@ PopOver {
             onActivated: {
                 var stylesheet = mapStyle.file(currentIndex);
                 mapStyle.style = stylesheet;
+                mapSettings.styleSheetFile = stylesheet;
             }
             MapStyleModel { id: mapStyle }
             Component.onCompleted: {
                 var tab = []
                 for (var i = 0; i < mapStyle.rowCount(); ++i) {
-                    tab.push({ "text": mapStyle.data(mapStyle.index(i,0),256), "value": i });
+                    tab.push({ "text": mapStyle.data(mapStyle.index(i, 0), MapStyleModel.NameRole), "value": i });
                 }
                 model = tab.slice();
                 var stylesheet = mapStyle.style;
@@ -117,8 +132,8 @@ PopOver {
                 anchors.fill: parent
             }
             textRole: "text"
-            onActivated: mapEngineSettings.fontName = model[currentIndex].text
-            Component.onCompleted: currentIndex = indexOfValue(mapEngineSettings.fontName)
+            onActivated: mapSettings.fontName = model[currentIndex].text
+            Component.onCompleted: currentIndex = indexOfValue(mapSettings.fontName)
             model: [
                 { text: qsTr("DejaVu Sans") },
                 { text: qsTr("Droid Serif") },
@@ -150,12 +165,12 @@ PopOver {
                 anchors.fill: parent
             }
             textRole: "text"
-            onActivated: mapEngineSettings.fontSize = model[currentIndex].value
-            Component.onCompleted: currentIndex = indexOfValue(mapEngineSettings.fontSize)
+            onActivated: mapSettings.fontSize = model[currentIndex].value
+            Component.onCompleted: currentIndex = indexOfValue(mapSettings.fontSize)
             model: [
-                { value: 2.0, text: qsTr("Normal") },
-                { value: 3.0, text: qsTr("Big") },
-                { value: 4.0, text: qsTr("Bigger") },
+                { value: 2.0, text: qsTr("Small") },
+                { value: 3.0, text: qsTr("Normal") },
+                { value: 4.0, text: qsTr("Big") },
                 { value: 6.0, text: qsTr("Huge") }
             ]
             function indexOfValue(val) {
@@ -166,31 +181,6 @@ PopOver {
                 if (val <= 4.0)
                     return 2;
                 return 3;
-            }
-        }
-
-        Column {
-            width: parent.width
-            MapCheckBox {
-                id: renderingType
-                width: parent.width
-                color: styleMap.popover.foregroundColor
-                text: qsTr("Tiled rendering (lower quality)")
-                checked: mapUserSettings.renderingTypeTiled
-                onClicked: {
-                    mapUserSettings.renderingTypeTiled = !mapUserSettings.renderingTypeTiled;
-                }
-            }
-            Label {
-                text: "It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory."
-                width: parent.width
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignJustify
-                maximumLineCount: 4
-                wrapMode: Text.Wrap
-                color: foregroundColor
-                font.pointSize: units.fs("x-small")
-                font.weight: Font.Normal
             }
         }
     }

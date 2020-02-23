@@ -23,7 +23,7 @@ import "./components"
 import "../toolbox.js" as ToolBox
 
 MapPage {
-    id: favorites
+    id: favoritesPage
 
     states: [
         State {
@@ -31,15 +31,14 @@ MapPage {
         },
         State {
             name: "selection"
-            PropertyChanges { target: favorites; pageTitle: qsTr("Select a Place"); }
-            PropertyChanges { target: helpText; visible: false; }
+            PropertyChanges { target: favoritesPage; pageTitle: qsTr("Select a Place"); }
         }
     ]
 
     state: "default"
 
     pageTitle: qsTr("Favorite Places")
-    pageFlickable: favoritesList
+    pageFlickable: favoritesView
 
     signal selectPOI(var poi)
 
@@ -51,9 +50,10 @@ MapPage {
     }
 
     MapListView {
-        id: favoritesList
+        id: favoritesView
         contentHeight: contentHeight
         anchors.fill: parent
+        anchors.bottomMargin: mapPreview.height
 
         model: SortFilterModel {
             model: FavoritesModel
@@ -91,7 +91,7 @@ MapPage {
                             maximumLineCount: 2
                             text: label
                         }
-                        Label{
+                        Label {
                             font.pointSize: units.fs("x-small")
                             color: styleMap.view.secondaryColor
                             text: Converter.readableCoordinatesGeocaching(lat, lon)
@@ -100,23 +100,24 @@ MapPage {
                 }
             }
 
+            highlighted: parent.pressed || index === favoritesView.currentIndex
+
             onPressAndHold: {
-                if (favorites.state === "default") {
+                if (favoritesPage.state === "default") {
                     mapPage.navigateTo(lat, lon, label);
                     stackView.pop();
                 }
             }
 
             onClicked: {
-                if (favorites.state === "selection") {
-                    selectPOI({ "lat": lat, "lon": lon, "label": label, "type": type});
-                    stackView.pop();
-                }
+                forceActiveFocus();
+                favoritesView.currentIndex = index;
+                selectedPOI = { "lat": lat, "lon": lon, "label": label, "type": type };
             }
 
             menuItems: [
                 MenuItem {
-                    visible: favorites.state === "default"
+                    visible: favoritesPage.state === "default"
                     height: (visible ? implicitHeight : 0)
                     text: qsTr("Go there")
                     font.pointSize: units.fs("medium")
@@ -146,22 +147,143 @@ MapPage {
             ]
 
             menuVisible: true
-
-            highlighted: pressed
         }
     }
 
-    Column {
-        id: helpText
+    property var selectedPOI: null
+
+    Loader {
+        id: mapPreview
+         // active the preview on selection
+        active: selectedPOI !== null
+        height: active ? parent.height / 2 : 0
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - units.gu(2)
-        Text {
-            color: styleMap.view.highlightedColor
-            text: qsTr("Press and hold the desired item to go there.")
-            wrapMode: Text.WordWrap
-            maximumLineCount: 4
-            font.pointSize: units.fs("x-small")
+        asynchronous: true
+        sourceComponent: Item {
+            id: preview
+            anchors.fill: parent
+            property alias map: map
+            Map {
+                id: map
+                showCurrentPosition: true
+                anchors.fill: parent
+
+                onTap: {
+                    // on tap change the location
+                    preview.mark.selected = false;  // not the selected location
+                    preview.mark.lat = lat;
+                    preview.mark.lon = lon;
+                    preview.mark.label = Converter.readableCoordinatesGeocaching(lat, lon);
+                    preview.mark.type = "";
+                    locationInfoModel.setLocation(lat, lon);
+                    showCoordinates(lat, lon);
+                    addPositionMark(0, lat, lon);
+                }
+            }
+
+            property int isFavoriteMark: 0
+            property QtObject mark: QtObject {
+                property bool selected: false   // is the selected location
+                property double lat: 0.0        // latitude
+                property double lon: 0.0        // longitude
+                property string label: ""       // label
+                property string type: ""        // type
+            }
+
+            LocationInfoModel{
+                id: locationInfoModel
+                onReadyChange: {
+                    if (ready && rowCount() > 0) {
+                        var str = "";
+                        var mi = index(0, 0)
+                        str = data(mi, LocationInfoModel.LabelRole);
+                        if (str === "")
+                            str = data(mi, LocationInfoModel.AddressRole);
+                        if (str === "")
+                            str = data(mi, LocationInfoModel.PoiRole);
+                        if (str !== "")
+                            preview.mark.label = str;
+                        preview.mark.type = data(mi, LocationInfoModel.TypeRole);
+                    }
+                }
+            }
+
+            MapIcon {
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.margins: units.gu(1)
+                source: "qrc:/images/close.svg"
+                color: "black"
+                backgroundColor: "white"
+                borderPadding: units.gu(1.5)
+                opacity: 0.7
+                height: units.gu(6)
+                onClicked: {
+                    selectedPOI = null; // deactivate the preview
+                }
+            }
+            MapIcon {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: units.gu(1)
+                source: favoritesPage.state === "default" ? "qrc:/images/trip/navigator.svg"
+                                                      : "qrc:/images/trip/pin.svg"
+                color: "black"
+                backgroundColor: "white"
+                borderPadding: units.gu(1.0)
+                opacity: 0.7
+                label.text: favoritesPage.state === "default" ? qsTr("Go") : qsTr("Accept")
+                label.font.pointSize: units.fs("medium")
+                label.color: "black"
+                height: units.gu(6)
+                onClicked: {
+                    if (favoritesPage.state === "default") {
+                        mapPage.navigateTo(preview.mark.lat, preview.mark.lon, preview.mark.label);
+                    } else {
+                        selectPOI({ "lat": preview.mark.lat, "lon": preview.mark.lon, "label": preview.mark.label, "type": preview.mark.type });
+                    }
+                    stackView.pop();
+                }
+            }
+        }
+
+        onStatusChanged: {
+            if (active && status === Loader.Ready) {
+                console.log("Activate map preview");
+                favoritesPage.selectedPOIChanged.connect(showSelectedLocation);
+                showSelectedLocation();
+            } else if (!active) {
+                console.log("Deactivate map preview");
+                favoritesPage.selectedPOIChanged.disconnect(showSelectedLocation);
+            }
+        }
+
+        function showSelectedLocation() {
+            console.log("Show selected location on map preview");
+            item.map.showCoordinatesInstantly(selectedPOI.lat, selectedPOI.lon);
+            item.map.addPositionMark(0, selectedPOI.lat, selectedPOI.lon);
+            item.map.removeAllOverlayObjects();
+            // setup mark
+            item.mark.selected = true;
+            item.mark.lat = selectedPOI.lat;
+            item.mark.lon = selectedPOI.lon;
+            item.mark.type = selectedPOI.type;
+            if (selectedPOI.label !== "")
+                item.mark.label = selectedPOI.label;
+            else
+                item.mark.label = Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon);
+            //console.log("Selected location: \"" + item.mark.label + "\", " + item.mark.type);
+        }
+
+        Behavior on height {
+            NumberAnimation { duration: 300; easing.type: Easing.InOutQuad;
+                onStopped: {
+                    console.log("Animate is stopped");
+                    favoritesView.positionViewAtIndex(favoritesView.currentIndex, ListView.Contain);
+                }
+            }
         }
     }
 

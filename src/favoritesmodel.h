@@ -96,7 +96,7 @@ public:
 
   Q_INVOKABLE bool remove(int id);
 
-  Q_INVOKABLE QVariantMap get(int row);
+  Q_INVOKABLE QVariantMap get(int row) const;
 
   bool init(QIODevice* io);
 

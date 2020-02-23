@@ -13,7 +13,7 @@
    height="64px"
    id="svg3694"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="parking.svg"
    inkscape:export-filename="/home/tim/projects/OSMScout/libosmscout/data/icons/14x14/standard/parking.png"
    inkscape:export-xdpi="19.690001"
@@ -36,7 +36,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="14.078125"
-     inkscape:cx="32"
+     inkscape:cx="17.509434"
      inkscape:cy="32"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -44,10 +44,10 @@
      inkscape:grid-bbox="true"
      objecttolerance="10000"
      guidetolerance="10000"
-     inkscape:window-width="1600"
-     inkscape:window-height="1154"
-     inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-width="2499"
+     inkscape:window-height="1384"
+     inkscape:window-x="61"
+     inkscape:window-y="28"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -65,7 +65,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -75,25 +75,25 @@
      inkscape:groupmode="layer">
     <text
        xml:space="preserve"
-       style="font-size:24px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:'Bitstream Vera Sans';fill:#000000;fill-opacity:1;stroke:none"
        x="25.713652"
        y="30.472809"
        id="text3727"><tspan
          sodipodi:role="line"
          id="tspan3729"
          x="25.713652"
-         y="30.472809" /></text>
+         y="30.472809"
+         style="font-size:24px;line-height:1.25"> </tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:24px;font-style:normal;font-weight:normal;line-height:125%;fill:#0b96da;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:'Bitstream Vera Sans';fill:#0b96da;fill-opacity:1;stroke:none"
        x="0.46923828"
-       y="64.211914"
-       id="text3731"
-       sodipodi:linespacing="125%"><tspan
+       y="62.993282"
+       id="text3731"><tspan
          sodipodi:role="line"
          id="tspan3733"
          x="0.46923828"
-         y="64.211914"
-         style="font-size:90px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#0b96da;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial">P</tspan></text>
+         y="62.993282"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:90px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#0b96da;fill-opacity:1">P</tspan></text>
   </g>
 </svg>

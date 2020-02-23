@@ -33,7 +33,7 @@ PopOver {
     states: [
         State {
             name: "dialog"
-            PropertyChanges { target: routingDialog; title: "Navigation"; height: maximumHeight; }
+            PropertyChanges { target: routingDialog; title: qsTr("Navigation"); height: maximumHeight; }
             PropertyChanges { target: dialog; visible: true; }
             PropertyChanges { target: way; visible: false; }
         },
@@ -477,7 +477,7 @@ PopOver {
             } else {
                 var count = route.count;
                 if (count > 0) {
-                    if (count > mapUserSettings.maximumRouteStep) {
+                    if (count > settings.maximumRouteStep) {
                         popInfo.open("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.");
                         route.clear();
                     } else {
@@ -502,7 +502,7 @@ PopOver {
         if (placeFrom.location && placeTo.location) {
             computeRunning = true;
             route.setStartAndTarget(placeFrom.location, placeTo.location, vehicle);
-            mapUserSettings.lastVehicle = vehicle;
+            settings.lastVehicle = vehicle;
         } else {
             routeMessage = qsTr("Invalid entry");
             route.clear();
@@ -510,8 +510,8 @@ PopOver {
     }
 
     Component.onCompleted: {
-        if (mapUserSettings.lastVehicle !== "")
-            vehicle = mapUserSettings.lastVehicle;
+        if (settings.lastVehicle !== "")
+            vehicle = settings.lastVehicle;
     }
 
     onClose: {

@@ -1,0 +1,9 @@
+{
+  "id": "wmflabs",
+  "name": "wmflabs",
+  "servers": [
+    "http://tiles.wmflabs.org/hillshading/%1/%2/%3.png"
+  ],
+  "maximumZoomLevel": 18, 
+  "copyright": "© wmflabs Hillshading"
+}

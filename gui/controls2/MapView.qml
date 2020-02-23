@@ -59,14 +59,11 @@ MapPage {
         } else {
             popInfo.open(qsTr("Current position cannot be gathered"));
         }
-    }
-
-    ListModel {
-        id: mapOverlays
-        ListElement {
-            title: "Hill Shading"
-            provider: "{ \"id\":\"wmflabs\", \"name\":\"wmflabs\", \"servers\":[\"http://tiles.wmflabs.org/hillshading/%1/%2/%3.png\"], \"maximumZoomLevel\":18, \"copyright\":\"© wmflabs Hillshading\" }"
-        }
+        // load current course or clean
+        if (settings.courseId > 0 && !loadGPX(settings.courseId))
+            settings.courseId = 0;
+        // on azimuth changed
+        compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
     }
 
     property QtObject mark: QtObject {
@@ -76,13 +73,32 @@ MapPage {
         property double lon: 0.0
     }
 
+    property bool nightView: false
+    property bool rotateEnabled: false
+    property real rotation: 0.0 // rotation of the map (radians)
+    property bool lockRotation: true // lock or unlock rotation of the map
+    property real azimuth: 0.0 // the current azimuth (degrees)
+
+    onRotationChanged: {
+        if (lockRotation)
+            rotator.rotateTo(rotation, map.lockToPosition);
+    }
+    onLockRotationChanged: {
+        if (lockRotation)
+            rotator.rotateTo(rotation, map.lockToPosition);
+        else
+            rotator.stop();
+    }
+
     Map {
         id: map
         anchors.fill: parent
-        renderingType: (mapUserSettings.renderingTypeTiled || (mapView.navigation && navigator.ready) ? "tiled" : "plane")
 
-        followVehicle: mapView.navigation && navigator.ready
-        vehiclePosition: navigator.ready ? navigator.vehiclePosition : null
+        // use tiled when map rotation is enabled
+        renderingType: (settings.renderingTypeTiled || mapView.rotateEnabled || mapView.navigation ? "tiled" : "plane")
+
+        followVehicle: mapView.navigation
+        vehiclePosition: mapView.navigation ? (navigator.ready ? navigator.vehiclePosition : tracker.trackerPosition) : null
         vehicleIconSize: 10
         showCurrentPosition: true
 
@@ -90,9 +106,9 @@ MapPage {
             id: mapOverlay
             anchors.fill: parent
             view: map.view
-            enabled: mapUserSettings.hillShadesEnabled
+            enabled: settings.hillShadesEnabled
             opacity: 0.6
-            provider: JSON.parse(mapOverlays.get(0).provider)
+            provider: JSON.parse(HillshadeProvider)
         }
 
         onTap: {
@@ -129,29 +145,16 @@ MapPage {
             }
         }
 
-        onLockToPositionChanged: {
-            // delay to lock position again while navigation
-            if (!lockToPosition && navigation && !followVehicle) {
-                delayLockPosition.start();
-            }
-        }
-
-        Timer {
-            id: delayLockPosition
-            interval: 5000
-            onTriggered: {
-                if (navigation && !map.followVehicle) {
-                    if (mapView.state === "view")
-                        map.lockToPosition = true;
-                    else
-                        restart(); // wait for state view
-                }
-            }
-        }
-
         Component.onCompleted: {
             setPixelRatio(ScreenScaleFactor);
             positionSource.dataUpdated.connect(locationChanged);
+            ToolBox.connectWhileFalse(map.finishedChanged, function(finished){
+               if (finished) {
+                   console.log("Configure after finished map");
+                   //rotateEnabled = true;
+                   positionSource.active = true;
+               }
+            });
         }
     }
 
@@ -162,7 +165,7 @@ MapPage {
         State {
             name: "locationInfo"
             PropertyChanges { target: addFavorite; visible: true; }
-            PropertyChanges { target: addMarker; visible: true; }
+            PropertyChanges { target: goThere; visible: true; }
         },
         State {
             name: "pickLocation"
@@ -202,17 +205,36 @@ MapPage {
     // property to enable/disable the navigation mode
     property bool navigation: false
 
-    property int positionState: !positionSource._posValid || !positionSource.active ? 0
-                                 : !navigation ? 1
-                                 : map.lockToPosition ? 2
-                                 : 3
+    onNavigationChanged: {
+        if (navigation) {
+            // unlock rotation and disable rotate
+            lockRotation = false;
+            rotateEnabled = false;
+            // connect the tracker
+            compass.active = !applicationSuspended;
+            compass.polled.connect(tracker.azimuthChanged);
+            tracker.locationChanged(positionSource._posValid,
+                                    positionSource._lat, positionSource._lon,
+                                    positionSource._accValid, positionSource._acc);
+            positionSource.dataUpdated.connect(tracker.locationChanged);
+        } else {
+            // disconnect the tracker
+            positionSource.dataUpdated.disconnect(tracker.locationChanged);
+            compass.polled.disconnect(tracker.azimuthChanged);
+            compass.active = false;
+            // lock rotation
+            mapView.rotation = 0.0;
+            lockRotation = true;
+        }
+    }
+
+    property int positionState: !positionSource._posValid ? 0 : (!navigation ? 1 : 2)
 
     function positionColor(val) {
         switch(val) {
         case 0: return "transparent";
         case 1: return "limegreen"
         case 2: return "deepskyblue"
-        case 3: return "deepskyblue"
         default: return "lightgrey"
         }
     }
@@ -232,7 +254,7 @@ MapPage {
         borderPadding: units.gu(0)
         opacity: 0.9
         height: units.gu(6)
-        animationRunning: (positionState === 0 || positionState === 3)
+        animationRunning: (positionState === 0)
         onClicked: {
             switch(positionState) {
             case 0:
@@ -240,16 +262,11 @@ MapPage {
                 positionSource.active = true;
                 break;
             case 1:
-                // enable navigation until next click
+                // enable navigation
                 navigation = true;
-                // lock to the current position when no route
-                if (!navigator.ready) {
-                    map.lockToPosition = true;
-                }
                 break;
             case 2:
-            case 3:
-                // disable navigation until next click
+                // disable navigation
                 navigation = false;
                 break;
             default:
@@ -290,7 +307,7 @@ MapPage {
     }
 
     MapIcon {
-        id: buttonZommIn
+        id: buttonZoomIn
         anchors{
             bottom: buttonZoomOut.top
             right: parent.right
@@ -305,6 +322,58 @@ MapPage {
         height: units.gu(6)
         onClicked: map.zoomIn(1.732)
     }
+
+    MapIcon {
+        id: buttonRotate
+        anchors{
+            top: parent.top
+            right: parent.right
+            topMargin: units.gu(1)
+            rightMargin: units.gu(1)
+        }
+        source: "qrc:/images/compass.svg"
+        color: rotateEnabled ? "white" : "black"
+        backgroundColor: rotateEnabled ? "black" : "white"
+        borderPadding: 0
+        opacity: rotateEnabled || navigation ? 0.8 : 0.5
+        height: units.gu(6)
+        onClicked: rotateEnabled = !rotateEnabled
+        rotation: navigation ? (360 - mapView.azimuth) : (mapView.rotation * 180.0 / Math.PI)
+        visible: !popNavigatorInfo.visible
+        enabled: !navigation
+    }
+
+    Item {
+        visible: navigation && !popNavigatorInfo.visible
+        opacity: 0.8
+        anchors{
+            top: parent.top
+            left: parent.left
+            topMargin: units.gu(1)
+            leftMargin: units.gu(1)
+        }
+        Column {
+            Label {
+                id: currentSpeed
+                text: Converter.readableSpeed(tracker.currentSpeed)
+                font.pointSize: 1.5 * units.fs("x-large")
+                color: nightView ? "white" : "black"
+            }
+            Label {
+                id: duration
+                text: Converter.panelDurationHMS(tracker.duration)
+                font.pointSize: units.fs("medium")
+                color: nightView ? "white" : "black"
+            }
+            Label {
+                id: distance
+                text: Converter.panelDistance(tracker.distance)
+                font.pointSize: units.fs("medium")
+                color: nightView ? "white" : "black"
+            }
+        }
+    }
+
 
     function addRoute(id, routeWay) {
         map.addOverlayObject(id, routeWay);
@@ -343,14 +412,37 @@ MapPage {
         map.removeOverlayObject(2000 + id);
     }
 
-
+    // Go there. The button is visible in state 'locationInfo'
+    MapIcon {
+        id: goThere
+        visible: false
+        z: 1
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.margins: units.gu(1)
+        source: "qrc:/images/trip/navigator.svg"
+        color: "black"
+        backgroundColor: "white"
+        borderPadding: units.gu(1.0)
+        opacity: 0.7
+        height: units.gu(6)
+        label.text: qsTr("Go")
+        label.font.pointSize: units.fs("medium")
+        label.color: "black"
+        onClicked: {
+            navigateTo(popLocationInfo.placeLat,
+                       popLocationInfo.placeLon,
+                       popLocationInfo.placeLabel);
+            popLocationInfo.close();
+        }
+    }
     // Add/Remove a favorite place. The button is visible in state 'locationInfo'
     MapIcon {
         id: addFavorite
         visible: false
         z: 1
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
+        anchors.left: goThere.right
         anchors.margins: units.gu(1)
         source: "qrc:/images/trip/favourite.svg"
         color: popLocationInfo.isFavorite > 0 ? "deepskyblue" : "black"
@@ -447,6 +539,10 @@ MapPage {
                         opacity: 0.9
                         height: units.gu(6)
                         onClicked: {
+                            if (lockRotation)
+                                rotator.rotateTo(rotation, true);
+                            else
+                                map.lockToPosition = true;
                         }
                     }
 
@@ -489,7 +585,7 @@ MapPage {
                     }
 
                     MapIcon {
-                        id: cancel
+                        id: dayOrNight
                         visible: true
                         anchors.verticalCenter: parent.verticalCenter
                         source: "qrc:/images/day-night.svg"
@@ -499,6 +595,7 @@ MapPage {
                         opacity: 0.9
                         height: units.gu(6)
                         onClicked: {
+                            nightView = !nightView;
                             map.toggleDaylight();
                         }
                     }
@@ -639,6 +736,25 @@ MapPage {
         }
     }
 
+    Tracking {
+        id: popTracking
+        anchors {
+            top: popInfo.bottom
+            left: parent.left
+            right: parent.right
+        }
+        height: map.height - units.gu(8) - y
+        visible: false
+        onClose: visible = false
+        onShow: visible = true
+        onVisibleChanged: {
+            if (visible)
+                mapView.pushState("Tracking");
+            else
+                mapView.popState("Tracking");
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     ////
     //// Navigation
@@ -652,15 +768,6 @@ MapPage {
             popNavigatorInfo.visible = Qt.binding(function() { return mapView.state === "view"; });
         }
 
-        onReadyChanged: {
-            if (mapView.navigation) {
-                if (!navigator.ready)
-                    rotator.rotateTo(0);
-                else
-                    rotator.stop();
-            }
-        }
-
         onTargetReached: {
             popInfo.open(qsTr("Target reached, in %1 %2.").arg(Converter.readableDistance(targetDistance)).arg(Converter.readableBearing(targetBearing)));
         }
@@ -671,13 +778,91 @@ MapPage {
         map: map
     }
 
-    onNavigationChanged: {
-        if (mapView.navigation) {
-            if (navigator.ready)
-                rotator.stop();
+    ////////////////////////////////////////////////////////////////////////////
+    ////
+    //// Courses
+    ////
+
+
+    property int courseId: 0
+    property var courseObjects: []
+
+    function addCourse(bid, overlays) {
+        if (overlays.length > 0) {
+            for (var i = 0; i < overlays.length; ++i) {
+                console.log("Add overlay " + (bid + i) + " : " + overlays[i].objectType + " , " + overlays[i].name);
+                map.addOverlayObject((bid + i), overlays[i]);
+            }
+            courseObjects = overlays;
+            settings.courseId = courseId = bid;
+        }
+    }
+
+    function removeCourse() {
+        var len = courseObjects.length;
+        for (var i = 0; i < len; ++i) {
+            console.log("Remove overlay " + (courseId + i));
+            map.removeOverlayObject((courseId + i));
+        }
+        courseObjects = [];
+        settings.courseId = courseId = 0;
+    }
+
+    GPXFileModel {
+        id: courseFile
+        onParseFinished: {
+            if (succeeded)
+                loadData();
+        }
+    }
+
+    function loadGPX(bid) {
+        GPXListModel.loadData();
+        var file = GPXListModel.findFileById(bid);
+        if (file !== "") {
+            ToolBox.connectOnce(courseFile.loaded, function(succeeded){
+                if (succeeded)
+                    mapView.addCourse(bid, courseFile.createOverlayObjects());
+            });
+            courseFile.parseFile(file);
+            return true;
         } else {
-            if (navigator.ready)
-                rotator.rotateTo(0);
+            return false;
+        }
+    }
+
+    Tracker {
+        id: tracker
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////
+    //// Rotation
+    ////
+
+    onRotateEnabledChanged: {
+        configureRotation(rotateEnabled);
+    }
+
+    function configureRotation(enabled) {
+        if (enabled) {
+            compass.active = !applicationSuspended;
+            compass.polled.connect(handleRotation);
+        } else {
+            compass.polled.disconnect(handleRotation);
+            compass.active = false;
+            mapView.rotation = 0.0;
+        }
+    }
+
+    function handleRotation(azimuth, rotation) {
+        var d = rotation - map.view.angle;
+        if (d > Math.PI)
+            d = d - Math.PI*2.0;
+        else if (d < -Math.PI)
+            d = d + Math.PI*2.0;
+        if (d > 0.14 || d < -0.14) {
+            mapView.rotation = (map.view.angle + d);
         }
     }
 }
