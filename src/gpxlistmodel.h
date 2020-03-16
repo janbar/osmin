@@ -20,6 +20,7 @@ public:
   bool dir() const { return m_dir; }
 
   const QString& name() const { return m_name; }
+  void setName(const QString& name);
 
   const QString& path() const { return m_path; }
 
@@ -84,10 +85,8 @@ public:
 
   int maxTreeDepth();
 
-  Q_INVOKABLE bool makeDirItem(const QString& name, const QModelIndex& parent);
   Q_INVOKABLE bool renameItem(const QString& name, const QModelIndex& index);
   Q_INVOKABLE bool removeItem(const QModelIndex& index);
-  Q_INVOKABLE bool moveItem(const QModelIndex& index, const QModelIndex& newParent);
 
   Q_INVOKABLE QString findFileById(int bid);
 

@@ -72,40 +72,14 @@ MapPage {
 
                     header: Row {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        width: parent.width - units.gu(4)
+                        width: parent.width
                         height: Math.max(units.gu(8), implicitHeight)
-                        Column {
-                            width: parent.width
-                            anchors.verticalCenter: parent.verticalCenter
-                            Label {
-                                width: parent.width - units.gu(6)
-                                color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
-                                text: name
-                                elide: Text.ElideRight
-                            }
-                            Label {
-                                visible: !dir
-                                width: parent.width - units.gu(6)
-                                height: visible ? implicitHeight : 0
-                                color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("x-small")
-                                text: timestamp.toLocaleDateString() + " " + timestamp.toLocaleTimeString()
-                            }
-                            Label {
-                                visible: text !== ""
-                                height: visible ? implicitHeight : 0
-                                color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("x-small")
-                                text: fileModel.description
-                                wrapMode: Text.WordWrap
-                            }
-                        }
+
                         MapCheckBox {
                            id: display
                            visible: !model.dir
                            anchors.verticalCenter: parent.verticalCenter
-                           width: units.gu(6)
+                           width: units.gu(5)
                            color: styleMap.view.foregroundColor
                            checked: false
                            onClicked: {
@@ -134,6 +108,90 @@ MapPage {
                                    display.checked = (mapView.courseId === bigId);
                                }
                            }
+                        }
+
+                        MapIcon {
+                            id: folderIcon
+                            visible: model.dir
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: units.gu(5)
+                            source: "qrc:/images/go-next.svg"
+                            onClicked: optionsMenu.open()
+                            enabled: false
+                        }
+
+                        Column {
+                            width: parent.width - units.gu(5)
+                            anchors.verticalCenter: parent.verticalCenter
+                            Label {
+                                width: parent.width
+                                color: styleMap.view.primaryColor
+                                font.pointSize: units.fs("medium")
+                                text: name
+                                elide: Text.ElideRight
+                            }
+                            Label {
+                                visible: !dir
+                                width: parent.width
+                                height: visible ? implicitHeight : 0
+                                color: styleMap.view.secondaryColor
+                                font.pointSize: units.fs("x-small")
+                                text: timestamp.toLocaleDateString() + " " + timestamp.toLocaleTimeString()
+                            }
+                            Label {
+                                visible: text !== ""
+                                height: visible ? implicitHeight : 0
+                                color: styleMap.view.secondaryColor
+                                font.pointSize: units.fs("x-small")
+                                text: fileModel.description
+                                wrapMode: Text.WordWrap
+                            }
+                        }
+
+                        MapIcon {
+                            id: menu
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: units.gu(5)
+                            height: width
+                            source: "qrc:/images/contextual-menu.svg"
+                            onClicked: optionsMenu.open()
+                            visible: (path !== "." || name !== "TRACKER")
+
+                            Menu {
+                                id: optionsMenu
+                                width: implicitWidth * units.scaleFactor
+                                x: parent.width - width
+                                transformOrigin: Menu.TopRight
+                                MenuItem {
+                                    text: qsTr("Rename")
+                                    font.pointSize: units.fs("medium")
+                                    onTriggered: {
+                                        dialogEdit.model = model;
+                                        dialogEdit.open();
+                                        ToolBox.connectOnce(dialogEdit.editRequested, renameItem);
+                                    }
+                                    function renameItem(model, newValue) {
+                                        var index = null;
+                                        if (availableList.tree.length > 0)
+                                            index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
+                                        else
+                                            index = GPXListModel.index(model.index, 0);
+                                        GPXListModel.renameItem(newValue, index);
+                                    }
+                                }
+                                MenuItem {
+                                    text: qsTr("Delete")
+                                    font.pointSize: units.fs("medium")
+                                    onTriggered: {
+                                        var index = null;
+                                        if (availableList.tree.length > 0)
+                                            index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
+                                        else
+                                            index = GPXListModel.index(model.index, 0);
+                                        GPXListModel.removeItem(index);
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -211,6 +269,55 @@ MapPage {
                     }
                 }
             }
+        }
+    }
+
+    DialogBase {
+        id: dialogEdit
+        title: qsTr("Rename")
+
+        property var model: null
+
+        signal editRequested(var model, var newValue)
+        onAccepted: {
+            var newValue = inputLabel.text.trim();
+            if (newValue.length > 0) {
+                if (!model.dir)
+                    newValue += ".gpx";
+                editRequested(model, newValue);
+            }
+        }
+
+        footer: Row {
+            leftPadding: units.gu(1)
+            rightPadding: units.gu(1)
+            bottomPadding: units.gu(1)
+            spacing: units.gu(1)
+            layoutDirection: Qt.RightToLeft
+
+            Button {
+                flat: true
+                text: qsTr("Ok")
+                onClicked: {
+                    dialogEdit.accept();
+                }
+            }
+        }
+
+        TextField {
+            id: inputLabel
+            font.pointSize: units.fs("medium")
+            placeholderText: qsTr("Enter the name")
+            inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly
+            EnterKey.type: Qt.EnterKeyDone
+        }
+
+        onOpened: {
+            var name = model.name;
+            var p = name.lastIndexOf(".");
+            if (p >= 0)
+                name = name.substr(0, p);
+            inputLabel.text = name;
         }
     }
 }

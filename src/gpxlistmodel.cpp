@@ -48,6 +48,13 @@ bool GPXItem::isValid() const
   return !m_relativeFilePath.isEmpty();
 }
 
+void GPXItem::setName(const QString& name)
+{
+  m_name = name;
+  m_relativeFilePath = m_path;
+  m_relativeFilePath.append(QDir::separator()).append(name);
+}
+
 int GPXItem::bigId() const
 {
   return static_cast<int>(__hashvalue(0x7ffffe, m_relativeFilePath.toUtf8().constData()) * 0x100 + 1);
@@ -235,23 +242,6 @@ int GPXListModel::maxTreeDepth()
   return TREE_DEPTH;
 }
 
-bool GPXListModel::makeDirItem(const QString& name, const QModelIndex& parent)
-{
-  osmin::LockGuard g(m_lock);
-  QString path("."); // base path
-  if (parent.isValid())
-  {
-    GPXItem* parentItem = static_cast<GPXItem*>(parent.internalPointer());
-    path = QDir(parentItem->path()).filePath(parentItem->name());
-  }
-  QString absolutePath(m_root);
-  absolutePath.append(QDir::separator()).append(path);
-  QDir dir(absolutePath);
-  if (!dir.mkdir(name))
-    return false;
-  return loadData();
-}
-
 bool GPXListModel::renameItem(const QString& newName, const QModelIndex& index)
 {
   osmin::LockGuard g(m_lock);
@@ -261,9 +251,12 @@ bool GPXListModel::renameItem(const QString& newName, const QModelIndex& index)
   QString absolutePath(m_root);
   absolutePath.append(QDir::separator()).append(item->path());
   QDir dir(absolutePath);
+  QFile file(absolutePath);
   if (!dir.rename(item->name(), newName))
     return false;
-  return loadData();
+  item->setName(newName);
+  emit dataChanged(index, index);
+  return true;
 }
 
 bool GPXListModel::removeItem(const QModelIndex& index)
@@ -275,29 +268,28 @@ bool GPXListModel::removeItem(const QModelIndex& index)
   QString absolutePath(m_root);
   absolutePath.append(QDir::separator()).append(item->path());
   QDir dir(absolutePath);
-  if (!dir.remove(item->name()))
-    return false;
-  return loadData();
-}
-
-bool GPXListModel::moveItem(const QModelIndex& index, const QModelIndex& newParent)
-{
-  osmin::LockGuard g(m_lock);
-  if (!index.isValid())
-    return false;
-  GPXItem* item = static_cast<GPXItem*>(index.internalPointer());
-  QString absolutePath(m_root);
-  absolutePath.append(QDir::separator()).append(item->path());
-  QDir dir(absolutePath);
-  QString absoluteNewPath(m_root);
-  if (newParent.isValid())
+  QFileInfo finfo(dir, item->name());
+  if (finfo.isDir())
   {
-    GPXItem* parentItem = static_cast<GPXItem*>(newParent.internalPointer());
-    absoluteNewPath.append(QDir::separator()).append(QDir(parentItem->path()).filePath(parentItem->name()));
+    if (!dir.rmdir(item->name()))
+      return false;
   }
-  if (!dir.rename(item->name(), QDir(absoluteNewPath).absoluteFilePath(item->name())))
+  else if (!dir.remove(item->name()))
     return false;
-  return loadData();
+  QMultiMap<QString, GPXItem*>::iterator it = m_items.find(item->path());
+  while (it != m_items.end() && it.key() == item->path())
+  {
+    if (it.value()->name() == item->name())
+    {
+      emit beginRemoveRows(index.parent(), index.row(), index.row());
+      removeRow(index.row(), index.parent());
+      m_items.erase(it);
+      emit endRemoveRows();
+      break;
+    }
+    ++it;
+  }
+  return true;
 }
 
 QString GPXListModel::findFileById(int bid)

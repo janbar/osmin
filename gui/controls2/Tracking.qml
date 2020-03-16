@@ -39,7 +39,7 @@ PopOver {
                 }
                 Label {
                     id: avgSpeed
-                    text: Converter.readableSpeed(tracker.duration < 1 ? 0 : 3.6 * tracker.distance/tracker.duration)
+                    text: Converter.readableSpeed(Tracker.duration < 1 ? 0 : 3.6 * Tracker.distance/Tracker.duration)
                     font.pointSize: units.fs("medium")
                     color: foregroundColor
                 }
@@ -53,7 +53,7 @@ PopOver {
                 }
                 Label {
                     id: duration
-                    text: Converter.panelDurationHMS(tracker.duration)
+                    text: Converter.panelDurationHMS(Tracker.duration)
                     font.pointSize: units.fs("medium")
                     color: foregroundColor
                 }
@@ -67,7 +67,7 @@ PopOver {
                 }
                 Label {
                     id: distance
-                    text: Converter.panelDistance(tracker.distance)
+                    text: Converter.panelDistance(Tracker.distance)
                     font.pointSize: units.fs("medium")
                     color: foregroundColor
                 }
@@ -77,20 +77,55 @@ PopOver {
         Column {
             width: parent.width
             MapIcon {
-                source: "qrc:/images/edit-clear.svg"
+                source: "qrc:/images/reset.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Reset tracking")
+                label.text: qsTr("Reset statistics")
                 label.color: foregroundColor
                 label.font.pointSize: units.fs("medium")
                 label.elide: Text.ElideRight
                 label.width: parent.width - units.gu(7)
                 onClicked: {
-                    tracking.close();
-                    tracker.reset();
+                    Tracker.reset();
                 }
             }
         }
 
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/record.svg"
+                color: Tracker.recording !== "" ? "red" : foregroundColor
+                height: units.gu(6)
+                label.text: Tracker.recording !== "" ? qsTr("Cut track recording") : qsTr("Start track recording")
+                label.color: foregroundColor
+                label.font.pointSize: units.fs("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    Tracker.startRecording();
+                }
+                animationRunning: tracking.visible && Tracker.recording !== ""
+            }
+        }
+
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/save.svg"
+                color: foregroundColor
+                height: units.gu(6)
+                label.text: qsTr("Close track recording")
+                label.color: foregroundColor
+                label.font.pointSize: units.fs("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    Tracker.stopRecording();
+                }
+                enabled: Tracker.recording !== ""
+                opacity: enabled ? 1.0 : 0.5
+            }
+        }
     }
 }

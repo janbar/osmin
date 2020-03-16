@@ -276,5 +276,8 @@
         <file>controls2/components/CompassSensor.qml</file>
         <file>images/compass.svg</file>
         <file>controls2/Tracking.qml</file>
+        <file>images/save.svg</file>
+        <file>images/reset.svg</file>
+        <file>images/record.svg</file>
     </qresource>
 </RCC>

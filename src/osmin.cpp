@@ -77,10 +77,12 @@ void doExit(int code);
 
 QFile*            g_favoritesFile         = nullptr;
 GPXListModel*     g_GPXListModel          = nullptr;
+Tracker*          g_Tracker               = nullptr;
 QString*          g_hillshadeProvider     = nullptr;
 
 QObject* getFavoritesModel(QQmlEngine *engine, QJSEngine *scriptEngine);
 QObject* getGPXListModel(QQmlEngine *engine, QJSEngine *scriptEngine);
+QObject* getTracker(QQmlEngine *engine, QJSEngine *scriptEngine);
 QObject* getUtils(QQmlEngine *engine, QJSEngine *scriptEngine);
 
 #if defined(QT_STATICPLUGIN)
@@ -177,6 +179,8 @@ int main(int argc, char *argv[])
       resDir.mkdir("GPX");
     g_GPXListModel = new GPXListModel(&app);
     g_GPXListModel->init(resDir.absoluteFilePath(RES_GPX_DIR));
+    g_Tracker = new Tracker(&app);
+    g_Tracker->init(resDir.absoluteFilePath(RES_GPX_DIR));
 
     g_hillshadeProvider = new QString();
     if (resDir.exists(RES_HILLSHADE_SERVER_FILE))
@@ -286,7 +290,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GPXFileModel>(OSMIN_MODULE, 1, 0, "GPXFileModel");
     qRegisterMetaType<GPXFileModel::GPXObjectRoles>("GPXFileModel::Roles");
     qRegisterMetaType<QList<osmscout::OverlayObject*> >("QList<osmscout::OverlayObject*>");
-    qmlRegisterType<Tracker>(OSMIN_MODULE, 1, 0, "Tracker");
+    qmlRegisterSingletonType<Tracker>(OSMIN_MODULE, 1, 0, "Tracker", getTracker);
 
     // register the generic compass
     qmlRegisterType<BuiltInCompass>(OSMIN_MODULE, 1, 0, "Compass");
@@ -439,6 +443,13 @@ QObject* getGPXListModel(QQmlEngine *engine, QJSEngine *scriptEngine)
   Q_UNUSED(engine)
   Q_UNUSED(scriptEngine)
   return g_GPXListModel;
+}
+
+QObject* getTracker(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+  Q_UNUSED(engine)
+  Q_UNUSED(scriptEngine)
+  return g_Tracker;
 }
 
 QObject* getUtils(QQmlEngine *engine, QJSEngine *scriptEngine)

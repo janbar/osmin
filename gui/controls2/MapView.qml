@@ -64,6 +64,11 @@ MapPage {
             settings.courseId = 0;
         // on azimuth changed
         compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
+        // resume current recording
+        if (settings.trackerRecording !== "") {
+            console.log("Resuming recording " + settings.trackerRecording);
+            Tracker.resumeRecording(settings.trackerRecording);
+        }
     }
 
     property QtObject mark: QtObject {
@@ -98,7 +103,7 @@ MapPage {
         renderingType: (settings.renderingTypeTiled || mapView.rotateEnabled || mapView.navigation ? "tiled" : "plane")
 
         followVehicle: mapView.navigation
-        vehiclePosition: mapView.navigation ? (navigator.ready ? navigator.vehiclePosition : tracker.trackerPosition) : null
+        vehiclePosition: mapView.navigation ? (navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition) : null
         vehicleIconSize: 10
         showCurrentPosition: true
 
@@ -210,17 +215,17 @@ MapPage {
             // unlock rotation and disable rotate
             lockRotation = false;
             rotateEnabled = false;
-            // connect the tracker
+            // connect the Tracker
             compass.active = !applicationSuspended;
-            compass.polled.connect(tracker.azimuthChanged);
-            tracker.locationChanged(positionSource._posValid,
+            compass.polled.connect(Tracker.azimuthChanged);
+            Tracker.locationChanged(positionSource._posValid,
                                     positionSource._lat, positionSource._lon,
                                     positionSource._accValid, positionSource._acc);
-            positionSource.dataUpdated.connect(tracker.locationChanged);
+            positionSource.dataUpdated.connect(Tracker.locationChanged);
         } else {
-            // disconnect the tracker
-            positionSource.dataUpdated.disconnect(tracker.locationChanged);
-            compass.polled.disconnect(tracker.azimuthChanged);
+            // disconnect the Tracker
+            positionSource.dataUpdated.disconnect(Tracker.locationChanged);
+            compass.polled.disconnect(Tracker.azimuthChanged);
             compass.active = false;
             // lock rotation
             mapView.rotation = 0.0;
@@ -285,6 +290,30 @@ MapPage {
           right: buttonLocation.left
           bottomMargin: units.gu(1)
           rightMargin: units.gu(1)
+        }
+    }
+
+    MapIcon {
+        id: trackRecording
+        anchors{
+            bottom: parent.bottom
+            left: parent.left
+            bottomMargin: units.gu(1)
+            leftMargin: units.gu(1)
+        }
+        source: "qrc:/images/record.svg"
+        backgroundColor: "white"
+        color: Tracker.recording !== "" ? "red" : "black"
+        animationRunning: Tracker.recording !== "" && !navigation
+        visible: !showToolbar && (navigation || Tracker.recording !== "")
+        borderPadding: units.gu(1.0)
+        opacity: 0.9
+        height: units.gu(6)
+        onClicked: {
+            if (Tracker.recording !== "")
+                Tracker.stopRecording();
+            else
+                Tracker.startRecording();
         }
     }
 
@@ -355,19 +384,19 @@ MapPage {
         Column {
             Label {
                 id: currentSpeed
-                text: Converter.readableSpeed(tracker.currentSpeed)
+                text: Converter.readableSpeed(Tracker.currentSpeed)
                 font.pointSize: 1.5 * units.fs("x-large")
                 color: nightView ? "white" : "black"
             }
             Label {
                 id: duration
-                text: Converter.panelDurationHMS(tracker.duration)
+                text: Converter.panelDurationHMS(Tracker.duration)
                 font.pointSize: units.fs("medium")
                 color: nightView ? "white" : "black"
             }
             Label {
                 id: distance
-                text: Converter.panelDistance(tracker.distance)
+                text: Converter.panelDistance(Tracker.distance)
                 font.pointSize: units.fs("medium")
                 color: nightView ? "white" : "black"
             }
@@ -778,6 +807,16 @@ MapPage {
         map: map
     }
 
+    Connections {
+        target: Tracker
+        onRecordingChanged: {
+            settings.trackerRecording = Tracker.recording;
+        }
+        onRecordingFailed: {
+            popInfo.open(qsTr("Track recording failed"));
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     ////
     //// Courses
@@ -829,10 +868,6 @@ MapPage {
         } else {
             return false;
         }
-    }
-
-    Tracker {
-        id: tracker
     }
 
     ////////////////////////////////////////////////////////////////////////////

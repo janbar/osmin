@@ -51,6 +51,9 @@ ApplicationWindow {
         property string lastVehicle: "car"
         property int maximumRouteStep: 255
         property int courseId: 0
+
+        // Tracker settings
+        property string trackerRecording: ""
     }
 
     Material.accent: Material.Grey
