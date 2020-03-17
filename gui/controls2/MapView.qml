@@ -220,7 +220,8 @@ MapPage {
             compass.polled.connect(Tracker.azimuthChanged);
             Tracker.locationChanged(positionSource._posValid,
                                     positionSource._lat, positionSource._lon,
-                                    positionSource._accValid, positionSource._acc);
+                                    positionSource._accValid, positionSource._acc,
+                                    positionSource._alt);
             positionSource.dataUpdated.connect(Tracker.locationChanged);
         } else {
             // disconnect the Tracker
@@ -388,17 +389,30 @@ MapPage {
                 font.pointSize: 1.5 * units.fs("x-large")
                 color: nightView ? "white" : "black"
             }
-            Label {
-                id: duration
-                text: Converter.panelDurationHMS(Tracker.duration)
-                font.pointSize: units.fs("medium")
-                color: nightView ? "white" : "black"
+            Row {
+                spacing: units.gu(2)
+                Label {
+                    id: duration
+                    text: Converter.panelDurationHMS(Tracker.duration)
+                    font.pointSize: units.fs("medium")
+                    color: nightView ? "white" : "black"
+                }
+                Label {
+                    id: distance
+                    text: Converter.panelDistance(Tracker.distance)
+                    font.pointSize: units.fs("medium")
+                    color: nightView ? "white" : "black"
+                }
             }
-            Label {
-                id: distance
-                text: Converter.panelDistance(Tracker.distance)
-                font.pointSize: units.fs("medium")
+            MapIcon {
+                id: elevation
+                source: "qrc:/images/trip/elevation.svg"
                 color: nightView ? "white" : "black"
+                enabled: false
+                height: units.gu(2)
+                borderPadding: 0
+                label.font.pointSize: units.fs("medium")
+                label.text: Converter.panelElevation(Tracker.elevation)
             }
         }
     }

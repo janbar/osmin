@@ -31,6 +31,8 @@ public:
   Q_INVOKABLE QString panelDistance(double distance) const;
   Q_INVOKABLE QString readableSpeed(double speed) const;
   Q_INVOKABLE QString readableBearing(const QString& bearing) const;
+  Q_INVOKABLE QString readableElevation(double elevation) const;
+  Q_INVOKABLE QString panelElevation(double elevation) const;
   Q_INVOKABLE QString panelDurationHM(int seconds) const;
   Q_INVOKABLE QString panelDurationHMS(int seconds) const;
   Q_INVOKABLE QString readableDegreeGeocaching(double degree) const;

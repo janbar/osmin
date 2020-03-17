@@ -67,7 +67,35 @@ PopOver {
                 }
                 Label {
                     id: distance
-                    text: Converter.panelDistance(Tracker.distance)
+                    text: Converter.readableDistance(Tracker.distance)
+                    font.pointSize: units.fs("medium")
+                    color: foregroundColor
+                }
+            }
+            Row {
+                spacing: units.gu(2)
+                Label {
+                    text: qsTr("Ascent")
+                  font.pointSize: units.fs("medium")
+                  color: styleMap.popover.highlightedColor
+                }
+                Label {
+                    id: ascent
+                    text: Converter.readableDistance(Tracker.ascent)
+                    font.pointSize: units.fs("medium")
+                    color: foregroundColor
+                }
+            }
+            Row {
+                spacing: units.gu(2)
+                Label {
+                    text: qsTr("Descent")
+                  font.pointSize: units.fs("medium")
+                  color: styleMap.popover.highlightedColor
+                }
+                Label {
+                    id: descent
+                    text: Converter.readableDistance(Tracker.descent)
                     font.pointSize: units.fs("medium")
                     color: foregroundColor
                 }

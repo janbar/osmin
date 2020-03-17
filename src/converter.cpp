@@ -114,6 +114,34 @@ QString Converter::readableBearing(const QString& bearing) const
   return bearing;
 }
 
+QString Converter::readableElevation(double elevation) const
+{
+  switch (m_system)
+  {
+  case SYSTEM_IMPERIAL:
+    {
+      double ft = elevation * 3.2808;
+      return QString("%1 %2").arg(std::round(ft), 0 ,'f', 0).arg(m_feet);
+    }
+  default:
+    return QString("%1 %2").arg(std::round(elevation), 0, 'f', 0).arg(m_meters);
+  }
+}
+
+QString Converter::panelElevation(double elevation) const
+{
+  switch (m_system)
+  {
+  case SYSTEM_IMPERIAL:
+    {
+      double ft = elevation * 3.2808;
+      return QString("%1 ft").arg(std::round(ft), 0 ,'f', 0);
+    }
+  default:
+    return QString("%1 m").arg(std::round(elevation), 0, 'f', 0);
+  }
+}
+
 QString Converter::panelDurationHM(int seconds) const
 {
   uint m = (uint) std::floor((seconds % 3600) / 60.0);

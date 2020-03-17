@@ -279,5 +279,8 @@
         <file>images/save.svg</file>
         <file>images/reset.svg</file>
         <file>images/record.svg</file>
+        <file>images/trip/ascent.svg</file>
+        <file>images/trip/descent.svg</file>
+        <file>images/trip/elevation.svg</file>
     </qresource>
 </RCC>
