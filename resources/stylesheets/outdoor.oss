@@ -366,7 +366,7 @@ STYLE
   ICON { name: target;} */
 
  [MAG world-] {
-  [TYPE _route] WAY {color: #ff000088; displayWidth: 1.5mm; }
+  [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; }
   [TYPE _track] WAY {color: @trackColor; displayWidth: 1.1mm; priority: 100; }
   [TYPE _trackBlack] WAY {color: @trackBlackColor; displayWidth: 1.1mm; priority: 100; }
   [TYPE _trackDarkRed] WAY {color: @trackDarkRedColor; displayWidth: 1.1mm; priority: 100; }
