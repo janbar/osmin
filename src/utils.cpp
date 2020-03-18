@@ -1,6 +1,7 @@
 
 #include "utils.h"
 #include <cmath>
+#include <QStorageInfo>
 
 using namespace osmin;
 
@@ -28,6 +29,12 @@ QString Utils::normalizedInputString(const QString& str)
   if (!ret.isEmpty() && pcat == QChar::Separator_Space)
     ret.truncate(ret.length() - 1);
   return ret;
+}
+
+quint64 Utils::storageBytesFree(const QString& path)
+{
+  QStorageInfo info(path);
+  return info.bytesFree();
 }
 
 #define DEGTORAD(a) ((a)*M_PI/180.0)

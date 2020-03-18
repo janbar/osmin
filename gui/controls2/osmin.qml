@@ -23,6 +23,7 @@ import QtQuick.Controls.Universal 2.2
 import Qt.labs.settings 1.0
 import QtGraphicalEffects 1.0
 import Osmin 1.0 as Osmin
+import "../toolbox.js" as ToolBox
 import "./components"
 
 ApplicationWindow {
@@ -286,16 +287,26 @@ ApplicationWindow {
             right: parent.right
             top: parent.top
         }
-        initialItem: "qrc:/controls2/Welcome.qml"
+        initialItem: "qrc:/controls2/Banner.qml"
     }
 
     property var mapPage: null
+    property var hillshadeProvider: null
+    property int launcherMode: 0
 
     Component.onCompleted: {
         // resize main view according to user settings
         if (!Android) {
             mainView.width = (settings.widthGU >= minSizeGU ? units.gu(settings.widthGU) : units.gu(minSizeGU));
             mainView.height = (settings.heightGU >= minSizeGU ? units.gu(settings.heightGU) : units.gu(minSizeGU));
+        }
+        // setup hillshade provider
+        try {
+            var hsprovider = JSON.parse(HillshadeProvider);
+            if (hsprovider.id)
+                hillshadeProvider = hsprovider;
+        } catch(e) {
+            console.log("HillshadeProvider: " + e.name);
         }
         // setup Converter
         Osmin.Converter.meters = qsTr("meters");
@@ -312,10 +323,25 @@ ApplicationWindow {
         Osmin.Converter.southeast = qsTr("southeast");
         Osmin.Converter.system = "SI";
         positionSource.active = true;
-        stackView.clear();
-        mapPage = stackView.push("qrc:/controls2/MapView.qml");
+        launcher.start();
     }
 
+    Timer {
+        id: launcher
+        interval: 500
+        onTriggered: {
+            if (launcherMode === 0)
+                restart();
+            else {
+                stackView.clear();
+                mapPage = stackView.push("qrc:/controls2/MapView.qml");
+                if (launcherMode === 1) {
+                    stackView.push("qrc:/controls2/Welcome.qml");
+                }
+                stop();
+            }
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     ////

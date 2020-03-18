@@ -40,7 +40,7 @@ PopOver {
                 }
             }
             Label {
-                text: "It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory."
+                text: qsTr("It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory.")
                 width: parent.width
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignJustify
@@ -52,14 +52,30 @@ PopOver {
             }
         }
 
-        MapCheckBox {
-            id: hillShading
+        Column {
             width: parent.width
-            color: styleMap.popover.foregroundColor
-            text: qsTr("Hill Shades")
-            checked: settings.hillShadesEnabled
-            onClicked: {
-                settings.hillShadesEnabled = !settings.hillShadesEnabled;
+            MapCheckBox {
+                id: hillShading
+                width: parent.width
+                color: styleMap.popover.foregroundColor
+                text: qsTr("Hill Shades")
+                checked: settings.hillShadesEnabled && (hillshadeProvider != null)
+                onClicked: {
+                    settings.hillShadesEnabled = !settings.hillShadesEnabled;
+                }
+                enabled: (hillshadeProvider != null)
+            }
+            Label {
+                visible: (hillshadeProvider == null)
+                text: qsTr("To activate the functionality, please configure the tile server file from the resources folder.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pointSize: units.fs("x-small")
+                font.weight: Font.Normal
             }
         }
 

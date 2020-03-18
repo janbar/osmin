@@ -37,6 +37,14 @@ MapPage {
 //        }
     }
 
+    property string mapsDirectory: ""
+    Component.onCompleted: {
+        if (MapsDirectories.length > 1)
+            mapsDirectory = MapsDirectories[1]; // external storage
+        else
+            mapsDirectory = MapsDirectories[0]; // home maps store
+    }
+
     Flickable {
         id: body
         anchors.fill: parent
@@ -133,39 +141,7 @@ MapPage {
                 }
             }
 
-//            RowLayout {
-//                spacing: units.gu(1)
-//                Layout.fillWidth: true
-//                Label {
-//                    text: qsTr("Style")
-//                    font.pointSize: units.fs("medium");
-//                }
-//                ComboBox {
-//                    id: styleBox
-//                    flat: true
-//                    property int styleIndex: -1
-//                    model: AvailableStyles
-//                    Component.onCompleted: {
-//                        styleIndex = find(settings.style, Qt.MatchFixedString)
-//                        if (styleIndex !== -1)
-//                            currentIndex = styleIndex
-//                    }
-//                    onActivated: {
-//                        // reset theme when not supported
-//                        if (currentText !== "Material" && currentText !== "Universal") {
-//                            settings.theme = 0;
-//                        }
-//                    }
-//                    Layout.fillWidth: true
-//                    font.pointSize: units.fs("medium");
-//                    popup {
-//                        font.pointSize: units.fs("medium");
-//                    }
-//                }
-//            }
-
             RowLayout {
-//                visible: styleBox.currentText === "Material" || styleBox.currentText === "Universal"
                 spacing: units.gu(1)
                 Layout.fillWidth: true
                 Label {
@@ -194,17 +170,60 @@ MapPage {
                 }
             }
 
-//            Label {
-//                text: qsTr("Restart is required")
-//                font.pointSize: units.fs("medium")
-//                color: "red"
-//                opacity: styleBox.currentIndex !== styleBox.styleIndex ||
-//                         scaleBox.realValue !== scaleBox.acceptedValue ? 1.0 : 0.0
-//                horizontalAlignment: Label.AlignHCenter
-//                verticalAlignment: Label.AlignVCenter
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//            }
+            Label {
+                text: qsTr("Resources directory")
+                color: styleMap.popover.highlightedColor
+                font.pointSize: units.fs("medium")
+            }
+            Label {
+                text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(ResourcesDirectory)))
+                color: styleMap.view.foregroundColor
+                font.pointSize: units.fs("small")
+            }
+            Label {
+                text: ResourcesDirectory
+                color: styleMap.view.foregroundColor
+                font.pointSize: units.fs("small")
+                maximumLineCount: 3
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+            }
+            Label {
+                text: qsTr("Maps directory")
+                color: styleMap.popover.highlightedColor
+                font.pointSize: units.fs("medium")
+            }
+            Label {
+                text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(mapsDirectory)))
+                color: styleMap.view.foregroundColor
+                font.pointSize: units.fs("small")
+            }
+            Label {
+                text: mapsDirectory
+                color: styleMap.view.foregroundColor
+                font.pointSize: units.fs("small")
+                maximumLineCount: 3
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+            }
+            Label {
+                text: qsTr("Hillshade provider")
+                color: styleMap.popover.highlightedColor
+                font.pointSize: units.fs("medium")
+            }
+            Label {
+                text: (hillshadeProvider != null ? hillshadeProvider.name : qsTr("Not configured"))
+                color: styleMap.view.foregroundColor
+                font.pointSize: units.fs("small")
+            }
+            Label {
+                text: (hillshadeProvider != null ? hillshadeProvider.copyright : "")
+                color: styleMap.view.foregroundColor
+                font.pointSize: units.fs("small")
+                maximumLineCount: 3
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+            }
         }
     }
 }

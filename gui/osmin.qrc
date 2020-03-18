@@ -282,5 +282,7 @@
         <file>images/trip/ascent.svg</file>
         <file>images/trip/descent.svg</file>
         <file>images/trip/elevation.svg</file>
+        <file>images/osmin.png</file>
+        <file>controls2/Banner.qml</file>
     </qresource>
 </RCC>

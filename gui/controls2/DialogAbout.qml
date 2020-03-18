@@ -38,12 +38,12 @@ DialogBase {
         }
     }
 
-    contentSpacing: units.gu(1)
+    contentSpacing: units.gu(2)
 
     Text {
         color: styleMap.dialog.foregroundColor
         width: dialog.availableWidth
-        text: qsTr("A GPS Navigator based on OSMScout")
+        text: qsTr("OSMin is a GPS Navigator based on OSMScout")
         wrapMode: Label.Wrap
         font.pointSize: units.fs("medium")
     }
@@ -59,19 +59,19 @@ DialogBase {
         text: qsTr("Version: %1").arg(VersionString)
         font.pointSize: units.fs("medium")
     }
-//    Text {
-//        id: donate
-//        color: styleMusic.dialog.foregroundColor
-//        width: dialog.availableWidth
-//        font.pointSize: units.fs("medium")
-//        text: "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jlbarriere68%40gmail%2ecom&lc=US&item_name=osmin%2dapp&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted'>Donate with Paypal</a>"
-//        onLinkHovered: {
-//            if (hoveredLink)
-//                font.bold = true;
-//            else
-//                font.bold = false;
-//        }
-//        onLinkActivated: Qt.openUrlExternally(link)
-//        linkColor: styleMusic.view.linkColor
-//    }
+    Text {
+        id: donate
+        color: styleMap.dialog.foregroundColor
+        width: dialog.availableWidth
+        font.pointSize: units.fs("medium")
+        text: "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jlbarriere68%40gmail%2ecom&lc=US&item_name=OSMin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted'>Donate with Paypal</a>"
+        onLinkHovered: {
+            if (hoveredLink)
+                font.bold = true;
+            else
+                font.bold = false;
+        }
+        onLinkActivated: Qt.openUrlExternally(link)
+        linkColor: styleMap.view.linkColor
+    }
 }

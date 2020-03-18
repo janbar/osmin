@@ -40,6 +40,7 @@ public:
   Q_INVOKABLE QString readableCoordinatesGeocaching(double lat, double lon) const;
   Q_INVOKABLE QString readableCoordinatesNumeric(double lat, double lon) const;
   Q_INVOKABLE QString readableCoordinates(double lat, double lon) const;
+  Q_INVOKABLE QString readableBytes(quint64 bytes) const;
 
   // Define singleton provider functions
   static QObject* createConverter(QQmlEngine *engine, QJSEngine *scriptEngine)

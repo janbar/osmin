@@ -196,6 +196,20 @@ QString Converter::readableCoordinates(double lat, double lon) const
   return str;
 }
 
+QString Converter::readableBytes(quint64 bytes) const
+{
+  if (bytes < 0x400LL)
+    return QString("%1 B").arg(bytes);
+  double b = 1.0 * bytes;
+  if (bytes < 0x100000LL)
+    return QString("%1 KB").arg(std::round((b / 0x400LL) * 10.0) / 10.0, 0, 'f', 1);
+  if (bytes < 0x40000000LL)
+    return QString("%1 MB").arg(std::round((b / 0x100000LL) * 10.0) / 10.0, 0, 'f', 1);
+  if (bytes < 0x10000000000LL)
+    return QString("%1 GB").arg(std::round((b / 0x40000000LL) * 10.0) / 10.0, 0, 'f', 1);
+  return QString("%1 TB").arg(std::round((b / 0x10000000000LL) * 10.0) / 10.0, 0, 'f', 1);
+}
+
 QString Converter::getSystem() const
 {
   switch (m_system)

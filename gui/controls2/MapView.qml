@@ -111,9 +111,9 @@ MapPage {
             id: mapOverlay
             anchors.fill: parent
             view: map.view
-            enabled: settings.hillShadesEnabled
+            enabled: settings.hillShadesEnabled && hillshadeProvider
             opacity: 0.6
-            provider: JSON.parse(HillshadeProvider)
+            provider: hillshadeProvider
         }
 
         onTap: {

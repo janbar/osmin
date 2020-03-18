@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
     g_Tracker = new Tracker(&app);
     g_Tracker->init(resDir.absoluteFilePath(RES_GPX_DIR));
 
-    g_hillshadeProvider = new QString();
+    g_hillshadeProvider = new QString("{}");
     if (resDir.exists(RES_HILLSHADE_SERVER_FILE))
     {
       QFile file(resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE));
@@ -323,8 +323,11 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ApplicationArguments", app.arguments());
     // bind SCALE_FACTOR
     engine.rootContext()->setContextProperty("ScreenScaleFactor", QVariant(app.primaryScreen()->devicePixelRatio()));
+    // bind directories
+    engine.rootContext()->setContextProperty("ResourcesDirectory", resDir.absolutePath());
+    engine.rootContext()->setContextProperty("MapsDirectories", mapDirs);
     // bind hillshade provider
-    engine.rootContext()->setContextProperty("HillshadeProvider", QVariant(*g_hillshadeProvider));
+    engine.rootContext()->setContextProperty("HillshadeProvider", *g_hillshadeProvider);
     // bind Android flag
 #if defined(Q_OS_ANDROID)
     engine.rootContext()->setContextProperty("Android", QVariant(true));
