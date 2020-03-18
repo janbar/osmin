@@ -166,6 +166,8 @@ MapPage {
                                     text: qsTr("Rename")
                                     font.pointSize: units.fs("medium")
                                     onTriggered: {
+                                        if (display.checked)
+                                            mapView.removeCourse();
                                         dialogEdit.model = model;
                                         dialogEdit.open();
                                         ToolBox.connectOnce(dialogEdit.editRequested, renameItem);
@@ -183,6 +185,8 @@ MapPage {
                                     text: qsTr("Delete")
                                     font.pointSize: units.fs("medium")
                                     onTriggered: {
+                                        if (display.checked)
+                                            mapView.removeCourse();
                                         var index = null;
                                         if (availableList.tree.length > 0)
                                             index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
