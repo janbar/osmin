@@ -5,8 +5,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_SAILFISHOS "Build the SailfishOS application" OFF)
 
-set(APP_VERSION       "1.0.0")
-set(APP_VERSION_CODE  9)
+set(APP_VERSION       "1.0.1")
+set(APP_VERSION_CODE  10)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
