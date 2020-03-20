@@ -192,6 +192,7 @@ int main(int argc, char *argv[])
         QByteArray json;
         json.append(file.read(0x7ff));
         file.close();
+        g_hillshadeProvider->clear();
         g_hillshadeProvider->append(QString::fromUtf8(json));
       }
     }
