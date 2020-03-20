@@ -549,7 +549,7 @@
     <name>Settings</name>
     <message>
         <location filename="../controls2/Settings.qml" line="27"/>
-        <source>General Settings</source>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

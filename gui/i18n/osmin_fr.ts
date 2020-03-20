@@ -249,7 +249,7 @@
     <message>
         <location filename="../controls2/MainMenu.qml" line="204"/>
         <source>Settings</source>
-        <translation type="unfinished">Paramétrages</translation>
+        <translation type="unfinished">Réglages</translation>
     </message>
 </context>
 <context>
@@ -383,10 +383,6 @@
         <location filename="../controls2/Routing.qml" line="256"/>
         <source>Favorite</source>
         <translation type="unfinished">Favori</translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="obsolete">Marqueur</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="177"/>
@@ -553,8 +549,8 @@
     <name>Settings</name>
     <message>
         <location filename="../controls2/Settings.qml" line="27"/>
-        <source>General Settings</source>
-        <translation type="unfinished">Paramétrage Général</translation>
+        <source>Settings</source>
+        <translation type="unfinished">Réglages</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="148"/>

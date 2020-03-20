@@ -24,7 +24,7 @@ import "./components"
 
 MapPage {
     id: favorites
-    pageTitle: qsTr("General Settings")
+    pageTitle: qsTr("Settings")
     pageFlickable: body
 
     onPopped: {
