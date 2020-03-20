@@ -812,7 +812,7 @@ MapPage {
         }
 
         onTargetReached: {
-            popInfo.open(qsTr("Target reached, in %1 %2.").arg(Converter.readableDistance(targetDistance)).arg(Converter.readableBearing(targetBearing)));
+            popInfo.open(qsTr("Target reached at %1 %2.").arg(Converter.readableDistance(targetDistance)).arg(Converter.readableBearing(targetBearing)));
         }
     }
 

@@ -101,7 +101,7 @@ PopOver {
                 }
             }
             Label {
-                text: qsTr("Follow or manage your tracks.")
+                text: qsTr("Manage your tracks.")
                 width: parent.width
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignJustify
@@ -128,6 +128,17 @@ PopOver {
                     mainMenu.close();
                     popTracking.show();
                 }
+            }
+            Label {
+                text: qsTr("Follow your track.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pointSize: units.fs("x-small")
+                font.weight: Font.Normal
             }
         }
 

@@ -163,8 +163,7 @@ PopOver {
                     { text: qsTr("My position") },
                     { text: qsTr("Search Place") },
                     { text: qsTr("Select on Map") },
-                    { text: qsTr("Favorite") },
-                    { text: qsTr("Marker") }
+                    { text: qsTr("Favorite") }
                 ]
 
                 onActivated: {
@@ -254,8 +253,7 @@ PopOver {
                     { text: placeTo.address },
                     { text: qsTr("Search Place") },
                     { text: qsTr("Select on Map") },
-                    { text: qsTr("Favorite") },
-                    { text: qsTr("Marker") }
+                    { text: qsTr("Favorite") }
                 ]
 
                 onActivated: {
@@ -416,7 +414,7 @@ PopOver {
                         font.pointSize: units.fs("small")
                     }
                     Label {
-                        text: ", duration:"
+                        text: ", " + qsTr("Duration:")
                         color: styleMap.popover.foregroundColor
                         font.pointSize: units.fs("small")
                     }

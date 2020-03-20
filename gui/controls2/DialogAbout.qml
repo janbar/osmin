@@ -43,7 +43,7 @@ DialogBase {
     Text {
         color: styleMap.dialog.foregroundColor
         width: dialog.availableWidth
-        text: qsTr("OSMin is a GPS Navigator based on OSMScout")
+        text: qsTr("OSMin is a GPS Navigator based on a fork of OSMScout. It allows on-road routing and off-road navigation with OSM maps.")
         wrapMode: Label.Wrap
         font.pointSize: units.fs("medium")
     }
