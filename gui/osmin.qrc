@@ -284,5 +284,7 @@
         <file>images/trip/elevation.svg</file>
         <file>images/osmin.png</file>
         <file>controls2/Banner.qml</file>
+        <file>i18n/osmin_en.qm</file>
+        <file>i18n/osmin_fr.qm</file>
     </qresource>
 </RCC>
