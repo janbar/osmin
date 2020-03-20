@@ -5,8 +5,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_SAILFISHOS "Build the SailfishOS application" OFF)
 
-set(APP_VERSION       "1.0.1")
-set(APP_VERSION_CODE  10)
+set(APP_VERSION       "1.0.2")
+set(APP_VERSION_CODE  11)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -124,6 +124,7 @@ find_package(Qt5Xml REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5Sensors REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
@@ -181,14 +182,14 @@ if(BUILD_SAILFISHOS)
     add_definitions(-DSAILFISHOS)
     include_directories(${LIBSAILFISHAPP_INCLUDE_DIRS})
     target_link_libraries(osmin ${LIBSAILFISHAPP_LIBRARIES}
-                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Core)
+                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 elseif(ANDROID)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
     target_link_libraries(osmin Qt5::QuickControls2 Qt5::AndroidExtras android log
-                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Core)
+                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 else()
     target_link_libraries(osmin Qt5::QuickControls2
-                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Core)
+                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 endif()
 
 set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")

@@ -32,5 +32,6 @@ cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DQt5Widgets_DIR=$QT_DIR/lib/cmake/Qt5Widgets \
 -DQt5Sensors_DIR=$QT_DIR/lib/cmake/Qt5Sensors \
 -DQt5Positioning_DIR=$QT_DIR/lib/cmake/Qt5Positioning \
+-DQt5Multimedia_DIR=$QT_DIR/lib/cmake/Qt5Multimedia \
 -DQt5AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt5AndroidExtras \
 $@

@@ -82,7 +82,7 @@ MAX SPEEDS
 
   SPEED "FR:walk"          =   6 km/h
   SPEED "FR:urban"         =  50 km/h
-  SPEED "FR:rural"         =  80 km/h
+  SPEED "FR:rural"         =  90 km/h
   SPEED "FR:motorway"      = 130 km/h
 
   SPEED "SK:urban"         =  50 km/h
@@ -1029,7 +1029,8 @@ TYPES
   TYPE boundary_protected_area
     = AREA RELATION ("boundary"=="national_park" OR "boundary"=="protected_area")
       {Name, NameAlt}
-      OPTIMIZE_LOW_ZOOM MERGE_AREAS
+      // national park may be relation of boundary type, but we always want to handle it as a multipolygon
+      MULTIPOLYGON OPTIMIZE_LOW_ZOOM MERGE_AREAS
 
   TYPE leisure_park
     = NODE AREA ("leisure"=="park")
@@ -1124,7 +1125,7 @@ TYPES
       GROUP amenity
 
   TYPE amenity_drinking_water
-    = NODE ("amenity"=="drinking_water")
+    = NODE ("amenity"=="drinking_water" OR ("amenity"=="fountain" AND "drinking_water"=="yes"))
       GROUP amenity
 
   TYPE amenity_ev_charging
