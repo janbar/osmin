@@ -192,18 +192,6 @@ else()
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 endif()
 
-set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")
-
-#install(TARGETS osmin RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(PROGRAMS osmin DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gui)
-
-install(
-    DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gui/resources
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXEC}
-)
-
 if(ANDROID)
     add_dependencies(osmin ssl crypto)
     configure_file(
@@ -221,6 +209,14 @@ if(ANDROID)
         PLUGINS ${CMAKE_SOURCE_DIR}/resources
         KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
         KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
+    )
+else()
+    set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")
+    install(TARGETS osmin RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gui)
+    install(
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gui/resources
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXEC}
     )
 endif()
 
