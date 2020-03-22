@@ -170,15 +170,17 @@ MapPage {
                                             mapView.removeCourse();
                                         dialogEdit.model = model;
                                         dialogEdit.open();
-                                        ToolBox.connectOnce(dialogEdit.editRequested, renameItem);
+                                        ToolBox.connectOnce(dialogEdit.requestUpdate, renameItem);
                                     }
                                     function renameItem(model, newValue) {
-                                        var index = null;
-                                        if (availableList.tree.length > 0)
-                                            index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
-                                        else
-                                            index = GPXListModel.index(model.index, 0);
-                                        GPXListModel.renameItem(newValue, index);
+                                        if (model) {
+                                            var index = null;
+                                            if (availableList.tree.length > 0)
+                                                index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
+                                            else
+                                                index = GPXListModel.index(model.index, 0);
+                                            GPXListModel.renameItem(newValue, index);
+                                        }
                                     }
                                 }
                                 MenuItem {
@@ -282,14 +284,19 @@ MapPage {
 
         property var model: null
 
-        signal editRequested(var model, var newValue)
+        signal requestUpdate(var model, var newValue)
         onAccepted: {
             var newValue = inputLabel.text.trim();
             if (newValue.length > 0) {
                 if (!model.dir)
                     newValue += ".gpx";
-                editRequested(model, newValue);
-            }
+                requestUpdate(model, newValue);
+            } else
+                requestUpdate(null, "");
+        }
+        onRejected: {
+            // caller is waiting the signal
+            requestUpdate(null, "");
         }
 
         footer: Row {

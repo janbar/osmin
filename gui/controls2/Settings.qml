@@ -23,7 +23,7 @@ import Osmin 1.0
 import "./components"
 
 MapPage {
-    id: favorites
+    id: settingsPage
     pageTitle: qsTr("Settings")
     pageFlickable: body
 

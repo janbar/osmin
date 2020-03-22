@@ -132,11 +132,13 @@ MapPage {
                     onTriggered: {
                         dialogEdit.model = model;
                         dialogEdit.open();
-                        ToolBox.connectOnce(dialogEdit.editRequested, updateModel);
+                        ToolBox.connectOnce(dialogEdit.requestUpdate, updateModel);
                     }
                     function updateModel(model) {
-                        createFavorite(model.lat, model.lon, model.label);
-                        removeFavorite(model.id);
+                        if (model) {
+                            createFavorite(model.lat, model.lon, model.label);
+                            removeFavorite(model.id);
+                        }
                     }
                 },
                 MenuItem {
@@ -293,10 +295,17 @@ MapPage {
 
         property var model: null
 
-        signal editRequested(var model)
+        signal requestUpdate(var model)
         onAccepted: {
-            model.label = inputLabel.text;
-            editRequested(model);
+            if (inputLabel.text.length > 0) {
+                model.label = inputLabel.text;
+                requestUpdate(model);
+            } else
+                requestUpdate(null);
+        }
+        onRejected: {
+            // caller is waiting the signal
+            requestUpdate(null);
         }
 
         footer: Row {

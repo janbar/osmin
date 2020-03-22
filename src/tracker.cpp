@@ -199,7 +199,7 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
         if (a > 0)
           m_ascent += a;
         else
-          m_descent += a;
+          m_descent -= a;
       }
       emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent);
     }

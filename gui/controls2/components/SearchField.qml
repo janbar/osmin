@@ -23,9 +23,10 @@ Rectangle {
     id: filter
     visible: true
     height: visible ? units.gu(6) : 0
-    color: styleMap.view.backgroundColor
+    color: "transparent"
 
     property alias displayText: field.displayText
+    property alias fieldFocus: field.focus
 
     function forceActiveFocus() {
         field.forceActiveFocus();

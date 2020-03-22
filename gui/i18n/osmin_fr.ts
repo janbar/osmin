@@ -265,12 +265,12 @@
         <translation type="unfinished">Téléchargements</translation>
     </message>
     <message>
-        <location filename="../controls2/MapDownloads.qml" line="171"/>
+        <location filename="../controls2/MapDownloads.qml" line="160"/>
         <source>Installed Maps</source>
         <translation type="unfinished">Cartes installées</translation>
     </message>
     <message>
-        <location filename="../controls2/MapDownloads.qml" line="313"/>
+        <location filename="../controls2/MapDownloads.qml" line="286"/>
         <source>Available Maps</source>
         <translation type="unfinished">Cartes disponibles</translation>
     </message>
@@ -569,8 +569,8 @@
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="174"/>
-        <source>Resources directory</source>
-        <translation type="unfinished">Répertoire des ressources</translation>
+        <source>Data directory</source>
+        <translation type="unfinished">Répertoire des données</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="179"/>

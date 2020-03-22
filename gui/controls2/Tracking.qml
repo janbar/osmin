@@ -25,14 +25,16 @@ PopOver {
 
     title: qsTr("Tracking")
     contents: Column {
-        spacing: units.gu(1)
+        spacing: units.gu(2)
 
         Column {
             width: parent.width
             spacing: units.gu(1)
             Row {
+                width: parent.width
                 spacing: units.gu(2)
                 Label {
+                    width: parent.width / 2
                     text: qsTr("Average Speed")
                   font.pointSize: units.fs("medium")
                   color: styleMap.popover.highlightedColor
@@ -45,8 +47,10 @@ PopOver {
                 }
             }
             Row {
+                width: parent.width
                 spacing: units.gu(2)
                 Label {
+                    width: parent.width / 2
                     text: qsTr("Duration")
                   font.pointSize: units.fs("medium")
                   color: styleMap.popover.highlightedColor
@@ -59,8 +63,10 @@ PopOver {
                 }
             }
             Row {
+                width: parent.width
                 spacing: units.gu(2)
                 Label {
+                    width: parent.width / 2
                     text: qsTr("Distance")
                   font.pointSize: units.fs("medium")
                   color: styleMap.popover.highlightedColor
@@ -73,8 +79,10 @@ PopOver {
                 }
             }
             Row {
+                width: parent.width
                 spacing: units.gu(2)
                 Label {
+                    width: parent.width / 2
                     text: qsTr("Ascent")
                   font.pointSize: units.fs("medium")
                   color: styleMap.popover.highlightedColor
@@ -87,8 +95,10 @@ PopOver {
                 }
             }
             Row {
+                width: parent.width
                 spacing: units.gu(2)
                 Label {
+                    width: parent.width / 2
                     text: qsTr("Descent")
                   font.pointSize: units.fs("medium")
                   color: styleMap.popover.highlightedColor

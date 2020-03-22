@@ -836,7 +836,6 @@ MapPage {
     //// Courses
     ////
 
-
     property int courseId: 0
     property var courseObjects: []
 

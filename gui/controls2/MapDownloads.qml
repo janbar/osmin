@@ -144,17 +144,6 @@ MapPage {
                     mapDownloadsModel.modelReset.connect(onModelReset);
                     onModelReset();
                 }
-
-                /*menu: ContextMenu {
-                    MenuItem {
-                        text: qsTr("Cancel")
-                        onClicked: {
-                            Remorse.itemAction(donwloadMapItem,
-                                               qsTr("Canceling"),
-                                               function() { mapDownloadsModel.cancel(model.index) });
-                        }
-                    }
-                }*/
             }
 
             Row {
@@ -269,22 +258,6 @@ MapPage {
                         availableMapsModel.modelReset.connect(checkUpdate);
                         availableMapsModel.loadingChanged.connect(checkUpdate);
                     }
-
-                    /*menu: ContextMenu {
-                        MenuItem {
-                            text: qsTr("Update")
-                            visible: updateAvailable
-                            onClicked: updateMap()
-                        }
-                        MenuItem {
-                            text: qsTr("Delete")
-                            onClicked: {
-                                Remorse.itemAction(installedMapItem,
-                                                   qsTr("Deleting"),
-                                                   function() { installedMapsModel.deleteMap(model.index) });
-                            }
-                        }
-                    }*/
                 }
 
                 function onModelChange() {
@@ -392,7 +365,7 @@ MapPage {
                     animationInterval: 150
                 }
 
-                highlighted: model.dir && pressed
+                //highlighted: model.dir && pressed
 
                 onClicked: {
                     if (model.dir) {

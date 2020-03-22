@@ -63,6 +63,7 @@ MapPage {
     onGoUpClicked: {
         selectedLocation = null;
         searchPage.state = "dialog";
+        searchField.clear();
     }
 
     header: Item {
@@ -468,7 +469,7 @@ MapPage {
     Loader {
         id: mapPreview
          // active the preview on selection
-        active: selectedLocation !== null
+        active: selectedLocation !== null && !searchField.fieldFocus
         height: active ? parent.height / 2 : 0
         anchors.left: parent.left
         anchors.right: parent.right

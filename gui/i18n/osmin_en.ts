@@ -265,12 +265,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MapDownloads.qml" line="171"/>
+        <location filename="../controls2/MapDownloads.qml" line="160"/>
         <source>Installed Maps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MapDownloads.qml" line="313"/>
+        <location filename="../controls2/MapDownloads.qml" line="286"/>
         <source>Available Maps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -569,7 +569,7 @@
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="174"/>
-        <source>Resources directory</source>
+        <source>Data directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
