@@ -171,17 +171,17 @@ MapPage {
             }
 
             Label {
-                text: qsTr("Resources directory")
+                text: qsTr("Data directory")
                 color: styleMap.popover.highlightedColor
                 font.pointSize: units.fs("medium")
             }
             Label {
-                text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(ResourcesDirectory)))
+                text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(DataDirectory)))
                 color: styleMap.view.foregroundColor
                 font.pointSize: units.fs("small")
             }
             Label {
-                text: ResourcesDirectory
+                text: DataDirectory
                 color: styleMap.view.foregroundColor
                 font.pointSize: units.fs("small")
                 maximumLineCount: 3

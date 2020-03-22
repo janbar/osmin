@@ -213,9 +213,9 @@ if(ANDROID)
 else()
     set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")
     install(TARGETS osmin RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-    file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gui)
+    file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
     install(
-        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gui/resources
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXEC}
     )
 endif()

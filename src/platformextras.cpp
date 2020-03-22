@@ -29,26 +29,33 @@ PlatformExtras::~PlatformExtras()
 {
 }
 
-#ifdef Q_OS_ANDROID
-
 QString PlatformExtras::getHomeDir()
 {
+#ifdef Q_OS_ANDROID
   QAndroidJniObject activity = QtAndroid::androidActivity();
   QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
   QAndroidJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
   QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
   return path.toString();
+#else
+  return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+#endif
 }
 
 QString PlatformExtras::getDataDir(const char* appId)
 {
-  return PlatformExtras::getHomeDir();
+#ifdef Q_OS_ANDROID
+  return "assets:";
+#else
+  return QStandardPaths::locate(QStandardPaths::GenericDataLocation, appId, QStandardPaths::LocateDirectory);
+#endif
 }
 
 QStringList PlatformExtras::getStorageDirs()
 {
-  QAndroidJniEnvironment jniEnv;
   QStringList dirs;
+#ifdef Q_OS_ANDROID
+  QAndroidJniEnvironment jniEnv;
   // search for a mounted sdcard
   QAndroidJniObject activity = QtAndroid::androidActivity();
   QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
@@ -66,6 +73,18 @@ QStringList PlatformExtras::getStorageDirs()
     qInfo("Found storage: %s", pathStr.toUtf8().constData());
     dirs.push_back(pathStr);
   }
+#else
+  // search for a mounted sdcard
+  for (const QStorageInfo& storage : QStorageInfo::mountedVolumes())
+  {
+    QString path = storage.rootPath();
+    if (storage.isValid() && storage.isReady() && path.startsWith(AUTO_MOUNT))
+    {
+      qInfo("Found storage: %s", path.toUtf8().constData());
+      dirs.push_back(path);
+    }
+  }
+#endif
   return dirs;
 }
 
@@ -73,6 +92,7 @@ void PlatformExtras::setPreventBlanking(bool on)
 {
   m_preventBlanking = on;
 
+#ifdef Q_OS_ANDROID
   {
     QtAndroid::runOnAndroidThread([on]
     {
@@ -84,39 +104,5 @@ void PlatformExtras::setPreventBlanking(bool on)
         window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
     });
   }
-}
-
-#else
-
-QString PlatformExtras::getHomeDir()
-{
-  return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-}
-
-QString PlatformExtras::getDataDir(const char* appId)
-{
-  return QStandardPaths::locate(QStandardPaths::GenericDataLocation, appId, QStandardPaths::LocateDirectory);
-}
-
-QStringList PlatformExtras::getStorageDirs()
-{
-  QStringList dirs;
-  // search for a mounted sdcard
-  for (const QStorageInfo& storage : QStorageInfo::mountedVolumes())
-  {
-    QString path = storage.rootPath();
-    if (storage.isValid() && storage.isReady() && path.startsWith(AUTO_MOUNT))
-    {
-      qInfo("Found storage: %s", path.toUtf8().constData());
-      dirs.push_back(path);
-    }
-  }
-  return dirs;
-}
-
-void PlatformExtras::setPreventBlanking(bool on)
-{
-  m_preventBlanking = on;
-}
-
 #endif
+}

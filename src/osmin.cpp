@@ -21,6 +21,8 @@
 //#define Q_OS_ANDROID
 
 #define DIR_MAPS          "Maps"
+#define DIR_RES           "resources"
+#define APP_TR_NAME       "osmin"
 #ifdef SAILFISHOS
 #define ORG_NAME          "harbour-osmin"
 #define APP_NAME          "harbour-osmin"
@@ -106,9 +108,19 @@ int main(int argc, char *argv[])
 
     // check for the resource directory
     QDir dataDir = QDir(PlatformExtras::getDataDir(APP_ID));
+    if (!dataDir.cd(DIR_RES))
+      return EXIT_FAILURE;
+    QDir homeDir = QDir(PlatformExtras::getHomeDir());
 #ifdef Q_OS_ANDROID
-    dataDir.mkpath("resources");
-    QDir resDir = QDir(dataDir.absoluteFilePath("resources"));
+    if (!homeDir.mkpath(DIR_RES))
+      return EXIT_FAILURE;
+#else
+    /* ~/osmin/resources */
+    if (!homeDir.mkpath(QString(APP_NAME).append("/").append(DIR_RES)))
+      return EXIT_FAILURE;
+    homeDir.cd(APP_NAME);
+#endif
+    QDir resDir = QDir(homeDir.absoluteFilePath(DIR_RES));
     QFile resVersion(resDir.absoluteFilePath("version"));
     if (resVersion.exists())
     {
@@ -123,7 +135,7 @@ int main(int argc, char *argv[])
       if (strlen(APP_VERSION) != _version.length() || ::strncmp(APP_VERSION, _version.constData(), _version.length()) != 0)
       {
         QFile::remove(resVersion.fileName());
-        qWarning("Assets will be upgraded to verison %s", APP_VERSION);
+        qWarning("Assets will be upgraded to version %s", APP_VERSION);
       }
     }
     if (!resVersion.exists())
@@ -137,7 +149,7 @@ int main(int argc, char *argv[])
       {
         if (folder.length() == 0 || resDir.exists(folder) || resDir.mkpath(folder))
         {
-          QDir assets(QDir::toNativeSeparators("assets:/resources/").append(folder));
+          QDir assets(dataDir.absoluteFilePath(folder));
           for (QFileInfo& asset : assets.entryInfoList())
           {
             if (asset.isFile())
@@ -165,23 +177,8 @@ int main(int argc, char *argv[])
       }
       resVersion.close();
     }
-#else
-    QDir resDir = QDir(dataDir.absoluteFilePath("resources"));
-    if (!resDir.exists())
-    {
-      qWarning("Resource directory not found: %s", resDir.path().toUtf8().constData());
-      return EXIT_FAILURE;
-    }
-#endif
     qInfo("Resource directory is %s", resDir.path().toUtf8().constData());
     g_favoritesFile = new QFile(resDir.absoluteFilePath(RES_FAVORITES_FILE), &app);
-    if (!resDir.exists("GPX"))
-      resDir.mkdir("GPX");
-    g_GPXListModel = new GPXListModel(&app);
-    g_GPXListModel->init(resDir.absoluteFilePath(RES_GPX_DIR));
-    g_Tracker = new Tracker(&app);
-    g_Tracker->init(resDir.absoluteFilePath(RES_GPX_DIR));
-
     g_hillshadeProvider = new QString("{}");
     if (resDir.exists(RES_HILLSHADE_SERVER_FILE))
     {
@@ -196,6 +193,13 @@ int main(int argc, char *argv[])
         g_hillshadeProvider->append(QString::fromUtf8(json));
       }
     }
+
+    if (!homeDir.exists("GPX"))
+      homeDir.mkdir("GPX");
+    g_GPXListModel = new GPXListModel(&app);
+    g_GPXListModel->init(homeDir.absoluteFilePath(RES_GPX_DIR));
+    g_Tracker = new Tracker(&app);
+    g_Tracker->init(homeDir.absoluteFilePath(RES_GPX_DIR));
 
     // initialize the map directories
     QStringList mapDirs;
@@ -325,7 +329,7 @@ int main(int argc, char *argv[])
     // bind SCALE_FACTOR
     engine.rootContext()->setContextProperty("ScreenScaleFactor", QVariant(app.primaryScreen()->devicePixelRatio()));
     // bind directories
-    engine.rootContext()->setContextProperty("ResourcesDirectory", resDir.absolutePath());
+    engine.rootContext()->setContextProperty("DataDirectory", homeDir.absolutePath());
     engine.rootContext()->setContextProperty("MapsDirectories", mapDirs);
     // bind hillshade provider
     engine.rootContext()->setContextProperty("HillshadeProvider", *g_hillshadeProvider);
@@ -365,6 +369,15 @@ int main(int argc, char *argv[])
     QObject::connect(view->engine(), &QQmlApplicationEngine::quit, &app, QCoreApplication::quit);
     // bind version string
     view->engine()->rootContext()->setContextProperty("VersionString", QString(APP_VERSION));
+    // bind arguments
+    view->engine()->rootContext()->setContextProperty("ApplicationArguments", app.arguments());
+    // bind SCALE_FACTOR
+    view->engine()->rootContext()->setContextProperty("ScreenScaleFactor", QVariant(app.primaryScreen()->devicePixelRatio()));
+    // bind directories
+    view->engine()->rootContext()->setContextProperty("DataDirectory", homeDir.absolutePath());
+    view->engine()->rootContext()->setContextProperty("MapsDirectories", mapDirs);
+    // bind hillshade provider
+    view->engine()->rootContext()->setContextProperty("HillshadeProvider", *g_hillshadeProvider);
     view->showFullScreen();
 #endif
 
@@ -381,7 +394,7 @@ void setupApp(QGuiApplication& app) {
 
     // set translators
     QLocale locale = QLocale::system();
-    prepareTranslator(app, QString(":/i18n"), QString(APP_NAME), locale);
+    prepareTranslator(app, QString(":/i18n"), QString(APP_TR_NAME), locale);
 #ifdef Q_OS_MAC
     QDir appDir(app.applicationDirPath());
     if (appDir.cdUp() && appDir.cd("Resources/translations"))
