@@ -15,17 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import QtQuick.Controls 2.2
-import QtQuick.Layouts 1.3
+import QtQuick 2.2
+import Sailfish.Silica 1.0
+import QtQuick.Layouts 1.1
 
 Rectangle {
     id: filter
     visible: true
-    height: visible ? units.gu(6) : 0
-    color: styleMap.view.backgroundColor
+    height: visible ? units.gu(8) : 0
+    color: "transparent"
 
-    property alias displayText: field.displayText
+    property alias displayText: field.text
+    property alias fieldFocus: field.focus
 
     function forceActiveFocus() {
         field.forceActiveFocus();
@@ -36,7 +37,7 @@ Rectangle {
     }
 
     function clear() {
-        field.clear();
+        field.text = "";
     }
 
     signal accepted(string text)
@@ -50,15 +51,16 @@ Rectangle {
         TextField {
             id: field
             Layout.fillWidth: true
-            font.pointSize: units.fs("large")
+            font.pixelSize: units.fx("large")
             inputMethodHints: Qt.ImhNoPredictiveText
             placeholderText: qsTr("Search")
-            EnterKey.type: Qt.EnterKeySearch
-            onAccepted: {
+            EnterKey.enabled: true
+            EnterKey.onClicked: {
                 filter.accepted(displayText.trim());
             }
         }
         Item {
+            anchors.verticalCenter: parent.verticalCenter
             width: units.gu(6)
             height: width
 
@@ -68,7 +70,7 @@ Rectangle {
                 anchors.centerIn: parent
                 source: "qrc:/images/edit-clear.svg"
                 onClicked: {
-                    field.clear();
+                    field.text = "";
                 }
             }
         }
@@ -79,7 +81,7 @@ Rectangle {
             field.enabled = true;
             field.forceActiveFocus();
         } else {
-            field.clear();
+            field.text = "";
             field.enabled = false;
         }
     }

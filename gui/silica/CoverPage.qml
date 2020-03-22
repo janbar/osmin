@@ -15,24 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
+import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../"
 
-Item {
-    id: loading
-    height: units.gu(12)
-    width: parent.width
-    visible: false
+CoverBackground {
 
-    anchors.centerIn: parent
-
-    BusyIndicator {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        running: loading.visible
-        height: parent.height
-        width: height
-        opacity: 0.9
-        z: 1
+    Image {
+        anchors.centerIn: parent
+        fillMode: Image.PreserveAspectCrop
+        source: "qrc:/images/osmin.png"
+        width: Math.min(parent.height, parent.width) / 2
+        height: width
+        sourceSize.height: height
+        sourceSize.width: width
+        opacity: 0.50
     }
+
 }

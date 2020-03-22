@@ -23,7 +23,7 @@ import "./components"
 
 MapPage {
     id: mapDownload
-    pageTitle: "Map Downloads"
+    pageTitle: qsTr("Map Downloads")
     pageFlickable: availableList
 
     MapDownloadsModel{
@@ -150,17 +150,6 @@ MapPage {
                     mapDownloadsModel.modelReset.connect(onModelReset);
                     onModelReset();
                 }
-
-                /*menu: ContextMenu {
-                    MenuItem {
-                        text: qsTr("Cancel")
-                        onClicked: {
-                            Remorse.itemAction(donwloadMapItem,
-                                               qsTr("Canceling"),
-                                               function() { mapDownloadsModel.cancel(model.index) });
-                        }
-                    }
-                }*/
             }
 
             Item {
@@ -278,22 +267,6 @@ MapPage {
                         availableMapsModel.modelReset.connect(checkUpdate);
                         availableMapsModel.loadingChanged.connect(checkUpdate);
                     }
-
-                    /*menu: ContextMenu {
-                        MenuItem {
-                            text: qsTr("Update")
-                            visible: updateAvailable
-                            onClicked: updateMap()
-                        }
-                        MenuItem {
-                            text: qsTr("Delete")
-                            onClicked: {
-                                Remorse.itemAction(installedMapItem,
-                                                   qsTr("Deleting"),
-                                                   function() { installedMapsModel.deleteMap(model.index) });
-                            }
-                        }
-                    }*/
                 }
 
                 function onModelChange() {
@@ -337,6 +310,13 @@ MapPage {
                         onClicked: {
                             availableList.tree = availableList.tree.slice(1, availableList.tree.length);
                         }
+                    }
+
+                    BusyIndicator {
+                        id: loadingIndicator
+                        running: availableMapsModel.loading
+                        size: BusyIndicatorSize.Small
+                        anchors.verticalCenter: parent.verticalCenter
                     }
                 }
             }

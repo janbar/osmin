@@ -90,7 +90,7 @@ Item {
         Column {
             id: contentsColumn
             opacity: navigationInfo.state === "running" ? 1.0 : 0.0
-            spacing: contentSpacing
+            spacing: units.gu(2)
             width: parent.width
             Row {
                 id: rowStep
@@ -183,7 +183,7 @@ Item {
                 id: maxspeed
                 anchors.verticalCenter: parent.verticalCenter
                 text: navigator.maximumSpeed > 0 ? Converter.readableSpeed(navigator.maximumSpeed) : ""
-                color: styleMap.view.highlightedColor
+                color: styleMap.popover.highlightedColor
                 font.pixelSize: units.fx("medium")
             }
             Label {

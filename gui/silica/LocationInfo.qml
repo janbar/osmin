@@ -22,7 +22,7 @@ import "./components"
 
 PopOver {
     id: locationInfo
-    title: "Informations"
+    title: qsTr("Informations")
 
     property real maximumHeight: parent.height
 
@@ -38,6 +38,9 @@ PopOver {
         sourceLon = position._lon;
         placeLat = lat;
         placeLon = lon;
+        placeLabel = Converter.readableCoordinatesGeocaching(lat, lon);
+        placeType = "";
+        isFavorite = FavoritesModel.isFavorite(lat, lon);
         locationInfoModel.setLocation(lat, lon);
     }
 
@@ -46,9 +49,24 @@ PopOver {
     property double sourceLon: 0.0
     property double placeLat: 0.0
     property double placeLon: 0.0
+    property string placeLabel: ""
+    property string placeType: ""
+    property int isFavorite: 0
 
     LocationInfoModel{
         id: locationInfoModel
+        onReadyChange: {
+            // expose the place info
+            if (ready && rowCount() > 0) {
+                var mi = index(0, 0);
+                placeType = data(mi, LocationInfoModel.TypeRole);
+                var str = data(mi, LocationInfoModel.PoiRole);
+                if (str.length === 0)
+                    str = data(mi, LocationInfoModel.AddressRole);
+                if (str.length > 0)
+                    placeLabel = str;
+            }
+        }
     }
 
     contents: Column {

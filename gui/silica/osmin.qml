@@ -20,18 +20,19 @@ import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.0
 import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
-import Osmin 1.0 as MapEngine
+import Osmin 1.0 as Osmin
+import "../toolbox.js" as ToolBox
 import "components"
 
 ApplicationWindow {
     id: mainView
 
     initialPage: Component {
-        MapView {
+        Banner {
         }
     }
 
-    //cover: Qt.resolvedUrl("cover/CoverPage.qml")
+    cover: "qrc:/silica/CoverPage.qml"
     allowedOrientations: defaultAllowedOrientations
 
     ConfigurationGroup {
@@ -39,10 +40,22 @@ ApplicationWindow {
         path: "/io/github/janbar/osmin"
         synchronous: true
 
+        // General settings
+        property string style: "Material"
+        property int theme: 0
         property real scaleFactor: 1.0
         property real fontScaleFactor: 1.0
         property bool firstRun: true
-        property int tabIndex: -1
+
+        // Navigation settings
+        property bool hillShadesEnabled: false
+        property bool renderingTypeTiled: false
+        property string lastVehicle: "car"
+        property int maximumRouteStep: 255
+        property int courseId: 0
+
+        // Tracker settings
+        property string trackerRecording: ""
     }
 
     StyleLight {
@@ -51,12 +64,11 @@ ApplicationWindow {
 
     Units {
         id: units
-        scaleFactor: 1.0
-        fontScaleFactor: 1.0
+        scaleFactor: settings.scaleFactor
+        fontScaleFactor: settings.fontScaleFactor
     }
 
     // Variables
-    property string appName: "Mappy"    // My name
     property int debugLevel: 2          // My debug level
     property bool startup: true         // is running the cold startup ?
 
@@ -101,34 +113,122 @@ ApplicationWindow {
     //// Application main view
     ////
 
+    PopInfo {
+        id: mainInfo
+        anchors.fill: parent
+        boxRadius: 0
+        boxMargins: 0
+        font.pixelSize: units.fx("medium");
+        backgroundColor: styleMap.view.backgroundColor
+        foregroundColor: styleMap.view.foregroundColor
+    }
+
     ListModel {
         id: tabs
-        ListElement { title: qsTr("Map View"); source: "qrc:/silica/MapView.qml"; visible: true }
         ListElement { title: qsTr("Download Maps"); source: "qrc:/silica/MapDownloads.qml"; visible: true }
+        ListElement { title: qsTr("Search Place"); source: "qrc:/silica/SearchPlace.qml"; visible: true }
+        ListElement { title: qsTr("Favorite Places"); source: "qrc:/silica/Favorites.qml"; visible: true }
+    }
 
-        function initialIndex() {
-            return (settings.tabIndex === -1 ? 0
-            : settings.tabIndex > tabs.count - 1 ? tabs.count - 1
-            : settings.tabIndex);
+    property var mapPage: null
+    property var hillshadeProvider: null
+    property int launcherMode: 0
+
+    Component.onCompleted: {
+        // setup hillshade provider
+        try {
+            var hsprovider = JSON.parse(HillshadeProvider);
+            if (hsprovider.id)
+                hillshadeProvider = hsprovider;
+        } catch(e) {
+            console.log("HillshadeProvider: " + e.name);
+        }
+        // setup Converter
+        Osmin.Converter.meters = qsTr("meters");
+        Osmin.Converter.km = qsTr("km");
+        Osmin.Converter.feet = qsTr("feet");
+        Osmin.Converter.miles = qsTr("miles");
+        Osmin.Converter.north = qsTr("north");
+        Osmin.Converter.south = qsTr("south");
+        Osmin.Converter.west = qsTr("west");
+        Osmin.Converter.east = qsTr("east");
+        Osmin.Converter.northwest = qsTr("northwest");
+        Osmin.Converter.northeast = qsTr("northeast");
+        Osmin.Converter.southwest = qsTr("southwest");
+        Osmin.Converter.southeast = qsTr("southeast");
+        Osmin.Converter.system = "SI";
+        positionSource.active = true;
+        launcher.start();
+    }
+
+    Timer {
+        id: launcher
+        interval: 500
+        onTriggered: {
+            if (launcherMode === 0)
+                restart();
+            else {
+                pageStack.clear();
+                mapPage = pageStack.push("qrc:/silica/MapView.qml");
+                if (launcherMode === 1) {
+                    var welcome = pageStack.push("qrc:/silica/Welcome.qml");
+                    ToolBox.connectOnce(welcome.popped, function(next){
+                        if (next !== "") {
+                            popAndPush.popped = welcome;
+                            popAndPush.next = next;
+                            popAndPush.start();
+                        }
+                    });
+                }
+                stop();
+            }
         }
     }
 
-    Component.onCompleted: {
-        // setup Converter
-        MapEngine.Converter.meters = qsTr("meters");
-        MapEngine.Converter.km = qsTr("km");
-        MapEngine.Converter.feet = qsTr("feet");
-        MapEngine.Converter.miles = qsTr("miles");
-        MapEngine.Converter.north = qsTr("north");
-        MapEngine.Converter.south = qsTr("south");
-        MapEngine.Converter.west = qsTr("west");
-        MapEngine.Converter.east = qsTr("east");
-        MapEngine.Converter.northwest = qsTr("northwest");
-        MapEngine.Converter.northeast = qsTr("northeast");
-        MapEngine.Converter.southwest = qsTr("southwest");
-        MapEngine.Converter.southeast = qsTr("southeast");
-        MapEngine.Converter.system = "SI";
-        positionSource.active = true;
+    Timer {
+        id: popAndPush
+        interval: 50
+        property Page popped: null
+        property string next: ""
+        onTriggered: {
+            if (popped !== null && popped.status !== PageStatus.Inactive)
+                restart();
+            else {
+                pageStack.push(next);
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////
+    //// Global requests
+    ////
+
+    // Add a new favorite
+    function createFavorite(lat, lon, label, type) {
+        var index = Osmin.FavoritesModel.append();
+        var id = Osmin.FavoritesModel.data(index, Osmin.FavoritesModel.IdRole)
+        Osmin.FavoritesModel.setData(index, lat, Osmin.FavoritesModel.LatRole);
+        Osmin.FavoritesModel.setData(index, lon, Osmin.FavoritesModel.LonRole);
+        Osmin.FavoritesModel.setData(index, 0.0, Osmin.FavoritesModel.AltRole);
+        Osmin.FavoritesModel.setData(index, new Date(), Osmin.FavoritesModel.TimestampRole);
+        Osmin.FavoritesModel.setData(index, label, Osmin.FavoritesModel.LabelRole);
+        if (type) // optional
+             Osmin.FavoritesModel.setData(index, type, Osmin.FavoritesModel.TypeRole);
+        if (Osmin.FavoritesModel.storeData())
+            return id;
+        mainInfo.open(qsTr("Saving change failed"));
+        Osmin.FavoritesModel.remove(id);
+        return 0;
+    }
+
+    // Remove a favorite
+    function removeFavorite(id) {
+        Osmin.FavoritesModel.remove(id);
+        if (Osmin.FavoritesModel.storeData())
+            return true;
+        mainInfo.open(qsTr("Saving change failed"));
+        return false;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -151,9 +251,11 @@ ApplicationWindow {
 
     property bool jobRunning: false
 
-    ActivitySpinner {
+    BusyIndicator {
         id: spinner
-        visible: jobRunning
+        running: jobRunning
+        size: BusyIndicatorSize.Large
+        anchors.centerIn: parent
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -161,33 +263,39 @@ ApplicationWindow {
     //// Map
     ////
 
-    MapEngine.Settings {
-        id: mapEngineSettings
+    Osmin.Settings {
+        id: mapSettings
         //double   mapDPI
         //bool     onlineTiles
         //QString  onlineTileProviderId
         //bool     offlineMap
-        //bool     renderSea
-        //QString  styleSheetDirectory
         //QString  styleSheetFile
+        //bool     renderSea
         //QString  fontName
         //double   fontSize
         //bool     showAltLanguage
         //QString  units                    metrics|imperial
-        onlineTiles: false
         offlineMap: true
-    }
-
-    QtObject {
-        id: mapUserSettings
-        property bool rotateEnabled: false
-        property bool hillShadesEnabled: false
-        property bool renderingTypeTiled: false
-        property string lastVehicle: "car"
-        property int maximumRouteStep: 255
+        onlineTiles: false
     }
 
     MapPosition {
       id: positionSource
+    }
+
+    CompassSensor {
+        id: compass
+        active: false
+        signal polled(real azimuth, real rotation)
+        onAzimuthChanged: {
+            if (!poll.running) poll.start();
+        }
+        Timer {
+            id: poll
+            interval: 500
+            onTriggered: {
+                compass.polled(compass.azimuth, (360 - compass.azimuth) * Math.PI / 180.0);
+            }
+        }
     }
 }

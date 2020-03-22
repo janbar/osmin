@@ -79,7 +79,8 @@ MapIcon {
         type += "-lhd"
       }
       if (typeof iconMapping[type] === 'undefined') {
-          console.log("Can't find icon for type " + type);
+          if (type.length > 0)
+              console.log("Can't find icon for type \"" + type + "\"");
           return iconUrl(unknownTypeIcon);
       }
       return iconUrl(iconMapping[type]);

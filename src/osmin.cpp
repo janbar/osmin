@@ -365,7 +365,6 @@ int main(int argc, char *argv[])
 #ifdef QT_STATICPLUGIN
     importStaticPlugins(view->engine());
 #endif
-    view->setSource(QUrl("qrc:/silica/osmin.qml"));
     QObject::connect(view->engine(), &QQmlApplicationEngine::quit, &app, QCoreApplication::quit);
     // bind version string
     view->engine()->rootContext()->setContextProperty("VersionString", QString(APP_VERSION));
@@ -378,6 +377,7 @@ int main(int argc, char *argv[])
     view->engine()->rootContext()->setContextProperty("MapsDirectories", mapDirs);
     // bind hillshade provider
     view->engine()->rootContext()->setContextProperty("HillshadeProvider", *g_hillshadeProvider);
+    view->setSource(QUrl("qrc:/silica/osmin.qml"));
     view->showFullScreen();
 #endif
 

@@ -20,6 +20,7 @@ import Sailfish.Silica 1.0
 import QtQml.Models 2.3
 import Osmin 1.0
 import "./components"
+import "../toolbox.js" as ToolBox
 
 PopOver {
     id: routingDialog
@@ -32,7 +33,7 @@ PopOver {
     states: [
         State {
             name: "dialog"
-            PropertyChanges { target: routingDialog; title: "Navigation"; height: maximumHeight; }
+            PropertyChanges { target: routingDialog; title: qsTr("Navigation"); height: maximumHeight; }
             PropertyChanges { target: dialog; visible: true; }
             PropertyChanges { target: way; visible: false; }
         },
@@ -80,14 +81,15 @@ PopOver {
     function locationDescription(index) {
         var str = "";
         if (locationInfoModel.rowCount() > index) {
-            var d = locationInfoModel.data(locationInfoModel.index(index, 0), 260); // distance
+            var mi = locationInfoModel.index(index, 0);
+            var d = locationInfoModel.data(mi, LocationInfoModel.DistanceRole);
             if (d < 100.0) {
-                str = locationInfoModel.data(locationInfoModel.index(index, 0), 258); // address
+                str = locationInfoModel.data(mi, LocationInfoModel.AddressRole);
                 if (str === "")
-                    str = locationInfoModel.data(locationInfoModel.index(index, 0), 262); // poi
+                    str = locationInfoModel.data(mi, LocationInfoModel.PoiRole);
                 if (str !== "")
                     str += " - ";
-                str += locationInfoModel.data(locationInfoModel.index(index, 0), 257); // region
+                str += locationInfoModel.data(mi, LocationInfoModel.RegionRole);
             }
         }
         return str;
@@ -145,9 +147,9 @@ PopOver {
                 menu: ContextMenu {
                     MenuItem { text: placeFrom.address }
                     MenuItem { text: qsTr("My position") }
+                    MenuItem { text: qsTr("Search Place") }
                     MenuItem { text: qsTr("Select on Map") }
                     MenuItem { text: qsTr("Favorite") }
-                    MenuItem { text: qsTr("Marker") }
                 }
                 Component.onCompleted: {
                     currentIndex = 0;
@@ -157,11 +159,22 @@ PopOver {
                     }
                 }
                 onCurrentIndexChanged: {
+                    var page = null;
                     if (currentIndex === 1 && position._posValid) {
                         selectPosition(position._lat, position._lon);
                     } else if (currentIndex === 2) {
-                        routingDialog.placePicked.connect(picked);
+                        page = pageStack.push("qrc:/silica/SearchPlace.qml", {
+                                           "searchCenterLat": position._lat,
+                                           "searchCenterLon": position._lon,
+                                           "acceptLabel": qsTr("Accept")
+                                       });
+                        ToolBox.connectOnce(page.selectLocation, selectLocation);
+                    } else if (currentIndex === 3) {
+                        ToolBox.connectOnce(routingDialog.placePicked, picked);
                         routingDialog.state = "pickPlace";
+                    } else if (currentIndex === 4) {
+                        page = pageStack.push("qrc:/silica/Favorites.qml", { "state": "selection" });
+                        ToolBox.connectOnce(page.selectPOI, selectPOI);
                     }
                     if (currentIndex !== 0)
                         currentIndex = 0;
@@ -170,26 +183,36 @@ PopOver {
                         placeFrom.valid = true;
                         placeFrom.lat = lat;
                         placeFrom.lon = lon;
-                        locationInfoModel.readyChange.connect(infoReadyChange);
+                        ToolBox.connectWhileFalse(locationInfoModel.readyChange, infoReadyChange);
                         locationInfoModel.setLocation(placeFrom.lat, placeFrom.lon);
                 }
                 function picked(valid, lat, lon) {
                     routingDialog.state = "dialog";
-                    routingDialog.placePicked.disconnect(picked);
                     if (valid) {
                         placeFrom.valid = true;
                         placeFrom.lat = lat;
                         placeFrom.lon = lon;
-                        locationInfoModel.readyChange.connect(infoReadyChange);
+                        ToolBox.connectWhileFalse(locationInfoModel.readyChange, infoReadyChange);
                         locationInfoModel.setLocation(lat, lon);
                     }
                 }
                 function infoReadyChange(ready) {
                     if (ready) {
-                        locationInfoModel.readyChange.disconnect(infoReadyChange);
                         var str = locationDescription(0);
                         placeFrom.address = str.length > 0 ? str : Converter.readableCoordinatesGeocaching(placeFrom.lat, placeFrom.lon);
                     }
+                }
+                function selectLocation(location, lat, lon, label) {
+                    if (lat !== NaN && lon !== NaN && label !== "") {
+                        placeFrom.valid = true;
+                        placeFrom.lat = lat;
+                        placeFrom.lon = lon;
+                        placeFrom.address = label;
+                    }
+                }
+                function selectPOI(poi) {
+                    if (poi)
+                        selectLocation(null, poi.lat, poi.lon, poi.label);
                 }
             }
             Label {
@@ -212,36 +235,57 @@ PopOver {
                 rightMargin: 0
                 menu: ContextMenu {
                     MenuItem { text: placeTo.address }
+                    MenuItem { text: qsTr("Search Place") }
                     MenuItem { text: qsTr("Select on Map") }
                     MenuItem { text: qsTr("Favorite") }
-                    MenuItem { text: qsTr("Marker") }
                 }
                 Component.onCompleted: currentIndex = 0
                 onCurrentIndexChanged: {
+                    var page = null;
                     if (currentIndex === 1) {
-                        routingDialog.placePicked.connect(picked);
+                        page = pageStack.push("qrc:/silica/SearchPlace.qml", {
+                                       "searchCenterLat": position._lat,
+                                       "searchCenterLon": position._lon,
+                                       "acceptLabel": qsTr("Accept")
+                                   });
+                        ToolBox.connectOnce(page.selectLocation, selectLocation);
+                    } else if (currentIndex === 2) {
+                        ToolBox.connectOnce(routingDialog.placePicked, picked);
                         routingDialog.state = "pickPlace";
+                    } else if (currentIndex === 3) {
+                        page = pageStack.push("qrc:/silica/Favorites.qml", { "state": "selection" });
+                        ToolBox.connectOnce(page.selectPOI, selectPOI);
                     }
                     if (currentIndex !== 0)
                         currentIndex = 0;
                 }
                 function picked(valid, lat, lon) {
                     routingDialog.state = "dialog";
-                    routingDialog.placePicked.disconnect(picked);
                     if (valid) {
                         placeTo.valid = true;
                         placeTo.lat = lat;
                         placeTo.lon = lon;
-                        locationInfoModel.readyChange.connect(infoReadyChange);
+                        ToolBox.connectWhileFalse(locationInfoModel.readyChange, infoReadyChange);
                         locationInfoModel.setLocation(lat, lon);
                     }
                 }
                 function infoReadyChange(ready) {
                     if (ready) {
-                        locationInfoModel.readyChange.disconnect(infoReadyChange);
                         var str = locationDescription(0);
                         placeTo.address = str.length > 0 ? str : Converter.readableCoordinatesGeocaching(placeTo.lat, placeTo.lon);
                     }
+                }
+                function selectLocation(location, lat, lon, label) {
+                    if (lat !== NaN && lon !== NaN && label !== "") {
+                        placeTo.valid = true;
+                        placeTo.lat = lat;
+                        placeTo.lon = lon;
+                        placeTo.address = label;
+                    }
+                }
+                function selectPOI(poi) {
+                    if (poi)
+                        selectLocation(null, poi.lat, poi.lon, poi.label);
                 }
             }
             Label {
@@ -267,9 +311,15 @@ PopOver {
                 height: units.gu(5)
                 width: parent.width
                 color: styleMap.popover.foregroundColor
-                onClicked: computeRoute()
-                label.text: qsTr("Compute route")
-                enabled: route.ready && placeFrom.valid && placeTo.valid
+                onClicked: {
+                    if (computeRunning) {
+                        breakCompute();
+                    } else {
+                        computeRoute();
+                    }
+                }
+                label.text: computeRunning ? qsTr("Cancel") : qsTr("Compute route")
+                enabled: (!computeRunning && placeFrom.valid && placeTo.valid) || computeRunning
                 opacity: enabled ? 1.0 : 0.5
             }
             Label {
@@ -349,7 +399,7 @@ PopOver {
                         font.pixelSize: units.fx("small")
                     }
                     Label {
-                        text: ", duration:"
+                        text: ", " + qsTr("Duration:")
                         color: styleMap.popover.foregroundColor
                         font.pixelSize: units.fx("small")
                     }
@@ -391,25 +441,40 @@ PopOver {
 
     property int routeProgress: 0
     property string routeMessage: ""
+    property bool computeRunning: false
 
     RoutingListModel {
         id: route
         onRouteFailed: {
             routeMessage = qsTranslate("message", reason);
+            computeRunning = false;
         }
         onRoutingProgress: {
             routeProgress = percent;
         }
         onComputingChanged: {
             routeProgress = 0;
-            var count = route.count;
-            if (count > mapUserSettings.maximumRouteStep) {
-                popInfo.open("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.");
+            if (!computeRunning) {
+                console.log("Computing aborted");
                 route.clear();
-            } else if (count > 0) {
-                routingDialog.state = "navigate";
+            } else {
+                var count = route.count;
+                if (count > 0) {
+                    if (count > settings.maximumRouteStep) {
+                        popInfo.open("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.");
+                        route.clear();
+                    } else {
+                        routingDialog.state = "navigate";
+                    }
+                    computeRunning = false;
+                }
             }
         }
+    }
+
+    function breakCompute() {
+        route.cancel();
+        computeRunning = false;
     }
 
     function computeRoute() {
@@ -418,8 +483,9 @@ PopOver {
         placeFrom.location = route.locationEntryFromPosition(placeFrom.lat, placeFrom.lon);
         placeTo.location = route.locationEntryFromPosition(placeTo.lat, placeTo.lon);
         if (placeFrom.location && placeTo.location) {
+            computeRunning = true;
             route.setStartAndTarget(placeFrom.location, placeTo.location, vehicle);
-            mapUserSettings.lastVehicle = vehicle;
+            settings.lastVehicle = vehicle;
         } else {
             routeMessage = qsTr("Invalid entry");
             route.clear();
@@ -427,8 +493,8 @@ PopOver {
     }
 
     Component.onCompleted: {
-        if (mapUserSettings.lastVehicle !== "")
-            vehicle = mapUserSettings.lastVehicle;
+        if (settings.lastVehicle !== "")
+            vehicle = settings.lastVehicle;
     }
 
     onClose: {

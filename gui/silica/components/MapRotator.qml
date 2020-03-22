@@ -25,9 +25,10 @@ Item {
 
     readonly property alias isRunning: worker.running
 
-    function rotateTo(angle) {
+    function rotateTo(angle, lockToPosition) {
         worker.stop();
         worker.angle = Math.round(angle * 1000.0);
+        worker.lockToPosition = (lockToPosition ? true : false);
         worker.start();
         begin();
     }
@@ -43,6 +44,7 @@ Item {
         repeat: true
         triggeredOnStart: true
         property int angle: 0 // milli rad
+        property bool lockToPosition: false
         onTriggered: {
             if (Math.round(map.view.angle * 1000.0) != angle) {
                 map.rotateTo(0.001 * angle);
@@ -50,6 +52,10 @@ Item {
                 stop();
                 finished();
             }
+        }
+        onRunningChanged: {
+            if (!running && lockToPosition)
+                map.lockToPosition = true;
         }
     }
 }

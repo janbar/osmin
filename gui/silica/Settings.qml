@@ -1,0 +1,115 @@
+/*
+ * Copyright (C) 2020
+ *      Jean-Luc Barriere <jlbarriere68@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import QtQuick 2.2
+import Sailfish.Silica 1.0
+import QtQml.Models 2.2
+import QtQuick.Layouts 1.1
+import Osmin 1.0
+import "./components"
+
+MapPage {
+    id: settingsPage
+    pageTitle: qsTr("Settings")
+    pageFlickable: body
+
+    onPopped: {
+//        var needRestart = (styleBox.currentIndex !== styleBox.styleIndex ||
+//                scaleBox.realValue !== scaleBox.acceptedValue);
+//        settings.style = styleBox.displayText;
+//        if (needRestart) {
+//            mainView.jobRunning = true;
+//            Qt.exit(16);
+//        }
+    }
+
+    property string mapsDirectory: ""
+    Component.onCompleted: {
+        if (MapsDirectories.length > 1)
+            mapsDirectory = MapsDirectories[1]; // external storage
+        else
+            mapsDirectory = MapsDirectories[0]; // home maps store
+    }
+
+    SilicaFlickable {
+        id: body
+        anchors.fill: parent
+        contentHeight: settingsColumn.implicitHeight
+
+        Column {
+            id: settingsColumn
+            width: parent.width - units.gu(4)
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: units.gu(1)
+
+            Label {
+                text: qsTr("Data directory")
+                color: styleMap.popover.highlightedColor
+                font.pixelSize: units.fx("medium")
+            }
+            Label {
+                text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(DataDirectory)))
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("small")
+            }
+            Label {
+                text: DataDirectory
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("small")
+                maximumLineCount: 3
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+            }
+            Label {
+                text: qsTr("Maps directory")
+                color: styleMap.popover.highlightedColor
+                font.pixelSize: units.fx("medium")
+            }
+            Label {
+                text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(mapsDirectory)))
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("small")
+            }
+            Label {
+                text: mapsDirectory
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("small")
+                maximumLineCount: 3
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+            }
+            Label {
+                text: qsTr("Hillshade provider")
+                color: styleMap.popover.highlightedColor
+                font.pixelSize: units.fx("medium")
+            }
+            Label {
+                text: (hillshadeProvider != null ? hillshadeProvider.name : qsTr("Not configured"))
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("small")
+            }
+            Label {
+                text: (hillshadeProvider != null ? hillshadeProvider.copyright : "")
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("small")
+                maximumLineCount: 3
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+            }
+        }
+    }
+}

@@ -22,7 +22,9 @@ Item {
     property string message: ""
     property color backgroundColor: styleMap.tooltip.backgroundColor
     property color foregroundColor: styleMap.tooltip.foregroundColor
-
+    property alias font: label.font
+    property real boxRadius: units.gu(1)
+    property real boxMargins: units.gu(0.5)
     property real edgeMargins: units.gu(0.5)
 
     height: area.visible ? label.paintedHeight + 3 * edgeMargins : 0
@@ -33,16 +35,16 @@ Item {
         anchors.fill: parent
         visible: false
         enabled: visible
-        anchors.topMargin: edgeMargins
-        anchors.leftMargin: edgeMargins
-        anchors.rightMargin: edgeMargins
+        anchors.topMargin: boxMargins
+        anchors.leftMargin: boxMargins
+        anchors.rightMargin: boxMargins
 
         // background
         Rectangle {
             id: popover
             anchors.fill: parent
             color: backgroundColor
-            radius: units.gu(1)
+            radius: boxRadius
         }
 
         // message

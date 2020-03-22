@@ -17,9 +17,73 @@
 
 import QtQuick 2.2
 import Sailfish.Silica 1.0
-import "components"
+import "./components"
 
-Page {
+MapPage {
     id: welcomePage
     objectName: "welcomePage"
+    pageTitle: qsTr("Welcome")
+
+    signal popped(var next)
+
+    // Overlay to show when no map is installed
+    Rectangle {
+        id: downloadLauncher
+        anchors {
+            fill: parent
+        }
+        color: styleMap.view.backgroundColor
+
+        Column {
+            anchors {
+                centerIn: parent
+            }
+            spacing: units.gu(4)
+            width: parent.width > units.gu(44) ? parent.width - units.gu(8) : units.gu(36)
+
+            Image {
+                anchors.horizontalCenter: parent.horizontalCenter
+                antialiasing: true
+                fillMode: Image.PreserveAspectFit
+                height: units.gu(10)
+                smooth: true
+                source: "qrc:/images/osmin.png"
+            }
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: styleMap.view.foregroundColor
+                font.pixelSize: units.fx("medium")
+                horizontalAlignment: Text.AlignHCenter
+                text: "OSMin " + VersionString
+            }
+
+            Label {
+                color: styleMap.view.foregroundColor
+                elide: Text.ElideRight
+                font.pixelSize: units.fx("large")
+                horizontalAlignment: Text.AlignHCenter
+                maximumLineCount: 6
+                text: qsTr("First of all to use OSMin, you need to download the map of your region. " +
+                           "Online maps are not activated with this software, in order to better assist " +
+                           "you in navigating outside the areas covered by a network.")
+                width: parent.width
+                wrapMode: Text.WordWrap
+            }
+
+            MapIcon {
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: "qrc:/images/download.svg"
+                color: styleMap.view.foregroundColor
+                height: units.gu(6)
+                label.text: qsTr("Download Maps")
+                label.color: styleMap.view.foregroundColor
+                label.font.pixelSize: units.fx("medium")
+                onClicked: {
+                    popped("qrc:/silica/MapDownloads.qml");
+                    pageStack.pop();
+                }
+            }
+        }
+    }
 }

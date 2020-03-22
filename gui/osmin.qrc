@@ -35,7 +35,6 @@
         <file>silica/MapDownloads.qml</file>
         <file>silica/MapView.qml</file>
         <file>silica/Welcome.qml</file>
-        <file>silica/components/ActivitySpinner.qml</file>
         <file>silica/components/MapIcon.qml</file>
         <file>silica/components/MapListView.qml</file>
         <file>silica/components/MapPage.qml</file>
@@ -286,5 +285,16 @@
         <file>controls2/Banner.qml</file>
         <file>i18n/osmin_en.qm</file>
         <file>i18n/osmin_fr.qm</file>
+        <file>silica/Banner.qml</file>
+        <file>silica/components/CompassSensor.qml</file>
+        <file>silica/components/SearchField.qml</file>
+        <file>silica/Tracking.qml</file>
+        <file>silica/components/DialogBase.qml</file>
+        <file>silica/DialogAbout.qml</file>
+        <file>silica/Favorites.qml</file>
+        <file>silica/Settings.qml</file>
+        <file>silica/SearchPlace.qml</file>
+        <file>silica/TrackCollection.qml</file>
+        <file>silica/CoverPage.qml</file>
     </qresource>
 </RCC>

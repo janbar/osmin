@@ -35,7 +35,8 @@ Page {
 
     default property alias _content: _contentItem.data
 
-    signal goUpClicked // action for a non-root page
+    signal popped           // action for root page
+    signal goUpClicked      // action for a non-root page
     signal searchClicked
 
     SilicaFlickable {

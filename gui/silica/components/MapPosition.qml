@@ -28,7 +28,7 @@ PositionSource {
     property bool _accValid: false
     property bool _altValid: false
 
-    signal dataUpdated(bool valid, double lat, double lon, bool accValid, real acc)
+    signal dataUpdated(bool valid, double lat, double lon, bool accValid, real acc, double alt)
 
     onPositionChanged: {
         _lat = position.coordinate.latitude;
@@ -38,9 +38,10 @@ PositionSource {
         _posValid = position.latitudeValid && position.longitudeValid;
         _accValid = position.horizontalAccuracyValid;
         _altValid = position.altitudeValid;
-        dataUpdated(_posValid, _lat, _lon, _accValid, _acc);
+        dataUpdated(_posValid, _lat, _lon, _accValid, _acc, _alt);
     }
 
     active: true
     updateInterval: 1000
+    preferredPositioningMethods: PositionSource.SatellitePositioningMethods
 }

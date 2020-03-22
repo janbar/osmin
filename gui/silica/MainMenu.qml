@@ -22,37 +22,9 @@ import "./components"
 PopOver {
     id: mainMenu
 
-    title: "Main Menu"
+    title: qsTr("Main Menu")
     contents: Column {
         spacing: units.gu(1)
-
-        Column {
-            width: parent.width
-            MapIcon {
-                source: "qrc:/images/trip/pin.svg"
-                color: foregroundColor
-                height: units.gu(6)
-                label.text: qsTr("Map Markers")
-                label.color: foregroundColor
-                label.font.pixelSize: units.fx("medium")
-                label.elide: Text.ElideRight
-                label.width: parent.width - units.gu(7)
-                onClicked: {
-                    mainMenu.close();
-                }
-            }
-            Label {
-                text: "Create map markers. Long tap 'Places', then tap the marker flag button."
-                width: parent.width
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignJustify
-                maximumLineCount: 4
-                wrapMode: Text.Wrap
-                color: foregroundColor
-                font.pixelSize: units.fx("x-small")
-                font.weight: Font.Normal
-            }
-        }
 
         Column {
             width: parent.width
@@ -67,10 +39,11 @@ PopOver {
                 label.width: parent.width - units.gu(7)
                 onClicked: {
                     mainMenu.close();
+                    var page = pageStack.push("qrc:/silica/Favorites.qml");
                 }
             }
             Label {
-                text: "Import Favorites, or add via marking points on the map."
+                text: qsTr("Manage Favorite Places.")
                 width: parent.width
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignJustify
@@ -94,12 +67,70 @@ PopOver {
                 label.elide: Text.ElideRight
                 label.width: parent.width - units.gu(7)
                 onClicked: {
-                   mainMenu.close();
-                   popRouting.show();
+                    mainMenu.close();
+                    popRouting.show();
                 }
             }
             Label {
-                text: "Navigate to a destination."
+                text: qsTr("Navigate to a destination.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pixelSize: units.fx("x-small")
+                font.weight: Font.Normal
+            }
+        }
+
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/trip/track.svg"
+                color: foregroundColor
+                height: units.gu(6)
+                label.text: qsTr("Tracks")
+                label.color: foregroundColor
+                label.font.pixelSize: units.fx("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    mainMenu.close();
+                    pageStack.push("qrc:/silica/TrackCollection.qml", { "mapView": mapView });
+                }
+            }
+            Label {
+                text: qsTr("Manage your tracks.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pixelSize: units.fx("x-small")
+                font.weight: Font.Normal
+            }
+        }
+
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/trip/navigation.svg"
+                color: foregroundColor
+                height: units.gu(6)
+                label.text: qsTr("Tracking")
+                label.color: foregroundColor
+                label.font.pixelSize: units.fx("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    mainMenu.close();
+                    popTracking.show();
+                }
+            }
+            Label {
+                text: qsTr("Follow your track.")
                 width: parent.width
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignJustify
@@ -124,7 +155,7 @@ PopOver {
                 label.width: parent.width - units.gu(7)
                 onClicked: {
                     mainMenu.close();
-                    popConfigureMap.visible = true;
+                    popConfigureMap.show();
                 }
             }
         }
@@ -142,44 +173,27 @@ PopOver {
                 label.width: parent.width - units.gu(7)
                 onClicked: {
                     mainMenu.close();
-                    pageStack.push(tabs.get(1).source);
+                    var page = pageStack.push("qrc:/silica/MapDownloads.qml");
                 }
             }
         }
 
-        Column {
-            width: parent.width
-            MapIcon {
-                source: "qrc:/images/trip/measuring.svg"
-                color: foregroundColor
-                height: units.gu(6)
-                label.text: qsTr("Measure distance")
-                label.color: foregroundColor
-                label.font.pixelSize: units.fx("medium")
-                label.elide: Text.ElideRight
-                label.width: parent.width - units.gu(7)
-                onClicked: {
-                    mainMenu.close();
-                }
-            }
-        }
-
-        Column {
-            width: parent.width
-            MapIcon {
-                source: "qrc:/images/screen-settings.svg"
-                color: foregroundColor
-                height: units.gu(6)
-                label.text: qsTr("Configure screen")
-                label.color: foregroundColor
-                label.font.pixelSize: units.fx("medium")
-                label.elide: Text.ElideRight
-                label.width: parent.width - units.gu(7)
-                onClicked: {
-                    mainMenu.close();
-                }
-            }
-        }
+//        Column {
+//            width: parent.width
+//            MapIcon {
+//                source: "qrc:/images/trip/measuring.svg"
+//                color: foregroundColor
+//                height: units.gu(6)
+//                label.text: qsTr("Measure distance")
+//                label.color: foregroundColor
+//                label.font.pixelSize: units.fx("medium")
+//                label.elide: Text.ElideRight
+//                label.width: parent.width - units.gu(7)
+//                onClicked: {
+//                    mainMenu.close();
+//                }
+//            }
+//        }
 
         Column {
             width: parent.width
@@ -194,26 +208,27 @@ PopOver {
                 label.width: parent.width - units.gu(7)
                 onClicked: {
                     mainMenu.close();
+                    var page = pageStack.push("qrc:/silica/Settings.qml");
                 }
             }
         }
 
-        Column {
-            width: parent.width
-            MapIcon {
-                source: "qrc:/images/help.svg"
-                color: foregroundColor
-                height: units.gu(6)
-                label.text: qsTr("Help")
-                label.color: foregroundColor
-                label.font.pixelSize: units.fx("medium")
-                label.elide: Text.ElideRight
-                label.width: parent.width - units.gu(7)
-                onClicked: {
-                    mainMenu.close();
-                }
-            }
-        }
+//        Column {
+//            width: parent.width
+//            MapIcon {
+//                source: "qrc:/images/help.svg"
+//                color: foregroundColor
+//                height: units.gu(6)
+//                label.text: qsTr("Help")
+//                label.color: foregroundColor
+//                label.font.pixelSize: units.fx("medium")
+//                label.elide: Text.ElideRight
+//                label.width: parent.width - units.gu(7)
+//                onClicked: {
+//                    mainMenu.close();
+//                }
+//            }
+//        }
 
     }
 }

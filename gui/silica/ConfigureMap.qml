@@ -23,29 +23,59 @@ import "./components"
 PopOver {
     id: configureMap
 
-    title: "Configure Map"
+    title: qsTr("Configure Map")
     contents: Column {
         spacing: units.gu(1)
 
-        MapCheckBox {
-            id: rotate
+        Column {
             width: parent.width
-            color: styleMap.popover.foregroundColor
-            text: qsTr("Map rotation")
-            checked: mapUserSettings.rotateEnabled
-            onClicked: {
-                mapUserSettings.rotateEnabled = !mapUserSettings.rotateEnabled;
+            MapCheckBox {
+                id: renderingType
+                width: parent.width
+                color: styleMap.popover.foregroundColor
+                text: qsTr("Tiled rendering")
+                checked: settings.renderingTypeTiled
+                onClicked: {
+                    settings.renderingTypeTiled = !settings.renderingTypeTiled;
+                }
+            }
+            Label {
+                text: qsTr("It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pixelSize: units.fx("x-small")
+                font.weight: Font.Normal
             }
         }
 
-        MapCheckBox {
-            id: hillShading
+        Column {
             width: parent.width
-            color: styleMap.popover.foregroundColor
-            text: qsTr("Hill Shades")
-            checked: mapUserSettings.hillShadesEnabled
-            onClicked: {
-                mapUserSettings.hillShadesEnabled = !mapUserSettings.hillShadesEnabled;
+            MapCheckBox {
+                id: hillShading
+                width: parent.width
+                color: styleMap.popover.foregroundColor
+                text: qsTr("Hill Shades")
+                checked: settings.hillShadesEnabled && (hillshadeProvider != null)
+                onClicked: {
+                    settings.hillShadesEnabled = !settings.hillShadesEnabled;
+                }
+                enabled: (hillshadeProvider != null)
+            }
+            Label {
+                visible: (hillshadeProvider == null)
+                text: qsTr("To activate the functionality, please configure the tile server file from the resources folder.")
+                width: parent.width
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignJustify
+                maximumLineCount: 4
+                wrapMode: Text.Wrap
+                color: foregroundColor
+                font.pixelSize: units.fx("x-small")
+                font.weight: Font.Normal
             }
         }
 
@@ -54,9 +84,9 @@ PopOver {
             width: parent.width
             color: styleMap.popover.foregroundColor
             text: qsTr("Render Sea")
-            checked: mapEngineSettings.renderSea
+            checked: mapSettings.renderSea
             onClicked: {
-                mapEngineSettings.renderSea = !mapEngineSettings.renderSea;
+                mapSettings.renderSea = !mapSettings.renderSea;
             }
         }
 
@@ -65,9 +95,9 @@ PopOver {
             width: parent.width
             color: styleMap.popover.foregroundColor
             text: qsTr("Prefer English names")
-            checked: mapEngineSettings.showAltLanguage
+            checked: mapSettings.showAltLanguage
             onClicked: {
-                mapEngineSettings.showAltLanguage = !mapEngineSettings.showAltLanguage;
+                mapSettings.showAltLanguage = !mapSettings.showAltLanguage;
             }
         }
 
@@ -111,10 +141,10 @@ PopOver {
             }
             onCurrentItemChanged: {
                 if (currentIndex >= 0) {
-                    mapEngineSettings.fontName = currentItem.text;
+                    mapSettings.fontName = currentItem.text;
                 }
             }
-            Component.onCompleted: currentIndex = indexOfValue(mapEngineSettings.fontName)
+            Component.onCompleted: currentIndex = indexOfValue(mapSettings.fontName)
             function indexOfValue(val) {
                 if (val === "DejaVu Sans")
                     return 0;
@@ -134,17 +164,17 @@ PopOver {
             leftMargin: 0
             rightMargin: 0
             menu: ContextMenu {
-                MenuItem { text: qsTr("Normal");    property real value: 2.0; }
-                MenuItem { text: qsTr("Big");       property real value: 3.0; }
-                MenuItem { text: qsTr("Bigger");    property real value: 4.0; }
-                MenuItem { text: qsTr("Huge");      property real value: 6.0; }
+                MenuItem { text: qsTr("Small");   property real value: 2.0; }
+                MenuItem { text: qsTr("Normal");  property real value: 3.0; }
+                MenuItem { text: qsTr("Big");     property real value: 4.0; }
+                MenuItem { text: qsTr("Huge");    property real value: 6.0; }
             }
             onCurrentItemChanged: {
                 if (currentIndex >= 0) {
-                    mapEngineSettings.fontSize = currentItem.value;
+                    mapSettings.fontSize = currentItem.value;
                 }
             }
-            Component.onCompleted: currentIndex = indexOfValue(mapEngineSettings.fontSize)
+            Component.onCompleted: currentIndex = indexOfValue(mapSettings.fontSize)
             function indexOfValue(val) {
                 if (val <= 2.0)
                     return 0;
@@ -153,31 +183,6 @@ PopOver {
                 if (val <= 4.0)
                     return 2;
                 return 3;
-            }
-        }
-
-        Column {
-            width: parent.width
-            MapCheckBox {
-                id: renderingType
-                width: parent.width
-                color: styleMap.popover.foregroundColor
-                text: qsTr("Tiled rendering (lower quality)")
-                checked: mapUserSettings.renderingTypeTiled
-                onClicked: {
-                    mapUserSettings.renderingTypeTiled = !mapUserSettings.renderingTypeTiled;
-                }
-            }
-            Label {
-                text: "It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory."
-                width: parent.width
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignJustify
-                maximumLineCount: 4
-                wrapMode: Text.Wrap
-                color: foregroundColor
-                font.pixelSize: units.fx("x-small")
-                font.weight: Font.Normal
             }
         }
     }
