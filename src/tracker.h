@@ -29,6 +29,7 @@ class Tracker : public QObject
   Q_PROPERTY(double ascent READ getAscent NOTIFY trackerDataChanged)
   Q_PROPERTY(double descent READ getDescent NOTIFY trackerDataChanged)
   Q_PROPERTY(QString recording READ getRecording WRITE setRecording NOTIFY trackerRecordingChanged)
+  Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   //Q_PROPERTY(double remainingDistance READ getRemainingDistance NOTIFY remainingDistanceChanged)
   //Q_PROPERTY(QObject* nextRouteStep READ getNextRoutStep NOTIFY nextStepChanged)
 
@@ -48,6 +49,7 @@ public:
   double getDescent() const { return m_descent; }
   QString getRecording() const { return m_recording; }
   void setRecording(const QString& filename);
+  bool getProcessing() const { return m_busy; }
 
   Q_INVOKABLE void locationChanged(bool positionValid, double lat, double lon,
                                    bool horizontalAccuracyValid, double horizontalAccuracy,
@@ -62,6 +64,7 @@ signals:
   void trackerPositionChanged();
   void trackerDataChanged();
   void trackerRecordingChanged();
+  void trackerProcessingChanged();
   void recordingFailed();
   //void remainingDistanceChanged();
   //void nextStepChanged();
@@ -79,6 +82,7 @@ private slots:
                          const std::shared_ptr<osmscout::Bearing> bearing);
   void onDataChanged(double kmph, double meters, double seconds, double ascent, double descent);
   void onRecordingChanged(const QString& filename);
+  void onProcessingChanged(bool busy);
 
 private:
   TrackerModule* m_p;
@@ -94,6 +98,7 @@ private:
   double m_ascent;
   double m_descent;
 
+  bool m_busy;
   QString m_recording;
   //std::vector<osmscout::RouteStep> m_routeSteps;
   //osmscout::RouteStep m_nextRouteStep;
@@ -116,6 +121,7 @@ signals:
                        const std::shared_ptr<osmscout::Bearing> bearing);
   void recordingFailed();
   void recordingChanged(const QString& filename);
+  void processing(bool busy);
 
 public slots:
   void onTimeout();

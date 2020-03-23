@@ -25,6 +25,7 @@ Tracker::Tracker(QObject* parent)
 , m_duration(0)
 , m_ascent(0)
 , m_descent(0)
+, m_busy(false)
 //, m_nextRouteStep()
 //, m_remainingDistance()
 {
@@ -56,6 +57,7 @@ bool Tracker::init(const QString& root)
   connect(this, &Tracker::doStopRecording, m_p, &TrackerModule::onStopRecording, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::recordingChanged, this, &Tracker::onRecordingChanged, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::recordingFailed, this, &Tracker::recordingFailed, Qt::QueuedConnection);
+  connect(m_p, &TrackerModule::processing, this, &Tracker::onProcessingChanged, Qt::QueuedConnection);
 
   return true;
 }
@@ -132,6 +134,12 @@ void Tracker::onRecordingChanged(const QString& filename)
 {
   m_recording = filename;
   emit trackerRecordingChanged();
+}
+
+void Tracker::onProcessingChanged(bool busy)
+{
+  m_busy = busy;
+  emit trackerProcessingChanged();
 }
 
 TrackerModule::TrackerModule(QThread* thread, const QString& root)
@@ -284,6 +292,7 @@ void TrackerModule::onStopRecording()
   emit recordingChanged(QString());
   if (file.isNull() || !file->open(QIODevice::ReadOnly | QIODevice::Text))
     return;
+  emit processing(true);
   // fill segment
   osmscout::gpx::TrackSegment segment;
   segment.points.reserve(1000);
@@ -337,11 +346,13 @@ void TrackerModule::onStopRecording()
     QString fname = fdate.toString(Qt::ISODate).append(".gpx");
     if (!osmscout::gpx::ExportGpx(gpx, m_baseDir.absoluteFilePath(fname).toUtf8().toStdString()))
     {
+      emit processing(false);
       emit recordingFailed();
       return;
     }
   }
   file->remove();
+  emit processing(false);
 }
 
 void TrackerModule::onFlushRecording()

@@ -143,7 +143,9 @@ PopOver {
                 onClicked: {
                     Tracker.startRecording();
                 }
-                animationRunning: tracking.visible && Tracker.recording !== ""
+                enabled: !Tracker.processing
+                animationRunning: Tracker.processing
+                animationInterval: 200
             }
         }
 
