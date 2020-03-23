@@ -1,6 +1,6 @@
 Name:           harbour-osmin
-Version:        0.0.1
-Release:        1
+Version:        1.0.3
+Release:        2
 Summary:        Navigator
 License:        GPL-3.0-or-later
 Group:          Productivity/Location
