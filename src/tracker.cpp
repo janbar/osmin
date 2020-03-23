@@ -297,13 +297,13 @@ void TrackerModule::onStopRecording()
     {
       if (++c > segment.points.size())
         segment.points.reserve(segment.points.size() + 1000);
-      osmscout::Timestamp time(std::chrono::milliseconds(static_cast<long>(std::round(QString::fromUtf8(row[0]->constData()).toDouble() * 1000))));
+      osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[0]->constData()).toDouble() * 1000))));
       double lat = QString::fromUtf8(row[1]->constData()).toDouble();
       double lon = QString::fromUtf8(row[2]->constData()).toDouble();
       double cse = QString::fromUtf8(row[3]->constData()).toDouble();
       double alt = QString::fromUtf8(row[4]->constData()).toDouble();
       osmscout::gpx::TrackPoint point(osmscout::GeoCoord(lat, lon));
-      point.time = osmscout::gpx::Optional<osmscout::Timestamp>::of(time);
+      point.time = osmscout::gpx::Optional<osmscout::Timestamp>::of(ts);
       point.course = osmscout::gpx::Optional<double>::of(cse);
       point.elevation = osmscout::gpx::Optional<double>::of(alt);
       segment.points.emplace_back(point);
