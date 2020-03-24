@@ -136,32 +136,32 @@
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="130"/>
-        <location filename="../controls2/Favorites.qml" line="292"/>
+        <location filename="../controls2/Favorites.qml" line="294"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="143"/>
+        <location filename="../controls2/Favorites.qml" line="145"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="237"/>
+        <location filename="../controls2/Favorites.qml" line="239"/>
         <source>Go</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="237"/>
+        <location filename="../controls2/Favorites.qml" line="239"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="311"/>
+        <location filename="../controls2/Favorites.qml" line="320"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="321"/>
+        <location filename="../controls2/Favorites.qml" line="330"/>
         <source>Enter the label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -429,7 +429,7 @@
 <context>
     <name>SearchField</name>
     <message>
-        <location filename="../controls2/components/SearchField.qml" line="55"/>
+        <location filename="../controls2/components/SearchField.qml" line="56"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -449,98 +449,98 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="119"/>
-        <location filename="../controls2/SearchPlace.qml" line="277"/>
+        <location filename="../controls2/SearchPlace.qml" line="120"/>
+        <location filename="../controls2/SearchPlace.qml" line="278"/>
         <source>Up to distance %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="180"/>
+        <location filename="../controls2/SearchPlace.qml" line="181"/>
         <source>Restaurant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="183"/>
+        <location filename="../controls2/SearchPlace.qml" line="184"/>
         <source>Fast Food</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="186"/>
+        <location filename="../controls2/SearchPlace.qml" line="187"/>
         <source>Cafe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="189"/>
+        <location filename="../controls2/SearchPlace.qml" line="190"/>
         <source>Pub</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="192"/>
+        <location filename="../controls2/SearchPlace.qml" line="193"/>
         <source>Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="195"/>
+        <location filename="../controls2/SearchPlace.qml" line="196"/>
         <source>ATM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="198"/>
+        <location filename="../controls2/SearchPlace.qml" line="199"/>
         <source>Drinking water</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="201"/>
+        <location filename="../controls2/SearchPlace.qml" line="202"/>
         <source>Toilets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="206"/>
+        <location filename="../controls2/SearchPlace.qml" line="207"/>
         <source>Public transport stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="210"/>
+        <location filename="../controls2/SearchPlace.qml" line="211"/>
         <source>Fuel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="213"/>
+        <location filename="../controls2/SearchPlace.qml" line="214"/>
         <source>Pharmacy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="216"/>
+        <location filename="../controls2/SearchPlace.qml" line="217"/>
         <source>Accomodation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="219"/>
+        <location filename="../controls2/SearchPlace.qml" line="220"/>
         <source>Camp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="222"/>
+        <location filename="../controls2/SearchPlace.qml" line="223"/>
         <source>Castle, Manor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="225"/>
+        <location filename="../controls2/SearchPlace.qml" line="226"/>
         <source>Spring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="230"/>
+        <location filename="../controls2/SearchPlace.qml" line="231"/>
         <source>Via ferrata route</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="335"/>
+        <location filename="../controls2/SearchPlace.qml" line="336"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/SearchPlace.qml" line="634"/>
+        <location filename="../controls2/SearchPlace.qml" line="635"/>
         <source>No data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -603,22 +603,22 @@
     </message>
     <message>
         <location filename="../controls2/TrackCollection.qml" line="166"/>
-        <location filename="../controls2/TrackCollection.qml" line="281"/>
+        <location filename="../controls2/TrackCollection.qml" line="283"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="185"/>
+        <location filename="../controls2/TrackCollection.qml" line="187"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="304"/>
+        <location filename="../controls2/TrackCollection.qml" line="311"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="314"/>
+        <location filename="../controls2/TrackCollection.qml" line="321"/>
         <source>Enter the name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -631,47 +631,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="36"/>
+        <location filename="../controls2/Tracking.qml" line="38"/>
         <source>Average Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="50"/>
+        <location filename="../controls2/Tracking.qml" line="54"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="64"/>
+        <location filename="../controls2/Tracking.qml" line="70"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="78"/>
+        <location filename="../controls2/Tracking.qml" line="86"/>
         <source>Ascent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="92"/>
+        <location filename="../controls2/Tracking.qml" line="102"/>
         <source>Descent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="111"/>
+        <location filename="../controls2/Tracking.qml" line="121"/>
         <source>Reset statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="128"/>
+        <location filename="../controls2/Tracking.qml" line="138"/>
         <source>Cut track recording</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="128"/>
+        <location filename="../controls2/Tracking.qml" line="138"/>
         <source>Start track recording</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="146"/>
+        <location filename="../controls2/Tracking.qml" line="158"/>
         <source>Close track recording</source>
         <translation type="unfinished"></translation>
     </message>
