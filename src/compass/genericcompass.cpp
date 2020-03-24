@@ -87,7 +87,7 @@ GenericCompass::GenericCompass(QSensor *sensor)
 
     _gravitySensor->connectToBackend();
     _magnetmeter->connectToBackend();
-    _gyroscope->connectToBackend();
+    _gyroscopeEnabled = _gyroscope->connectToBackend();
 
     setReading<QCompassReading>(&_compassReading);
     setDataRates(_gravitySensor);
@@ -135,9 +135,12 @@ void GenericCompass::checkValues()
 
     if (GenericCompass::getRotationMatrix(R, 9, I, 9, _gravity, _geomagnetic)) {
         GenericCompass::getOrientation(R, 9, _orientation);
-        calculateFusedOrientation();
+        if (_gyroscopeEnabled) {
+            calculateFusedOrientation();
+        } else {
+            _fusedOrientation[0] = _orientation[0];
+        }
         qreal newAzimuth = _fusedOrientation[0] * RADIANS_TO_DEGREES;
-
         if (_compassReading.azimuth() != newAzimuth) { // TODO: run thru collection of QCompassFilter
             _compassReading.setAzimuth(newAzimuth);
             _compassReading.setTimestamp(produceTimestamp());
