@@ -47,6 +47,7 @@ ApplicationWindow {
         property int heightGU: Math.round(mainView.height / units.gridUnit)
 
         // Navigation settings
+        property string systemOfUnits: "SI"
         property bool hillShadesEnabled: false
         property bool renderingTypeTiled: false
         property string lastVehicle: "car"
@@ -321,7 +322,7 @@ ApplicationWindow {
         Osmin.Converter.northeast = qsTr("northeast");
         Osmin.Converter.southwest = qsTr("southwest");
         Osmin.Converter.southeast = qsTr("southeast");
-        Osmin.Converter.system = "SI";
+        Osmin.Converter.system = settings.systemOfUnits;
         positionSource.active = true;
         launcher.start();
     }

@@ -28,9 +28,7 @@ MapPage {
     pageFlickable: body
 
     onPopped: {
-//        var needRestart = (styleBox.currentIndex !== styleBox.styleIndex ||
-//                scaleBox.realValue !== scaleBox.acceptedValue);
-//        settings.style = styleBox.displayText;
+//        var needRestart = (settings.systemOfUnits !== Converter.system);
 //        if (needRestart) {
 //            mainView.jobRunning = true;
 //            Qt.exit(16);
@@ -168,6 +166,43 @@ MapPage {
                         popup.font.pointSize = units.fs("medium");
                     }
                 }
+            }
+
+            RowLayout {
+                spacing: units.gu(1)
+                Layout.fillWidth: true
+                Label {
+                    text: qsTr("System of Units")
+                    font.pointSize: units.fs("medium");
+                }
+                ComboBox {
+                    id: unitsBox
+                    flat: true
+                    model: [
+                        qsTr("SI"),
+                        qsTr("Imperial")
+                    ]
+                    property string selected: Converter.system
+                    currentIndex: (settings.systemOfUnits === "Imperial" ? 1 : 0)
+                    Layout.fillWidth: true
+                    font.pointSize: units.fs("medium");
+                    onActivated: {
+                        settings.systemOfUnits = Converter.systems()[index]
+                    }
+                    Component.onCompleted: {
+                        popup.font.pointSize = units.fs("medium");
+                    }
+                }
+            }
+
+            Label {
+                text: qsTr("The change will be effective after restart.")
+                font.pointSize: units.fs("medium")
+                color: "red"
+                visible: settings.systemOfUnits !== Converter.system
+                maximumLineCount: 2
+                width: parent.width
+                wrapMode: Text.WordWrap
             }
 
             Label {
