@@ -26,19 +26,27 @@ MapPage {
     id: settingsPage
     pageTitle: qsTr("Settings")
     pageFlickable: body
+    pageMenuEnabled: true
 
     onPopped: {
-//        var needRestart = (styleBox.currentIndex !== styleBox.styleIndex ||
-//                scaleBox.realValue !== scaleBox.acceptedValue);
-//        settings.style = styleBox.displayText;
+//        var needRestart = (settings.systemOfUnits !== Converter.system);
 //        if (needRestart) {
 //            mainView.jobRunning = true;
 //            Qt.exit(16);
 //        }
     }
 
+    Component { id: menuItemComp; MenuItem { } }
+    property MenuItem menuItemAbout: null
     property string mapsDirectory: ""
+
     Component.onCompleted: {
+        // create the menu item to open the dialog about.
+        menuItemAbout = menuItemComp.createObject(pageMenuContent, {"text" : qsTr("About")});
+        menuItemAbout.onClicked.connect(function(){
+            dialogAbout.open();
+        });
+        // select current map directory
         if (MapsDirectories.length > 1)
             mapsDirectory = MapsDirectories[1]; // external storage
         else
@@ -55,6 +63,33 @@ MapPage {
             width: parent.width - units.gu(4)
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: units.gu(1)
+
+            ComboBox {
+                id: unitsBox
+                width: parent.width
+                label: qsTr("System of Units")
+                labelColor: styleMap.popover.foregroundColor
+                leftMargin: 0
+                rightMargin: 0
+                menu: ContextMenu {
+                    MenuItem { text: qsTr("SI") }
+                    MenuItem { text: qsTr("Imperial") }
+                }
+                onCurrentItemChanged: {
+                    settings.systemOfUnits = Converter.systems()[currentIndex]
+                }
+                Component.onCompleted: currentIndex = (settings.systemOfUnits === "Imperial" ? 1 : 0)
+            }
+
+            Label {
+                text: qsTr("The change will be effective after restart.")
+                font.pixelSize: units.fx("medium")
+                color: "red"
+                visible: settings.systemOfUnits !== Converter.system
+                maximumLineCount: 2
+                width: parent.width
+                wrapMode: Text.WordWrap
+            }
 
             Label {
                 text: qsTr("Data directory")

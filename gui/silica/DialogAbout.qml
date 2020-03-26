@@ -38,12 +38,12 @@ DialogBase {
             leftMargin: Theme.horizontalPageMargin
             rightMargin: Theme.horizontalPageMargin
         }
-        text: qsTr("OSMin is a GPS Navigator based on a fork of OSMScout. It allows on-road routing and off-road navigation with OSM maps.")
+        text: qsTr("OSMin is a GPS Navigator based on a fork of OSMScout. It allows on-road routing and off-road navigation with OpenStreetMap® data.")
         wrapMode: Label.Wrap
         font.pixelSize: units.fx("medium")
     }
     Text {
-        color: styleMusic.dialog.foregroundColor
+        color: styleMap.dialog.foregroundColor
         anchors {
             left: parent.left
             right: parent.right
@@ -76,6 +76,6 @@ DialogBase {
         font.pixelSize: units.fx("small")
         text: "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jlbarriere68%40gmail%2ecom&lc=US&item_name=OSMin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted'>Donate with Paypal</a>"
         onLinkActivated: Qt.openUrlExternally(link)
-        linkColor: styleMusic.view.linkColor
+        linkColor: styleMap.view.linkColor
     }
 }

@@ -292,6 +292,17 @@ Page {
         }
     }
 
+    Label {
+        id: copyright
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        text: "© OpenStreetMap contributors"
+        font.pixelSize: units.fx("x-small")
+        font.weight: Font.Thin
+        color: nightView ? "white" : "black"
+        visible: !showToolbar && !navigation
+    }
+
     MapIcon {
         id: trackRecording
         anchors{

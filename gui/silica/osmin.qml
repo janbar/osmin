@@ -48,6 +48,7 @@ ApplicationWindow {
         property bool firstRun: true
 
         // Navigation settings
+        property string systemOfUnits: "SI"
         property bool hillShadesEnabled: false
         property bool renderingTypeTiled: false
         property string lastVehicle: "car"
@@ -156,7 +157,7 @@ ApplicationWindow {
         Osmin.Converter.northeast = qsTr("northeast");
         Osmin.Converter.southwest = qsTr("southwest");
         Osmin.Converter.southeast = qsTr("southeast");
-        Osmin.Converter.system = "SI";
+        Osmin.Converter.system = settings.systemOfUnits;
         positionSource.active = true;
         launcher.start();
     }
@@ -172,7 +173,7 @@ ApplicationWindow {
                 mapPage = pageStack.push("qrc:/silica/MapView.qml");
                 if (launcherMode === 1) {
                     var welcome = pageStack.push("qrc:/silica/Welcome.qml");
-                    ToolBox.connectOnce(welcome.popped, function(next){
+                    ToolBox.connectOnce(welcome.poppedAndNext, function(next){
                         if (next !== "") {
                             popAndPush.popped = welcome;
                             popAndPush.next = next;
@@ -236,13 +237,9 @@ ApplicationWindow {
     //// Dialog
     ////
 
-    /*DialogAbout {
+    DialogAbout {
         id: dialogAbout
     }
-
-    DialogSettings {
-        id: dialogSettings
-    }*/
 
     ////////////////////////////////////////////////////////////////////////////
     ////

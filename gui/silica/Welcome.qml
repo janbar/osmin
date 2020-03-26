@@ -23,8 +23,21 @@ MapPage {
     id: welcomePage
     objectName: "welcomePage"
     pageTitle: qsTr("Welcome")
+    pageMenuEnabled: true
 
-    signal popped(var next)
+    signal poppedAndNext(var next)
+    onPopped: poppedAndNext("")
+
+    Component { id: menuItemComp; MenuItem { } }
+    property MenuItem menuItemAbout: null
+
+    Component.onCompleted: {
+        // create the menu item to open the dialog about.
+        menuItemAbout = menuItemComp.createObject(pageMenuContent, {"text" : qsTr("About")});
+        menuItemAbout.onClicked.connect(function(){
+            dialogAbout.open();
+        });
+    }
 
     // Overlay to show when no map is installed
     Rectangle {
@@ -32,7 +45,7 @@ MapPage {
         anchors {
             fill: parent
         }
-        color: styleMap.view.backgroundColor
+        color: "transparent"
 
         Column {
             anchors {
@@ -80,7 +93,7 @@ MapPage {
                 label.color: styleMap.view.foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 onClicked: {
-                    popped("qrc:/silica/MapDownloads.qml");
+                    poppedAndNext("qrc:/silica/MapDownloads.qml");
                     pageStack.pop();
                 }
             }
