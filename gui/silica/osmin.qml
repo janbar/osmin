@@ -54,6 +54,7 @@ ApplicationWindow {
         property string lastVehicle: "car"
         property int maximumRouteStep: 255
         property int courseId: 0
+        property real magneticDip: 0.0
 
         // Tracker settings
         property string trackerRecording: ""
@@ -283,6 +284,7 @@ ApplicationWindow {
     CompassSensor {
         id: compass
         active: false
+        magneticDip: settings.magneticDip
         signal polled(real azimuth, real rotation)
         onAzimuthChanged: {
             if (!poll.running) poll.start();

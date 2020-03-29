@@ -83,6 +83,7 @@ GenericCompass::GenericCompass(QSensor *sensor)
 
     _gravitySensor = new QAccelerometer(this);
     _magnetmeter = new QMagnetometer(this);
+    _magnetmeter->setReturnGeoValues(true);
     _gyroscope = new QGyroscope(this);
 
     _gravitySensor->connectToBackend();

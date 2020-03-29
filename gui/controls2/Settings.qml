@@ -195,6 +195,46 @@ MapPage {
                 }
             }
 
+            RowLayout {
+                spacing: 0
+                MapIcon {
+                    height: units.gu(5)
+                    width: height
+                    source: "qrc:/images/compass.svg"
+                    hoverEnabled: false
+                    rotation: (-1.0) * magdipBox.realValue
+                }
+                SpinBox {
+                    id: magdipBox
+                    from: -300
+                    value: settings.magneticDip * 10
+                    to: 300
+                    stepSize: 10
+                    font.pointSize: units.fs("medium");
+                    Layout.fillWidth: true
+
+                    property int decimals: 1
+                    property real realValue: 0.1 * value
+
+                    validator: DoubleValidator {
+                        bottom: Math.min(magdipBox.from, magdipBox.to)
+                        top:  Math.max(magdipBox.from, magdipBox.to)
+                    }
+
+                    textFromValue: function(value, locale) {
+                        return Number(0.1 * value).toLocaleString(locale, 'f', magdipBox.decimals)
+                    }
+
+                    valueFromText: function(text, locale) {
+                        return Number.fromLocaleString(locale, text) * 10
+                    }
+
+                    onValueModified: {
+                        settings.magneticDip = realValue
+                    }
+                }
+            }
+
             Label {
                 text: qsTr("The change will be effective after restart.")
                 font.pointSize: units.fs("medium")

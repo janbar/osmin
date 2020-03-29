@@ -81,6 +81,33 @@ MapPage {
                 Component.onCompleted: currentIndex = (settings.systemOfUnits === "Imperial" ? 1 : 0)
             }
 
+            RowLayout {
+                spacing: 0
+                width: parent.width
+                MapIcon {
+                    height: units.gu(5)
+                    width: height
+                    source: "qrc:/images/compass.svg"
+                    hoverEnabled: false
+                    rotation: (-0.1) * magdip.value
+                }
+                Slider {
+                    id: magdip
+                    width: units.gu(28)
+                    leftMargin: units.gu(2)
+                    rightMargin: units.gu(2)
+                    height: units.gu(6)
+                    stepSize: 10
+                    minimumValue: -300
+                    maximumValue: 300
+                    value: 10.0 * settings.magneticDip
+                    valueText: Number(0.1 * value).toLocaleString(Qt.locale("en_US"), 'f', 1)
+                    onValueChanged: {
+                        settings.magneticDip = 0.1 * value
+                    }
+                }
+            }
+
             Label {
                 text: qsTr("The change will be effective after restart.")
                 font.pixelSize: units.fx("medium")
