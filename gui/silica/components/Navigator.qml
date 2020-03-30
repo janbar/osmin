@@ -72,17 +72,22 @@ Item {
         }
     }
 
+    // passing signal args to the slot of NavigationModel
+    function locationChanged(valid, lat, lon, accValid, acc, alt) {
+        navigationModel.locationChanged(valid, lat, lon, accValid, acc);
+    }
+
     onSuspendedChanged: {
         if (!suspended) {
             if (!connected) {
                 console.log("Navigator: Connect on positionChanged");
-                position.dataUpdated.connect(navigationModel.locationChanged);
+                position.dataUpdated.connect(locationChanged);
                 connected = true;
             }
         } else {
             if (connected) {
                 console.log("Navigator: Disconnect from positionChanged");
-                position.dataUpdated.disconnect(navigationModel.locationChanged);
+                position.dataUpdated.disconnect(locationChanged);
                 connected = false;
             }
         }

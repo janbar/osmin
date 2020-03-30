@@ -150,7 +150,9 @@ Page {
 
         Component.onCompleted: {
             setPixelRatio(ScreenScaleFactor);
-            positionSource.dataUpdated.connect(locationChanged);
+            positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
+                locationChanged(valid, lat, lon, accValid, acc);
+            });
             ToolBox.connectWhileFalse(map.finishedChanged, function(finished){
                if (finished) {
                    console.log("Configure after finished map");
