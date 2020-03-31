@@ -88,7 +88,8 @@ GenericCompass::GenericCompass(QSensor *sensor)
 
     _gravitySensor->connectToBackend();
     _magnetmeter->connectToBackend();
-    _gyroscopeEnabled = _gyroscope->connectToBackend();
+    //_gyroscope->connectToBackend();
+    _gyroscopeEnabled = false;
 
     setReading<QCompassReading>(&_compassReading);
     setDataRates(_gravitySensor);

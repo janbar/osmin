@@ -16,9 +16,7 @@
  */
 
 #include "plugin.h"
-#ifdef QTSENSORS_GENERICCOMPASS
 #include "genericcompass.h"
-#endif
 #include <QtSensors/qsensorplugin.h>
 #include <QtSensors/qsensorbackend.h>
 #include <QtSensors/qsensormanager.h>
@@ -27,29 +25,23 @@
 
 void BuiltInSensorPlugin::registerSensors()
 {
-#ifdef QTSENSORS_GENERICCOMPASS
   if (!QSensorManager::isBackendRegistered(QCompass::type, GenericCompass::id)) {
     qInfo("Register sensor backend: %s", GenericCompass::id);
     QSensorManager::registerBackend(QCompass::type, GenericCompass::id, this);
   }
-#endif
 }
 
 QSensorBackend *BuiltInSensorPlugin::createBackend(QSensor *sensor)
 {
-#ifdef QTSENSORS_GENERICCOMPASS
   if (sensor->identifier() == GenericCompass::id) {
     return new GenericCompass(sensor);
   }
-#endif
   return 0;
 }
 
 BuiltInCompass::BuiltInCompass(QObject* parent) : QSensor("QCompass", parent)
 {
-#ifdef QTSENSORS_GENERICCOMPASS
   this->setIdentifier("builtin.compass");
-#endif
 }
 
 BuiltInCompass::~BuiltInCompass()

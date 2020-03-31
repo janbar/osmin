@@ -18,8 +18,6 @@
 #ifndef BUILTINSENSORPLUGIN_H
 #define BUILTINSENSORPLUGIN_H
 
-#define QTSENSORS_GENERICCOMPASS 1
-
 #include <QtSensors/qsensorplugin.h>
 #include <QtSensors/qsensorbackend.h>
 #include <QtSensors/qsensormanager.h>
