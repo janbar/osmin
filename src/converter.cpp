@@ -216,6 +216,7 @@ QString Converter::getSystem() const
   {
   case SYSTEM_IMPERIAL: return STR_SYSTEM_IMPERIAL;
   case SYSTEM_SI: return STR_SYSTEM_SI;
+  default: return STR_SYSTEM_SI;
   }
 }
 
