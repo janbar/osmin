@@ -389,8 +389,8 @@ int main(int argc, char *argv[])
 void setupApp(QGuiApplication& app) {
 
     SignalHandler *sh = new SignalHandler(&app);
-    sh->catchSignal(SIGHUP, 0);
-    sh->catchSignal(SIGALRM, 0);
+    sh->catchSignal(SIGHUP);
+    sh->catchSignal(SIGALRM);
 
     // set translators
     QLocale locale = QLocale::system();
