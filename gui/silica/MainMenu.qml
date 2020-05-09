@@ -32,7 +32,7 @@ PopOver {
                 source: "qrc:/images/trip/favourite.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("My Places")
+                label.text: "  " + qsTr("My Places")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -61,7 +61,7 @@ PopOver {
                 source: "qrc:/images/trip/route.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Routes")
+                label.text: "  " + qsTr("Routes")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -90,7 +90,7 @@ PopOver {
                 source: "qrc:/images/trip/track.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Tracks")
+                label.text: "  " + qsTr("Tracks")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -119,7 +119,7 @@ PopOver {
                 source: "qrc:/images/trip/navigation.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Tracking")
+                label.text: "  " + qsTr("Tracking")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -148,7 +148,7 @@ PopOver {
                 source: "qrc:/images/map.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Configure Map")
+                label.text: "  " + qsTr("Configure Map")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -166,7 +166,7 @@ PopOver {
                 source: "image://theme/icon-m-cloud-download"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Download Maps")
+                label.text: "  " + qsTr("Download Maps")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -184,7 +184,7 @@ PopOver {
 //                source: "qrc:/images/trip/measuring.svg"
 //                color: foregroundColor
 //                height: units.gu(6)
-//                label.text: qsTr("Measure distance")
+//                label.text: "  " + qsTr("Measure distance")
 //                label.color: foregroundColor
 //                label.font.pixelSize: units.fx("medium")
 //                label.elide: Text.ElideRight
@@ -201,7 +201,7 @@ PopOver {
                 source: "qrc:/images/cogs.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Settings")
+                label.text: "  " + qsTr("Settings")
                 label.color: foregroundColor
                 label.font.pixelSize: units.fx("medium")
                 label.elide: Text.ElideRight
@@ -219,7 +219,7 @@ PopOver {
 //                source: "qrc:/images/help.svg"
 //                color: foregroundColor
 //                height: units.gu(6)
-//                label.text: qsTr("Help")
+//                label.text: "  " + qsTr("Help")
 //                label.color: foregroundColor
 //                label.font.pixelSize: units.fx("medium")
 //                label.elide: Text.ElideRight

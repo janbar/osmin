@@ -118,7 +118,7 @@ PopOver {
                 source: "qrc:/images/reset.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Reset statistics")
+                label.text: "  " + qsTr("Reset statistics")
                 label.color: foregroundColor
                 label.font.pointSize: units.fs("medium")
                 label.elide: Text.ElideRight
@@ -135,7 +135,7 @@ PopOver {
                 source: "qrc:/images/record.svg"
                 color: Tracker.recording !== "" ? "red" : foregroundColor
                 height: units.gu(6)
-                label.text: Tracker.recording !== "" ? qsTr("Cut track recording") : qsTr("Start track recording")
+                label.text: "  " + (Tracker.recording !== "" ? qsTr("Cut track recording") : qsTr("Start track recording"))
                 label.color: foregroundColor
                 label.font.pointSize: units.fs("medium")
                 label.elide: Text.ElideRight
@@ -155,7 +155,7 @@ PopOver {
                 source: "qrc:/images/save.svg"
                 color: foregroundColor
                 height: units.gu(6)
-                label.text: qsTr("Close track recording")
+                label.text: "  " + qsTr("Close track recording")
                 label.color: foregroundColor
                 label.font.pointSize: units.fs("medium")
                 label.elide: Text.ElideRight

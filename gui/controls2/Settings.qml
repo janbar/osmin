@@ -58,8 +58,7 @@ MapPage {
             RowLayout {
                 spacing: 0
                 MapIcon {
-                    height: units.gu(5)
-                    width: height
+                    height: units.gu(6)
                     source: "qrc:/images/font-scalling.svg"
                     hoverEnabled: false
                 }
@@ -99,8 +98,7 @@ MapPage {
             RowLayout {
                 spacing: 0
                 MapIcon {
-                    height: units.gu(5)
-                    width: height
+                    height: units.gu(6)
                     source: "qrc:/images/graphic-scalling.svg"
                     hoverEnabled: false
                 }
@@ -198,8 +196,7 @@ MapPage {
             RowLayout {
                 spacing: 0
                 MapIcon {
-                    height: units.gu(5)
-                    width: height
+                    height: units.gu(6)
                     source: "qrc:/images/compass.svg"
                     hoverEnabled: false
                     rotation: (-1.0) * magdipBox.realValue

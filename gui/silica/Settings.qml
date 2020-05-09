@@ -85,8 +85,7 @@ MapPage {
                 spacing: 0
                 width: parent.width
                 MapIcon {
-                    height: units.gu(5)
-                    width: height
+                    height: units.gu(6)
                     source: "qrc:/images/compass.svg"
                     hoverEnabled: false
                     rotation: (-0.1) * magdip.value

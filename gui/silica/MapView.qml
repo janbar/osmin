@@ -318,7 +318,7 @@ Page {
         color: Tracker.recording !== "" ? "red" : "black"
         animationRunning: Tracker.recording !== "" && !navigation
         visible: !showToolbar && (navigation || Tracker.recording !== "")
-        borderPadding: units.gu(1.0)
+        borderPadding: units.gu(0.0)
         opacity: 0.9
         height: units.gu(6)
         onClicked: {
