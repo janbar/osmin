@@ -10,6 +10,7 @@ BuildRequires:  cmake
 BuildRequires:  extra-cmake-modules
 BuildRequires:  git
 BuildRequires:  gcc-c++
+BuildRequires:  libgomp
 BuildRequires:  openssl-devel
 BuildRequires:  zlib-devel
 BuildRequires:  pkgconfig
@@ -35,7 +36,7 @@ mkdir -p build-%{_target_cpu}
 pushd build-%{_target_cpu}
 %cmake \
     -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_SAILFISHOS=ON ..
+    -DBUILD_SAILFISHOS=ON ../..
 make -j2 VERBOSE=1
 popd
 
