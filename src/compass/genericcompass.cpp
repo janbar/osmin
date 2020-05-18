@@ -88,8 +88,7 @@ GenericCompass::GenericCompass(QSensor *sensor)
 
     _gravitySensor->connectToBackend();
     _magnetmeter->connectToBackend();
-    //_gyroscope->connectToBackend();
-    _gyroscopeEnabled = false;
+    _gyroscopeEnabled = false /*_gyroscope->connectToBackend()*/;
 
     setReading<QCompassReading>(&_compassReading);
     setDataRates(_gravitySensor);
@@ -98,8 +97,10 @@ GenericCompass::GenericCompass(QSensor *sensor)
     connect(_gravitySensor, SIGNAL(sensorError(int)), this, SIGNAL(sensorError(int)));
     connect(_magnetmeter, SIGNAL(readingChanged()), this, SLOT(onMagnetometerChanged()));
     connect(_magnetmeter, SIGNAL(sensorError(int)), this, SIGNAL(sensorError(int)));
-    connect(_gyroscope, SIGNAL(readingChanged()), this, SLOT(onGyroscopeChanged()));
-    connect(_gyroscope, SIGNAL(sensorError(int)), this, SIGNAL(sensorError(int)));
+    if (_gyroscopeEnabled) {
+        connect(_gyroscope, SIGNAL(readingChanged()), this, SLOT(onGyroscopeChanged()));
+        connect(_gyroscope, SIGNAL(sensorError(int)), this, SIGNAL(sensorError(int)));
+    }
 }
 
 GenericCompass::~GenericCompass()
@@ -159,19 +160,21 @@ void GenericCompass::start()
     _magnetmeter->setDataRate(sensor()->dataRate());
     _magnetmeter->setAlwaysOn(sensor()->isAlwaysOn());
 
-    _gyroscope->setDataRate(sensor()->dataRate());
-    _gyroscope->setAlwaysOn(sensor()->isAlwaysOn());
+    if (_gyroscopeEnabled) {
+        _gyroscope->setDataRate(sensor()->dataRate());
+        _gyroscope->setAlwaysOn(sensor()->isAlwaysOn());
+    }
 
     _gravitySensor->start();
     _magnetmeter->start();
-    _gyroscope->start();
+    if (_gyroscopeEnabled) _gyroscope->start();
 }
 
 void GenericCompass::stop()
 {
     _gravitySensor->stop();
     _magnetmeter->stop();
-    _gyroscope->stop();
+    if (_gyroscopeEnabled) _gyroscope->stop();
 }
 
 void GenericCompass::gyroFunction(QGyroscopeReading *event)
