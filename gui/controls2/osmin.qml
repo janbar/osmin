@@ -263,8 +263,8 @@ ApplicationWindow {
         PopInfo {
             id: mainInfo
             anchors.fill: parent
-            boxRadius: 0
-            boxMargins: 0
+            backgroundRadius: 0
+            edgeMargins: 0
             font.pointSize: units.fs("medium");
             backgroundColor: styleMap.view.backgroundColor
             foregroundColor: styleMap.view.foregroundColor

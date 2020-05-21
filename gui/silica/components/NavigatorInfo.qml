@@ -25,11 +25,13 @@ Item {
 
     property color backgroundColor: styleMap.popover.backgroundColor
     property color foregroundColor: styleMap.popover.foregroundColor
-    property real edgeMargins: units.gu(0.5)
-    property real contentTopMargin: units.gu(5) // header bar
+    property real edgeMargins: 0.0
+    property real backgroundRadius: 0.0
+    property real backgroundOpacity: 1.0
+    readonly property real contentTopMargin: units.gu(7) // header bar + 1
     property real contentEdgeMargins: units.gu(2)
     property real contentSpacing: units.gu(1)
-    readonly property real minimumHeight: units.gu(6)
+    readonly property real minimumHeight: units.gu(7)
     property real maximumHeight: parent.height
 
     signal show
@@ -73,7 +75,8 @@ Item {
         anchors.fill: parent
         anchors.margins: edgeMargins
         color: backgroundColor
-        radius: units.gu(1)
+        opacity: backgroundOpacity
+        radius: backgroundRadius
     }
 
     SilicaFlickable {
@@ -209,6 +212,9 @@ Item {
         height: units.gu(5)
         anchors.top: popover.top
         anchors.right: popover.right
+        anchors.rightMargin: units.gu(0.5)
+        anchors.topMargin: units.gu(0.5)
+        anchors.bottomMargin: units.gu(0.5)
         color: foregroundColor
         onClicked: {
             console.log("close navigator info");

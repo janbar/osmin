@@ -20,14 +20,15 @@ import QtQuick.Controls 2.2
 
 Item {
     property string message: ""
-    property color backgroundColor: styleMap.tooltip.backgroundColor
-    property color foregroundColor: styleMap.tooltip.foregroundColor
+    property color backgroundColor: "red"
+    property color foregroundColor: "white"
+    property real edgeMargins: 0.0
+    property real backgroundRadius: 0.0
+    property real backgroundOpacity: 1.0
+    property real contentEdgeMargins: units.gu(0.5)
     property alias font: label.font
-    property real boxRadius: units.gu(1)
-    property real boxMargins: units.gu(0.5)
-    property real edgeMargins: units.gu(0.5)
 
-    height: area.visible ? label.paintedHeight + 3 * edgeMargins : 0
+    height: area.visible ? label.paintedHeight + 3 * contentEdgeMargins : 0
     z: 99
 
     MouseArea {
@@ -35,16 +36,17 @@ Item {
         anchors.fill: parent
         visible: false
         enabled: visible
-        anchors.topMargin: boxMargins
-        anchors.leftMargin: boxMargins
-        anchors.rightMargin: boxMargins
+        anchors.topMargin: edgeMargins
+        anchors.leftMargin: edgeMargins
+        anchors.rightMargin: edgeMargins
 
         // background
         Rectangle {
-            id: popover
+            id: popinfo
             anchors.fill: parent
             color: backgroundColor
-            radius: boxRadius
+            opacity: backgroundOpacity
+            radius: backgroundRadius
         }
 
         // message
@@ -54,10 +56,10 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left:parent.left
             anchors.right: parent.right
-            anchors.topMargin: edgeMargins / 2
-            anchors.bottomMargin: edgeMargins / 2
-            anchors.leftMargin: 2 * edgeMargins
-            anchors.rightMargin: 2 * edgeMargins
+            anchors.topMargin: contentEdgeMargins / 2
+            anchors.bottomMargin: contentEdgeMargins / 2
+            anchors.leftMargin: 2 * contentEdgeMargins
+            anchors.rightMargin: 2 * contentEdgeMargins
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignJustify
             maximumLineCount: 4
@@ -85,7 +87,7 @@ Item {
 
     function open(msgtxt, bg, fg) {
         message = msgtxt;
-        popover.color = (bg !== undefined ? bg : backgroundColor);
+        popinfo.color = (bg !== undefined ? bg : backgroundColor);
         label.color = (fg !== undefined ? fg : foregroundColor)
         area.visible = true;
         timer.interval = 1000 * (5 + Math.floor(msgtxt.length / 10));

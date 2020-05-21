@@ -22,11 +22,13 @@ Item {
     property string title: ""
     property color backgroundColor: styleMap.popover.backgroundColor
     property color foregroundColor: styleMap.popover.foregroundColor
-    property real edgeMargins: units.gu(0.5)
-    property real contentTopMargin: units.gu(5) // title bar
+    property real edgeMargins: 0.0
+    property real backgroundRadius: 0.0
+    property real backgroundOpacity: 1.0
+    readonly property real contentTopMargin: units.gu(7) // title bar + 1
     property real contentEdgeMargins: units.gu(2)
     property real contentSpacing: units.gu(1)
-    readonly property real minimumHeight: units.gu(6)
+    readonly property real minimumHeight: units.gu(7)
 
     signal show
     signal close // triggered on button close pressed
@@ -45,7 +47,8 @@ Item {
         anchors.fill: parent
         anchors.margins: edgeMargins
         color: backgroundColor
-        radius: units.gu(1)
+        opacity: backgroundOpacity
+        radius: backgroundRadius
     }
 
     SilicaFlickable {
@@ -80,6 +83,8 @@ Item {
         anchors.verticalCenter: closeButton.verticalCenter
         anchors.left: popover.left
         anchors.right: popover.right
+        anchors.leftMargin: closeButton.width
+        anchors.rightMargin: closeButton.width
         horizontalAlignment: Text.AlignHCenter
         text: title
         font.pixelSize: units.fx("large")
@@ -95,6 +100,9 @@ Item {
         height: units.gu(5)
         anchors.top: popover.top
         anchors.right: popover.right
+        anchors.rightMargin: units.gu(0.5)
+        anchors.topMargin: units.gu(0.5)
+        anchors.bottomMargin: units.gu(0.5)
         color: foregroundColor
         onClicked: {
             console.log("close popover");

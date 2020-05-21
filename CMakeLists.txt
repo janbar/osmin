@@ -164,7 +164,11 @@ endif()
 
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
 
-qt5_add_resources(osmin-resources gui/osmin.qrc)
+if(BUILD_SAILFISHOS)
+    qt5_add_resources(osmin-resources gui/osmin_silica.qrc)
+else()
+    qt5_add_resources(osmin-resources gui/osmin_controls2.qrc)
+endif()
 
 include_directories(${LIBOSMSCOUT_INCLUDE_DIRS})
 

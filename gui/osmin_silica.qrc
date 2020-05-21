@@ -1,10 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>controls2/qtquickcontrols2.conf</file>
-        <file>controls2/components/ActivitySpinner.qml</file>
-        <file>controls2/components/PopInfo.qml</file>
-        <file>controls2/components/StyleLight.qml</file>
-        <file>controls2/components/Units.qml</file>
         <file>images/contextual-menu.svg</file>
         <file>images/go-down.svg</file>
         <file>images/go-next.svg</file>
@@ -12,10 +7,6 @@
         <file>images/go-up.svg</file>
         <file>images/home.svg</file>
         <file>images/navigation-menu.svg</file>
-        <file>controls2/Welcome.qml</file>
-        <file>controls2/components/MapIcon.qml</file>
-        <file>controls2/MapView.qml</file>
-        <file>controls2/components/MapPage.qml</file>
         <file>images/add.svg</file>
         <file>images/close.svg</file>
         <file>images/cogs.svg</file>
@@ -28,10 +19,6 @@
         <file>images/reload.svg</file>
         <file>images/sync.svg</file>
         <file>images/view-fullscreen.svg</file>
-        <file>controls2/MapDownloads.qml</file>
-        <file>controls2/components/SimpleListItem.qml</file>
-        <file>controls2/components/SimpleRow.qml</file>
-        <file>controls2/components/MapListView.qml</file>
         <file>silica/MapDownloads.qml</file>
         <file>silica/MapView.qml</file>
         <file>silica/Welcome.qml</file>
@@ -44,7 +31,6 @@
         <file>silica/components/StyleLight.qml</file>
         <file>silica/components/Units.qml</file>
         <file>silica/components/ScaleIndicator.qml</file>
-        <file>controls2/components/ScaleIndicator.qml</file>
         <file>images/zoomin.svg</file>
         <file>images/zoomout.svg</file>
         <file>images/trip/favourite.svg</file>
@@ -53,21 +39,15 @@
         <file>images/trip/marker.svg</file>
         <file>images/trip/pin.svg</file>
         <file>images/trip/route.svg</file>
-        <file>controls2/components/PopOver.qml</file>
         <file>silica/components/PopOver.qml</file>
-        <file>controls2/MainMenu.qml</file>
         <file>silica/MainMenu.qml</file>
         <file>images/map.svg</file>
         <file>images/trip/measuring.svg</file>
         <file>images/help.svg</file>
-        <file>controls2/ConfigureMap.qml</file>
-        <file>controls2/components/MapCheckBox.qml</file>
         <file>silica/ConfigureMap.qml</file>
         <file>silica/components/MapCheckBox.qml</file>
         <file>images/trip/info.svg</file>
         <file>images/trip/search.svg</file>
-        <file>controls2/LocationInfo.qml</file>
-        <file>controls2/components/POIIcon.qml</file>
         <file>images/poi/aerialway.svg</file>
         <file>images/poi/airfield.svg</file>
         <file>images/poi/airport.svg</file>
@@ -205,18 +185,14 @@
         <file>silica/components/POIIcon.qml</file>
         <file>silica/LocationInfo.qml</file>
         <file>silica/components/PhoneLink.qml</file>
-        <file>controls2/components/PhoneLink.qml</file>
         <file>images/dialer.svg</file>
-        <file>controls2/components/WebLink.qml</file>
         <file>images/region.svg</file>
         <file>silica/components/WebLink.qml</file>
-        <file>controls2/Routing.qml</file>
         <file>images/trip/bike.svg</file>
         <file>images/trip/bus.svg</file>
         <file>images/trip/car.svg</file>
         <file>images/trip/finish.svg</file>
         <file>images/trip/walk.svg</file>
-        <file>controls2/components/WAYIcon.qml</file>
         <file>images/way/change-motorway-lhd.svg</file>
         <file>images/way/change-motorway.svg</file>
         <file>images/way/continue-straight-on.svg</file>
@@ -248,33 +224,19 @@
         <file>images/trip/vehicle.svg</file>
         <file>silica/Routing.qml</file>
         <file>silica/components/WAYIcon.qml</file>
-        <file>controls2/components/Navigator.qml</file>
-        <file>controls2/components/MapRotator.qml</file>
         <file>silica/components/MapRotator.qml</file>
         <file>silica/components/Navigator.qml</file>
-        <file>controls2/components/NavigatorInfo.qml</file>
         <file>silica/components/NavigatorInfo.qml</file>
-        <file>controls2/osmin.qml</file>
         <file>silica/osmin.qml</file>
-        <file>controls2/components/MapPosition.qml</file>
         <file>silica/components/MapPosition.qml</file>
-        <file>controls2/SearchPlace.qml</file>
-        <file>controls2/components/SearchField.qml</file>
         <file>images/day-night.svg</file>
-        <file>controls2/Favorites.qml</file>
-        <file>controls2/components/DialogBase.qml</file>
         <file>images/trip/navigator.svg</file>
         <file>toolbox.js</file>
-        <file>controls2/DialogAbout.qml</file>
-        <file>controls2/Settings.qml</file>
         <file>images/font-scalling.svg</file>
         <file>images/graphic-scalling.svg</file>
         <file>images/trip/track.svg</file>
-        <file>controls2/TrackCollection.qml</file>
         <file>images/trip/segment.svg</file>
-        <file>controls2/components/CompassSensor.qml</file>
         <file>images/compass.svg</file>
-        <file>controls2/Tracking.qml</file>
         <file>images/save.svg</file>
         <file>images/reset.svg</file>
         <file>images/record.svg</file>
@@ -282,7 +244,6 @@
         <file>images/trip/descent.svg</file>
         <file>images/trip/elevation.svg</file>
         <file>images/osmin.png</file>
-        <file>controls2/Banner.qml</file>
         <file>i18n/osmin_en.qm</file>
         <file>i18n/osmin_fr.qm</file>
         <file>silica/Banner.qml</file>

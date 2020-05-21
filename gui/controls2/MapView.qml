@@ -728,7 +728,7 @@ MapPage {
             left: parent.left
             right: parent.right
         }
-        maximumHeight: map.height - units.gu(8) - y
+        maximumHeight: map.height - y /*- units.gu(8)*/
         height: maximumHeight
         visible: false
         onClose: visible = false
@@ -761,7 +761,7 @@ MapPage {
             left: parent.left
             right: parent.right
         }
-        height: map.height - units.gu(8) - y
+        height: map.height - y /*- units.gu(8)*/
         visible: false
         onClose: visible = false
         onShow: visible = true
@@ -780,7 +780,7 @@ MapPage {
             left: parent.left
             right: parent.right
         }
-        height: map.height - units.gu(8) - y
+        height: map.height - y /*- units.gu(8)*/
         visible: false
         onClose: visible = false
         onShow: visible = true
@@ -799,7 +799,7 @@ MapPage {
             left: parent.left
             right: parent.right
         }
-        height: map.height - units.gu(8) - y
+        height: map.height - y /*- units.gu(8)*/
         visible: false
         onClose: visible = false
         onShow: visible = true
