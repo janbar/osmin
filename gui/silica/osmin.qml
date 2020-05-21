@@ -82,11 +82,11 @@ ApplicationWindow {
 
     // property to detect if the UI has finished
     property bool loadedUI: false
-    property bool wideAspect: width >= units.gu(100) && loadedUI
+    property bool wideAspect: height < units.gu(64)
 
     // Constants
     readonly property int queueBatchSize: 100
-    readonly property real minSizeGU: 42
+    readonly property real minSizeGU: 44
 
     Connections {
         target: Qt.application

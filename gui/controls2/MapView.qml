@@ -123,7 +123,8 @@ MapPage {
             mark.lon = lon;
             switch (mapView.state) {
             case "view":
-                mapView.showToolbar = true;
+                if (!edgeToolbar.visible)
+                    mapView.showToolbar = true;
                 break;
             case "locationInfo":
                 popLocationInfo.show();
@@ -319,9 +320,9 @@ MapPage {
         backgroundColor: "white"
         color: Tracker.recording !== "" ? "red" : "black"
         animationRunning: Tracker.recording !== "" && !navigation
-        visible: !showToolbar && (navigation || Tracker.recording !== "")
+        visible: mapView.state === "view" && !showToolbar && (navigation || Tracker.recording !== "")
         borderPadding: units.gu(0.0)
-        opacity: 0.9
+        opacity: 0.7
         height: units.gu(6)
         onClicked: {
             if (Tracker.recording !== "")
@@ -337,14 +338,14 @@ MapPage {
         anchors{
             bottom: buttonLocation.top
             right: parent.right
-            bottomMargin: units.gu(2)
+            bottomMargin: units.gu(1)
             rightMargin: units.gu(1)
         }
         source: "qrc:/images/zoomout.svg"
         color: "black"
         backgroundColor: "white"
         borderPadding: units.gu(1.5)
-        opacity: 0.5
+        opacity: 0.7
         height: units.gu(6)
         onClicked: map.zoomOut(1.732)
     }
@@ -354,14 +355,14 @@ MapPage {
         anchors{
             bottom: buttonZoomOut.top
             right: parent.right
-            bottomMargin: units.gu(2)
+            bottomMargin: units.gu(1)
             rightMargin: units.gu(1)
         }
         source: "qrc:/images/zoomin.svg"
         color: "black"
         backgroundColor: "white"
         borderPadding: units.gu(1.5)
-        opacity: 0.5
+        opacity: 0.7
         height: units.gu(6)
         onClicked: map.zoomIn(1.732)
     }
@@ -378,7 +379,7 @@ MapPage {
         color: rotateEnabled ? "white" : "black"
         backgroundColor: rotateEnabled ? "black" : "white"
         borderPadding: 0
-        opacity: rotateEnabled || navigation ? 0.8 : 0.5
+        opacity: rotateEnabled || navigation ? 0.9 : 0.7
         height: units.gu(6)
         onClicked: rotateEnabled = !rotateEnabled
         rotation: navigation ? (360 - mapView.azimuth) : (mapView.rotation * 180.0 / Math.PI)
@@ -388,7 +389,7 @@ MapPage {
 
     Item {
         visible: navigation && !popNavigatorInfo.visible
-        opacity: 0.8
+        opacity: 0.9
         anchors{
             top: parent.top
             left: parent.left
@@ -544,7 +545,7 @@ MapPage {
         id: footerToolbar
         height: units.gu(8)
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: showToolbar ? 0 : - height
+        anchors.bottomMargin: showToolbar && !edgeToolbar.visible ? 0 : - height
         anchors.left: parent.left
         anchors.right: parent.right
         z: 99
@@ -554,7 +555,7 @@ MapPage {
         }
 
         Rectangle {
-            id: defaultToolBar
+            id: horizontalToolBar
             anchors.fill: parent
             color: "transparent"
             opacity: mapView.state === "view" ? 1.0 : 0.0
@@ -579,7 +580,7 @@ MapPage {
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.5)
-                        opacity: 0.9
+                        opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
                             popMainMenu.show();
@@ -592,7 +593,7 @@ MapPage {
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
-                        opacity: 0.9
+                        opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
                             if (lockRotation)
@@ -608,7 +609,7 @@ MapPage {
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
-                        opacity: 0.9
+                        opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
                             var page = stackView.push("qrc:/controls2/Favorites.qml");
@@ -616,14 +617,13 @@ MapPage {
                     }
 
                     MapIcon {
-                        id: find
                         visible: true
                         anchors.verticalCenter: parent.verticalCenter
                         source: "qrc:/images/trip/search.svg"
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
-                        opacity: 0.9
+                        opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
                             var page = stackView.push("qrc:/controls2/SearchPlace.qml", {
@@ -641,14 +641,127 @@ MapPage {
                     }
 
                     MapIcon {
-                        id: dayOrNight
                         visible: true
                         anchors.verticalCenter: parent.verticalCenter
                         source: "qrc:/images/day-night.svg"
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
-                        opacity: 0.9
+                        opacity: 0.7
+                        height: units.gu(6)
+                        onClicked: {
+                            nightView = !nightView;
+                            map.toggleDaylight();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Item {
+        id: edgeToolbar
+        width: units.gu(8)
+        anchors.top: buttonRotate.bottom
+        anchors.bottom: buttonZoomIn.top
+        anchors.right: parent.right
+        visible: !mainView.wideAspect && !popNavigatorInfo.visible
+        z: 99
+
+        Rectangle {
+            id: verticalToolBar
+            anchors.fill: parent
+            color: "transparent"
+            opacity: (!mainView.wideAspect && mapView.state === "view" ? 1.0 : 0.0)
+            enabled: opacity > 0
+
+            Rectangle {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.topMargin: units.gu(1)
+                anchors.bottomMargin: units.gu(1)
+                width: units.gu(8)
+                color: "transparent"
+
+                Column {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: units.gu(1)
+
+                    MapIcon {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/images/navigation-menu.svg"
+                        color: "black"
+                        backgroundColor: "white"
+                        borderPadding: units.gu(1.5)
+                        opacity: 0.7
+                        height: units.gu(6)
+                        onClicked: {
+                            popMainMenu.show();
+                        }
+                    }
+
+                    MapIcon {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/images/trip/info.svg"
+                        color: "black"
+                        backgroundColor: "white"
+                        borderPadding: units.gu(1.0)
+                        opacity: 0.7
+                        height: units.gu(6)
+                        onClicked: {
+                            if (lockRotation)
+                                rotator.rotateTo(rotation, true);
+                            else
+                                map.lockToPosition = true;
+                        }
+                    }
+
+                    MapIcon {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/images/trip/pin.svg"
+                        color: "black"
+                        backgroundColor: "white"
+                        borderPadding: units.gu(1.0)
+                        opacity: 0.7
+                        height: units.gu(6)
+                        onClicked: {
+                            var page = stackView.push("qrc:/controls2/Favorites.qml");
+                        }
+                    }
+
+                    MapIcon {
+                        visible: true
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/images/trip/search.svg"
+                        color: "black"
+                        backgroundColor: "white"
+                        borderPadding: units.gu(1.0)
+                        opacity: 0.7
+                        height: units.gu(6)
+                        onClicked: {
+                            var page = stackView.push("qrc:/controls2/SearchPlace.qml", {
+                                               "searchCenterLat": positionSource._lat,
+                                               "searchCenterLon": positionSource._lon,
+                                               "acceptLabel": qsTr("Go"),
+                                               "acceptIcon" : "qrc:/images/trip/navigator.svg"
+                                           });
+                             ToolBox.connectOnce(page.selectLocation, function(location, lat, lon, label){
+                                 if (lat !== NaN && lon !== NaN && label !== "") {
+                                    popRouting.goTo(lat, lon, label);
+                                 }
+                            });
+                        }
+                    }
+
+                    MapIcon {
+                        visible: true
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/images/day-night.svg"
+                        color: "black"
+                        backgroundColor: "white"
+                        borderPadding: units.gu(1.0)
+                        opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
                             nightView = !nightView;
