@@ -110,6 +110,22 @@ PopOver {
                     color: foregroundColor
                 }
             }
+            Row {
+                width: parent.width
+                spacing: units.gu(2)
+                Label {
+                    width: parent.width / 2
+                    text: qsTr("Maximum Speed")
+                  font.pixelSize: units.fx("medium")
+                  color: styleMap.popover.highlightedColor
+                }
+                Label {
+                    id: maxSpeed
+                    text: Converter.readableSpeed(Tracker.maxSpeed)
+                    font.pixelSize: units.fx("medium")
+                    color: foregroundColor
+                }
+            }
         }
 
         Column {

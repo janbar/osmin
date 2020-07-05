@@ -366,28 +366,30 @@
         <translation type="unfinished">Impossible d&apos;obtenir la position actuelle</translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="483"/>
-        <location filename="../controls2/MapView.qml" line="630"/>
-        <location filename="../silica/MapView.qml" line="480"/>
-        <location filename="../silica/MapView.qml" line="626"/>
+        <location filename="../controls2/MapView.qml" line="486"/>
+        <location filename="../controls2/MapView.qml" line="632"/>
+        <location filename="../controls2/MapView.qml" line="746"/>
+        <location filename="../silica/MapView.qml" line="483"/>
+        <location filename="../silica/MapView.qml" line="628"/>
+        <location filename="../silica/MapView.qml" line="742"/>
         <source>Go</source>
         <translation type="unfinished">Y aller</translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="748"/>
-        <location filename="../silica/MapView.qml" line="744"/>
+        <location filename="../controls2/MapView.qml" line="863"/>
+        <location filename="../silica/MapView.qml" line="859"/>
         <source>My Position</source>
         <translation type="unfinished">Ma position</translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="826"/>
-        <location filename="../silica/MapView.qml" line="822"/>
+        <location filename="../controls2/MapView.qml" line="941"/>
+        <location filename="../silica/MapView.qml" line="937"/>
         <source>Target reached at %1 %2.</source>
         <translation type="unfinished">Arrivé à destination à%1 %2.</translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="841"/>
-        <location filename="../silica/MapView.qml" line="837"/>
+        <location filename="../controls2/MapView.qml" line="956"/>
+        <location filename="../silica/MapView.qml" line="952"/>
         <source>Track recording failed</source>
         <translation type="unfinished">L&apos;enregistrement de la trace a échoué</translation>
     </message>
@@ -395,14 +397,14 @@
 <context>
     <name>NavigatorInfo</name>
     <message>
-        <location filename="../controls2/components/NavigatorInfo.qml" line="146"/>
-        <location filename="../silica/components/NavigatorInfo.qml" line="146"/>
+        <location filename="../controls2/components/NavigatorInfo.qml" line="149"/>
+        <location filename="../silica/components/NavigatorInfo.qml" line="149"/>
         <source>Resume navigation</source>
         <translation type="unfinished">Reprendre la navigation</translation>
     </message>
     <message>
-        <location filename="../controls2/components/NavigatorInfo.qml" line="191"/>
-        <location filename="../silica/components/NavigatorInfo.qml" line="191"/>
+        <location filename="../controls2/components/NavigatorInfo.qml" line="194"/>
+        <location filename="../silica/components/NavigatorInfo.qml" line="194"/>
         <source>ETA</source>
         <translation type="unfinished">ETA</translation>
     </message>
@@ -688,73 +690,73 @@
         <translation type="unfinished">Réglages</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="146"/>
+        <location filename="../controls2/Settings.qml" line="144"/>
         <source>Theme</source>
         <translation type="unfinished">Thème</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="154"/>
+        <location filename="../controls2/Settings.qml" line="152"/>
         <source>Light</source>
         <translation type="unfinished">Clair</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="155"/>
+        <location filename="../controls2/Settings.qml" line="153"/>
         <source>Dark</source>
         <translation type="unfinished">Sombre</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="175"/>
+        <location filename="../controls2/Settings.qml" line="173"/>
         <location filename="../silica/Settings.qml" line="70"/>
         <source>System of Units</source>
         <translation type="unfinished">Système d&apos;unités</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="182"/>
+        <location filename="../controls2/Settings.qml" line="180"/>
         <location filename="../silica/Settings.qml" line="75"/>
         <source>SI</source>
         <translation type="unfinished">SI</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="183"/>
+        <location filename="../controls2/Settings.qml" line="181"/>
         <location filename="../silica/Settings.qml" line="76"/>
         <source>Imperial</source>
         <translation type="unfinished">Imperial</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="199"/>
-        <location filename="../silica/Settings.qml" line="85"/>
+        <location filename="../controls2/Settings.qml" line="236"/>
+        <location filename="../silica/Settings.qml" line="111"/>
         <source>The change will be effective after restart.</source>
         <translation type="unfinished">Le changement prendra effet après le redémarrage.</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="209"/>
-        <location filename="../silica/Settings.qml" line="95"/>
+        <location filename="../controls2/Settings.qml" line="246"/>
+        <location filename="../silica/Settings.qml" line="121"/>
         <source>Data directory</source>
         <translation type="unfinished">Répertoire des données</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="214"/>
-        <location filename="../controls2/Settings.qml" line="232"/>
-        <location filename="../silica/Settings.qml" line="100"/>
-        <location filename="../silica/Settings.qml" line="118"/>
+        <location filename="../controls2/Settings.qml" line="251"/>
+        <location filename="../controls2/Settings.qml" line="269"/>
+        <location filename="../silica/Settings.qml" line="126"/>
+        <location filename="../silica/Settings.qml" line="144"/>
         <source>%1 free</source>
         <translation type="unfinished">%1 libre</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="227"/>
-        <location filename="../silica/Settings.qml" line="113"/>
+        <location filename="../controls2/Settings.qml" line="264"/>
+        <location filename="../silica/Settings.qml" line="139"/>
         <source>Maps directory</source>
         <translation type="unfinished">Répertoire des cartes</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="245"/>
-        <location filename="../silica/Settings.qml" line="131"/>
+        <location filename="../controls2/Settings.qml" line="282"/>
+        <location filename="../silica/Settings.qml" line="157"/>
         <source>Hillshade provider</source>
         <translation type="unfinished">Fournisseur du relief ombré</translation>
     </message>
     <message>
-        <location filename="../controls2/Settings.qml" line="250"/>
-        <location filename="../silica/Settings.qml" line="136"/>
+        <location filename="../controls2/Settings.qml" line="287"/>
+        <location filename="../silica/Settings.qml" line="162"/>
         <source>Not configured</source>
         <translation type="unfinished">Non configuré</translation>
     </message>
@@ -841,26 +843,32 @@
         <translation type="unfinished">Descente</translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="121"/>
-        <location filename="../silica/Tracking.qml" line="121"/>
+        <location filename="../controls2/Tracking.qml" line="118"/>
+        <location filename="../silica/Tracking.qml" line="118"/>
+        <source>Maximum Speed</source>
+        <translation type="unfinished">Vitesse maximale</translation>
+    </message>
+    <message>
+        <location filename="../controls2/Tracking.qml" line="137"/>
+        <location filename="../silica/Tracking.qml" line="137"/>
         <source>Reset statistics</source>
         <translation type="unfinished">Réinitialiser les statistiques</translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="138"/>
-        <location filename="../silica/Tracking.qml" line="138"/>
+        <location filename="../controls2/Tracking.qml" line="154"/>
+        <location filename="../silica/Tracking.qml" line="154"/>
         <source>Cut track recording</source>
         <translation type="unfinished">Tronçonner l&apos;enregistrement en cours</translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="138"/>
-        <location filename="../silica/Tracking.qml" line="138"/>
+        <location filename="../controls2/Tracking.qml" line="154"/>
+        <location filename="../silica/Tracking.qml" line="154"/>
         <source>Start track recording</source>
         <translation type="unfinished">Démarrer l&apos;enregistrement de la trace</translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="158"/>
-        <location filename="../silica/Tracking.qml" line="158"/>
+        <location filename="../controls2/Tracking.qml" line="174"/>
+        <location filename="../silica/Tracking.qml" line="174"/>
         <source>Close track recording</source>
         <translation type="unfinished">Finir l&apos;enregistrement en cours</translation>
     </message>
@@ -894,105 +902,105 @@
 <context>
     <name>osmin</name>
     <message>
-        <location filename="../controls2/osmin.qml" line="253"/>
+        <location filename="../controls2/osmin.qml" line="254"/>
         <source>About</source>
         <translation type="unfinished">À propos</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="275"/>
-        <location filename="../silica/osmin.qml" line="129"/>
+        <location filename="../controls2/osmin.qml" line="276"/>
+        <location filename="../silica/osmin.qml" line="130"/>
         <source>Download Maps</source>
         <translation type="unfinished">Télécharger les Cartes</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="276"/>
-        <location filename="../silica/osmin.qml" line="130"/>
+        <location filename="../controls2/osmin.qml" line="277"/>
+        <location filename="../silica/osmin.qml" line="131"/>
         <source>Search Place</source>
         <translation type="unfinished">Rechercher un emplacement</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="277"/>
-        <location filename="../silica/osmin.qml" line="131"/>
+        <location filename="../controls2/osmin.qml" line="278"/>
+        <location filename="../silica/osmin.qml" line="132"/>
         <source>Favorite Places</source>
         <translation type="unfinished">Emplacements favoris</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="313"/>
-        <location filename="../silica/osmin.qml" line="148"/>
+        <location filename="../controls2/osmin.qml" line="314"/>
+        <location filename="../silica/osmin.qml" line="149"/>
         <source>meters</source>
         <translation type="unfinished">mètres</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="314"/>
-        <location filename="../silica/osmin.qml" line="149"/>
+        <location filename="../controls2/osmin.qml" line="315"/>
+        <location filename="../silica/osmin.qml" line="150"/>
         <source>km</source>
         <translation type="unfinished">km</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="315"/>
-        <location filename="../silica/osmin.qml" line="150"/>
+        <location filename="../controls2/osmin.qml" line="316"/>
+        <location filename="../silica/osmin.qml" line="151"/>
         <source>feet</source>
         <translation type="unfinished">feet</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="316"/>
-        <location filename="../silica/osmin.qml" line="151"/>
+        <location filename="../controls2/osmin.qml" line="317"/>
+        <location filename="../silica/osmin.qml" line="152"/>
         <source>miles</source>
         <translation type="unfinished">miles</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="317"/>
-        <location filename="../silica/osmin.qml" line="152"/>
+        <location filename="../controls2/osmin.qml" line="318"/>
+        <location filename="../silica/osmin.qml" line="153"/>
         <source>north</source>
         <translation type="unfinished">nord</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="318"/>
-        <location filename="../silica/osmin.qml" line="153"/>
+        <location filename="../controls2/osmin.qml" line="319"/>
+        <location filename="../silica/osmin.qml" line="154"/>
         <source>south</source>
         <translation type="unfinished">sud</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="319"/>
-        <location filename="../silica/osmin.qml" line="154"/>
+        <location filename="../controls2/osmin.qml" line="320"/>
+        <location filename="../silica/osmin.qml" line="155"/>
         <source>west</source>
         <translation type="unfinished">ouest</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="320"/>
-        <location filename="../silica/osmin.qml" line="155"/>
+        <location filename="../controls2/osmin.qml" line="321"/>
+        <location filename="../silica/osmin.qml" line="156"/>
         <source>east</source>
         <translation type="unfinished">est</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="321"/>
-        <location filename="../silica/osmin.qml" line="156"/>
+        <location filename="../controls2/osmin.qml" line="322"/>
+        <location filename="../silica/osmin.qml" line="157"/>
         <source>northwest</source>
         <translation type="unfinished">nord-ouest</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="322"/>
-        <location filename="../silica/osmin.qml" line="157"/>
+        <location filename="../controls2/osmin.qml" line="323"/>
+        <location filename="../silica/osmin.qml" line="158"/>
         <source>northeast</source>
         <translation type="unfinished">nord-est</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="323"/>
-        <location filename="../silica/osmin.qml" line="158"/>
+        <location filename="../controls2/osmin.qml" line="324"/>
+        <location filename="../silica/osmin.qml" line="159"/>
         <source>southwest</source>
         <translation type="unfinished">sud-ouest</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="324"/>
-        <location filename="../silica/osmin.qml" line="159"/>
+        <location filename="../controls2/osmin.qml" line="325"/>
+        <location filename="../silica/osmin.qml" line="160"/>
         <source>southeast</source>
         <translation type="unfinished">sud-est</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="410"/>
-        <location filename="../controls2/osmin.qml" line="420"/>
-        <location filename="../silica/osmin.qml" line="221"/>
-        <location filename="../silica/osmin.qml" line="231"/>
+        <location filename="../controls2/osmin.qml" line="411"/>
+        <location filename="../controls2/osmin.qml" line="421"/>
+        <location filename="../silica/osmin.qml" line="222"/>
+        <location filename="../silica/osmin.qml" line="232"/>
         <source>Saving change failed</source>
         <translation type="unfinished">La sauvegarde a échouée</translation>
     </message>

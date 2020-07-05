@@ -28,6 +28,7 @@ class Tracker : public QObject
   Q_PROPERTY(double duration READ getDuration NOTIFY trackerDataChanged)
   Q_PROPERTY(double ascent READ getAscent NOTIFY trackerDataChanged)
   Q_PROPERTY(double descent READ getDescent NOTIFY trackerDataChanged)
+  Q_PROPERTY(double maxSpeed READ getMaxSpeed NOTIFY trackerDataChanged)
   Q_PROPERTY(QString recording READ getRecording WRITE setRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   //Q_PROPERTY(double remainingDistance READ getRemainingDistance NOTIFY remainingDistanceChanged)
@@ -47,6 +48,7 @@ public:
   double getDuration() const { return m_duration; }
   double getAscent() const { return m_ascent; }
   double getDescent() const { return m_descent; }
+  double getMaxSpeed() const { return m_maxSpeed.value; }
   QString getRecording() const { return m_recording; }
   void setRecording(const QString& filename);
   bool getProcessing() const { return m_busy; }
@@ -97,7 +99,11 @@ private:
   double m_duration;
   double m_ascent;
   double m_descent;
-
+  struct {
+    double seconds;
+    double meters;
+    double value;
+  } m_maxSpeed;
   bool m_busy;
   QString m_recording;
   //std::vector<osmscout::RouteStep> m_routeSteps;

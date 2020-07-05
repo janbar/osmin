@@ -11,6 +11,7 @@
 #define MOVING_SPEED    1.0
 #define COURSE_SPEED    3.0
 #define BASE_DIRECTORY  "TRACKER"
+#define LIMIT_INTERVAL  5.0 /* time interval to estimate the limits as max speed etc */
 
 Tracker::Tracker(QObject* parent)
 : QObject(parent)
@@ -29,6 +30,7 @@ Tracker::Tracker(QObject* parent)
 //, m_nextRouteStep()
 //, m_remainingDistance()
 {
+  m_maxSpeed = { 0, 0, 0 };
 }
 
 Tracker::~Tracker()
@@ -122,6 +124,14 @@ void Tracker::onPositionChanged(const osmscout::PositionAgent::PositionState sta
 
 void Tracker::onDataChanged(double kmph, double meters, double seconds, double ascent, double descent)
 {
+  if (seconds >= (m_maxSpeed.seconds + LIMIT_INTERVAL))
+  {
+    double s = 3.6 * (meters - m_maxSpeed.meters) / (seconds - m_maxSpeed.seconds);
+    if (s > m_maxSpeed.value)
+      m_maxSpeed.value = s;
+    m_maxSpeed.seconds = seconds;
+    m_maxSpeed.meters = meters;
+  }
   m_currentSpeed = kmph;
   m_distance = meters;
   m_duration = seconds;
