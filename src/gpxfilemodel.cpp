@@ -266,11 +266,6 @@ void GPXFileModel::clearData()
       m_items.clear();
       endRemoveRows();
     }
-    if (m_file)
-    {
-      delete m_file;
-      m_file = nullptr;
-    }
     endResetModel();
   }
   emit countChanged();
