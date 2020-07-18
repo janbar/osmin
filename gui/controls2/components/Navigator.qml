@@ -45,7 +45,7 @@ Item {
     signal stopped
 
     function setup(vehicle, route, routeWay, destination) {
-        mapView.addRoute(0, routeWay);
+        mapView.addRoute(routeWay);
         mapView.addMarkEnd(destination.lat, destination.lon);
         navigator.vehicle = vehicle;
         navigator.destination = destination;
@@ -60,7 +60,7 @@ Item {
         destination = null;
         navigationModel.route = null;
         routing.cancel();
-        mapView.removeRoute(0);
+        mapView.removeRoute();
         mapView.removeMarkEnd();
         stopped();
     }
@@ -107,7 +107,7 @@ Item {
                 delayReroute.start(); // wait 5 sec before next reroute
                 if (routing.count > 0) {
                     console.log("Navigator: route.count = " + routing.count);
-                    mapView.addRoute(0, routing.routeWay);
+                    mapView.addRoute(routing.routeWay);
                     navigationModel.locationChanged(position._posValid, position._lat, position._lon, position._accValid, position._acc);
                     navigationModel.route = routing.route;
                     navigator.suspended = false;

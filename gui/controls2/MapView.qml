@@ -431,42 +431,49 @@ MapPage {
         }
     }
 
+    readonly property int id_ROUTE: 0       // route overlay
+    readonly property int id_RECORDING: 1   // recording overlay
+    readonly property int id_DEPARTURE: 4   // departure of route
+    readonly property int id_ARRIVAL: 5     // arrival of route
+    readonly property int id_MARK_POINT: 8  // range start for marks
+    readonly property int id_WAY_POINT: 128 // range start for way points
+    readonly property int id_COURSE: 256    // range start for courses
 
-    function addRoute(id, routeWay) {
-        map.addOverlayObject(id, routeWay);
+    function addRoute(routeWay) {
+        map.addOverlayObject(id_ROUTE, routeWay);
     }
-    function removeRoute(id) {
-        map.removeOverlayObject(id);
+    function removeRoute() {
+        map.removeOverlayObject(id_ROUTE);
     }
 
     function addMarkStart(lat, lon) {
-        map.addPositionMark(501, lat, lon);
+        map.addPositionMark(id_DEPARTURE, lat, lon);
     }
     function removeMarkStart() {
-        map.removePositionMark(501);
+        map.removePositionMark(id_DEPARTURE);
     }
     function addMarkEnd(lat, lon) {
-        map.addPositionMark(502, lat, lon);
+        map.addPositionMark(id_ARRIVAL, lat, lon);
     }
     function removeMarkEnd() {
-        map.removePositionMark(502);
+        map.removePositionMark(id_ARRIVAL);
     }
 
     function addMark(id, lat, lon) {
-        map.addPositionMark(1000 + id, lat, lon);
+        map.addPositionMark(id_MARK_POINT + id, lat, lon);
     }
     function removeMark(id) {
-        map.removePositionMark(1000 + id);
+        map.removePositionMark(id_MARK_POINT + id);
     }
 
     function addWayPoint(id, lat, lon) {
         var wpt = map.createOverlayNode("_waypoint");
         wpt.addPoint(lat, lon);
         wpt.name = "Pos: " + lat.toFixed(4) + " " + lon.toFixed(4);
-        map.addOverlayObject(2000 + id, wpt);
+        map.addOverlayObject(id_WAY_POINT + id, wpt);
     }
     function removeWayPoint(id) {
-        map.removeOverlayObject(2000 + id);
+        map.removeOverlayObject(id_WAY_POINT + id);
     }
 
     // Go there. The button is visible in state 'locationInfo'
