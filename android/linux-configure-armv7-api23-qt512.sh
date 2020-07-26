@@ -5,9 +5,9 @@ cd build-armv7
 export JAVA_HOME=/home/jlb/bin/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
 export ANDROID_NDK=/home/shared/Android/android-ndk-r17c
-export ANDROID_NATIVE_API_LEVEL=24
-export ANDROID_SDK_MINVER=24
-export ANDROID_SDK_TARGET=26
+export ANDROID_NATIVE_API_LEVEL=23
+export ANDROID_SDK_MINVER=23
+export ANDROID_SDK_TARGET=23
 export QT_DIR=/home/shared/Qt/5.12.9/android_armv7
 
 cmake ../.. -DCMAKE_SYSTEM_NAME=Android \

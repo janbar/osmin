@@ -6,6 +6,8 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Hom
 export ANDROID_SDK=/Users/Shared/Android/Sdk
 export ANDROID_NDK=/Users/Shared/Android/android-ndk-r17c
 export ANDROID_NATIVE_API_LEVEL=24
+export ANDROID_SDK_MINVER=24
+export ANDROID_SDK_TARGET=26
 export QT_DIR=/Users/Shared/Qt/5.12.8/android_armv7
 
 cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
@@ -16,6 +18,8 @@ cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DANDROID_ABI="armeabi-v7a" \
 -DANDROID_STL_PREFIX="llvm-libc++" \
 -DANDROID_STL_SHARED_LIBRARIES="c++_shared" \
+-DANDROID_SDK_MINVER=$ANDROID_SDK_MINVER \
+-DANDROID_SDK_TARGET=$ANDROID_SDK_TARGET \
 -DANDROID_NATIVE_API_LEVEL=$ANDROID_NATIVE_API_LEVEL \
 -DQT_ANDROID_PLATFORM_LEVEL=$ANDROID_NATIVE_API_LEVEL \
 -DQT_ANDROID_TOOL_PREFIX="arm-linux-androideabi" \

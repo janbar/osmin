@@ -6,6 +6,8 @@ export JAVA_HOME=/home/jlb/bin/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
 export ANDROID_NDK=/home/shared/Android/android-ndk-r17c
 export ANDROID_NATIVE_API_LEVEL=24
+export ANDROID_SDK_MINVER=24
+export ANDROID_SDK_TARGET=26
 export QT_DIR=/home/shared/Qt/5.12.9/android_x86
 
 cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
@@ -16,6 +18,8 @@ cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DANDROID_ABI="x86" \
 -DANDROID_STL_PREFIX="llvm-libc++" \
 -DANDROID_STL_SHARED_LIBRARIES="c++_shared" \
+-DANDROID_SDK_MINVER=$ANDROID_SDK_MINVER \
+-DANDROID_SDK_TARGET=$ANDROID_SDK_TARGET \
 -DANDROID_NATIVE_API_LEVEL=$ANDROID_NATIVE_API_LEVEL \
 -DQT_ANDROID_PLATFORM_LEVEL=$ANDROID_NATIVE_API_LEVEL \
 -DQT_ANDROID_TOOL_PREFIX="i686-linux-android" \

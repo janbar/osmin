@@ -113,6 +113,13 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
             set(QT_ANDROID_APP_VERSION ${QT_ANDROID_APP_VERSION_CODE})
         endif()
 
+        if(NOT ANDROID_SDK_MINVER)
+            set(ANDROID_SDK_MINVER ${ANDROID_NATIVE_API_LEVEL})
+        endif()
+        if(NOT ANDROID_SDK_TARGET)
+            set(ANDROID_SDK_TARGET ${ANDROID_SDK_MINVER})
+        endif()
+
         # create a subdirectory for the extra package sources
         set(QT_ANDROID_APP_PACKAGE_SOURCE_ROOT "${CMAKE_CURRENT_BINARY_DIR}/package")
 
