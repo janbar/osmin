@@ -951,6 +951,8 @@ Page {
         map: map
     }
 
+    property var overlayRecording: map.createOverlayWay("_track");
+
     Connections {
         target: Tracker
         onRecordingChanged: {
@@ -958,6 +960,18 @@ Page {
         }
         onRecordingFailed: {
             popInfo.open(qsTr("Track recording failed"));
+        }
+        onDistanceChanged: {
+            if (Tracker.isRecording) {
+                overlayRecording.addPoint(Tracker.lat, Tracker.lon);
+                map.addOverlayObject(id_RECORDING, overlayRecording);
+            }
+        }
+        onIsRecordingChanged: {
+            if (!Tracker.isRecording) {
+                overlayRecording.clear();
+                map.removeOverlayObject(id_RECORDING);
+            }
         }
     }
 

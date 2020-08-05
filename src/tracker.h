@@ -29,8 +29,11 @@ class Tracker : public QObject
   Q_PROPERTY(double ascent READ getAscent NOTIFY trackerDataChanged)
   Q_PROPERTY(double descent READ getDescent NOTIFY trackerDataChanged)
   Q_PROPERTY(double maxSpeed READ getMaxSpeed NOTIFY trackerDataChanged)
+  Q_PROPERTY(double lat READ getLat NOTIFY trackerPositionChanged)
+  Q_PROPERTY(double lon READ getLon NOTIFY trackerPositionChanged)
   Q_PROPERTY(QString recording READ getRecording WRITE setRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
+  Q_PROPERTY(bool isRecording READ getIsRecording NOTIFY trackerRecordingChanged)
   //Q_PROPERTY(double remainingDistance READ getRemainingDistance NOTIFY remainingDistanceChanged)
   //Q_PROPERTY(QObject* nextRouteStep READ getNextRoutStep NOTIFY nextStepChanged)
 
@@ -49,9 +52,12 @@ public:
   double getAscent() const { return m_ascent; }
   double getDescent() const { return m_descent; }
   double getMaxSpeed() const { return m_maxSpeed.value; }
+  double getLat() const { return m_vehicleCoord.GetLat(); }
+  double getLon() const { return m_vehicleCoord.GetLon(); }
   QString getRecording() const { return m_recording; }
   void setRecording(const QString& filename);
   bool getProcessing() const { return m_busy; }
+  bool getIsRecording() const;
 
   Q_INVOKABLE void locationChanged(bool positionValid, double lat, double lon,
                                    bool horizontalAccuracyValid, double horizontalAccuracy,
@@ -119,6 +125,7 @@ public:
   virtual ~TrackerModule();
 
   void record();
+  bool isRecording() const { return m_recording; }
 
 signals:
   void dataChanged(double kmph, double distance, double duration, double ascent, double descent);

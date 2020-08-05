@@ -77,6 +77,11 @@ void Tracker::setRecording(const QString& filename)
   emit resumeRecording(filename);
 }
 
+bool Tracker::getIsRecording() const
+{
+  return (m_p ? m_p->isRecording() : false);
+}
+
 void Tracker::locationChanged(bool positionValid, double lat, double lon,
                               bool horizontalAccuracyValid, double horizontalAccuracy,
                               double alt /*= 0.0*/)

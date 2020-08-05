@@ -318,14 +318,14 @@ MapPage {
         }
         source: "qrc:/images/record.svg"
         backgroundColor: "white"
-        color: Tracker.recording !== "" ? "red" : "black"
-        animationRunning: Tracker.recording !== "" && !navigation
-        visible: mapView.state === "view" && !showToolbar && (navigation || Tracker.recording !== "")
+        color: Tracker.isRecording ? "red" : "black"
+        animationRunning: Tracker.isRecording && !navigation
+        visible: mapView.state === "view" && !showToolbar && (navigation || Tracker.isRecording)
         borderPadding: units.gu(0.0)
         opacity: 0.7
         height: units.gu(6)
         onClicked: {
-            if (Tracker.recording !== "")
+            if (Tracker.isRecording)
                 Tracker.stopRecording();
             else
                 Tracker.startRecording();
@@ -954,6 +954,8 @@ MapPage {
         map: map
     }
 
+    property var overlayRecording: map.createOverlayWay("_track");
+
     Connections {
         target: Tracker
         onRecordingChanged: {
@@ -961,6 +963,18 @@ MapPage {
         }
         onRecordingFailed: {
             popInfo.open(qsTr("Track recording failed"));
+        }
+        onDistanceChanged: {
+            if (Tracker.isRecording) {
+                overlayRecording.addPoint(Tracker.lat, Tracker.lon);
+                map.addOverlayObject(id_RECORDING, overlayRecording);
+            }
+        }
+        onIsRecordingChanged: {
+            if (!Tracker.isRecording) {
+                overlayRecording.clear();
+                map.removeOverlayObject(id_RECORDING);
+            }
         }
     }
 
