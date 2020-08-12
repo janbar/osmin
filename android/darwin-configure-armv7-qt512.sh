@@ -8,7 +8,7 @@ export ANDROID_NDK=/Users/Shared/Android/android-ndk-r17c
 export ANDROID_NATIVE_API_LEVEL=24
 export ANDROID_SDK_MINVER=24
 export ANDROID_SDK_TARGET=26
-export QT_DIR=/Users/Shared/Qt/5.12.8/android_armv7
+export QT_DIR=/Users/Shared/Qt/5.12.9/android_armv7
 
 cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_PREFIX_PATH=$QT_DIR \
