@@ -12,6 +12,7 @@
 #define COURSE_SPEED    3.0
 #define BASE_DIRECTORY  "TRACKER"
 #define LIMIT_INTERVAL  5.0 /* time interval to estimate the limits as max speed etc */
+#define RECORD_INTERVAL 50.0 /* distance interval between recorded positions */
 
 Tracker::Tracker(QObject* parent)
 : QObject(parent)
@@ -60,6 +61,7 @@ bool Tracker::init(const QString& root)
   connect(m_p, &TrackerModule::recordingChanged, this, &Tracker::onRecordingChanged, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::recordingFailed, this, &Tracker::recordingFailed, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::processing, this, &Tracker::onProcessingChanged, Qt::QueuedConnection);
+  connect(m_p, &TrackerModule::positionRecorded, this, &Tracker::onPositionRecorded, Qt::QueuedConnection);
 
   return true;
 }
@@ -157,6 +159,11 @@ void Tracker::onProcessingChanged(bool busy)
   emit trackerProcessingChanged();
 }
 
+void Tracker::onPositionRecorded(const osmscout::GeoCoord coord)
+{
+  emit trackerPositionRecorded(coord.GetLat(), coord.GetLon());
+}
+
 TrackerModule::TrackerModule(QThread* thread, const QString& root)
 : m_t(thread)
 , m_baseDir()
@@ -165,6 +172,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_azimuth(0)
 , m_currentSpeed(0)
 , m_lastPosition()
+, m_lastRecord()
 , m_distance(0)
 , m_duration(0)
 , m_ascent(0)
@@ -204,6 +212,7 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
     m_state = osmscout::PositionAgent::PositionState::NoRoute;
 
   osmscout::Timestamp now = std::chrono::system_clock::now();
+  osmscout::Bearing bearing;
 
   if (m_lastPosition)
   {
@@ -211,7 +220,6 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
     auto sec = std::chrono::duration_cast<std::chrono::duration<double> >(now - m_lastPosition.time);
     if (sec.count() > 0)
     {
-      record();
       m_currentSpeed = 3.6 * d / sec.count();
       // update tracking data when moving
       if (m_currentSpeed > MOVING_SPEED)
@@ -226,16 +234,47 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
       }
       emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent);
     }
+    // when we are stationary the direction is calculated according to the azimuth of the device
+    // otherwise it is estimated according to the progress compared to the previous position
     if (m_currentSpeed < COURSE_SPEED)
-      m_lastPosition.bearing = osmscout::Bearing::Degrees(m_azimuth);
+      bearing = osmscout::Bearing::Degrees(m_azimuth);
     else
-      m_lastPosition.bearing = osmscout::Bearing::Radians(osmin::Utils::sphericalBearingFinal(m_lastPosition.coord.GetLat(), m_lastPosition.coord.GetLon(), lat, lon));
+      bearing = osmscout::Bearing::Radians(osmin::Utils::sphericalBearingFinal(m_lastPosition.coord.GetLat(), m_lastPosition.coord.GetLon(), lat, lon));
+
+    if (m_recording)
+    {
+      if (!m_lastRecord)
+      {
+        record();
+        m_lastRecord.time = m_lastPosition.time;
+        m_lastRecord.coord = m_lastPosition.coord;
+        m_lastRecord.bearing = m_lastPosition.bearing;
+        emit positionRecorded(m_lastRecord.coord);
+      }
+      else
+      {
+        d = osmin::Utils::sphericalDistance(m_lastRecord.coord.GetLat(), m_lastRecord.coord.GetLon(), lat, lon);
+        double da = std::fabs(bearing.AsRadians() - m_lastRecord.bearing.AsRadians());
+        if (da > M_PI_2)
+          da = fabs(da - M_PI);
+        // 0.17rad ~ 20deg
+        if (d >= RECORD_INTERVAL || (da > 0.17 && d > 5.0))
+        {
+          record();
+          m_lastRecord.time = m_lastPosition.time;
+          m_lastRecord.coord = m_lastPosition.coord;
+          m_lastRecord.bearing = m_lastPosition.bearing;
+          emit positionRecorded(m_lastRecord.coord);
+        }
+      }
+    }
   }
   else
   {
-    m_lastPosition.bearing = osmscout::Bearing::Degrees(m_azimuth);
+    bearing = osmscout::Bearing::Degrees(m_azimuth);
   }
 
+  m_lastPosition.bearing = bearing;
   m_lastPosition.coord.Set(lat, lon);
   m_lastPosition.elevation = alt;
   m_lastPosition.time = now;

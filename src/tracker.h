@@ -73,6 +73,7 @@ signals:
   void trackerDataChanged();
   void trackerRecordingChanged();
   void trackerProcessingChanged();
+  void trackerPositionRecorded(double lat, double lon);
   void recordingFailed();
   //void remainingDistanceChanged();
   //void nextStepChanged();
@@ -91,6 +92,7 @@ private slots:
   void onDataChanged(double kmph, double meters, double seconds, double ascent, double descent);
   void onRecordingChanged(const QString& filename);
   void onProcessingChanged(bool busy);
+  void onPositionRecorded(const osmscout::GeoCoord coord);
 
 private:
   TrackerModule* m_p;
@@ -135,6 +137,7 @@ signals:
   void recordingFailed();
   void recordingChanged(const QString& filename);
   void processing(bool busy);
+  void positionRecorded(const osmscout::GeoCoord coord);
 
 public slots:
   void onTimeout();
@@ -160,6 +163,12 @@ private:
     double elevation;
     inline operator bool() const { return time.time_since_epoch() != osmscout::Timestamp::duration::zero(); }
   } m_lastPosition;
+  struct {
+    osmscout::Timestamp time;
+    osmscout::GeoCoord coord;
+    osmscout::Bearing bearing;
+    inline operator bool() const { return time.time_since_epoch() != osmscout::Timestamp::duration::zero(); }
+  } m_lastRecord;
 
   double m_distance;
   double m_duration;
