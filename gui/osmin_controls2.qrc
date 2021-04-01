@@ -258,5 +258,10 @@
         <file>controls2/Banner.qml</file>
         <file>i18n/osmin_en.qm</file>
         <file>i18n/osmin_fr.qm</file>
+        <file>images/trip/here.svg</file>
+        <file>images/trip/noname.svg</file>
+        <file>controls2/components/MapVoice.qml</file>
+        <file>controls2/ConfigureVoice.qml</file>
+        <file>images/voice.svg</file>
     </qresource>
 </RCC>

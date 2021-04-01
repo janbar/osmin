@@ -36,7 +36,12 @@ MouseArea {
     property alias menuVisible: row.menuVisible
     property alias menuItems: row.menuItems
 
-    anchors { left: parent.left; right: parent.right }
+    //anchors { left: parent.left; right: parent.right }
+    //Qt5.15: Fix parent null on init
+    Component.onCompleted: {
+        anchors.left = parent.left;
+        anchors.right = parent.right;
+    }
 
     Rectangle {
         id: content

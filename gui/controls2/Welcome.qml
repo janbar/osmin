@@ -61,7 +61,7 @@ MapPage {
                 elide: Text.ElideRight
                 font.pointSize: units.fs("large")
                 horizontalAlignment: Text.AlignHCenter
-                maximumLineCount: 6
+                maximumLineCount: 10
                 text: qsTr("First of all to use OSMin, you need to download the map of your region. " +
                            "Online maps are not activated with this software, in order to better assist " +
                            "you in navigating outside the areas covered by a network.")

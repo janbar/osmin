@@ -29,12 +29,12 @@ bool GPXFile::parse(const QString& filePath)
 
 QString GPXFile::name() const
 {
-  return QString::fromUtf8(m_gpx.name.getOrElse("").c_str());
+  return QString::fromUtf8(m_gpx.name.value_or("").c_str());
 }
 
 QString GPXFile::description() const
 {
-  return QString::fromUtf8(m_gpx.desc.getOrElse("").c_str());
+  return QString::fromUtf8(m_gpx.desc.value_or("").c_str());
 }
 
 QList<GPXObject*> GPXFile::tracks() const
@@ -154,7 +154,7 @@ QVariant GPXFileModel::data(const QModelIndex& index, int role) const
   case SymbolRole:
     return item->type() == GPXObject::WayPoint ? static_cast<const GPXObjectWayPoint*>(item)->symbol() : "";
   case DisplayColorRole:
-    return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->displayColor() : "";
+    return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->displayColorHexString() : "";
   case LengthRole:
     return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->length() : 0.0;
   default:
@@ -195,7 +195,7 @@ QVariantMap GPXFileModel::get(int row) const
   else if (item->type() == GPXObject::Track)
   {
     const GPXObjectTrack* _item = static_cast<const GPXObjectTrack*>(item);
-    model[roles[DisplayColorRole]] = _item->displayColor();
+    model[roles[DisplayColorRole]] = _item->displayColorHexString();
     model[roles[LengthRole]] = _item->length();
   }
   return model;
@@ -296,7 +296,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
           points.emplace_back(0, p.coord);
         osmscout::OverlayWay* way = new osmscout::OverlayWay(points);
         QString _type(OVERLAY_WAY_TYPE);
-        _type.append(obj->displayColor());
+        _type.append(obj->displayColorName());
         if (typeSet.find(_type) != typeSet.end())
           way->setTypeName(_type);
         else
@@ -320,4 +320,45 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
     }
   }
   return list;
+}
+
+QString GPXObjectTrack::displayColorName() const
+{
+  if (m_track.displayColor.has_value())
+  {
+    const osmscout::Color& color = m_track.displayColor.value();
+    if (color == osmscout::Color::GREEN)
+      return "Green";
+    if (color == osmscout::Color::RED)
+      return "Red";
+    if (color == osmscout::Color::BLUE)
+      return "Blue";
+    if (color == osmscout::Color::YELLOW)
+      return "Yellow";
+    if (color == osmscout::Color::FUCHSIA)
+      return "Magenta";
+    if (color == osmscout::Color::AQUA)
+      return "Cyan";
+    if (color == osmscout::Color::LIGHT_GRAY)
+      return "LightGray";
+    if (color == osmscout::Color::WHITE)
+      return "White";
+    if (color == osmscout::Color::BLACK)
+      return "Black";
+    if (color == osmscout::Color::DARK_GREEN)
+      return "DarkGreen";
+    if (color == osmscout::Color::DARK_RED)
+      return "DarkRed";
+    if (color == osmscout::Color::DARK_BLUE)
+      return "DarkBlue";
+    if (color == osmscout::Color::DARK_YELLOW)
+      return "DarkYellow";
+    if (color == osmscout::Color::DARK_FUCHSIA)
+      return "DarkMagenta";
+    if (color == osmscout::Color::DARK_AQUA)
+      return "DarkCyan";
+    if (color == osmscout::Color::DARK_GRAY)
+      return "DarkGray";
+  }
+  return "";
 }

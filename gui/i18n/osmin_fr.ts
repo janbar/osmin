@@ -7,103 +7,116 @@
         <location filename="../controls2/ConfigureMap.qml" line="26"/>
         <location filename="../silica/ConfigureMap.qml" line="26"/>
         <source>Configure Map</source>
-        <translation type="unfinished">Configurer la Carte</translation>
+        <translation>Configurer la Carte</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="36"/>
         <location filename="../silica/ConfigureMap.qml" line="36"/>
         <source>Tiled rendering</source>
-        <translation type="unfinished">Rendu tuilé</translation>
+        <translation>Rendu tuilé</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="43"/>
         <location filename="../silica/ConfigureMap.qml" line="43"/>
         <source>It supports map rotating, but labels are rotated too. Rendering may be more responsive, due to tile caching in memory.</source>
-        <translation type="unfinished">Ce mode autorise la rotation, mais les intitulés sont retournés. Le rendu sera plus rapide car les tuiles sont cachées en mémoire.</translation>
+        <translation>Ce mode autorise la rotation, mais les intitulés sont retournés. Le rendu sera plus rapide car les tuiles sont cachées en mémoire.</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="61"/>
         <location filename="../silica/ConfigureMap.qml" line="61"/>
         <source>Hill Shades</source>
-        <translation type="unfinished">Relief ombré</translation>
+        <translation>Relief ombré</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="70"/>
         <location filename="../silica/ConfigureMap.qml" line="70"/>
         <source>To activate the functionality, please configure the tile server file from the resources folder.</source>
-        <translation type="unfinished">Pour activer la fonctionalité, veuillez configurer le fichier de description dans le dossier des ressources.</translation>
+        <translation>Pour activer la fonctionalité, veuillez configurer le fichier de description dans le dossier des ressources.</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="86"/>
         <location filename="../silica/ConfigureMap.qml" line="86"/>
         <source>Render Sea</source>
-        <translation type="unfinished">Rendu de l&apos;eau</translation>
+        <translation>Rendu de l&apos;eau</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="97"/>
         <location filename="../silica/ConfigureMap.qml" line="97"/>
         <source>Prefer English names</source>
-        <translation type="unfinished">Préférer les intitulés anglais</translation>
+        <translation>Préférer les intitulés anglais</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="105"/>
         <location filename="../silica/ConfigureMap.qml" line="107"/>
         <source>Style</source>
-        <translation type="unfinished">Style</translation>
+        <translation>Style</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="137"/>
         <location filename="../silica/ConfigureMap.qml" line="133"/>
         <source>Font name</source>
-        <translation type="unfinished">Police de caractères</translation>
+        <translation>Police de caractères</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="154"/>
         <location filename="../silica/ConfigureMap.qml" line="138"/>
         <source>DejaVu Sans</source>
-        <translation type="unfinished">DejaVu Sans</translation>
+        <translation>DejaVu Sans</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="155"/>
         <location filename="../silica/ConfigureMap.qml" line="139"/>
         <source>Droid Serif</source>
-        <translation type="unfinished">Droid Serif</translation>
+        <translation>Droid Serif</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="156"/>
         <location filename="../silica/ConfigureMap.qml" line="140"/>
         <source>Liberation Sans</source>
-        <translation type="unfinished">Liberation Sans</translation>
+        <translation>Liberation Sans</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="170"/>
         <location filename="../silica/ConfigureMap.qml" line="162"/>
         <source>Font size</source>
-        <translation type="unfinished">Taille de police</translation>
+        <translation>Taille de police</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="187"/>
         <location filename="../silica/ConfigureMap.qml" line="167"/>
         <source>Small</source>
-        <translation type="unfinished">Petite</translation>
+        <translation>Petite</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="188"/>
         <location filename="../silica/ConfigureMap.qml" line="168"/>
         <source>Normal</source>
-        <translation type="unfinished">Nomale</translation>
+        <translation>Nomale</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="189"/>
         <location filename="../silica/ConfigureMap.qml" line="169"/>
         <source>Big</source>
-        <translation type="unfinished">Grande</translation>
+        <translation>Grande</translation>
     </message>
     <message>
         <location filename="../controls2/ConfigureMap.qml" line="190"/>
         <location filename="../silica/ConfigureMap.qml" line="170"/>
         <source>Huge</source>
-        <translation type="unfinished">Énorme</translation>
+        <translation>Énorme</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigureVoice</name>
+    <message>
+        <location filename="../controls2/ConfigureVoice.qml" line="26"/>
+        <source>Configure Voice</source>
+        <translation>Configurer la voix</translation>
+    </message>
+    <message>
+        <location filename="../controls2/ConfigureVoice.qml" line="139"/>
+        <source>Author: %1</source>
+        <translation>Auteur: %1</translation>
     </message>
 </context>
 <context>
@@ -112,31 +125,31 @@
         <location filename="../controls2/DialogAbout.qml" line="25"/>
         <location filename="../silica/DialogAbout.qml" line="25"/>
         <source>About</source>
-        <translation type="unfinished">À propos</translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <location filename="../controls2/DialogAbout.qml" line="36"/>
         <location filename="../silica/DialogAbout.qml" line="27"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../controls2/DialogAbout.qml" line="46"/>
         <location filename="../silica/DialogAbout.qml" line="41"/>
         <source>OSMin is a GPS Navigator based on a fork of OSMScout. It allows on-road routing and off-road navigation with OpenStreetMap® data.</source>
-        <translation type="unfinished">OSMin est un navigateur GPS basé sur OSMScout. Il permet le routage sur route et la navigation hors route à partir des données cartographiques d&apos;OpenStreetMap®.</translation>
+        <translation>OSMin est un navigateur GPS basé sur OSMScout. Il permet le routage sur route et la navigation hors route à partir des données cartographiques d&apos;OpenStreetMap®.</translation>
     </message>
     <message>
         <location filename="../controls2/DialogAbout.qml" line="53"/>
         <location filename="../silica/DialogAbout.qml" line="53"/>
         <source>Author: %1</source>
-        <translation type="unfinished">Auteur: %1</translation>
+        <translation>Auteur: %1</translation>
     </message>
     <message>
         <location filename="../controls2/DialogAbout.qml" line="59"/>
         <location filename="../silica/DialogAbout.qml" line="64"/>
         <source>Version: %1</source>
-        <translation type="unfinished">Version: %1</translation>
+        <translation>Version: %1</translation>
     </message>
 </context>
 <context>
@@ -144,12 +157,12 @@
     <message>
         <location filename="../silica/components/DialogBase.qml" line="31"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../silica/components/DialogBase.qml" line="32"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -158,54 +171,54 @@
         <location filename="../controls2/Favorites.qml" line="34"/>
         <location filename="../silica/Favorites.qml" line="34"/>
         <source>Select a Place</source>
-        <translation type="unfinished">Choisir un emplacement</translation>
+        <translation>Choisir un emplacement</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="40"/>
         <location filename="../silica/Favorites.qml" line="40"/>
         <source>Favorite Places</source>
-        <translation type="unfinished">Emplacements Favoris</translation>
+        <translation>Emplacements Favoris</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="122"/>
         <source>Go there</source>
-        <translation type="unfinished">Aller là</translation>
+        <translation>Aller là</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="130"/>
         <location filename="../controls2/Favorites.qml" line="294"/>
         <location filename="../silica/Favorites.qml" line="286"/>
         <source>Rename</source>
-        <translation type="unfinished">Renommer</translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="145"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="239"/>
         <location filename="../silica/Favorites.qml" line="231"/>
         <source>Go</source>
-        <translation type="unfinished">Y aller</translation>
+        <translation>Y aller</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="239"/>
         <location filename="../silica/Favorites.qml" line="231"/>
         <source>Accept</source>
-        <translation type="unfinished">Accepter</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="320"/>
         <location filename="../silica/Favorites.qml" line="314"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="330"/>
         <location filename="../silica/Favorites.qml" line="304"/>
         <source>Enter the label</source>
-        <translation type="unfinished">Saisir le nom</translation>
+        <translation>Saisir le nom</translation>
     </message>
 </context>
 <context>
@@ -214,25 +227,25 @@
         <location filename="../controls2/LocationInfo.qml" line="25"/>
         <location filename="../silica/LocationInfo.qml" line="25"/>
         <source>Informations</source>
-        <translation type="unfinished">Informations</translation>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../controls2/LocationInfo.qml" line="79"/>
         <location filename="../silica/LocationInfo.qml" line="79"/>
         <source>You are here</source>
-        <translation type="unfinished">Vous êtes ici</translation>
+        <translation>Vous êtes ici</translation>
     </message>
     <message>
         <location filename="../controls2/LocationInfo.qml" line="80"/>
         <location filename="../silica/LocationInfo.qml" line="80"/>
         <source>%1 %2 from you</source>
-        <translation type="unfinished">%1 %2 de vous</translation>
+        <translation>%1 %2 de vous</translation>
     </message>
     <message>
         <location filename="../controls2/LocationInfo.qml" line="114"/>
         <location filename="../silica/LocationInfo.qml" line="114"/>
         <source>%1 %2 from</source>
-        <translation type="unfinished">à %1 %2</translation>
+        <translation>à %1 %2</translation>
     </message>
 </context>
 <context>
@@ -241,73 +254,78 @@
         <location filename="../controls2/MainMenu.qml" line="25"/>
         <location filename="../silica/MainMenu.qml" line="25"/>
         <source>Main Menu</source>
-        <translation type="unfinished">Menu</translation>
+        <translation>Menu</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="35"/>
         <location filename="../silica/MainMenu.qml" line="35"/>
         <source>My Places</source>
-        <translation type="unfinished">Mes emplacements favoris</translation>
+        <translation>Mes emplacements favoris</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="46"/>
         <location filename="../silica/MainMenu.qml" line="46"/>
         <source>Manage Favorite Places.</source>
-        <translation type="unfinished">Gérer les emplacements favoris.</translation>
+        <translation>Gérer les emplacements favoris.</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="64"/>
         <location filename="../silica/MainMenu.qml" line="64"/>
         <source>Routes</source>
-        <translation type="unfinished">Itinéraires</translation>
+        <translation>Itinéraires</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="75"/>
         <location filename="../silica/MainMenu.qml" line="75"/>
         <source>Navigate to a destination.</source>
-        <translation type="unfinished">Naviguer vers une destination.</translation>
+        <translation>Naviguer vers une destination.</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="93"/>
         <location filename="../silica/MainMenu.qml" line="93"/>
         <source>Tracks</source>
-        <translation type="unfinished">Traces</translation>
+        <translation>Traces</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="104"/>
         <location filename="../silica/MainMenu.qml" line="104"/>
         <source>Manage your tracks.</source>
-        <translation type="unfinished">Gérer vos traces.</translation>
+        <translation>Gérer vos traces.</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="122"/>
         <location filename="../silica/MainMenu.qml" line="122"/>
         <source>Tracking</source>
-        <translation type="unfinished">Suivi de la trace</translation>
+        <translation>Suivi de la trace</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="133"/>
         <location filename="../silica/MainMenu.qml" line="133"/>
         <source>Follow your track.</source>
-        <translation type="unfinished">Suivre votre trace.</translation>
+        <translation>Suivre votre trace.</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="151"/>
         <location filename="../silica/MainMenu.qml" line="151"/>
         <source>Configure Map</source>
-        <translation type="unfinished">Configurer la Carte</translation>
+        <translation>Configurer la Carte</translation>
     </message>
     <message>
         <location filename="../controls2/MainMenu.qml" line="169"/>
         <location filename="../silica/MainMenu.qml" line="169"/>
         <source>Download Maps</source>
-        <translation type="unfinished">Télécharger les Cartes</translation>
+        <translation>Télécharger les Cartes</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="204"/>
+        <location filename="../controls2/MainMenu.qml" line="187"/>
+        <source>Configure Voice</source>
+        <translation>Configurer la voix</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="222"/>
         <location filename="../silica/MainMenu.qml" line="204"/>
         <source>Settings</source>
-        <translation type="unfinished">Réglages</translation>
+        <translation>Réglages</translation>
     </message>
 </context>
 <context>
@@ -316,25 +334,31 @@
         <location filename="../controls2/MapDownloads.qml" line="26"/>
         <location filename="../silica/MapDownloads.qml" line="26"/>
         <source>Map Downloads</source>
-        <translation type="unfinished">Téléchargement des Cartes</translation>
+        <translation>Téléchargement des Cartes</translation>
     </message>
     <message>
         <location filename="../controls2/MapDownloads.qml" line="76"/>
         <location filename="../silica/MapDownloads.qml" line="81"/>
         <source>Downloads</source>
-        <translation type="unfinished">Téléchargements</translation>
+        <translation>Téléchargements</translation>
     </message>
     <message>
         <location filename="../controls2/MapDownloads.qml" line="160"/>
         <location filename="../silica/MapDownloads.qml" line="170"/>
         <source>Installed Maps</source>
-        <translation type="unfinished">Cartes installées</translation>
+        <translation>Cartes installées</translation>
     </message>
     <message>
         <location filename="../controls2/MapDownloads.qml" line="286"/>
         <location filename="../silica/MapDownloads.qml" line="299"/>
         <source>Available Maps</source>
-        <translation type="unfinished">Cartes disponibles</translation>
+        <translation>Cartes disponibles</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MapDownloads.qml" line="294"/>
+        <location filename="../silica/MapDownloads.qml" line="307"/>
+        <source>Back</source>
+        <translation>Retour</translation>
     </message>
 </context>
 <context>
@@ -342,7 +366,7 @@
     <message>
         <location filename="../silica/components/MapPage.qml" line="75"/>
         <source>About</source>
-        <translation type="unfinished">À propos</translation>
+        <translation>À propos</translation>
     </message>
 </context>
 <context>
@@ -351,47 +375,52 @@
         <location filename="../controls2/MapView.qml" line="27"/>
         <location filename="../silica/MapView.qml" line="28"/>
         <source>Map View</source>
-        <translation type="unfinished">Vue de la Carte</translation>
+        <translation>Vue de la Carte</translation>
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="58"/>
         <location filename="../silica/MapView.qml" line="56"/>
         <source>Current position is %1</source>
-        <translation type="unfinished">La position actuelle est %1</translation>
+        <translation>La position actuelle est %1</translation>
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="60"/>
         <location filename="../silica/MapView.qml" line="58"/>
         <source>Current position cannot be gathered</source>
-        <translation type="unfinished">Impossible d&apos;obtenir la position actuelle</translation>
+        <translation>Impossible d&apos;obtenir la position actuelle</translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="486"/>
-        <location filename="../controls2/MapView.qml" line="632"/>
-        <location filename="../controls2/MapView.qml" line="746"/>
-        <location filename="../silica/MapView.qml" line="483"/>
-        <location filename="../silica/MapView.qml" line="628"/>
-        <location filename="../silica/MapView.qml" line="742"/>
+        <location filename="../controls2/MapView.qml" line="492"/>
+        <location filename="../controls2/MapView.qml" line="638"/>
+        <location filename="../controls2/MapView.qml" line="752"/>
+        <location filename="../silica/MapView.qml" line="490"/>
+        <location filename="../silica/MapView.qml" line="635"/>
+        <location filename="../silica/MapView.qml" line="749"/>
         <source>Go</source>
-        <translation type="unfinished">Y aller</translation>
+        <translation>Y aller</translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="863"/>
-        <location filename="../silica/MapView.qml" line="859"/>
+        <location filename="../controls2/MapView.qml" line="816"/>
+        <source>The voice GPS driving directions is not activated</source>
+        <translation>La navigation par instructions vocales n&apos;est pas activée</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MapView.qml" line="878"/>
+        <location filename="../silica/MapView.qml" line="866"/>
         <source>My Position</source>
-        <translation type="unfinished">Ma position</translation>
-    </message>
-    <message>
-        <location filename="../controls2/MapView.qml" line="941"/>
-        <location filename="../silica/MapView.qml" line="937"/>
-        <source>Target reached at %1 %2.</source>
-        <translation type="unfinished">Arrivé à destination à%1 %2.</translation>
+        <translation>Ma position</translation>
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="956"/>
-        <location filename="../silica/MapView.qml" line="952"/>
+        <location filename="../silica/MapView.qml" line="944"/>
+        <source>Target reached at %1 %2.</source>
+        <translation>Arrivé à destination à%1 %2.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MapView.qml" line="973"/>
+        <location filename="../silica/MapView.qml" line="961"/>
         <source>Track recording failed</source>
-        <translation type="unfinished">L&apos;enregistrement de la trace a échoué</translation>
+        <translation>L&apos;enregistrement de la trace a échoué</translation>
     </message>
 </context>
 <context>
@@ -400,13 +429,13 @@
         <location filename="../controls2/components/NavigatorInfo.qml" line="149"/>
         <location filename="../silica/components/NavigatorInfo.qml" line="149"/>
         <source>Resume navigation</source>
-        <translation type="unfinished">Reprendre la navigation</translation>
+        <translation>Reprendre la navigation</translation>
     </message>
     <message>
         <location filename="../controls2/components/NavigatorInfo.qml" line="194"/>
         <location filename="../silica/components/NavigatorInfo.qml" line="194"/>
         <source>ETA</source>
-        <translation type="unfinished">ETA</translation>
+        <translation>ETA</translation>
     </message>
 </context>
 <context>
@@ -417,13 +446,13 @@
         <location filename="../silica/Routing.qml" line="36"/>
         <location filename="../silica/Routing.qml" line="52"/>
         <source>Navigation</source>
-        <translation type="unfinished">Navigation</translation>
+        <translation>Navigation</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="42"/>
         <location filename="../silica/Routing.qml" line="42"/>
         <source>Pick a place on the Map</source>
-        <translation type="unfinished">Choisir un emplacement sur la carte</translation>
+        <translation>Choisir un emplacement sur la carte</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="46"/>
@@ -431,31 +460,31 @@
         <location filename="../silica/Routing.qml" line="46"/>
         <location filename="../silica/Routing.qml" line="356"/>
         <source>Navigate</source>
-        <translation type="unfinished">Naviguer</translation>
+        <translation>Naviguer</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="63"/>
         <location filename="../silica/Routing.qml" line="63"/>
         <source>Select a position</source>
-        <translation type="unfinished">Sélectionner une position</translation>
+        <translation>Sélectionner une position</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="71"/>
         <location filename="../silica/Routing.qml" line="71"/>
         <source>Select a destination</source>
-        <translation type="unfinished">Selectionner une destination</translation>
+        <translation>Selectionner une destination</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="140"/>
         <location filename="../silica/Routing.qml" line="140"/>
         <source>From</source>
-        <translation type="unfinished">Depuis</translation>
+        <translation>Depuis</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="163"/>
         <location filename="../silica/Routing.qml" line="149"/>
         <source>My position</source>
-        <translation type="unfinished">Ma position</translation>
+        <translation>Ma position</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="164"/>
@@ -463,7 +492,7 @@
         <location filename="../silica/Routing.qml" line="150"/>
         <location filename="../silica/Routing.qml" line="238"/>
         <source>Search Place</source>
-        <translation type="unfinished">Rechercher un emplacement</translation>
+        <translation>Rechercher un emplacement</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="165"/>
@@ -471,7 +500,7 @@
         <location filename="../silica/Routing.qml" line="151"/>
         <location filename="../silica/Routing.qml" line="239"/>
         <source>Select on Map</source>
-        <translation type="unfinished">Sélectionner sur la carte</translation>
+        <translation>Sélectionner sur la carte</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="166"/>
@@ -479,7 +508,7 @@
         <location filename="../silica/Routing.qml" line="152"/>
         <location filename="../silica/Routing.qml" line="240"/>
         <source>Favorite</source>
-        <translation type="unfinished">Favori</translation>
+        <translation>Favori</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="177"/>
@@ -487,49 +516,49 @@
         <location filename="../silica/Routing.qml" line="169"/>
         <location filename="../silica/Routing.qml" line="249"/>
         <source>Accept</source>
-        <translation type="unfinished">Accepter</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="237"/>
         <location filename="../silica/Routing.qml" line="229"/>
         <source>Destination</source>
-        <translation type="unfinished">Jusqu&apos;à</translation>
+        <translation>Jusqu&apos;à</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="337"/>
         <location filename="../silica/Routing.qml" line="321"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="337"/>
         <location filename="../silica/Routing.qml" line="321"/>
         <source>Compute route</source>
-        <translation type="unfinished">Calculer l&apos;itinéraire</translation>
+        <translation>Calculer l&apos;itinéraire</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="390"/>
         <location filename="../silica/Routing.qml" line="375"/>
         <source>Clear</source>
-        <translation type="unfinished">Effacer</translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="406"/>
         <location filename="../silica/Routing.qml" line="391"/>
         <source>Route length:</source>
-        <translation type="unfinished">Distance à parcourir:</translation>
+        <translation>Distance à parcourir:</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="417"/>
         <location filename="../silica/Routing.qml" line="402"/>
         <source>Duration:</source>
-        <translation type="unfinished">Durée:</translation>
+        <translation>Durée:</translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="505"/>
         <location filename="../silica/Routing.qml" line="490"/>
         <source>Invalid entry</source>
-        <translation type="unfinished">Entrée invalide</translation>
+        <translation>Entrée invalide</translation>
     </message>
 </context>
 <context>
@@ -538,7 +567,7 @@
         <location filename="../controls2/components/SearchField.qml" line="56"/>
         <location filename="../silica/components/SearchField.qml" line="56"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -551,13 +580,13 @@
         <location filename="../silica/SearchPlace.qml" line="26"/>
         <location filename="../silica/SearchPlace.qml" line="42"/>
         <source>Search Place</source>
-        <translation type="unfinished">Rechercher un emplacement</translation>
+        <translation>Rechercher un emplacement</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="13"/>
         <location filename="../silica/SearchPlace.qml" line="14"/>
         <source>Accept</source>
-        <translation type="unfinished">Accepter</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="120"/>
@@ -565,120 +594,120 @@
         <location filename="../silica/SearchPlace.qml" line="122"/>
         <location filename="../silica/SearchPlace.qml" line="282"/>
         <source>Up to distance %1</source>
-        <translation type="unfinished">Jusqu&apos;à une distance de %1</translation>
+        <translation>Jusqu&apos;à une distance de %1</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="181"/>
         <location filename="../silica/SearchPlace.qml" line="184"/>
         <source>Restaurant</source>
-        <translation type="unfinished">Restaurant</translation>
+        <translation>Restaurant</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="184"/>
         <location filename="../silica/SearchPlace.qml" line="187"/>
         <source>Fast Food</source>
-        <translation type="unfinished">Fast-Food</translation>
+        <translation>Fast-Food</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="187"/>
         <location filename="../silica/SearchPlace.qml" line="190"/>
         <source>Cafe</source>
-        <translation type="unfinished">Café</translation>
+        <translation>Café</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="190"/>
         <location filename="../silica/SearchPlace.qml" line="193"/>
         <source>Pub</source>
-        <translation type="unfinished">Pub</translation>
+        <translation>Pub</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="193"/>
         <location filename="../silica/SearchPlace.qml" line="196"/>
         <source>Bar</source>
-        <translation type="unfinished">Bar</translation>
+        <translation>Bar</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="196"/>
         <location filename="../silica/SearchPlace.qml" line="199"/>
         <source>ATM</source>
-        <translation type="unfinished">Guichet automatique bancaire</translation>
+        <translation>Guichet automatique bancaire</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="199"/>
         <location filename="../silica/SearchPlace.qml" line="202"/>
         <source>Drinking water</source>
-        <translation type="unfinished">Eau potable</translation>
+        <translation>Eau potable</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="202"/>
         <location filename="../silica/SearchPlace.qml" line="205"/>
         <source>Toilets</source>
-        <translation type="unfinished">Toilettes</translation>
+        <translation>Toilettes</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="207"/>
         <location filename="../silica/SearchPlace.qml" line="210"/>
         <source>Public transport stop</source>
-        <translation type="unfinished">Arrêt de transport public</translation>
+        <translation>Arrêt de transport public</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="211"/>
         <location filename="../silica/SearchPlace.qml" line="214"/>
         <source>Fuel</source>
-        <translation type="unfinished">Station d&apos;essence</translation>
+        <translation>Station d&apos;essence</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="214"/>
         <location filename="../silica/SearchPlace.qml" line="217"/>
         <source>Pharmacy</source>
-        <translation type="unfinished">Pharmacie</translation>
+        <translation>Pharmacie</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="217"/>
         <location filename="../silica/SearchPlace.qml" line="220"/>
         <source>Accomodation</source>
-        <translation type="unfinished">Hébergement</translation>
+        <translation>Hébergement</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="220"/>
         <location filename="../silica/SearchPlace.qml" line="223"/>
         <source>Camp</source>
-        <translation type="unfinished">Camping</translation>
+        <translation>Camping</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="223"/>
         <location filename="../silica/SearchPlace.qml" line="226"/>
         <source>Castle, Manor</source>
-        <translation type="unfinished">Château, Manoir</translation>
+        <translation>Château, Manoir</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="226"/>
         <location filename="../silica/SearchPlace.qml" line="229"/>
         <source>Spring</source>
-        <translation type="unfinished">Source</translation>
+        <translation>Source</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="231"/>
         <location filename="../silica/SearchPlace.qml" line="234"/>
         <source>Via ferrata route</source>
-        <translation type="unfinished">Parcours via ferrata</translation>
+        <translation>Parcours via ferrata</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="336"/>
         <location filename="../silica/SearchPlace.qml" line="341"/>
         <source>Unnamed</source>
-        <translation type="unfinished">Sans nom</translation>
+        <translation>Sans nom</translation>
     </message>
     <message>
         <location filename="../controls2/SearchPlace.qml" line="635"/>
         <location filename="../silica/SearchPlace.qml" line="640"/>
         <source>No data</source>
-        <translation type="unfinished">Aucune données</translation>
+        <translation>Aucune données</translation>
     </message>
     <message>
         <location filename="../silica/SearchPlace.qml" line="665"/>
         <source>Page Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Page précédente</translation>
     </message>
 </context>
 <context>
@@ -687,52 +716,52 @@
         <location filename="../controls2/Settings.qml" line="27"/>
         <location filename="../silica/Settings.qml" line="27"/>
         <source>Settings</source>
-        <translation type="unfinished">Réglages</translation>
+        <translation>Réglages</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="144"/>
         <source>Theme</source>
-        <translation type="unfinished">Thème</translation>
+        <translation>Thème</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="152"/>
         <source>Light</source>
-        <translation type="unfinished">Clair</translation>
+        <translation>Clair</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="153"/>
         <source>Dark</source>
-        <translation type="unfinished">Sombre</translation>
+        <translation>Sombre</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="173"/>
         <location filename="../silica/Settings.qml" line="70"/>
         <source>System of Units</source>
-        <translation type="unfinished">Système d&apos;unités</translation>
+        <translation>Système d&apos;unités</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="180"/>
         <location filename="../silica/Settings.qml" line="75"/>
         <source>SI</source>
-        <translation type="unfinished">SI</translation>
+        <translation>SI</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="181"/>
         <location filename="../silica/Settings.qml" line="76"/>
         <source>Imperial</source>
-        <translation type="unfinished">Imperial</translation>
+        <translation>Imperial</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="236"/>
         <location filename="../silica/Settings.qml" line="111"/>
         <source>The change will be effective after restart.</source>
-        <translation type="unfinished">Le changement prendra effet après le redémarrage.</translation>
+        <translation>Le changement prendra effet après le redémarrage.</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="246"/>
         <location filename="../silica/Settings.qml" line="121"/>
         <source>Data directory</source>
-        <translation type="unfinished">Répertoire des données</translation>
+        <translation>Répertoire des données</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="251"/>
@@ -740,30 +769,30 @@
         <location filename="../silica/Settings.qml" line="126"/>
         <location filename="../silica/Settings.qml" line="144"/>
         <source>%1 free</source>
-        <translation type="unfinished">%1 libre</translation>
+        <translation>%1 libre</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="264"/>
         <location filename="../silica/Settings.qml" line="139"/>
         <source>Maps directory</source>
-        <translation type="unfinished">Répertoire des cartes</translation>
+        <translation>Répertoire des cartes</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="282"/>
         <location filename="../silica/Settings.qml" line="157"/>
         <source>Hillshade provider</source>
-        <translation type="unfinished">Fournisseur du relief ombré</translation>
+        <translation>Fournisseur du relief ombré</translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="287"/>
         <location filename="../silica/Settings.qml" line="162"/>
         <source>Not configured</source>
-        <translation type="unfinished">Non configuré</translation>
+        <translation>Non configuré</translation>
     </message>
     <message>
         <location filename="../silica/Settings.qml" line="45"/>
         <source>About</source>
-        <translation type="unfinished">À propos</translation>
+        <translation>À propos</translation>
     </message>
 </context>
 <context>
@@ -772,36 +801,36 @@
         <location filename="../controls2/TrackCollection.qml" line="27"/>
         <location filename="../silica/TrackCollection.qml" line="27"/>
         <source>Track Collection</source>
-        <translation type="unfinished">Bibliothèque des Traces</translation>
+        <translation>Bibliothèque des Traces</translation>
     </message>
     <message>
         <location filename="../controls2/TrackCollection.qml" line="166"/>
         <location filename="../controls2/TrackCollection.qml" line="283"/>
         <location filename="../silica/TrackCollection.qml" line="296"/>
         <source>Rename</source>
-        <translation type="unfinished">Renommer</translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <location filename="../controls2/TrackCollection.qml" line="187"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../controls2/TrackCollection.qml" line="311"/>
         <location filename="../silica/TrackCollection.qml" line="324"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../controls2/TrackCollection.qml" line="321"/>
         <location filename="../silica/TrackCollection.qml" line="314"/>
         <source>Enter the name</source>
-        <translation type="unfinished">Saisir le nom</translation>
+        <translation>Saisir le nom</translation>
     </message>
     <message>
         <location filename="../silica/TrackCollection.qml" line="289"/>
         <source>Page Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Page précédente</translation>
     </message>
 </context>
 <context>
@@ -810,67 +839,67 @@
         <location filename="../controls2/Tracking.qml" line="26"/>
         <location filename="../silica/Tracking.qml" line="26"/>
         <source>Tracking</source>
-        <translation type="unfinished">Suivi de la trace</translation>
+        <translation>Suivi de la trace</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="38"/>
         <location filename="../silica/Tracking.qml" line="38"/>
         <source>Average Speed</source>
-        <translation type="unfinished">Vitesse moyenne</translation>
+        <translation>Vitesse moyenne</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="54"/>
         <location filename="../silica/Tracking.qml" line="54"/>
         <source>Duration</source>
-        <translation type="unfinished">Durée</translation>
+        <translation>Durée</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="70"/>
         <location filename="../silica/Tracking.qml" line="70"/>
         <source>Distance</source>
-        <translation type="unfinished">Distance</translation>
+        <translation>Distance</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="86"/>
         <location filename="../silica/Tracking.qml" line="86"/>
         <source>Ascent</source>
-        <translation type="unfinished">Ascension</translation>
+        <translation>Ascension</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="102"/>
         <location filename="../silica/Tracking.qml" line="102"/>
         <source>Descent</source>
-        <translation type="unfinished">Descente</translation>
+        <translation>Descente</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="118"/>
         <location filename="../silica/Tracking.qml" line="118"/>
         <source>Maximum Speed</source>
-        <translation type="unfinished">Vitesse maximale</translation>
+        <translation>Vitesse maximale</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="137"/>
         <location filename="../silica/Tracking.qml" line="137"/>
         <source>Reset statistics</source>
-        <translation type="unfinished">Réinitialiser les statistiques</translation>
+        <translation>Réinitialiser les statistiques</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="154"/>
         <location filename="../silica/Tracking.qml" line="154"/>
         <source>Cut track recording</source>
-        <translation type="unfinished">Tronçonner l&apos;enregistrement en cours</translation>
+        <translation>Tronçonner l&apos;enregistrement en cours</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="154"/>
         <location filename="../silica/Tracking.qml" line="154"/>
         <source>Start track recording</source>
-        <translation type="unfinished">Démarrer l&apos;enregistrement de la trace</translation>
+        <translation>Démarrer l&apos;enregistrement de la trace</translation>
     </message>
     <message>
         <location filename="../controls2/Tracking.qml" line="174"/>
         <location filename="../silica/Tracking.qml" line="174"/>
         <source>Close track recording</source>
-        <translation type="unfinished">Finir l&apos;enregistrement en cours</translation>
+        <translation>Finir l&apos;enregistrement en cours</translation>
     </message>
 </context>
 <context>
@@ -879,442 +908,436 @@
         <location filename="../controls2/Welcome.qml" line="25"/>
         <location filename="../silica/Welcome.qml" line="25"/>
         <source>Welcome</source>
-        <translation type="unfinished">Bienvenue</translation>
+        <translation>Bienvenue</translation>
     </message>
     <message>
         <location filename="../controls2/Welcome.qml" line="65"/>
         <location filename="../silica/Welcome.qml" line="80"/>
         <source>First of all to use OSMin, you need to download the map of your region. Online maps are not activated with this software, in order to better assist you in navigating outside the areas covered by a network.</source>
-        <translation type="unfinished">Pour utiliser OSMin vous devez tout d&apos;abord télécharger la carte de votre région. Les cartes en ligne ne sont pas activées avec ce logiciel, afin de mieux vous aider à naviguer en dehors des zones couvertes par un réseau.</translation>
+        <translation>Pour utiliser OSMin vous devez tout d&apos;abord télécharger la carte de votre région. Les cartes en ligne ne sont pas activées avec ce logiciel, afin de mieux vous aider à naviguer en dehors des zones couvertes par un réseau.</translation>
     </message>
     <message>
         <location filename="../controls2/Welcome.qml" line="77"/>
         <location filename="../silica/Welcome.qml" line="92"/>
         <source>Download Maps</source>
-        <translation type="unfinished">Télécharger les Cartes</translation>
+        <translation>Télécharger les Cartes</translation>
     </message>
     <message>
         <location filename="../silica/Welcome.qml" line="36"/>
         <source>About</source>
-        <translation type="unfinished">À propos</translation>
+        <translation>À propos</translation>
     </message>
 </context>
 <context>
     <name>osmin</name>
     <message>
-        <location filename="../controls2/osmin.qml" line="254"/>
+        <location filename="../controls2/osmin.qml" line="255"/>
         <source>About</source>
-        <translation type="unfinished">À propos</translation>
+        <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="276"/>
-        <location filename="../silica/osmin.qml" line="130"/>
         <source>Download Maps</source>
-        <translation type="unfinished">Télécharger les Cartes</translation>
+        <translation type="obsolete">Télécharger les Cartes</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="277"/>
-        <location filename="../silica/osmin.qml" line="131"/>
         <source>Search Place</source>
-        <translation type="unfinished">Rechercher un emplacement</translation>
+        <translation type="obsolete">Rechercher un emplacement</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="278"/>
-        <location filename="../silica/osmin.qml" line="132"/>
         <source>Favorite Places</source>
-        <translation type="unfinished">Emplacements favoris</translation>
+        <translation type="obsolete">Emplacements favoris</translation>
+    </message>
+    <message>
+        <location filename="../controls2/osmin.qml" line="308"/>
+        <location filename="../silica/osmin.qml" line="142"/>
+        <source>meters</source>
+        <translation>mètres</translation>
+    </message>
+    <message>
+        <location filename="../controls2/osmin.qml" line="309"/>
+        <location filename="../silica/osmin.qml" line="143"/>
+        <source>km</source>
+        <translation>km</translation>
+    </message>
+    <message>
+        <location filename="../controls2/osmin.qml" line="310"/>
+        <location filename="../silica/osmin.qml" line="144"/>
+        <source>feet</source>
+        <translation>feet</translation>
+    </message>
+    <message>
+        <location filename="../controls2/osmin.qml" line="311"/>
+        <location filename="../silica/osmin.qml" line="145"/>
+        <source>miles</source>
+        <translation>miles</translation>
+    </message>
+    <message>
+        <location filename="../controls2/osmin.qml" line="312"/>
+        <location filename="../silica/osmin.qml" line="146"/>
+        <source>north</source>
+        <translation>nord</translation>
+    </message>
+    <message>
+        <location filename="../controls2/osmin.qml" line="313"/>
+        <location filename="../silica/osmin.qml" line="147"/>
+        <source>south</source>
+        <translation>sud</translation>
     </message>
     <message>
         <location filename="../controls2/osmin.qml" line="314"/>
-        <location filename="../silica/osmin.qml" line="149"/>
-        <source>meters</source>
-        <translation type="unfinished">mètres</translation>
+        <location filename="../silica/osmin.qml" line="148"/>
+        <source>west</source>
+        <translation>ouest</translation>
     </message>
     <message>
         <location filename="../controls2/osmin.qml" line="315"/>
-        <location filename="../silica/osmin.qml" line="150"/>
-        <source>km</source>
-        <translation type="unfinished">km</translation>
+        <location filename="../silica/osmin.qml" line="149"/>
+        <source>east</source>
+        <translation>est</translation>
     </message>
     <message>
         <location filename="../controls2/osmin.qml" line="316"/>
-        <location filename="../silica/osmin.qml" line="151"/>
-        <source>feet</source>
-        <translation type="unfinished">feet</translation>
+        <location filename="../silica/osmin.qml" line="150"/>
+        <source>northwest</source>
+        <translation>nord-ouest</translation>
     </message>
     <message>
         <location filename="../controls2/osmin.qml" line="317"/>
-        <location filename="../silica/osmin.qml" line="152"/>
-        <source>miles</source>
-        <translation type="unfinished">miles</translation>
+        <location filename="../silica/osmin.qml" line="151"/>
+        <source>northeast</source>
+        <translation>nord-est</translation>
     </message>
     <message>
         <location filename="../controls2/osmin.qml" line="318"/>
-        <location filename="../silica/osmin.qml" line="153"/>
-        <source>north</source>
-        <translation type="unfinished">nord</translation>
+        <location filename="../silica/osmin.qml" line="152"/>
+        <source>southwest</source>
+        <translation>sud-ouest</translation>
     </message>
     <message>
         <location filename="../controls2/osmin.qml" line="319"/>
-        <location filename="../silica/osmin.qml" line="154"/>
-        <source>south</source>
-        <translation type="unfinished">sud</translation>
-    </message>
-    <message>
-        <location filename="../controls2/osmin.qml" line="320"/>
-        <location filename="../silica/osmin.qml" line="155"/>
-        <source>west</source>
-        <translation type="unfinished">ouest</translation>
-    </message>
-    <message>
-        <location filename="../controls2/osmin.qml" line="321"/>
-        <location filename="../silica/osmin.qml" line="156"/>
-        <source>east</source>
-        <translation type="unfinished">est</translation>
-    </message>
-    <message>
-        <location filename="../controls2/osmin.qml" line="322"/>
-        <location filename="../silica/osmin.qml" line="157"/>
-        <source>northwest</source>
-        <translation type="unfinished">nord-ouest</translation>
-    </message>
-    <message>
-        <location filename="../controls2/osmin.qml" line="323"/>
-        <location filename="../silica/osmin.qml" line="158"/>
-        <source>northeast</source>
-        <translation type="unfinished">nord-est</translation>
-    </message>
-    <message>
-        <location filename="../controls2/osmin.qml" line="324"/>
-        <location filename="../silica/osmin.qml" line="159"/>
-        <source>southwest</source>
-        <translation type="unfinished">sud-ouest</translation>
-    </message>
-    <message>
-        <location filename="../controls2/osmin.qml" line="325"/>
-        <location filename="../silica/osmin.qml" line="160"/>
+        <location filename="../silica/osmin.qml" line="153"/>
         <source>southeast</source>
-        <translation type="unfinished">sud-est</translation>
+        <translation>sud-est</translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="411"/>
-        <location filename="../controls2/osmin.qml" line="421"/>
-        <location filename="../silica/osmin.qml" line="222"/>
-        <location filename="../silica/osmin.qml" line="232"/>
+        <location filename="../controls2/osmin.qml" line="407"/>
+        <location filename="../controls2/osmin.qml" line="417"/>
+        <location filename="../silica/osmin.qml" line="217"/>
+        <location filename="../silica/osmin.qml" line="227"/>
         <source>Saving change failed</source>
-        <translation type="unfinished">La sauvegarde a échouée</translation>
+        <translation>La sauvegarde a échouée</translation>
     </message>
 </context>
 <context>
     <name>osmscout::RouteDescriptionBuilder</name>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="77"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="74"/>
         <source>Turn</source>
-        <translation type="unfinished">Tourner</translation>
+        <translation>Tourner</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="81"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="78"/>
         <source>Turn sharp left</source>
-        <translation type="unfinished">Tourner franchement à gauche</translation>
+        <translation>Tourner franchement à gauche</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="83"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="80"/>
         <source>Turn left</source>
-        <translation type="unfinished">Tourner à gauche</translation>
+        <translation>Tourner à gauche</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="85"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="82"/>
         <source>Turn slightly left</source>
-        <translation type="unfinished">Tourner légèrement à gauche</translation>
+        <translation>Tourner légèrement à gauche</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="87"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="84"/>
         <source>Straight on</source>
-        <translation type="unfinished">Tout droit</translation>
+        <translation>Tout droit</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="89"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="86"/>
         <source>Turn slightly right</source>
-        <translation type="unfinished">Tourner légèrement à droite</translation>
+        <translation>Tourner légèrement à droite</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="91"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="88"/>
         <source>Turn right</source>
-        <translation type="unfinished">Tourner à droite</translation>
+        <translation>Tourner à droite</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="93"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="90"/>
         <source>Turn sharp right</source>
-        <translation type="unfinished">Tourner franchement à droite</translation>
+        <translation>Tourner franchement à droite</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="100"/>
+        <source>At crossing %1&lt;strong&gt;Turn&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Tourner&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="104"/>
-        <source>At crossing %1&lt;strong&gt;Turn&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner&lt;/strong&gt; vers %2</translation>
+        <source>At crossing %1&lt;strong&gt;Turn sharp left&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Tourner franchement&lt;/strong&gt; vers %2</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="106"/>
+        <source>At crossing %1&lt;strong&gt;Turn left&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Tourner à gauche&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="108"/>
-        <source>At crossing %1&lt;strong&gt;Turn sharp left&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner franchement&lt;/strong&gt; vers %2</translation>
+        <source>At crossing %1&lt;strong&gt;Turn slightly left&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à gauche&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="110"/>
-        <source>At crossing %1&lt;strong&gt;Turn left&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner à gauche&lt;/strong&gt; vers %2</translation>
+        <source>At crossing %1&lt;strong&gt;Straight on&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Aller tout droit&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="112"/>
-        <source>At crossing %1&lt;strong&gt;Turn slightly left&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner légèrement à gauche&lt;/strong&gt; vers %2</translation>
+        <source>At crossing %1&lt;strong&gt;Turn slightly right&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à droite&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="114"/>
-        <source>At crossing %1&lt;strong&gt;Straight on&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Aller tout droit&lt;/strong&gt; vers %2</translation>
+        <source>At crossing %1&lt;strong&gt;Turn right&lt;/strong&gt; into %2</source>
+        <translation>Au croisement %1&lt;strong&gt;Tourner à droite&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="116"/>
-        <source>At crossing %1&lt;strong&gt;Turn slightly right&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner légèrement à droite&lt;/strong&gt; vers %2</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="118"/>
-        <source>At crossing %1&lt;strong&gt;Turn right&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner à droite&lt;/strong&gt; vers %2</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="120"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp right&lt;/strong&gt; into %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner franchement à droite&lt;/strong&gt; vers %2</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner franchement à droite&lt;/strong&gt; vers %2</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="131"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="126"/>
         <source>At crossing %1&lt;strong&gt;Turn&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="135"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="130"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp left&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner franchement à gauche&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner franchement à gauche&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="137"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="132"/>
         <source>At crossing %1&lt;strong&gt;Turn left&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner à gauche&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner à gauche&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="139"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="134"/>
         <source>At crossing %1&lt;strong&gt;Turn slightly left&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner légèrement à gauche&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à gauche&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="141"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="136"/>
         <source>At crossing %1&lt;strong&gt;Straight on&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Aller tout droit&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Aller tout droit&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="143"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="138"/>
         <source>At crossing %1&lt;strong&gt;Turn slightly right&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner légèrement à droite&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à droite&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="145"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="140"/>
         <source>At crossing %1&lt;strong&gt;Turn right&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner à droite&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner à droite&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="147"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="142"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp right&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Tourner franchement à droite&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Tourner franchement à droite&lt;/strong&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="155"/>
+        <source>unnamed road</source>
+        <translation>route sans nom</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="158"/>
+        <source>(%1)</source>
+        <translation>(%1)</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="161"/>
-        <source>unnamed road</source>
-        <translation type="unfinished">route sans nom</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="164"/>
-        <source>(%1)</source>
-        <translation type="unfinished">(%1)</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="167"/>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="230"/>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="268"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="219"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="257"/>
         <source>&quot;%1&quot;</source>
-        <translation type="unfinished">&quot;%1&quot;</translation>
+        <translation>&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="169"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="163"/>
         <source>&quot;%1&quot; (%2)</source>
-        <translation type="unfinished">&quot;%1&quot; (%2)</translation>
+        <translation>&quot;%1&quot; (%2)</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="239"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="228"/>
         <source>&lt;strong&gt;Start&lt;/strong&gt; at %1</source>
-        <translation type="unfinished">&lt;strong&gt;Démarrer&lt;/strong&gt; à %1</translation>
+        <translation>&lt;strong&gt;Démarrer&lt;/strong&gt; à %1</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="229"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="241"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="246"/>
+        <source>Start</source>
+        <translation>Démarrer</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="234"/>
+        <source>&lt;strong&gt;Continue&lt;/strong&gt; along %1</source>
+        <translation>&lt;strong&gt;Continuer&lt;/strong&gt; sur %1</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="235"/>
+        <source>Continue</source>
+        <translation>Continuer</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="240"/>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="252"/>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="257"/>
-        <source>Start</source>
-        <translation type="unfinished">Démarrer</translation>
+        <source>&lt;strong&gt;Start&lt;/strong&gt; along %1</source>
+        <translation>&lt;strong&gt;Démarrer&lt;/strong&gt; sur %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="245"/>
-        <source>&lt;strong&gt;Continue&lt;/strong&gt; along %1</source>
-        <translation type="unfinished">&lt;strong&gt;Continuer&lt;/strong&gt; sur %1</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="246"/>
-        <source>Continue</source>
-        <translation type="unfinished">Continuer</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="251"/>
-        <source>&lt;strong&gt;Start&lt;/strong&gt; along %1</source>
-        <translation type="unfinished">&lt;strong&gt;Démarrer&lt;/strong&gt; sur %1</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="256"/>
         <source>&lt;strong&gt;Start&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Démarrer&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Démarrer&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="272"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="261"/>
         <source>&lt;strong&gt;Target reached&lt;/strong&gt; at %1</source>
-        <translation type="unfinished">&lt;strong&gt;Arrivé à destination&lt;/strong&gt; à %1</translation>
+        <translation>&lt;strong&gt;Arrivé à destination&lt;/strong&gt; à %1</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="274"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="263"/>
         <source>&lt;strong&gt;Target reached&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Arrivé à destination&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Arrivé à destination&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="276"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="265"/>
         <source>Target reached</source>
-        <translation type="unfinished">Arrivé à destination</translation>
+        <translation>Arrivé à destination</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="331"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="320"/>
         <source>At crossing %1&lt;strong&gt;Enter roundabout&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Entrer dans le rond-point&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Entrer dans le rond-point&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="334"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="323"/>
         <source>&lt;strong&gt;Enter roundabout&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Entrer dans le rond-point&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Entrer dans le rond-point&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="336"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="325"/>
         <source>Enter roundabout</source>
-        <translation type="unfinished">Entrer dans le rond-point</translation>
+        <translation>Entrer dans le rond-point</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="349"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="338"/>
         <source>Take the first exit</source>
-        <translation type="unfinished">Prendre la première sortie</translation>
+        <translation>Prendre la première sortie</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="352"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="341"/>
         <source>Take the second exit</source>
-        <translation type="unfinished">Prendre la seconde sortie</translation>
+        <translation>Prendre la seconde sortie</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="355"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="344"/>
         <source>Take the third exit</source>
-        <translation type="unfinished">Prendre la troisième sortie</translation>
+        <translation>Prendre la troisième sortie</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="347"/>
+        <source>Take the %1th exit</source>
+        <translation>Prendre la sortie %1</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="354"/>
+        <source>&lt;strong&gt;Leave roundabout&lt;/strong&gt; on %1. exit into street %2</source>
+        <translation>&lt;strong&gt;Quitter le rond-point&lt;/strong&gt; à la %1.e sortie sur rue %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="358"/>
-        <source>Take the %1th exit</source>
-        <translation type="unfinished">Prendre la sortie %1</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="365"/>
-        <source>&lt;strong&gt;Leave roundabout&lt;/strong&gt; on %1. exit into street %2</source>
-        <translation type="unfinished">&lt;strong&gt;Quitter le rond-point&lt;/strong&gt; à la %1.e sortie sur rue %2</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="369"/>
         <source>&lt;strong&gt;Leave roundabout&lt;/strong&gt; on %1. exit</source>
-        <translation type="unfinished">&lt;strong&gt;Quitter le rond-point&lt;/strong&gt; à la %1.e sortie</translation>
+        <translation>&lt;strong&gt;Quitter le rond-point&lt;/strong&gt; à la %1.e sortie</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="381"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="370"/>
         <source>Enter motorway</source>
-        <translation type="unfinished">Entrer sur l&apos;autoroute</translation>
+        <translation>Entrer sur l&apos;autoroute</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="393"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="382"/>
         <source>At crossing %1&lt;strong&gt;Enter motorway&lt;/strong&gt; %2</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt; %2</translation>
+        <translation>Au croisement %1&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt; %2</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="397"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="386"/>
         <source>&lt;strong&gt;Enter motorway&lt;/strong&gt; %1</source>
-        <translation type="unfinished">&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt; %1</translation>
+        <translation>&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt; %1</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="402"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="391"/>
         <source>At crossing %1&lt;strong&gt;Enter motorway&lt;/strong&gt;</source>
-        <translation type="unfinished">Au croisement %1&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>Au croisement %1&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="405"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="394"/>
         <source>&lt;strong&gt;Enter motorway&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt;</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="407"/>
+        <source>Change motorway</source>
+        <translation>Changer d&apos;autoroute</translation>
+    </message>
+    <message>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="414"/>
+        <source>&lt;strong&gt;Change motorway&lt;/strong&gt; from %1 to %2</source>
+        <translation>&lt;strong&gt;Change motorway&lt;/strong&gt; from %1 to %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="418"/>
-        <source>Change motorway</source>
-        <translation type="unfinished">Changer d&apos;autoroute</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="425"/>
-        <source>&lt;strong&gt;Change motorway&lt;/strong&gt; from %1 to %2</source>
-        <translation type="unfinished">&lt;strong&gt;Change motorway&lt;/strong&gt; from %1 to %2</translation>
-    </message>
-    <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="429"/>
         <source>&lt;strong&gt;Change motorway&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Changer d&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Changer d&apos;autoroute&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="442"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="431"/>
         <source>Leave motorway</source>
-        <translation type="unfinished">Quitter l&apos;autoroute</translation>
+        <translation>Quitter l&apos;autoroute</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="451"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="440"/>
         <source>&lt;strong&gt;Leave motorway&lt;/strong&gt; %1 into %2</source>
-        <translation type="unfinished">&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %1 à %2</translation>
+        <translation>&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %1 à %2</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="455"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="444"/>
         <source>&lt;strong&gt;Leave motorway&lt;/strong&gt; %1</source>
-        <translation type="unfinished">&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %1</translation>
+        <translation>&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %1</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="459"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="448"/>
         <source>&lt;strong&gt;Leave motorway&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="487"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="476"/>
         <source>Way changes name</source>
-        <translation type="unfinished">Le chemin change de nom</translation>
+        <translation>Le chemin change de nom</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="490"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="479"/>
         <source>&lt;strong&gt;Way changes name&lt;/strong&gt; from %1 to %2</source>
-        <translation type="unfinished">&lt;strong&gt;Le chemin change de nom&lt;/strong&gt; de %1 à %2</translation>
+        <translation>&lt;strong&gt;Le chemin change de nom&lt;/strong&gt; de %1 à %2</translation>
     </message>
     <message>
-        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="494"/>
+        <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscout/RouteDescriptionBuilder.cpp" line="483"/>
         <source>&lt;strong&gt;Way changes name&lt;/strong&gt; to %1</source>
-        <translation type="unfinished">&lt;strong&gt;Le chemin change de nom&lt;/strong&gt; à %1</translation>
+        <translation>&lt;strong&gt;Le chemin change de nom&lt;/strong&gt; à %1</translation>
     </message>
 </context>
 </TS>

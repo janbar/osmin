@@ -76,10 +76,12 @@ public:
   GPXObjectTrack(const osmscout::gpx::Track& track, int id) : m_track(track), m_id(id) { }
   int id() const override { return m_id; }
   ObjectType type() const override { return Track; }
-  QString name() const override { return QString::fromUtf8(m_track.name.getOrElse(std::to_string(m_id)).c_str()); }
-  QString description() const override { return QString::fromUtf8(m_track.desc.getOrElse("").c_str()); }
-  QString displayColor() const { return QString::fromUtf8(m_track.displayColor.getOrElse("").c_str()); }
+  QString name() const override { return QString::fromUtf8(m_track.name.value_or(std::to_string(m_id)).c_str()); }
+  QString description() const override { return QString::fromUtf8(m_track.desc.value_or("").c_str()); }
   double length() const { return m_track.GetLength().AsMeter(); }
+  std::optional<osmscout::Color> displayColor() const { return m_track.displayColor; }
+  QString displayColorHexString() const { return QString::fromUtf8(m_track.displayColor.value_or(osmscout::Color::DARK_GREEN).ToHexString().c_str()); }
+  QString displayColorName() const;
 private:
   const osmscout::gpx::Track& m_track;
   int m_id;
@@ -92,9 +94,9 @@ public:
   GPXObjectWayPoint(const osmscout::gpx::Waypoint& waipoint, int id) : m_waypoint(waipoint), m_id(id) { }
   int id() const override { return m_id; }
   ObjectType type() const override { return WayPoint; }
-  QString name() const override { return QString::fromUtf8(m_waypoint.name.getOrElse(std::to_string(m_id)).c_str()); }
-  QString description() const override { return QString::fromUtf8(m_waypoint.description.getOrElse("").c_str()); }
-  QString symbol() const { return QString::fromUtf8(m_waypoint.symbol.getOrElse("").c_str()); }
+  QString name() const override { return QString::fromUtf8(m_waypoint.name.value_or(std::to_string(m_id)).c_str()); }
+  QString description() const override { return QString::fromUtf8(m_waypoint.description.value_or("").c_str()); }
+  QString symbol() const { return QString::fromUtf8(m_waypoint.symbol.value_or("").c_str()); }
 private:
   const osmscout::gpx::Waypoint& m_waypoint;
   int m_id;

@@ -304,7 +304,7 @@ MapPage {
                         anchors.verticalCenter: parent.verticalCenter
                         height: units.gu(5)
                         source: "image://theme/icon-m-left"
-                        label.text: "Back"
+                        label.text: qsTr("Back")
                         label.font.pixelSize: units.fx("small")
                         visible: availableList.tree.length > 0
                         onClicked: {

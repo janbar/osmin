@@ -291,7 +291,7 @@ MapPage {
                     anchors.verticalCenter: parent.verticalCenter
                     height: units.gu(5)
                     source: "qrc:/images/go-previous.svg"
-                    label.text: "Back"
+                    label.text: qsTr("Back")
                     label.font.pointSize: units.fs("small")
                     visible: availableList.tree.length > 0
                     onClicked: {

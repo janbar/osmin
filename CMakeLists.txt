@@ -5,8 +5,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_SAILFISHOS "Build the SailfishOS application" OFF)
 
-set(APP_VERSION       "1.2.1")
-set(APP_VERSION_CODE  21)
+set(APP_VERSION       "1.3.5")
+set(APP_VERSION_CODE  27)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -101,7 +101,13 @@ if(NOT APPLE)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+else()
+    # force build all backend dependencies on apple
+    option(BUILD_DEPENDENCIES "" ON)
 endif()
+
+# Workaround for QTBUG-87863 before calling add_subirectory
+find_package(Qt5 COMPONENTS Core REQUIRED)
 
 add_subdirectory(backend)
 
@@ -127,7 +133,7 @@ find_package(Qt5Sensors REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/utils.cpp
@@ -197,11 +203,11 @@ else()
 endif()
 
 if(ANDROID)
+    # Fix import of shared omp with android ndk rev 21
+    if(OpenMP_CXX_LIBRARIES MATCHES libomp.so)
+       set(SHARED_LIBOMP ${OpenMP_CXX_LIBRARIES})
+    endif()
     add_dependencies(osmin ssl crypto)
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/android/AndroidManifest.xml.in
-        ${CMAKE_SOURCE_DIR}/android/package-sources/AndroidManifest.xml
-    )
     include(android/AddQtAndroidApk.cmake)
     add_qt_android_apk(osmin-apk osmin
         NAME ${APP_NAME}
@@ -209,7 +215,7 @@ if(ANDROID)
         PACKAGE_NAME ${APP_ID}
         PACKAGE_SOURCES ${CMAKE_SOURCE_DIR}/android/package-sources
         BUILDTOOLS_REVISION ${QT_ANDROID_SDK_BUILDTOOLS_REVISION}
-        DEPENDS ssl crypto
+        DEPENDS ssl crypto ${SHARED_LIBOMP}
         PLUGINS ${CMAKE_SOURCE_DIR}/resources
         KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
         KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}

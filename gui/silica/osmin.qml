@@ -125,13 +125,6 @@ ApplicationWindow {
         foregroundColor: styleMap.view.foregroundColor
     }
 
-    ListModel {
-        id: tabs
-        ListElement { title: qsTr("Download Maps"); source: "qrc:/silica/MapDownloads.qml"; visible: true }
-        ListElement { title: qsTr("Search Place"); source: "qrc:/silica/SearchPlace.qml"; visible: true }
-        ListElement { title: qsTr("Favorite Places"); source: "qrc:/silica/Favorites.qml"; visible: true }
-    }
-
     property var mapPage: null
     property var hillshadeProvider: null
     property int launcherMode: 0
@@ -163,6 +156,8 @@ ApplicationWindow {
         launcher.start();
     }
 
+    // The initial stacked page (banner) will set the startup mode.
+    // I don't want use a signal for that, so we just loop until the change.
     Timer {
         id: launcher
         interval: 500

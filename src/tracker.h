@@ -6,6 +6,7 @@
 #include <osmscout/VehiclePosition.h>
 #include <osmscout/RouteStep.h>
 #include <osmscout/gpx/TrackPoint.h>
+#include <osmscout/gpx/Waypoint.h>
 
 #include <QObject>
 #include <QDateTime>
@@ -14,6 +15,7 @@
 #include <QSharedPointer>
 #include <QDir>
 #include <QFile>
+#include <QMutex>
 
 class TrackerModule;
 
@@ -67,6 +69,7 @@ public:
   Q_INVOKABLE void startRecording();
   Q_INVOKABLE void resumeRecording(const QString& filename);
   Q_INVOKABLE void stopRecording();
+  Q_INVOKABLE void markPosition(const QString& symbol, const QString& name, const QString& description);
 
 signals:
   void trackerPositionChanged();
@@ -88,7 +91,7 @@ signals:
 private slots:
   void onPositionChanged(const osmscout::PositionAgent::PositionState state,
                          const osmscout::GeoCoord coord,
-                         const std::shared_ptr<osmscout::Bearing> bearing);
+                         const std::optional<osmscout::Bearing> bearing);
   void onDataChanged(double kmph, double meters, double seconds, double ascent, double descent);
   void onRecordingChanged(const QString& filename);
   void onProcessingChanged(bool busy);
@@ -100,7 +103,7 @@ private:
   osmscout::Vehicle m_vehicle;
   osmscout::PositionAgent::PositionState m_vehicleState;
   osmscout::GeoCoord m_vehicleCoord;
-  std::shared_ptr<osmscout::Bearing> m_vehicleBearing;
+  std::optional<osmscout::Bearing> m_vehicleBearing;
   double m_elevation;
   double m_currentSpeed;
   double m_distance;
@@ -129,11 +132,13 @@ public:
   void record();
   bool isRecording() const { return m_recording; }
 
+  void markPosition(const QString& symbol, const QString& name, const QString& description);
+
 signals:
   void dataChanged(double kmph, double distance, double duration, double ascent, double descent);
   void positionChanged(const osmscout::PositionAgent::PositionState state,
                        const osmscout::GeoCoord coord,
-                       const std::shared_ptr<osmscout::Bearing> bearing);
+                       const std::optional<osmscout::Bearing> bearing);
   void recordingFailed();
   void recordingChanged(const QString& filename);
   void processing(bool busy);
@@ -177,8 +182,10 @@ private:
 
   bool m_recording;
   QList<osmscout::gpx::TrackPoint> m_segment;
+  QMutex m_lock;
   QSharedPointer<QFile> m_file;
   osmin::CSVParser* m_formater;
+  QScopedPointer<osmscout::gpx::Waypoint> m_mark;
 };
 
 #endif // TRACKER_H

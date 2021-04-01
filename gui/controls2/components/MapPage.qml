@@ -32,13 +32,6 @@ Page {
     property alias optionsMenuVisible: optionsMenu.visible
     property alias optionsMenuContentItems: optionsMenuPopup.contentData
 
-    state: "default"
-    states: [
-        State {
-            name: "default"
-        }
-    ]
-
     signal popped           // action for root page
     signal goUpClicked      // action for a non-root page
     signal searchClicked

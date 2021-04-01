@@ -54,6 +54,7 @@ ApplicationWindow {
         property int maximumRouteStep: 255
         property int courseId: 0
         property real magneticDip: 0.0
+        property string voiceName: ""
 
         // Tracker settings
         property string trackerRecording: ""
@@ -271,13 +272,6 @@ ApplicationWindow {
         }
     }
 
-    ListModel {
-        id: tabs
-        ListElement { title: qsTr("Download Maps"); source: "qrc:/controls2/MapDownloads.qml"; visible: true }
-        ListElement { title: qsTr("Search Place"); source: "qrc:/controls2/SearchPlace.qml"; visible: true }
-        ListElement { title: qsTr("Favorite Places"); source: "qrc:/controls2/Favorites.qml"; visible: true }
-    }
-
     property alias stackView: stackView
 
     StackView {
@@ -328,6 +322,8 @@ ApplicationWindow {
         launcher.start();
     }
 
+    // The initial stacked page (banner) will set the startup mode.
+    // I don't want use a signal for that, so we just loop until the change.
     Timer {
         id: launcher
         interval: 500
@@ -482,6 +478,14 @@ ApplicationWindow {
             onTriggered: {
                 compass.polled(compass.azimuth, (360 - compass.azimuth) * Math.PI / 180.0);
             }
+        }
+    }
+
+    MapVoice {
+        id: mapVoice
+        Component.onCompleted: {
+            // bind the setting
+            settings.voiceName = Qt.binding(function foo(){return voiceName;});
         }
     }
 }

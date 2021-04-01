@@ -134,11 +134,11 @@ Item {
             }
         }
 
-        onBreakRequest: {
-            console.log("Navigator: Requesting break");
-            navigator.suspended = true; // will be reset after rerouting
-            navigator.rerouteRequested();
-        }
+//        onBreakRequest: {
+//            console.log("Navigator: Requesting break");
+//            navigator.suspended = true; // will be reset after rerouting
+//            navigator.rerouteRequested();
+//        }
 
         onRerouteRequest: {
             if (!delayReroute.running) {

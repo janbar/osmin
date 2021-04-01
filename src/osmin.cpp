@@ -21,6 +21,7 @@
 //#define Q_OS_ANDROID
 
 #define DIR_MAPS          "Maps"
+#define DIR_VOICES        "voices"
 #define DIR_RES           "resources"
 #define APP_TR_NAME       "osmin"
 #ifdef SAILFISHOS
@@ -52,6 +53,7 @@
 #define RES_GPX_DIR               "GPX"
 #define RES_FAVORITES_FILE        "favorites.csv"
 #define RES_HILLSHADE_SERVER_FILE "hillshade-tile-server.json"
+#define RES_HILLSHADE_FILE_SAMPLE "hillshade-tile-server.json.sample"
 
 #include <osmscout/OSMScoutQt.h>
 // Custom QML objects
@@ -180,6 +182,13 @@ int main(int argc, char *argv[])
     qInfo("Resource directory is %s", resDir.path().toUtf8().constData());
     g_favoritesFile = new QFile(resDir.absoluteFilePath(RES_FAVORITES_FILE), &app);
     g_hillshadeProvider = new QString("{}");
+    // create the hillshade server file from sample if needed
+    if (!resDir.exists(RES_HILLSHADE_SERVER_FILE) && resDir.exists(RES_HILLSHADE_FILE_SAMPLE))
+    {
+      qInfo("Create hillshade tile server file '%s' from sample", resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE).toUtf8().constData());
+      QFile::copy(resDir.absoluteFilePath(RES_HILLSHADE_FILE_SAMPLE), resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE));
+    }
+    // load hillshade server file
     if (resDir.exists(RES_HILLSHADE_SERVER_FILE))
     {
       QFile file(resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE));
@@ -200,6 +209,9 @@ int main(int argc, char *argv[])
     g_GPXListModel->init(homeDir.absoluteFilePath(RES_GPX_DIR));
     g_Tracker = new Tracker(&app);
     g_Tracker->init(homeDir.absoluteFilePath(RES_GPX_DIR));
+
+    if (!homeDir.exists(DIR_VOICES))
+      homeDir.mkdir(DIR_VOICES);
 
     // initialize the map directories
     QStringList mapDirs;
@@ -267,6 +279,8 @@ int main(int argc, char *argv[])
            .WithMapLookupDirectories(mapDirs)
            .WithOnlineTileProviders(resDir.absoluteFilePath("online-tile-providers.json"))
            .WithMapProviders(resDir.absoluteFilePath("map-providers.json"))
+           .WithVoiceLookupDirectory(homeDir.absoluteFilePath(DIR_VOICES))
+           .WithVoiceProviders(resDir.absoluteFilePath("voice-providers.json"))
            .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
            .WithTileCacheSizes(60, 200)
            .AddCustomPoiType("_waypoint");

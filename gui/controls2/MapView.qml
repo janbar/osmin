@@ -152,7 +152,6 @@ MapPage {
         }
 
         Component.onCompleted: {
-            setPixelRatio(ScreenScaleFactor);
             positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
                 locationChanged(valid, lat, lon, accValid, acc);
             });
@@ -596,7 +595,7 @@ MapPage {
 
                     MapIcon {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: "qrc:/images/trip/info.svg"
+                        source: "qrc:/images/trip/here.svg"
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
@@ -710,7 +709,7 @@ MapPage {
 
                     MapIcon {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        source: "qrc:/images/trip/info.svg"
+                        source: "qrc:/images/trip/here.svg"
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
@@ -807,6 +806,15 @@ MapPage {
         onClose: {
             navigator.stop();
             visible = false;
+        }
+    }
+
+    Connections {
+        target: popNavigatorInfo
+        onVisibleChanged: {
+            if (popNavigatorInfo.visible && !mapVoice.voiceValid) {
+                popInfo.open(qsTr("The voice GPS driving directions is not activated"));
+            }
         }
     }
 

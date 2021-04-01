@@ -1,6 +1,10 @@
 OST
 
 /*
+  Please see http://libosmscout.sourceforge.net/documentation/typedef/ for a detailed
+  description of the format of this file. The documentation below contains only the
+  most important information and is not a complete description.
+
   Types:
     A type can be support for any of the following types:
     * NODE
@@ -30,6 +34,10 @@ OST
       This is a way, even if the path is closed
     MULTIPOLYGON:
       Type should be handled as multipolygon even if type is not set to multipolygon.
+    ROUTE_MASTER:
+      Type should be handled as route master relation (public transport schema)..
+    ROUTE:
+      Type should be handled as route relation.
     ADMIN_REGION:
       The given area or node describes an administrate region
       that should be part of the region tree for the city/street
@@ -56,6 +64,10 @@ OST
     IGNORESEALAND:
       Ignore this type for calculation of land masses (because objects of this type can
       occur on sea, too, and thus have no distinguishing character).
+    LANES[bidirectional oneway]:
+      Default value for the number of lanes, if the way is either bidirectional or
+      oneway. Default value will be overwritten during parsing of concrete ways by the
+      actual values.
     IGNORE:
       Ignore objects of this type
 */
@@ -158,6 +170,10 @@ GRADES
     "rocks"
   }
 
+/*
+  Allows to give features a localized name. This can be helpful for
+  UI visualisation.
+*/
 FEATURES
   FEATURE Address
   DESC
@@ -991,6 +1007,11 @@ TYPES
       {Name, NameAlt}
       ADDRESS OPTIMIZE_LOW_ZOOM
 
+  TYPE leisure_fitness_station
+    = NODE AREA ("leisure"=="fitness_station")
+      {Name, NameAlt}
+      ADDRESS OPTIMIZE_LOW_ZOOM
+
   TYPE leisure_golf_course
     = NODE AREA ("leisure"=="golf_course")
       {Name, NameAlt}
@@ -1117,6 +1138,7 @@ TYPES
 
   TYPE amenity_charging_station
     = NODE ("amenity"=="charging_station")
+      {Operator}
       GROUP amenity
 
   TYPE amenity_clock
@@ -2227,11 +2249,135 @@ TYPES
   TYPE network_any IGNORE
     = RELATION ("type"=="network")
 
-  TYPE route_any IGNORE
-    = RELATION ("type"=="route")
+  //
+  // Route Masters and Routes
+  // DO NOT CHANGE, INTERNAL CODE RELIES ON IT!
+
+  // Aerialway
+
+  TYPE routemaster_aerialway
+    = RELATION ("type"=="route_master" AND "route_master"=="aerialway")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_aerialway
+    = RELATION ("type"=="route" AND "route"=="aerialway")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Bus
+
+  TYPE routemaster_bus
+    = RELATION ("type"=="route_master" AND "route_master"=="bus")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_bus
+    = RELATION ("type"=="route" AND "route"=="bus")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Ferry
+
+  TYPE routemaster_ferry
+    = RELATION ("type"=="route_master" AND "route_master"=="ferry")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_ferry
+    = RELATION ("type"=="route" AND "route"=="ferry")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Monorail
+
+  TYPE routemaster_monorail
+    = RELATION ("type"=="route_master" AND "route_master"=="monorail")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_monorail
+    = RELATION ("type"=="route" AND "route"=="monorail")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Subway
+
+  TYPE routemaster_subway
+    = RELATION ("type"=="route_master" AND "route_master"=="subway")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_subway
+    = RELATION ("type"=="route" AND "route"=="subway")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Train
+
+  TYPE routemaster_train
+    = RELATION ("type"=="route_master" AND "route_master"=="train")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_train
+    = RELATION ("type"=="route" AND "route"=="train")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Tram
+
+  TYPE routemaster_tram
+    = RELATION ("type"=="route_master" AND "route_master"=="tram")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_tram
+    = RELATION ("type"=="route" AND "route"=="tram")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  // Trolleybus
+
+  TYPE routemaster_trolleybus
+    = RELATION ("type"=="route_master" AND "route_master"=="trolleybus")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE_MASTER
+
+  TYPE route_trolleybus
+    = RELATION ("type"=="route" AND "route"=="trolleybus")
+      {Name, Ref, Operator, Network, FromTo, Color}
+      ROUTE
+
+  TYPE route_bicycle
+    = RELATION ("type"=="route" AND "route"=="bicycle")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE
+
+  TYPE route_mtb
+    = RELATION ("type"=="route" AND "route"=="mtb")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE
+
+  TYPE route_hiking
+    = RELATION ("type"=="route" AND "route"=="hiking")
+      {Name, Ref, Operator, Network, Color}
+      ROUTE
+
+  TYPE route_skiing_nordic
+    = RELATION ("type"=="route" AND ("route"=="ski" OR ("route"=="piste" AND "piste:type"=="nordic")))
+      {Name, Ref, Operator, Network, Color}
+      ROUTE
+
+  // Catch-all fallback for other types
 
   TYPE routemaster_any IGNORE
     = RELATION ("type"=="route_master")
+
+  TYPE route_any IGNORE
+    = RELATION ("type"=="route")
+
+  // --
 
   TYPE superroute_any IGNORE
     = RELATION ("type"=="superroute")

@@ -150,7 +150,6 @@ Page {
         }
 
         Component.onCompleted: {
-            setPixelRatio(ScreenScaleFactor);
             positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
                 locationChanged(valid, lat, lon, accValid, acc);
             });
@@ -593,7 +592,7 @@ Page {
 
                     MapIcon {
                         anchors.verticalCenter: parent.verticalCenter
-                        source: "qrc:/images/trip/info.svg"
+                        source: "qrc:/images/trip/here.svg"
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)
@@ -707,7 +706,7 @@ Page {
 
                     MapIcon {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        source: "qrc:/images/trip/info.svg"
+                        source: "qrc:/images/trip/here.svg"
                         color: "black"
                         backgroundColor: "white"
                         borderPadding: units.gu(1.0)

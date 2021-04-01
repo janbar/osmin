@@ -257,5 +257,8 @@
         <file>silica/SearchPlace.qml</file>
         <file>silica/TrackCollection.qml</file>
         <file>silica/CoverPage.qml</file>
+        <file>images/trip/here.svg</file>
+        <file>images/trip/noname.svg</file>
+        <file>images/voice.svg</file>
     </qresource>
 </RCC>
