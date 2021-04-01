@@ -4,11 +4,11 @@ cd build-armv7
 
 export JAVA_HOME=/home/jlb/bin/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
-export ANDROID_NDK=/home/shared/Android/android-ndk-r18b
-export ANDROID_NATIVE_API_LEVEL=23
-export ANDROID_SDK_MINVER=23
-export ANDROID_SDK_TARGET=23
-export QT_DIR=/home/shared/Qt/5.12.9/android_armv7
+export ANDROID_NDK=/home/shared/Android/android-ndk-r21e
+export ANDROID_NATIVE_API_LEVEL=24
+export ANDROID_SDK_MINVER=24
+export ANDROID_SDK_TARGET=26
+export QT_DIR=/home/shared/Qt/5.15.2/android
 
 cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_PREFIX_PATH=$QT_DIR \
@@ -40,4 +40,6 @@ cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DQt5Sensors_DIR=$QT_DIR/lib/cmake/Qt5Sensors \
 -DQt5Positioning_DIR=$QT_DIR/lib/cmake/Qt5Positioning \
 -DQt5Multimedia_DIR=$QT_DIR/lib/cmake/Qt5Multimedia \
+-DQt5AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt5AndroidExtras \
+-DQt5QmlModels_DIR=$QT_DIR/lib/cmake/Qt5QmlModels \
 $@
