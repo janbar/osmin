@@ -257,75 +257,107 @@
         <translation>Menu</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="35"/>
+        <location filename="../controls2/MainMenu.qml" line="32"/>
         <location filename="../silica/MainMenu.qml" line="35"/>
         <source>My Places</source>
         <translation>Mes emplacements favoris</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="46"/>
         <location filename="../silica/MainMenu.qml" line="46"/>
         <source>Manage Favorite Places.</source>
         <translation>Gérer les emplacements favoris.</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="64"/>
+        <location filename="../controls2/MainMenu.qml" line="40"/>
         <location filename="../silica/MainMenu.qml" line="64"/>
         <source>Routes</source>
         <translation>Itinéraires</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="75"/>
+        <location filename="../controls2/MainMenu.qml" line="41"/>
         <location filename="../silica/MainMenu.qml" line="75"/>
         <source>Navigate to a destination.</source>
         <translation>Naviguer vers une destination.</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="93"/>
+        <location filename="../controls2/MainMenu.qml" line="48"/>
         <location filename="../silica/MainMenu.qml" line="93"/>
         <source>Tracks</source>
         <translation>Traces</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="104"/>
         <location filename="../silica/MainMenu.qml" line="104"/>
         <source>Manage your tracks.</source>
         <translation>Gérer vos traces.</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="122"/>
+        <location filename="../controls2/MainMenu.qml" line="56"/>
         <location filename="../silica/MainMenu.qml" line="122"/>
         <source>Tracking</source>
         <translation>Suivi de la trace</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="133"/>
         <location filename="../silica/MainMenu.qml" line="133"/>
         <source>Follow your track.</source>
         <translation>Suivre votre trace.</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="151"/>
+        <location filename="../controls2/MainMenu.qml" line="33"/>
+        <source>Manage your favorite places.</source>
+        <translation>Gérer les lieux enregistrés dans les favoris.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="49"/>
+        <source>Manage the collection of saved tracks.</source>
+        <translation>Gérer la bibliothèque des traces.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="57"/>
+        <source>Statistics of the current track.</source>
+        <translation>Les statistiques de la trace en cours.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="64"/>
         <location filename="../silica/MainMenu.qml" line="151"/>
         <source>Configure Map</source>
         <translation>Configurer la Carte</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="169"/>
+        <location filename="../controls2/MainMenu.qml" line="65"/>
+        <source>Rendering and style of the map view.</source>
+        <translation>Options d&apos;affichage et style de la vue cartographique.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="72"/>
         <location filename="../silica/MainMenu.qml" line="169"/>
         <source>Download Maps</source>
         <translation>Télécharger les Cartes</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="187"/>
+        <location filename="../controls2/MainMenu.qml" line="73"/>
+        <source>Manage the map database.</source>
+        <translation>Gérer la base de données cartographique.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="80"/>
         <source>Configure Voice</source>
         <translation>Configurer la voix</translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="222"/>
+        <location filename="../controls2/MainMenu.qml" line="81"/>
+        <source>Choose a voice for driving directions.</source>
+        <translation>Choisir la voix des instructions de conduite.</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="95"/>
         <location filename="../silica/MainMenu.qml" line="204"/>
         <source>Settings</source>
         <translation>Réglages</translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="96"/>
+        <source>General settings, units system and more ...</source>
+        <translation>Paramêtres généraux, système d&apos;unités et plus ...</translation>
     </message>
 </context>
 <context>

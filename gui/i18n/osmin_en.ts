@@ -257,74 +257,106 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="35"/>
+        <location filename="../controls2/MainMenu.qml" line="32"/>
         <location filename="../silica/MainMenu.qml" line="35"/>
         <source>My Places</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="46"/>
         <location filename="../silica/MainMenu.qml" line="46"/>
         <source>Manage Favorite Places.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="64"/>
+        <location filename="../controls2/MainMenu.qml" line="40"/>
         <location filename="../silica/MainMenu.qml" line="64"/>
         <source>Routes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="75"/>
+        <location filename="../controls2/MainMenu.qml" line="41"/>
         <location filename="../silica/MainMenu.qml" line="75"/>
         <source>Navigate to a destination.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="93"/>
+        <location filename="../controls2/MainMenu.qml" line="48"/>
         <location filename="../silica/MainMenu.qml" line="93"/>
         <source>Tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="104"/>
         <location filename="../silica/MainMenu.qml" line="104"/>
         <source>Manage your tracks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="122"/>
+        <location filename="../controls2/MainMenu.qml" line="56"/>
         <location filename="../silica/MainMenu.qml" line="122"/>
         <source>Tracking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="133"/>
         <location filename="../silica/MainMenu.qml" line="133"/>
         <source>Follow your track.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="151"/>
+        <location filename="../controls2/MainMenu.qml" line="33"/>
+        <source>Manage your favorite places.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="49"/>
+        <source>Manage the collection of saved tracks.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="57"/>
+        <source>Statistics of the current track.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="64"/>
         <location filename="../silica/MainMenu.qml" line="151"/>
         <source>Configure Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="169"/>
+        <location filename="../controls2/MainMenu.qml" line="65"/>
+        <source>Rendering and style of the map view.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="72"/>
         <location filename="../silica/MainMenu.qml" line="169"/>
         <source>Download Maps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="187"/>
+        <location filename="../controls2/MainMenu.qml" line="73"/>
+        <source>Manage the map database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="80"/>
         <source>Configure Voice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="222"/>
+        <location filename="../controls2/MainMenu.qml" line="81"/>
+        <source>Choose a voice for driving directions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="95"/>
         <location filename="../silica/MainMenu.qml" line="204"/>
         <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MainMenu.qml" line="96"/>
+        <source>General settings, units system and more ...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
