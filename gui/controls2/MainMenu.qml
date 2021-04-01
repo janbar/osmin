@@ -62,7 +62,7 @@ PopOver {
         ListElement {
             art: "qrc:/images/map.svg"
             name: qsTr("Configure Map")
-            comment: "Rendering and style of the map view."
+            comment: qsTr("Rendering and style of the map view.")
             foo: function() {
                 popConfigureMap.show();
             }
@@ -70,7 +70,7 @@ PopOver {
         ListElement {
             art: "qrc:/images/download.svg"
             name: qsTr("Download Maps")
-            comment: "Manage the map database."
+            comment: qsTr("Manage the map database.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/MapDownloads.qml");
             }
@@ -78,7 +78,7 @@ PopOver {
         ListElement {
             art: "qrc:/images/voice.svg"
             name: qsTr("Configure Voice")
-            comment: "Choose a voice for driving directions."
+            comment: qsTr("Choose a voice for driving directions.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/ConfigureVoice.qml");
             }
@@ -86,7 +86,7 @@ PopOver {
 //        ListElement {
 //            art: "qrc:/images/trip/measuring.svg"
 //            name: qsTr("Measure distance")
-//            comment: ""
+//            comment: qsTr("")
 //            foo: function() {
 //            }
 //        }
@@ -101,7 +101,7 @@ PopOver {
 //        ListElement {
 //            art: "qrc:/images/help.svg"
 //            name: qsTr("Help")
-//            comment: "More about features and usage."
+//            comment: qsTr("More about features and usage.")
 //            foo: function() {
 //            }
 //        }
