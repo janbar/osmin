@@ -103,7 +103,7 @@ MapPage {
         renderingType: (settings.renderingTypeTiled || mapView.rotateEnabled || mapView.navigation ? "tiled" : "plane")
 
         followVehicle: mapView.navigation
-        vehiclePosition: mapView.navigation ? (navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition) : null
+        vehiclePosition: mapView.navigation && navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition
         vehicleIconSize: 10
         showCurrentPosition: true
 
@@ -152,6 +152,8 @@ MapPage {
         }
 
         Component.onCompleted: {
+            map.setVehicleScaleFactor(0.0); // hide vehicle
+            positionSource.dataUpdated.connect(Tracker.locationChanged);
             positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
                 locationChanged(valid, lat, lon, accValid, acc);
             });
@@ -217,17 +219,20 @@ MapPage {
             // unlock rotation and disable rotate
             lockRotation = false;
             rotateEnabled = false;
-            // connect the Tracker
+            // connect the Tracker to azimuth
             compass.active = !applicationSuspended;
             compass.polled.connect(Tracker.azimuthChanged);
+            // show vehicle icon
+            map.setVehicleScaleFactor(1.0);
+            // log this position
             Tracker.locationChanged(positionSource._posValid,
                                     positionSource._lat, positionSource._lon,
                                     positionSource._accValid, positionSource._acc,
                                     positionSource._alt);
-            positionSource.dataUpdated.connect(Tracker.locationChanged);
         } else {
-            // disconnect the Tracker
-            positionSource.dataUpdated.disconnect(Tracker.locationChanged);
+            // hide vehicle icon
+            map.setVehicleScaleFactor(0.0);
+            // disconnect the Tracker from azimuth
             compass.polled.disconnect(Tracker.azimuthChanged);
             compass.active = false;
             // lock rotation
