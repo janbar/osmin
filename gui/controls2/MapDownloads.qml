@@ -330,6 +330,7 @@ MapPage {
                         width: parent.width - units.gu(6)
                         color: styleMap.view.primaryColor
                         font.pointSize: units.fs("medium")
+                        font.bold: dir
                         text: name
                         elide: Text.ElideRight
                     }

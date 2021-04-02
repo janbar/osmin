@@ -90,7 +90,7 @@ Item {
         anchors.rightMargin: closeButton.width
         horizontalAlignment: Text.AlignHCenter
         text: title
-        font.pointSize: units.fs("large")
+        font.pointSize: units.fs("x-large")
         color: foregroundColor
         wrapMode: Text.Wrap
         visible: (text !== "")

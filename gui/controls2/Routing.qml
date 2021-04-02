@@ -106,12 +106,13 @@ PopOver {
             // vehicle
 
             Row {
-                width: parent.width
-                spacing: units.gu(2)
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: units.gu(3)
+
                 MapIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/trip/walk.svg"
-                    height: units.gu(6)
+                    height: units.gu(7)
                     width: height
                     color: vehicle === "foot" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
                     onClicked: vehicle = "foot"
@@ -119,7 +120,7 @@ PopOver {
                 MapIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/trip/bike.svg"
-                    height: units.gu(6)
+                    height: units.gu(7)
                     width: height
                     color: vehicle === "bicycle" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
                     onClicked: vehicle = "bicycle"
@@ -127,7 +128,7 @@ PopOver {
                 MapIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/trip/car.svg"
-                    height: units.gu(6)
+                    height: units.gu(7)
                     width: height
                     color: vehicle === "car" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
                     onClicked: vehicle = "car"
@@ -139,7 +140,7 @@ PopOver {
             Label {
                 text: qsTr("From")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("small")
+                font.pointSize: units.fs("medium")
             }
             ComboBox {
                 id: from
@@ -231,12 +232,18 @@ PopOver {
                 font.pointSize: units.fs("small")
             }
 
+            // Separator
+            Item {
+                width: parent.width
+                height: units.gu(1)
+            }
+
             // Route to
 
             Label {
                 text: qsTr("Destination")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("small")
+                font.pointSize: units.fs("medium")
             }
             ComboBox {
                 id: to
@@ -343,6 +350,7 @@ PopOver {
                 color: styleMap.popover.foregroundColor
                 font.pointSize: units.fs("small")
                 text: routeMessage
+                horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.Wrap
                 visible: text !== ""
             }

@@ -133,8 +133,10 @@ PopOver {
                         }
 
                         Column {
+                            width: parent.width - icon.width - units.gu(1)
                             anchors.verticalCenter: parent.verticalCenter
                             Label {
+                                width: parent.width - units.gu(1)
                                 color: styleMap.view.primaryColor
                                 font.pointSize: units.fs("large")
                                 font.bold: true
@@ -142,10 +144,11 @@ PopOver {
                                 elide: Text.ElideRight
                             }
                             Label {
+                                width: parent.width - units.gu(1)
                                 color: styleMap.view.secondaryColor
                                 font.pointSize: units.fs("medium")
                                 verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignJustify
+                                horizontalAlignment: Text.AlignLeft
                                 maximumLineCount: 2
                                 wrapMode: Text.Wrap
                                 text: comment

@@ -87,6 +87,7 @@ MapPage {
                             width: parent.width
                             color: styleMap.view.primaryColor
                             font.pointSize: units.fs("medium")
+                            font.bold: true
                             wrapMode: Text.WordWrap
                             maximumLineCount: 2
                             text: label
