@@ -105,6 +105,7 @@ void Tracker::azimuthChanged(double azimuth)
 
 void Tracker::reset()
 {
+  m_maxSpeed = { 0, 0, 0 };
   emit doReset();
 }
 
