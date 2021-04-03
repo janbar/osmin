@@ -16,8 +16,9 @@
  */
 
 import QtQuick 2.9
+import QtQml 2.2
 
-Item {
+QtObject {
     property real scaleFactor: 1.0
     property real fontScaleFactor: 1.0
     property real gridUnit: 8.0 * scaleFactor
