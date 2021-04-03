@@ -263,5 +263,6 @@
         <file>controls2/components/MapVoice.qml</file>
         <file>controls2/ConfigureVoice.qml</file>
         <file>images/voice.svg</file>
+        <file>controls2/components/OverlayManager.qml</file>
     </qresource>
 </RCC>

@@ -16,12 +16,14 @@
  */
 
 import QtQuick 2.2
+import QtQml 2.2
 import Osmin 1.0
 
 Item {
     id: navigator
 
     property MapPosition position
+    property OverlayManager overlayManager
     readonly property bool ready: !suspended && destination !== null && destination.type !== "none"
 
     property LocationEntry destination
@@ -45,8 +47,8 @@ Item {
     signal stopped
 
     function setup(vehicle, route, routeWay, destination) {
-        mapView.addRoute(routeWay);
-        mapView.addMarkEnd(destination.lat, destination.lon);
+        overlayManager.addRoute(routeWay);
+        overlayManager.addMarkEnd(destination.lat, destination.lon);
         navigator.vehicle = vehicle;
         navigator.destination = destination;
         navigationModel.locationChanged(position._posValid, position._lat, position._lon, position._accValid, position._acc);
@@ -60,8 +62,8 @@ Item {
         destination = null;
         navigationModel.route = null;
         routing.cancel();
-        mapView.removeRoute();
-        mapView.removeMarkEnd();
+        overlayManager.removeRoute();
+        overlayManager.removeMarkEnd();
         stopped();
     }
 
@@ -107,7 +109,7 @@ Item {
                 delayReroute.start(); // wait 5 sec before next reroute
                 if (routing.count > 0) {
                     console.log("Navigator: route.count = " + routing.count);
-                    mapView.addRoute(routing.routeWay);
+                    overlayManager.addRoute(routing.routeWay);
                     navigationModel.locationChanged(position._posValid, position._lat, position._lon, position._accValid, position._acc);
                     navigationModel.route = routing.route;
                     navigator.suspended = false;

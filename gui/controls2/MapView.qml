@@ -18,6 +18,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtQml 2.2
 import Osmin 1.0
 import "./components"
 import "../toolbox.js" as ToolBox
@@ -435,49 +436,9 @@ MapPage {
         }
     }
 
-    readonly property int id_ROUTE: 0       // route overlay
-    readonly property int id_RECORDING: 1   // recording overlay
-    readonly property int id_DEPARTURE: 4   // departure of route
-    readonly property int id_ARRIVAL: 5     // arrival of route
-    readonly property int id_MARK_POINT: 8  // range start for marks
-    readonly property int id_WAY_POINT: 128 // range start for way points
-    readonly property int id_COURSE: 256    // range start for courses
-
-    function addRoute(routeWay) {
-        map.addOverlayObject(id_ROUTE, routeWay);
-    }
-    function removeRoute() {
-        map.removeOverlayObject(id_ROUTE);
-    }
-
-    function addMarkStart(lat, lon) {
-        map.addPositionMark(id_DEPARTURE, lat, lon);
-    }
-    function removeMarkStart() {
-        map.removePositionMark(id_DEPARTURE);
-    }
-    function addMarkEnd(lat, lon) {
-        map.addPositionMark(id_ARRIVAL, lat, lon);
-    }
-    function removeMarkEnd() {
-        map.removePositionMark(id_ARRIVAL);
-    }
-
-    function addMark(id, lat, lon) {
-        map.addPositionMark(id_MARK_POINT + id, lat, lon);
-    }
-    function removeMark(id) {
-        map.removePositionMark(id_MARK_POINT + id);
-    }
-
-    function addWayPoint(id, lat, lon) {
-        var wpt = map.createOverlayNode("_waypoint");
-        wpt.addPoint(lat, lon);
-        wpt.name = "Pos: " + lat.toFixed(4) + " " + lon.toFixed(4);
-        map.addOverlayObject(id_WAY_POINT + id, wpt);
-    }
-    function removeWayPoint(id) {
-        map.removeOverlayObject(id_WAY_POINT + id);
+    OverlayManager {
+        id: overlayManager
+        map: map
     }
 
     // Go there. The button is visible in state 'locationInfo'
@@ -835,10 +796,10 @@ MapPage {
         visible: false
         onClose: {
             visible = false;
-            mapView.removeMark(0);
+            overlayManager.removeMark(0);
         }
         onShow: {
-            mapView.addMark(0, mark.lat, mark.lon);
+            overlayManager.addMark(0, mark.lat, mark.lon);
             if (mark.screenY < widgetBottomY / 2)
                     map.up();
             popLocationInfo.searchLocation(mark.lat, mark.lon);
@@ -952,6 +913,7 @@ MapPage {
     Navigator {
         id: navigator
         position: positionSource
+        overlayManager: overlayManager
 
         onStarted: {
             popNavigatorInfo.visible = Qt.binding(function() { return mapView.state === "view"; });
@@ -980,12 +942,12 @@ MapPage {
         onIsRecordingChanged: {
             if (!Tracker.isRecording) {
                 overlayRecording.clear();
-                map.removeOverlayObject(id_RECORDING);
+                overlayManager.removeRecording();
             }
         }
         onTrackerPositionRecorded: {
             overlayRecording.addPoint(lat, lon);
-            map.addOverlayObject(id_RECORDING, overlayRecording);
+            overlayManager.addRecording(overlayRecording);
         }
     }
 
@@ -994,27 +956,17 @@ MapPage {
     //// Courses
     ////
 
+    // Store the selected course
     property int courseId: 0
-    property var courseObjects: []
 
     function addCourse(bid, overlays) {
-        if (overlays.length > 0) {
-            for (var i = 0; i < overlays.length; ++i) {
-                console.log("Add overlay " + (bid + i) + " : " + overlays[i].objectType + " , " + overlays[i].name);
-                map.addOverlayObject((bid + i), overlays[i]);
-            }
-            courseObjects = overlays;
+        if (overlayManager.addCourse(bid, overlays)) {
             settings.courseId = courseId = bid;
         }
     }
 
     function removeCourse() {
-        var len = courseObjects.length;
-        for (var i = 0; i < len; ++i) {
-            console.log("Remove overlay " + (courseId + i));
-            map.removeOverlayObject((courseId + i));
-        }
-        courseObjects = [];
+        overlayManager.removeAllCourses();
         settings.courseId = courseId = 0;
     }
 
