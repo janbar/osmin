@@ -58,6 +58,7 @@ Item {
     }
 
     function stop() {
+        delayReroute.resetAndStop();
         suspended = true;
         destination = null;
         navigationModel.route = null;
@@ -106,6 +107,10 @@ Item {
                 navigator.reroute();
             }
         }
+        function resetAndStop() {
+            routeRequested = false;
+            stop();
+        }
     }
 
     RoutingListModel {
@@ -122,14 +127,14 @@ Item {
                     navigator.suspended = false;
                 } else {
                     console.log("Navigator: Request to reroute again");
-                    delayReroute.stop();
+                    delayReroute.resetAndStop();
                     navigator.rerouteRequested();
                 }
             }
         }
         onRouteFailed: {
             console.log("Navigator: route.routeFailed: " + reason);
-            delayReroute.stop();
+            delayReroute.resetAndStop();
             navigator.rerouteRequested();
         }
     }
@@ -145,13 +150,6 @@ Item {
             }
         }
 
-//        onBreakRequest: {
-//            console.log("Navigator: Requesting break");
-//            navigator.suspended = true; // will be reset after rerouting
-//            delayReroute.stop();
-//            navigator.rerouteRequested();
-//        }
-
         onRerouteRequest: {
             if (!delayReroute.running) {
                 console.log("Navigator: Requesting reroute");
@@ -163,7 +161,6 @@ Item {
         }
 
         onTargetReached: {
-            delayReroute.stop();
             console.log("Navigator: Target reached");
             navigator.stop();
             navigator.targetReached(targetDistance, targetBearing);
