@@ -71,6 +71,7 @@ Item {
         if (destination !== null && routing.ready) {
             var location = routing.locationEntryFromPosition(position._lat, position._lon);
             routing.setStartAndTarget(location, navigator.destination, navigator.vehicle);
+            delayReroute.start();
         }
     }
 
@@ -98,7 +99,13 @@ Item {
     Timer {
         id: delayReroute
         interval: 5000
-        onTriggered: { }
+        property bool routeRequested: false
+        onTriggered: {
+            if (routeRequested) {
+                routeRequested = false;
+                navigator.reroute();
+            }
+        }
     }
 
     RoutingListModel {
@@ -114,13 +121,15 @@ Item {
                     navigationModel.route = routing.route;
                     navigator.suspended = false;
                 } else {
-                    console.log("Navigator: Request reroute again");
+                    console.log("Navigator: Request to reroute again");
+                    delayReroute.stop();
                     navigator.rerouteRequested();
                 }
             }
         }
         onRouteFailed: {
             console.log("Navigator: route.routeFailed: " + reason);
+            delayReroute.stop();
             navigator.rerouteRequested();
         }
     }
@@ -139,6 +148,7 @@ Item {
 //        onBreakRequest: {
 //            console.log("Navigator: Requesting break");
 //            navigator.suspended = true; // will be reset after rerouting
+//            delayReroute.stop();
 //            navigator.rerouteRequested();
 //        }
 
@@ -146,10 +156,14 @@ Item {
             if (!delayReroute.running) {
                 console.log("Navigator: Requesting reroute");
                 navigator.reroute();
+            } else {
+                delayReroute.routeRequested = true;
+                console.log("Navigator: Requesting reroute after timeout");
             }
         }
 
         onTargetReached: {
+            delayReroute.stop();
             console.log("Navigator: Target reached");
             navigator.stop();
             navigator.targetReached(targetDistance, targetBearing);
