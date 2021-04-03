@@ -37,13 +37,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Average Speed")
-                  font.pointSize: units.fs("medium")
+                  font.pointSize: units.fs("large")
                   color: styleMap.popover.highlightedColor
                 }
                 Label {
                     id: avgSpeed
                     text: Converter.readableSpeed(Tracker.duration < 1 ? 0 : 3.6 * Tracker.distance/Tracker.duration)
-                    font.pointSize: units.fs("medium")
+                    font.pointSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -53,13 +53,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Duration")
-                  font.pointSize: units.fs("medium")
+                  font.pointSize: units.fs("large")
                   color: styleMap.popover.highlightedColor
                 }
                 Label {
                     id: duration
                     text: Converter.panelDurationHMS(Tracker.duration)
-                    font.pointSize: units.fs("medium")
+                    font.pointSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -69,13 +69,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Distance")
-                  font.pointSize: units.fs("medium")
+                  font.pointSize: units.fs("large")
                   color: styleMap.popover.highlightedColor
                 }
                 Label {
                     id: distance
                     text: Converter.readableDistance(Tracker.distance)
-                    font.pointSize: units.fs("medium")
+                    font.pointSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -85,13 +85,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Ascent")
-                  font.pointSize: units.fs("medium")
+                  font.pointSize: units.fs("large")
                   color: styleMap.popover.highlightedColor
                 }
                 Label {
                     id: ascent
                     text: Converter.readableDistance(Tracker.ascent)
-                    font.pointSize: units.fs("medium")
+                    font.pointSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -101,13 +101,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Descent")
-                  font.pointSize: units.fs("medium")
+                  font.pointSize: units.fs("large")
                   color: styleMap.popover.highlightedColor
                 }
                 Label {
                     id: descent
                     text: Converter.readableDistance(Tracker.descent)
-                    font.pointSize: units.fs("medium")
+                    font.pointSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -117,13 +117,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Maximum Speed")
-                  font.pointSize: units.fs("medium")
+                  font.pointSize: units.fs("large")
                   color: styleMap.popover.highlightedColor
                 }
                 Label {
                     id: maxSpeed
                     text: Converter.readableSpeed(Tracker.maxSpeed)
-                    font.pointSize: units.fs("medium")
+                    font.pointSize: units.fs("large")
                     color: foregroundColor
                 }
             }
