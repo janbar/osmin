@@ -772,6 +772,10 @@ MapPage {
         onClose: {
             navigator.stop();
             visible = false;
+            // exit navigation mode if the status of the position does not allow it
+            if (mapView.positionState === 0) {
+                mapView.navigation = false;
+            }
         }
     }
 

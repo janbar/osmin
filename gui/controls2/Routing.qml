@@ -372,6 +372,13 @@ PopOver {
                     width: parent.width / 2 - units.gu(1)
                     color: styleMap.popover.foregroundColor
                     onClicked: {
+                        // When current position cannot be defined, i.e sensor disabled,
+                        // reset the current position at the location of the start point
+                        // of the route. In other way it could schedule reroute.
+                        if (!position._posValid) {
+                            position._lat = placeFrom.lat;
+                            position._lon = placeFrom.lon;
+                        }
                         mapView.navigation = true;
                         ToolBox.connectOnce(navigator.stopped, onNavigatorStopped);
                         navigator.setup(vehicle, route.route, route.routeWay, placeTo.location);
