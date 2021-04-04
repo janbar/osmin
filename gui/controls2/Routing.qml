@@ -421,24 +421,24 @@ PopOver {
                     Label {
                         text: qsTr("Route length:")
                         color: styleMap.popover.foregroundColor
-                        font.pointSize: units.fs("small")
+                        font.pointSize: units.fs("medium")
                     }
                     Label {
                         id: distanceLabel
                         text: Converter.readableDistance(route.length)
                         color: styleMap.popover.highlightedColor
-                        font.pointSize: units.fs("small")
+                        font.pointSize: units.fs("medium")
                     }
                     Label {
                         text: ", " + qsTr("Duration:")
                         color: styleMap.popover.foregroundColor
-                        font.pointSize: units.fs("small")
+                        font.pointSize: units.fs("medium")
                     }
                     Label {
                         id: durationLabel
                         text: Converter.panelDurationHM(route.duration)
                         color: styleMap.popover.highlightedColor
-                        font.pointSize: units.fs("small")
+                        font.pointSize: units.fs("medium")
                     }
                 }
                 delegate: Row {
