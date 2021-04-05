@@ -29,10 +29,9 @@ Item {
     property real edgeMargins: 0.0
     property real backgroundRadius: 0.0
     property real backgroundOpacity: 1.0
-    readonly property real contentTopMargin: units.gu(7) // header bar + 1
-    property real contentEdgeMargins: units.gu(2)
+    property real contentEdgeMargins: units.gu(1)
     property real contentSpacing: units.gu(1)
-    readonly property real minimumHeight: units.gu(7)
+    readonly property real headerHeight: units.gu(6)
     property real maximumHeight: parent.height
 
     signal show
@@ -42,14 +41,17 @@ Item {
     focus: true
     height: minimumHeight
 
-    function resizeBox(contentHeight) {
-        height = Math.min(Math.max(minimumHeight, contentHeight + contentTopMargin + contentEdgeMargins), maximumHeight);
+    function resizeBox() {
+        height = maximumHeight;
+    }
+
+    function resizeFull() {
+        height = Qt.binding(function(){ return parent.height; });
     }
 
     onVisibleChanged: {
         if (visible) {
-            var h = (contents.contentHeight + contentSpacing);
-            resizeBox(h);
+            resizeBox();
         }
     }
 
@@ -80,10 +82,23 @@ Item {
         radius: backgroundRadius
     }
 
+    // content box
+    Rectangle {
+        id: contentBox
+        anchors.top: popover.top
+        anchors.topMargin: navigationInfo.headerHeight
+        anchors.left: popover.left
+        anchors.right: popover.right
+        height: navigationInfo.maximumHeight - navigationInfo.headerHeight
+        color: styleMap.view.highlightedColor
+        opacity: overview.active ? 0.2 : 0.0
+
+    }
+
     Flickable {
         id: contents
-        anchors.fill: popover
-        anchors.topMargin: contentTopMargin
+        anchors.fill: contentBox
+        anchors.topMargin: contentEdgeMargins
         anchors.leftMargin: contentEdgeMargins
         anchors.rightMargin: contentEdgeMargins
         anchors.bottomMargin: contentEdgeMargins
@@ -109,7 +124,7 @@ Item {
                     stepType: navigator.nextRouteStep.type
                     roundaboutExit: navigator.nextRouteStep.roundaboutExit
                     roundaboutClockwise: navigator.nextRouteStep.roundaboutClockwise
-                    width: units.gu(7)
+                    width: units.gu(8)
                     height: width
                     label.text: navigator.nextRouteStep.type === "leave-roundabout" ? navigator.nextRouteStep.roundaboutExit : ""
                 }
@@ -137,7 +152,7 @@ Item {
         id: resume
         source: "qrc:/images/trip/route.svg"
         height: units.gu(7)
-        anchors.centerIn: contents
+        anchors.centerIn: contentBox
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: contentEdgeMargins
@@ -156,8 +171,8 @@ Item {
         id: reroutingIndicator
         running: navigator.routeRunning
         height: units.gu(7)
-        anchors.verticalCenter: contents.verticalCenter
-        anchors.right: contents.right
+        anchors.verticalCenter: contentBox.verticalCenter
+        anchors.right: contentBox.right
         visible: running
     }
 
@@ -219,7 +234,42 @@ Item {
         color: foregroundColor
         onClicked: {
             console.log("close navigator info");
+            if (overview.active)
+                overview.active = false;
             close();
+        }
+    }
+
+    // show/hide overview
+    MouseArea {
+        id: showHideOverview
+        anchors.fill: contentBox
+        onClicked: {
+            if (!overview.active) {
+                navigationInfo.resizeFull();
+                overview.active = true;
+                // need route refreshing
+                if (!navigator.routeRunning && navigator.routing.count === 0) {
+                    navigator.reroute();
+                }
+            } else {
+                overview.active = false;
+                navigationInfo.resizeBox();
+            }
+        }
+    }
+
+    Loader {
+        id: overview
+        active: false
+        height: navigationInfo.height - navigationInfo.headerHeight - contentBox.height;
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: contentBox.bottom
+        asynchronous: true
+        sourceComponent: RouteOverview {
+            routing: navigator.routing
+            anchors.fill: overview
         }
     }
 }

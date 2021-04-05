@@ -264,5 +264,6 @@
         <file>controls2/ConfigureVoice.qml</file>
         <file>images/voice.svg</file>
         <file>controls2/components/OverlayManager.qml</file>
+        <file>controls2/components/RouteOverview.qml</file>
     </qresource>
 </RCC>
