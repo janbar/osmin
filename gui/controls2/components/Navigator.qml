@@ -40,6 +40,7 @@ Item {
     property string arrivalEstimate: ""
 
     property alias model: navigationModel
+    property alias routing: routing
 
     signal rerouteRequested
     signal targetReached(double targetDistance, string targetBearing)
