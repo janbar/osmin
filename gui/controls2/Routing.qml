@@ -381,7 +381,7 @@ PopOver {
                         }
                         mapView.navigation = true;
                         ToolBox.connectOnce(navigator.stopped, onNavigatorStopped);
-                        navigator.setup(vehicle, route.route, route.routeWay, placeTo.location);
+                        navigator.setup(vehicle, routingModel, placeTo.location);
                         routingDialog.state = "navigation";
                         routingDialog.close();
                     }
@@ -400,7 +400,7 @@ PopOver {
                     width: parent.width / 2 - units.gu(1)
                     color: styleMap.popover.foregroundColor
                     onClicked: {
-                        route.cancel();
+                        routingModel.cancel();
                         routingDialog.state = "dialog"
                     }
                     label.text: qsTr("Clear")
@@ -413,7 +413,7 @@ PopOver {
                 height: contentHeight
                 interactive: false
                 spacing: units.gu(1)
-                model: route
+                model: routingModel
 
                 header: Row {
                     spacing: units.gu(1)
@@ -425,7 +425,7 @@ PopOver {
                     }
                     Label {
                         id: distanceLabel
-                        text: Converter.readableDistance(route.length)
+                        text: Converter.readableDistance(routingModel.length)
                         color: styleMap.popover.highlightedColor
                         font.pointSize: units.fs("medium")
                     }
@@ -436,7 +436,7 @@ PopOver {
                     }
                     Label {
                         id: durationLabel
-                        text: Converter.panelDurationHM(route.duration)
+                        text: Converter.panelDurationHM(routingModel.duration)
                         color: styleMap.popover.highlightedColor
                         font.pointSize: units.fs("medium")
                     }
@@ -475,7 +475,7 @@ PopOver {
     property bool computeRunning: false
 
     RoutingListModel {
-        id: route
+        id: routingModel
         onRouteFailed: {
             routeMessage = qsTranslate("message", reason);
             computeRunning = false;
@@ -487,13 +487,13 @@ PopOver {
             routeProgress = 0;
             if (!computeRunning) {
                 console.log("Computing aborted");
-                route.clear();
+                routingModel.clear();
             } else {
-                var count = route.count;
+                var count = routingModel.count;
                 if (count > 0) {
                     if (count > settings.maximumRouteStep) {
                         popInfo.open("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.");
-                        route.clear();
+                        routingModel.clear();
                     } else {
                         routingDialog.state = "navigate";
                     }
@@ -504,22 +504,22 @@ PopOver {
     }
 
     function breakCompute() {
-        route.cancel();
+        routingModel.cancel();
         computeRunning = false;
     }
 
     function computeRoute() {
         routeProgress = 0;
         routeMessage = "";
-        placeFrom.location = route.locationEntryFromPosition(placeFrom.lat, placeFrom.lon);
-        placeTo.location = route.locationEntryFromPosition(placeTo.lat, placeTo.lon);
+        placeFrom.location = routingModel.locationEntryFromPosition(placeFrom.lat, placeFrom.lon);
+        placeTo.location = routingModel.locationEntryFromPosition(placeTo.lat, placeTo.lon);
         if (placeFrom.location && placeTo.location) {
             computeRunning = true;
-            route.setStartAndTarget(placeFrom.location, placeTo.location, vehicle);
+            routingModel.setStartAndTarget(placeFrom.location, placeTo.location, vehicle);
             settings.lastVehicle = vehicle;
         } else {
             routeMessage = qsTr("Invalid entry");
-            route.clear();
+            routingModel.clear();
         }
     }
 

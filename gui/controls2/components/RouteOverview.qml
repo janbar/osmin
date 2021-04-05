@@ -24,19 +24,19 @@ import Osmin 1.0
 Item {
     id: routeOverview
 
-    property RoutingListModel routing
+    property RoutingListModel routingModel
 
     ListView {
         id: stepsView
         anchors.fill: parent
         spacing: units.gu(1)
-        model: routing
+        model: routingModel
         clip: true
 
         delegate: Row {
             spacing: units.gu(2)
             width: parent.width
-            height: Math.max(entryDescription.implicitHeight, icon.height)
+            height: Math.max(stepInfo.implicitHeight, icon.height)
 
             WAYIcon {
                 id: icon
@@ -48,14 +48,26 @@ Item {
                 width: units.gu(7)
                 height: width
             }
-            Label {
-                id: entryDescription
+            Column {
+                id: stepInfo
                 anchors.verticalCenter: parent.verticalCenter
-                color: styleMap.popover.foregroundColor
-                width: parent.width - icon.width - units.gu(2)
-                text: model.description
-                font.pointSize: units.fs("small")
-                wrapMode: Text.Wrap
+                width: parent.width - icon.width - units.gu(3)
+                Label {
+                    id: distance
+                    width: parent.width
+                    color: styleMap.popover.highlightedColor
+                    text: model.distance === undefined ? "" : Converter.readableDistance(model.distance)
+                    font.pointSize: units.fs("medium")
+                    horizontalAlignment: Label.AlignRight
+                }
+                Label {
+                    id: entryDescription
+                    width: parent.width
+                    color: styleMap.popover.foregroundColor
+                    text: model.description
+                    font.pointSize: units.fs("small")
+                    wrapMode: Text.Wrap
+                }
             }
         }
     }

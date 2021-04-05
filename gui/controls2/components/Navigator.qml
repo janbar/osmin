@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2021
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,7 +30,7 @@ Item {
     property string vehicle: "car"
     property bool suspended: true
     property bool connected: false
-    property bool routeRunning: !routing.ready
+    property bool routeRunning: runningRouting !== null
 
     property alias vehiclePosition: navigationModel.vehiclePosition
     property alias nextRouteStep: navigationModel.nextRouteStep
@@ -40,41 +40,47 @@ Item {
     property string arrivalEstimate: ""
 
     property alias model: navigationModel
-    property alias routing: routing
+
+    // the routing model to navigate
+    property RoutingListModel routingModel: null
 
     signal rerouteRequested
     signal targetReached(double targetDistance, string targetBearing)
     signal started
     signal stopped
 
-    function setup(vehicle, route, routeWay, destination) {
-        overlayManager.addRoute(routeWay);
-        overlayManager.addMarkEnd(destination.lat, destination.lon);
+    function setup(vehicle, routingModel, destination) {
+        // change routing model
         navigator.vehicle = vehicle;
+        navigator.routingModel = routingModel;
         navigator.destination = destination;
+        // show route overlays
+        overlayManager.addRoute(routingModel.routeWay);
+        overlayManager.addMarkEnd(destination.lat, destination.lon);
+        // setup navigation module
         navigationModel.locationChanged(position._posValid, position._lat, position._lon, position._accValid, position._acc);
-        navigationModel.route = route;
+        navigationModel.route = routingModel.route;
+        // start navigation
         suspended = false;
         started();
     }
 
+    Timer {
+        id: delayReroute
+        interval: 5000
+        onTriggered: {
+        }
+    }
+
     function stop() {
-        delayReroute.resetAndStop();
+        cancelRouting();
+        delayReroute.stop();
         suspended = true;
         destination = null;
         navigationModel.route = null;
-        routing.cancel();
         overlayManager.removeRoute();
         overlayManager.removeMarkEnd();
         stopped();
-    }
-
-    function reroute() {
-        if (destination !== null && routing.ready) {
-            var location = routing.locationEntryFromPosition(position._lat, position._lon);
-            routing.setStartAndTarget(location, navigator.destination, navigator.vehicle);
-            delayReroute.start();
-        }
     }
 
     // passing signal args to the slot of NavigationModel
@@ -98,48 +104,6 @@ Item {
         }
     }
 
-    Timer {
-        id: delayReroute
-        interval: 5000
-        property bool routeRequested: false
-        onTriggered: {
-            if (routeRequested) {
-                routeRequested = false;
-                navigator.reroute();
-            }
-        }
-        function resetAndStop() {
-            routeRequested = false;
-            stop();
-        }
-    }
-
-    RoutingListModel {
-        id: routing
-        onComputingChanged: {
-            console.log("Navigator: route.computingChanged");
-            if (routing.ready && navigator.destination) {
-                delayReroute.start(); // wait 5 sec before next reroute
-                if (routing.count > 0) {
-                    console.log("Navigator: route.count = " + routing.count);
-                    overlayManager.addRoute(routing.routeWay);
-                    navigationModel.locationChanged(position._posValid, position._lat, position._lon, position._accValid, position._acc);
-                    navigationModel.route = routing.route;
-                    navigator.suspended = false;
-                } else {
-                    console.log("Navigator: Request to reroute again");
-                    delayReroute.resetAndStop();
-                    navigator.rerouteRequested();
-                }
-            }
-        }
-        onRouteFailed: {
-            console.log("Navigator: route.routeFailed: " + reason);
-            delayReroute.resetAndStop();
-            navigator.rerouteRequested();
-        }
-    }
-
     NavigationModel {
         id: navigationModel
 
@@ -153,11 +117,8 @@ Item {
 
         onRerouteRequest: {
             if (!delayReroute.running) {
-                console.log("Navigator: Requesting reroute");
+                delayReroute.start(); // wait 5 sec before next reroute
                 navigator.reroute();
-            } else {
-                delayReroute.routeRequested = true;
-                console.log("Navigator: Requesting reroute after timeout");
             }
         }
 
@@ -166,5 +127,78 @@ Item {
             navigator.stop();
             navigator.targetReached(targetDistance, targetBearing);
         }
+    }
+
+    property Component routingComponent
+    property NavigatorRouting runningRouting: null
+    property NavigatorRouting currentRouting: null
+
+    Component.onCompleted: {
+        // prepare the routing component
+        routingComponent = Qt.createComponent("NavigatorRouting.qml");
+    }
+    Component.onDestruction: {
+        cancelRouting();
+        navigator.routingModel = null;
+        if (currentRouting)
+            currentRouting.destroy();
+    }
+
+    // cancel running routing
+    function cancelRouting() {
+        if (runningRouting) {
+            runningRouting.routing.cancel();
+            runningRouting.destroy();
+            runningRouting = null;
+        }
+    }
+
+    // create routing instance and reroute
+    function reroute() {
+        if (destination && !runningRouting) {
+            runningRouting = routingComponent.createObject(navigator);
+            runningRouting.routeComputed.connect(routeComputed);
+            runningRouting.routeNoRoute.connect(routeNoRoute);
+            runningRouting.routeFailed.connect(routeFailed);
+            runningRouting.setup(navigator);
+        }
+    }
+
+    // on routing completion
+    function routeComputed() {
+        if (navigator.destination) {
+            delayReroute.start(); // wait 5 sec before next reroute
+            navigator.routingModel = runningRouting.routing; // update routing model
+            if (currentRouting)
+                currentRouting.destroy();
+            currentRouting = runningRouting;
+            runningRouting = null;
+            console.log("Navigator: route has " + navigator.routingModel.count + " steps");
+            overlayManager.addRoute(navigator.routingModel.routeWay);
+            navigationModel.locationChanged(position._posValid, position._lat, position._lon, position._accValid, position._acc);
+            navigationModel.route = navigator.routingModel.route;
+            navigator.suspended = false;
+        } else {
+            runningRouting.destroy(); // destroy unusable obj
+            runningRouting = null;
+        }
+    }
+
+    function routeNoRoute() {
+        navigator.routingModel = runningRouting.routing; // update routing model
+        if (currentRouting)
+            currentRouting.destroy();
+        currentRouting = runningRouting;
+        runningRouting = null;
+        console.log("Navigator: Request to reroute again");
+        delayReroute.stop();
+        navigator.rerouteRequested();
+    }
+
+    function routeFailed(reason) {
+        runningRouting.destroy(); // destroy unusable obj
+        runningRouting = null;
+        delayReroute.stop();
+        navigator.rerouteRequested();
     }
 }

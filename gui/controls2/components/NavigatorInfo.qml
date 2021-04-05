@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2021
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -248,10 +248,6 @@ Item {
             if (!overview.active) {
                 navigationInfo.resizeFull();
                 overview.active = true;
-                // need route refreshing
-                if (!navigator.routeRunning && navigator.routing.count === 0) {
-                    navigator.reroute();
-                }
             } else {
                 overview.active = false;
                 navigationInfo.resizeBox();
@@ -268,7 +264,7 @@ Item {
         anchors.top: contentBox.bottom
         asynchronous: true
         sourceComponent: RouteOverview {
-            routing: navigator.routing
+            routingModel: navigator.routingModel
             anchors.fill: overview
         }
     }
