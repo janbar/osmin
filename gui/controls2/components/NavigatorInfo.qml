@@ -68,9 +68,11 @@ Item {
     Connections {
         target: navigator
         onRerouteRequested: {
+            navigator.suspended = true;
             state = "suspended"
         }
         onTargetReached: {
+            navigator.suspended = true;
             state = "suspended"
         }
         onNextRouteStepChanged: {
@@ -161,25 +163,6 @@ Item {
         }
     }
 
-    MapIcon {
-        id: resume
-        source: "qrc:/images/trip/route.svg"
-        height: units.gu(7)
-        anchors.centerIn: contentBox
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: contentEdgeMargins
-        anchors.rightMargin: contentEdgeMargins
-        color: styleMap.popover.foregroundColor
-        onClicked: {
-            navigationInfo.state = "running";
-            navigator.reroute();
-        }
-        label.text: qsTr("Resume navigation")
-        visible: navigationInfo.state === "suspended"
-        enabled: visible
-    }
-
     BusyIndicator{
         id: reroutingIndicator
         running: navigator.routeRunning
@@ -218,11 +201,22 @@ Item {
                 color: styleMap.popover.highlightedColor
                 font.pointSize: units.fs("medium")
             }
-            Label {
+            MapIcon {
                 anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("ETA")
+                source: {
+                    switch(navigator.vehicle) {
+                    case "bicycle":
+                        return "qrc:/images/trip/bike.svg"
+                    case "foot":
+                        return "qrc:/images/trip/walk.svg"
+                    default:
+                        return "qrc:/images/trip/car.svg"
+                    }
+                }
+                height: units.gu(5)
+                width: height
                 color: styleMap.popover.foregroundColor
-                font.pointSize: units.fs("medium")
+                enabled: false
             }
             Label {
                 id: eta
@@ -266,6 +260,26 @@ Item {
                 navigationInfo.resizeBox();
             }
         }
+    }
+
+    MapIcon {
+        id: resume
+        source: "qrc:/images/trip/route.svg"
+        height: units.gu(7)
+        anchors.centerIn: contentBox
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: contentEdgeMargins
+        anchors.rightMargin: contentEdgeMargins
+        color: styleMap.popover.foregroundColor
+        onClicked: {
+            navigator.suspended = false;
+            navigator.reroute();
+            navigationInfo.state = "running";
+        }
+        label.text: qsTr("Resume navigation")
+        visible: navigationInfo.state === "suspended"
+        enabled: visible
     }
 
     Loader {

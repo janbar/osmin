@@ -124,7 +124,6 @@ Item {
 
         onTargetReached: {
             console.log("Navigator: Target reached");
-            navigator.stop();
             navigator.targetReached(targetDistance, targetBearing);
         }
     }
