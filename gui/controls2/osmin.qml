@@ -211,7 +211,7 @@ ApplicationWindow {
             Label {
                 id: titleLabel
                 text: stackView.currentItem != null ? stackView.currentItem.pageTitle : ""
-                font.pointSize: units.fs("x-large")
+                font.pointSize: units.fs("large")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
