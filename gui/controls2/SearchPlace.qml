@@ -15,6 +15,7 @@ MapPage {
     property string acceptIcon: "qrc:/images/trip/pin.svg"
     property bool addFavoriteEnabled: true
     property bool addMarkerEnabled: true
+    property bool showPositionEnabled: false
     property double searchCenterLat
     property double searchCenterLon
 
@@ -54,6 +55,7 @@ MapPage {
     }
 
     signal selectLocation(LocationEntry location, double lat, double lon, string label)
+    signal showPosition(double lat, double lon)
 
     onPopped: {
         // a slot could be connected to signal, waiting a selection
@@ -527,6 +529,7 @@ MapPage {
             }
 
             MapIcon {
+                id: buttonClose
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.margins: units.gu(1)
@@ -541,6 +544,7 @@ MapPage {
                 }
             }
             MapIcon {
+                id: buttonAccept
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: units.gu(1)
@@ -563,7 +567,24 @@ MapPage {
                 }
             }
             MapIcon {
-                id: addFavorite
+                id: buttonShowPosition
+                visible: showPositionEnabled
+                anchors.top: parent.top
+                anchors.left: buttonAccept.right
+                anchors.margins: units.gu(1)
+                source: "qrc:/images/trip/here.svg"
+                color: "black"
+                backgroundColor: "white"
+                borderPadding: units.gu(1.0)
+                opacity: 0.7
+                height: units.gu(6)
+                onClicked: {
+                    showPosition(preview.mark.lat, preview.mark.lon);
+                    stackView.pop();
+                }
+            }
+            MapIcon {
+                id: buttonAddFavorite
                 visible: addFavoriteEnabled
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right

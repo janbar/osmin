@@ -585,6 +585,17 @@ MapPage {
                         height: units.gu(6)
                         onClicked: {
                             var page = stackView.push("qrc:/controls2/Favorites.qml");
+                            ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                                 if (lat !== NaN && lon !== NaN) {
+                                     map.showCoordinatesInstantly(lat, lon);
+                                     mark.lat = lat;
+                                     mark.lon = lon;
+                                     mark.screenX = map.width / 2;
+                                     mark.screenY = map.height / 2;
+                                     if (navigation)
+                                         navigation = false;
+                                     popLocationInfo.show();                                 }
+                            });
                         }
                     }
 
@@ -602,11 +613,24 @@ MapPage {
                                                "searchCenterLat": positionSource._lat,
                                                "searchCenterLon": positionSource._lon,
                                                "acceptLabel": qsTr("Go"),
-                                               "acceptIcon" : "qrc:/images/trip/navigator.svg"
+                                               "acceptIcon" : "qrc:/images/trip/navigator.svg",
+                                               "showPositionEnabled": true
                                            });
-                             ToolBox.connectOnce(page.selectLocation, function(location, lat, lon, label){
+                            ToolBox.connectOnce(page.selectLocation, function(location, lat, lon, label){
                                  if (lat !== NaN && lon !== NaN && label !== "") {
                                     popRouting.goTo(lat, lon, label);
+                                 }
+                            });
+                            ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                                 if (lat !== NaN && lon !== NaN) {
+                                     map.showCoordinatesInstantly(lat, lon);
+                                     mark.lat = lat;
+                                     mark.lon = lon;
+                                     mark.screenX = map.width / 2;
+                                     mark.screenY = map.height / 2;
+                                     if (navigation)
+                                         navigation = false;
+                                     popLocationInfo.show();
                                  }
                             });
                         }
@@ -699,6 +723,17 @@ MapPage {
                         height: units.gu(6)
                         onClicked: {
                             var page = stackView.push("qrc:/controls2/Favorites.qml");
+                            ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                                 if (lat !== NaN && lon !== NaN) {
+                                     map.showCoordinatesInstantly(lat, lon);
+                                     mark.lat = lat;
+                                     mark.lon = lon;
+                                     mark.screenX = map.width / 2;
+                                     mark.screenY = map.height / 2;
+                                     if (navigation)
+                                         navigation = false;
+                                     popLocationInfo.show();                                 }
+                            });
                         }
                     }
 
@@ -716,12 +751,24 @@ MapPage {
                                                "searchCenterLat": positionSource._lat,
                                                "searchCenterLon": positionSource._lon,
                                                "acceptLabel": qsTr("Go"),
-                                               "acceptIcon" : "qrc:/images/trip/navigator.svg"
+                                               "acceptIcon" : "qrc:/images/trip/navigator.svg",
+                                               "showPositionEnabled": true
                                            });
-                             ToolBox.connectOnce(page.selectLocation, function(location, lat, lon, label){
+                            ToolBox.connectOnce(page.selectLocation, function(location, lat, lon, label){
                                  if (lat !== NaN && lon !== NaN && label !== "") {
                                     popRouting.goTo(lat, lon, label);
                                  }
+                            });
+                            ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                                 if (lat !== NaN && lon !== NaN) {
+                                     map.showCoordinatesInstantly(lat, lon);
+                                     mark.lat = lat;
+                                     mark.lon = lon;
+                                     mark.screenX = map.width / 2;
+                                     mark.screenY = map.height / 2;
+                                     if (navigation)
+                                         navigation = false;
+                                     popLocationInfo.show();                                 }
                             });
                         }
                     }

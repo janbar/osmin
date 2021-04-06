@@ -42,6 +42,7 @@ MapPage {
     pageFlickable: favoritesView
 
     signal selectPOI(var poi)
+    signal showPosition(double lat, double lon)
 
     onPopped: {
         // a slot could be connected to signal, waiting a selection
@@ -215,6 +216,7 @@ MapPage {
             }
 
             MapIcon {
+                id: buttonClose
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.margins: units.gu(1)
@@ -229,6 +231,7 @@ MapPage {
                 }
             }
             MapIcon {
+                id: buttonAccept
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: units.gu(1)
@@ -248,6 +251,23 @@ MapPage {
                     } else {
                         selectPOI({ "lat": preview.mark.lat, "lon": preview.mark.lon, "label": preview.mark.label, "type": preview.mark.type });
                     }
+                    stackView.pop();
+                }
+            }
+            MapIcon {
+                id: buttonShowPosition
+                visible: favoritesPage.state === "default"
+                anchors.top: parent.top
+                anchors.left: buttonAccept.right
+                anchors.margins: units.gu(1)
+                source: "qrc:/images/trip/here.svg"
+                color: "black"
+                backgroundColor: "white"
+                borderPadding: units.gu(1.0)
+                opacity: 0.7
+                height: units.gu(6)
+                onClicked: {
+                    showPosition(preview.mark.lat, preview.mark.lon);
                     stackView.pop();
                 }
             }
