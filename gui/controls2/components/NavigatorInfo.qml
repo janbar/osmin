@@ -70,6 +70,20 @@ Item {
         onRerouteRequested: {
             state = "suspended"
         }
+        onTargetReached: {
+            state = "suspended"
+        }
+        onNextRouteStepChanged: {
+            switch(state) {
+            case "running":
+                if (overview.active && overview.status === Loader.Ready) {
+                    overview.item.show(navigator.nextRouteStep);
+                }
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     // background
@@ -92,7 +106,6 @@ Item {
         height: navigationInfo.maximumHeight - navigationInfo.headerHeight
         color: styleMap.view.highlightedColor
         opacity: overview.active ? 0.2 : 0.0
-
     }
 
     Flickable {
@@ -266,6 +279,9 @@ Item {
         sourceComponent: RouteOverview {
             routingModel: navigator.routingModel
             anchors.fill: overview
+        }
+        onLoaded: {
+            item.show(navigator.nextRouteStep);
         }
     }
 }

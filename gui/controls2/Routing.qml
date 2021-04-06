@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2021
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -444,7 +444,7 @@ PopOver {
                 delegate: Row {
                     spacing: units.gu(2)
                     width: parent.width
-                    height: Math.max(entryDescription.implicitHeight, icon.height)
+                    height: Math.max(stepInfo.implicitHeight, icon.height)
 
                     WAYIcon {
                         id: icon
@@ -456,14 +456,26 @@ PopOver {
                         width: units.gu(7)
                         height: width
                     }
-                    Label {
-                        id: entryDescription
+                    Column {
+                        id: stepInfo
                         anchors.verticalCenter: parent.verticalCenter
-                        color: styleMap.popover.foregroundColor
                         width: parent.width - icon.width - units.gu(2)
-                        text: model.description
-                        font.pointSize: units.fs("small")
-                        wrapMode: Text.Wrap
+                        Label {
+                            id: distance
+                            width: parent.width
+                            color: styleMap.popover.foregroundColor
+                            text: Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
+                            font.pointSize: units.fs("small")
+                            horizontalAlignment: Label.AlignRight
+                        }
+                        Label {
+                            id: entryDescription
+                            color: styleMap.popover.foregroundColor
+                            width: parent.width
+                            text: model.description
+                            font.pointSize: units.fs("small")
+                            wrapMode: Text.Wrap
+                        }
                     }
                 }
             }

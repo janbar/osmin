@@ -26,6 +26,16 @@ Item {
 
     property RoutingListModel routingModel
 
+    function show(step) {
+        var d = step.distance;
+        for (var i = 0; i < routingModel.count; ++i) {
+            if (routingModel.get(i).distance === d) {
+                stepsView.thisStep = i;
+                break;
+            }
+        }
+    }
+
     ListView {
         id: stepsView
         anchors.fill: parent
@@ -33,7 +43,14 @@ Item {
         model: routingModel
         clip: true
 
+        property int thisStep: 0
+
+        onThisStepChanged: {
+            positionViewAtIndex(thisStep, ListView.Beginning);
+        }
+
         delegate: Row {
+            id: row
             spacing: units.gu(2)
             width: parent.width
             height: Math.max(stepInfo.implicitHeight, icon.height)
@@ -41,7 +58,7 @@ Item {
             WAYIcon {
                 id: icon
                 anchors.verticalCenter: parent.verticalCenter
-                color: styleMap.popover.foregroundColor
+                color: (index === stepsView.thisStep ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor)
                 stepType: model.type
                 roundaboutExit: model.roundaboutExit
                 roundaboutClockwise: model.roundaboutClockwise
@@ -55,15 +72,15 @@ Item {
                 Label {
                     id: distance
                     width: parent.width
-                    color: styleMap.popover.highlightedColor
-                    text: model.distance === undefined ? "" : Converter.readableDistance(model.distance)
-                    font.pointSize: units.fs("medium")
+                    color: styleMap.popover.foregroundColor
+                    text: Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
+                    font.pointSize: units.fs("small")
                     horizontalAlignment: Label.AlignRight
                 }
                 Label {
                     id: entryDescription
                     width: parent.width
-                    color: styleMap.popover.foregroundColor
+                    color: (index === stepsView.thisStep ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor)
                     text: model.description
                     font.pointSize: units.fs("small")
                     wrapMode: Text.Wrap
