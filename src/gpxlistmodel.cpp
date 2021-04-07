@@ -331,7 +331,11 @@ void GPXListModel::loadItems(GPXItem *dirItem, int level)
       continue;
     if (info.isFile() && info.suffix().toLower() != "gpx")
       continue;
+#if QT_VERSION >= 0x050A00
     GPXItem* item = new GPXItem(info.fileName(), path, info.birthTime(), info.isDir());
+#else
+    GPXItem* item = new GPXItem(info.fileName(), path, info.created(), info.isDir());
+#endif
     m_items.insert(path, item);
     if (item->dir() && level < TREE_DEPTH)
       loadItems(item, level + 1);

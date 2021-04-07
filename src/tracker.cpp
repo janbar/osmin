@@ -370,7 +370,7 @@ void TrackerModule::onStopRecording()
     QList<QByteArray*> row = m_formater->deserialize(file->readLine(0x3ff));
     if (row.length() == 0)
       break;
-    else if (row.length() >= 6 && row[0]->compare(TAG_WAYPT) == 0)
+    else if (row.length() >= 6 && *row[0] == TAG_WAYPT)
     {
       osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
       double lat = QString::fromUtf8(row[2]->constData()).toDouble();
@@ -386,7 +386,7 @@ void TrackerModule::onStopRecording()
       waypoint.description = std::optional<std::string>(row[8]->constData());
       waypoints.push_back(waypoint);
     }
-    else if (row.length() >= 6 && row[0]->compare(TAG_TRKPT) == 0)
+    else if (row.length() >= 6 && *row[0] == TAG_TRKPT)
     {
       if (++c > segment.points.size())
         segment.points.reserve(segment.points.size() + 1000);
