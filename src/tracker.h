@@ -77,6 +77,7 @@ signals:
   void trackerRecordingChanged();
   void trackerProcessingChanged();
   void trackerPositionRecorded(double lat, double lon);
+  void trackerPositionMarked(double lat, double lon, const QString& symbol, const QString& name);
   void recordingFailed();
   //void remainingDistanceChanged();
   //void nextStepChanged();

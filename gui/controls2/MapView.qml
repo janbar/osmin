@@ -337,6 +337,30 @@ MapPage {
         }
     }
 
+    MapIcon {
+        id: trackMarkPosition
+        anchors{
+            bottom: parent.bottom
+            left: trackRecording.right
+            bottomMargin: units.gu(1)
+            leftMargin: units.gu(1)
+        }
+        source: "qrc:/images/trip/marker.svg"
+        color: "black"
+        backgroundColor: "white"
+        visible: !showToolbar && Tracker.isRecording
+        borderPadding: units.gu(1.0)
+        label.text: qsTr("Mark")
+        label.font.pointSize: units.fs("medium")
+        label.color: "black"
+        opacity: 0.7
+        height: units.gu(6)
+        onClicked: {
+            var name = "[" + Converter.panelDistance(Tracker.distance) + "]";
+            Tracker.markPosition("Pin, Red", name, "");
+        }
+    }
+
     // button for zoom out
     MapIcon {
         id: buttonZoomOut
@@ -994,11 +1018,15 @@ MapPage {
             if (!Tracker.isRecording) {
                 overlayRecording.clear();
                 overlayManager.removeRecording();
+                overlayManager.removeMark(1);
             }
         }
         onTrackerPositionRecorded: {
             overlayRecording.addPoint(lat, lon);
             overlayManager.addRecording(overlayRecording);
+        }
+        onTrackerPositionMarked: {
+            overlayManager.addMark(1, lat, lon);
         }
     }
 

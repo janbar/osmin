@@ -126,8 +126,10 @@ void Tracker::stopRecording()
 
 void Tracker::markPosition(const QString &symbol, const QString &name, const QString &description)
 {
-  if (m_p && m_p->isRecording())
+  if (m_p && m_p->isRecording()) {
     m_p->markPosition(symbol, name, description);
+    emit trackerPositionMarked(getLat(), getLon(), symbol, name);
+  }
 }
 
 void Tracker::onPositionChanged(const osmscout::PositionAgent::PositionState state,
