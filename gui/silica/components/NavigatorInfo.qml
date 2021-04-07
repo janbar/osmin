@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2021
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -28,10 +28,9 @@ Item {
     property real edgeMargins: 0.0
     property real backgroundRadius: 0.0
     property real backgroundOpacity: 1.0
-    readonly property real contentTopMargin: units.gu(7) // header bar + 1
-    property real contentEdgeMargins: units.gu(2)
+    property real contentEdgeMargins: units.gu(1)
     property real contentSpacing: units.gu(1)
-    readonly property real minimumHeight: units.gu(7)
+    readonly property real headerHeight: units.gu(6)
     property real maximumHeight: parent.height
 
     signal show
@@ -39,16 +38,19 @@ Item {
 
     z: 99
     focus: true
-    height: minimumHeight
+    height: headerHeight
 
-    function resizeBox(contentHeight) {
-        height = Math.min(Math.max(minimumHeight, contentHeight + contentTopMargin + contentEdgeMargins), maximumHeight);
+    function resizeBox() {
+        height = maximumHeight;
+    }
+
+    function resizeFull() {
+        height = Qt.binding(function(){ return parent.height; });
     }
 
     onVisibleChanged: {
         if (visible) {
-            var h = (contents.contentHeight + contentSpacing);
-            resizeBox(h);
+            resizeBox();
         }
     }
 
@@ -65,7 +67,23 @@ Item {
     Connections {
         target: navigator
         onRerouteRequested: {
+            navigator.suspended = true;
             state = "suspended"
+        }
+        onTargetReached: {
+            navigator.suspended = true;
+            state = "suspended"
+        }
+        onNextRouteStepChanged: {
+            switch(state) {
+            case "running":
+                if (overview.active && overview.status === Loader.Ready) {
+                    overview.item.show(navigator.nextRouteStep);
+                }
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -79,10 +97,22 @@ Item {
         radius: backgroundRadius
     }
 
+    // content box
+    Rectangle {
+        id: contentBox
+        anchors.top: popover.top
+        anchors.topMargin: navigationInfo.headerHeight
+        anchors.left: popover.left
+        anchors.right: popover.right
+        height: navigationInfo.maximumHeight - navigationInfo.headerHeight
+        color: styleMap.view.highlightedColor
+        opacity: overview.active ? 0.2 : 0.0
+    }
+
     SilicaFlickable {
         id: contents
-        anchors.fill: popover
-        anchors.topMargin: contentTopMargin
+        anchors.fill: contentBox
+        anchors.topMargin: contentEdgeMargins
         anchors.leftMargin: contentEdgeMargins
         anchors.rightMargin: contentEdgeMargins
         anchors.bottomMargin: contentEdgeMargins
@@ -108,7 +138,7 @@ Item {
                     stepType: navigator.nextRouteStep.type
                     roundaboutExit: navigator.nextRouteStep.roundaboutExit
                     roundaboutClockwise: navigator.nextRouteStep.roundaboutClockwise
-                    width: units.gu(7)
+                    width: units.gu(8)
                     height: width
                     label.text: navigator.nextRouteStep.type === "leave-roundabout" ? navigator.nextRouteStep.roundaboutExit : ""
                 }
@@ -132,31 +162,12 @@ Item {
         }
     }
 
-    MapIcon {
-        id: resume
-        source: "qrc:/images/trip/route.svg"
-        height: units.gu(7)
-        anchors.centerIn: contents
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: contentEdgeMargins
-        anchors.rightMargin: contentEdgeMargins
-        color: styleMap.popover.foregroundColor
-        onClicked: {
-            navigationInfo.state = "running";
-            navigator.reroute();
-        }
-        label.text: qsTr("Resume navigation")
-        visible: navigationInfo.state === "suspended"
-        enabled: visible
-    }
-
     BusyIndicator{
         id: reroutingIndicator
         running: navigator.routeRunning
         size: units.gu(7)
-        anchors.verticalCenter: contents.verticalCenter
-        anchors.right: contents.right
+        anchors.verticalCenter: contentBox.verticalCenter
+        anchors.right: contentBox.right
         visible: running
     }
 
@@ -167,7 +178,7 @@ Item {
         anchors.right: closeButton.left
         anchors.leftMargin: contentEdgeMargins
         anchors.rightMargin: contentEdgeMargins
-        height: minimumHeight
+        height: headerHeight
 
         Row {
             id: headInfo
@@ -189,11 +200,22 @@ Item {
                 color: styleMap.popover.highlightedColor
                 font.pixelSize: units.fx("medium")
             }
-            Label {
+            MapIcon {
                 anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("ETA")
+                source: {
+                    switch(navigator.vehicle) {
+                    case "bicycle":
+                        return "qrc:/images/trip/bike.svg"
+                    case "foot":
+                        return "qrc:/images/trip/walk.svg"
+                    default:
+                        return "qrc:/images/trip/car.svg"
+                    }
+                }
+                height: units.gu(5)
+                width: height
                 color: styleMap.popover.foregroundColor
-                font.pixelSize: units.fx("medium")
+                enabled: false
             }
             Label {
                 id: eta
@@ -218,7 +240,61 @@ Item {
         color: foregroundColor
         onClicked: {
             console.log("close navigator info");
+            if (overview.active)
+                overview.active = false;
             close();
+        }
+    }
+
+    // show/hide overview
+    MouseArea {
+        id: showHideOverview
+        anchors.fill: contentBox
+        onClicked: {
+            if (!overview.active) {
+                navigationInfo.resizeFull();
+                overview.active = true;
+            } else {
+                overview.active = false;
+                navigationInfo.resizeBox();
+            }
+        }
+    }
+
+    MapIcon {
+        id: resume
+        source: "qrc:/images/trip/route.svg"
+        height: units.gu(7)
+        anchors.centerIn: contentBox
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: contentEdgeMargins
+        anchors.rightMargin: contentEdgeMargins
+        color: styleMap.popover.foregroundColor
+        onClicked: {
+            navigator.suspended = false;
+            navigator.reroute();
+            navigationInfo.state = "running";
+        }
+        label.text: qsTr("Resume navigation")
+        visible: navigationInfo.state === "suspended"
+        enabled: visible
+    }
+
+    Loader {
+        id: overview
+        active: false
+        height: navigationInfo.height - navigationInfo.headerHeight - contentBox.height;
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: contentBox.bottom
+        asynchronous: true
+        sourceComponent: RouteOverview {
+            routingModel: navigator.routingModel
+            anchors.fill: overview
+        }
+        onLoaded: {
+            item.show(navigator.nextRouteStep);
         }
     }
 }

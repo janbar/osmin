@@ -425,9 +425,9 @@
         <location filename="../controls2/MapView.qml" line="458"/>
         <location filename="../controls2/MapView.qml" line="604"/>
         <location filename="../controls2/MapView.qml" line="718"/>
-        <location filename="../silica/MapView.qml" line="490"/>
-        <location filename="../silica/MapView.qml" line="635"/>
-        <location filename="../silica/MapView.qml" line="749"/>
+        <location filename="../silica/MapView.qml" line="455"/>
+        <location filename="../silica/MapView.qml" line="600"/>
+        <location filename="../silica/MapView.qml" line="714"/>
         <source>Go</source>
         <translation type="unfinished"></translation>
     </message>
@@ -438,19 +438,19 @@
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="848"/>
-        <location filename="../silica/MapView.qml" line="866"/>
+        <location filename="../silica/MapView.qml" line="835"/>
         <source>My Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="927"/>
-        <location filename="../silica/MapView.qml" line="944"/>
+        <location filename="../silica/MapView.qml" line="914"/>
         <source>Target reached at %1 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="944"/>
-        <location filename="../silica/MapView.qml" line="961"/>
+        <location filename="../silica/MapView.qml" line="931"/>
         <source>Track recording failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -459,13 +459,8 @@
     <name>NavigatorInfo</name>
     <message>
         <location filename="../controls2/components/NavigatorInfo.qml" line="280"/>
-        <location filename="../silica/components/NavigatorInfo.qml" line="149"/>
+        <location filename="../silica/components/NavigatorInfo.qml" line="279"/>
         <source>Resume navigation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../silica/components/NavigatorInfo.qml" line="194"/>
-        <source>ETA</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -489,7 +484,7 @@
         <location filename="../controls2/Routing.qml" line="47"/>
         <location filename="../controls2/Routing.qml" line="388"/>
         <location filename="../silica/Routing.qml" line="46"/>
-        <location filename="../silica/Routing.qml" line="356"/>
+        <location filename="../silica/Routing.qml" line="365"/>
         <source>Navigate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -507,87 +502,87 @@
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="142"/>
-        <location filename="../silica/Routing.qml" line="140"/>
+        <location filename="../silica/Routing.qml" line="141"/>
         <source>From</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="165"/>
-        <location filename="../silica/Routing.qml" line="149"/>
+        <location filename="../silica/Routing.qml" line="150"/>
         <source>My position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="166"/>
         <location filename="../controls2/Routing.qml" line="262"/>
-        <location filename="../silica/Routing.qml" line="150"/>
-        <location filename="../silica/Routing.qml" line="238"/>
+        <location filename="../silica/Routing.qml" line="151"/>
+        <location filename="../silica/Routing.qml" line="239"/>
         <source>Search Place</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="167"/>
         <location filename="../controls2/Routing.qml" line="263"/>
-        <location filename="../silica/Routing.qml" line="151"/>
-        <location filename="../silica/Routing.qml" line="239"/>
+        <location filename="../silica/Routing.qml" line="152"/>
+        <location filename="../silica/Routing.qml" line="240"/>
         <source>Select on Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="168"/>
         <location filename="../controls2/Routing.qml" line="264"/>
-        <location filename="../silica/Routing.qml" line="152"/>
-        <location filename="../silica/Routing.qml" line="240"/>
+        <location filename="../silica/Routing.qml" line="153"/>
+        <location filename="../silica/Routing.qml" line="241"/>
         <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="179"/>
         <location filename="../controls2/Routing.qml" line="273"/>
-        <location filename="../silica/Routing.qml" line="169"/>
-        <location filename="../silica/Routing.qml" line="249"/>
+        <location filename="../silica/Routing.qml" line="170"/>
+        <location filename="../silica/Routing.qml" line="250"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="245"/>
-        <location filename="../silica/Routing.qml" line="229"/>
+        <location filename="../silica/Routing.qml" line="230"/>
         <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="345"/>
-        <location filename="../silica/Routing.qml" line="321"/>
+        <location filename="../silica/Routing.qml" line="322"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="345"/>
-        <location filename="../silica/Routing.qml" line="321"/>
+        <location filename="../silica/Routing.qml" line="322"/>
         <source>Compute route</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="406"/>
-        <location filename="../silica/Routing.qml" line="375"/>
+        <location filename="../silica/Routing.qml" line="384"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="422"/>
-        <location filename="../silica/Routing.qml" line="391"/>
+        <location filename="../silica/Routing.qml" line="400"/>
         <source>Route length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="433"/>
-        <location filename="../silica/Routing.qml" line="402"/>
+        <location filename="../silica/Routing.qml" line="411"/>
         <source>Duration:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Routing.qml" line="533"/>
-        <location filename="../silica/Routing.qml" line="490"/>
+        <location filename="../silica/Routing.qml" line="511"/>
         <source>Invalid entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -784,39 +779,39 @@
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="237"/>
-        <location filename="../silica/Settings.qml" line="111"/>
+        <location filename="../silica/Settings.qml" line="112"/>
         <source>The change will be effective after restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="247"/>
-        <location filename="../silica/Settings.qml" line="121"/>
+        <location filename="../silica/Settings.qml" line="122"/>
         <source>Data directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="252"/>
         <location filename="../controls2/Settings.qml" line="270"/>
-        <location filename="../silica/Settings.qml" line="126"/>
-        <location filename="../silica/Settings.qml" line="144"/>
+        <location filename="../silica/Settings.qml" line="127"/>
+        <location filename="../silica/Settings.qml" line="145"/>
         <source>%1 free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="265"/>
-        <location filename="../silica/Settings.qml" line="139"/>
+        <location filename="../silica/Settings.qml" line="140"/>
         <source>Maps directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="283"/>
-        <location filename="../silica/Settings.qml" line="157"/>
+        <location filename="../silica/Settings.qml" line="158"/>
         <source>Hillshade provider</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../controls2/Settings.qml" line="288"/>
-        <location filename="../silica/Settings.qml" line="162"/>
+        <location filename="../silica/Settings.qml" line="163"/>
         <source>Not configured</source>
         <translation type="unfinished"></translation>
     </message>

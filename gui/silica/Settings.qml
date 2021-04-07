@@ -81,7 +81,7 @@ MapPage {
                 Component.onCompleted: currentIndex = (settings.systemOfUnits === "Imperial" ? 1 : 0)
             }
 
-            RowLayout {
+            Row {
                 spacing: 0
                 width: parent.width
                 MapIcon {
@@ -92,6 +92,7 @@ MapPage {
                 }
                 Slider {
                     id: magdip
+                    anchors.bottom: parent.verticalCenter
                     width: units.gu(28)
                     leftMargin: units.gu(2)
                     rightMargin: units.gu(2)

@@ -101,7 +101,7 @@ Page {
         renderingType: (settings.renderingTypeTiled || mapView.rotateEnabled || mapView.navigation ? "tiled" : "plane")
 
         followVehicle: mapView.navigation
-        vehiclePosition: mapView.navigation ? (navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition) : null
+        vehiclePosition: mapView.navigation && navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition
         vehicleIconSize: 10
         showCurrentPosition: true
 
@@ -150,6 +150,8 @@ Page {
         }
 
         Component.onCompleted: {
+            map.setVehicleScaleFactor(0.0); // hide vehicle
+            positionSource.dataUpdated.connect(Tracker.locationChanged);
             positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
                 locationChanged(valid, lat, lon, accValid, acc);
             });
@@ -215,17 +217,20 @@ Page {
             // unlock rotation and disable rotate
             lockRotation = false;
             rotateEnabled = false;
-            // connect the Tracker
+            // connect the Tracker to azimuth
             compass.active = !applicationSuspended;
             compass.polled.connect(Tracker.azimuthChanged);
+            // show vehicle icon
+            map.setVehicleScaleFactor(1.0);
+            // log this position
             Tracker.locationChanged(positionSource._posValid,
                                     positionSource._lat, positionSource._lon,
                                     positionSource._accValid, positionSource._acc,
                                     positionSource._alt);
-            positionSource.dataUpdated.connect(Tracker.locationChanged);
         } else {
-            // disconnect the Tracker
-            positionSource.dataUpdated.disconnect(Tracker.locationChanged);
+            // hide vehicle icon
+            map.setVehicleScaleFactor(0.0);
+            // disconnect the Tracker from azimuth
             compass.polled.disconnect(Tracker.azimuthChanged);
             compass.active = false;
             // lock rotation
@@ -428,49 +433,9 @@ Page {
         }
     }
 
-    readonly property int id_ROUTE: 0       // route overlay
-    readonly property int id_RECORDING: 1   // recording overlay
-    readonly property int id_DEPARTURE: 4   // departure of route
-    readonly property int id_ARRIVAL: 5     // arrival of route
-    readonly property int id_MARK_POINT: 8  // range start for marks
-    readonly property int id_WAY_POINT: 128 // range start for way points
-    readonly property int id_COURSE: 256    // range start for courses
-
-    function addRoute(routeWay) {
-        map.addOverlayObject(id_ROUTE, routeWay);
-    }
-    function removeRoute() {
-        map.removeOverlayObject(id_ROUTE);
-    }
-
-    function addMarkStart(lat, lon) {
-        map.addPositionMark(id_DEPARTURE, lat, lon);
-    }
-    function removeMarkStart() {
-        map.removePositionMark(id_DEPARTURE);
-    }
-    function addMarkEnd(lat, lon) {
-        map.addPositionMark(id_ARRIVAL, lat, lon);
-    }
-    function removeMarkEnd() {
-        map.removePositionMark(id_ARRIVAL);
-    }
-
-    function addMark(id, lat, lon) {
-        map.addPositionMark(id_MARK_POINT + id, lat, lon);
-    }
-    function removeMark(id) {
-        map.removePositionMark(id_MARK_POINT + id);
-    }
-
-    function addWayPoint(id, lat, lon) {
-        var wpt = map.createOverlayNode("_waypoint");
-        wpt.addPoint(lat, lon);
-        wpt.name = "Pos: " + lat.toFixed(4) + " " + lon.toFixed(4);
-        map.addOverlayObject(id_WAY_POINT + id, wpt);
-    }
-    function removeWayPoint(id) {
-        map.removeOverlayObject(id_WAY_POINT + id);
+    OverlayManager {
+        id: overlayManager
+        map: map
     }
 
     // Go there. The button is visible in state 'locationInfo'
@@ -803,6 +768,10 @@ Page {
         onClose: {
             navigator.stop();
             visible = false;
+            // exit navigation mode if the status of the position does not allow it
+            if (mapView.positionState === 0) {
+                mapView.navigation = false;
+            }
         }
     }
 
@@ -818,10 +787,10 @@ Page {
         visible: false
         onClose: {
             visible = false;
-            mapView.removeMark(0);
+            overlayManager.removeMark(0);
         }
         onShow: {
-            mapView.addMark(0, mark.lat, mark.lon);
+            overlayManager.addMark(0, mark.lat, mark.lon);
             if (mark.screenY < widgetBottomY / 2)
                     map.up();
             popLocationInfo.searchLocation(mark.lat, mark.lon);
@@ -935,6 +904,7 @@ Page {
     Navigator {
         id: navigator
         position: positionSource
+        overlayManager: overlayManager
 
         onStarted: {
             popNavigatorInfo.visible = Qt.binding(function() { return mapView.state === "view"; });
@@ -963,12 +933,12 @@ Page {
         onIsRecordingChanged: {
             if (!Tracker.isRecording) {
                 overlayRecording.clear();
-                map.removeOverlayObject(id_RECORDING);
+                overlayManager.removeOverlayObject(id_RECORDING);
             }
         }
         onTrackerPositionRecorded: {
             overlayRecording.addPoint(lat, lon);
-            map.addOverlayObject(id_RECORDING, overlayRecording);
+            overlayManager.addOverlayObject(id_RECORDING, overlayRecording);
         }
     }
 
@@ -978,26 +948,15 @@ Page {
     ////
 
     property int courseId: 0
-    property var courseObjects: []
 
     function addCourse(bid, overlays) {
-        if (overlays.length > 0) {
-            for (var i = 0; i < overlays.length; ++i) {
-                console.log("Add overlay " + (bid + i) + " : " + overlays[i].objectType + " , " + overlays[i].name);
-                map.addOverlayObject((bid + i), overlays[i]);
-            }
-            courseObjects = overlays;
+        if (overlayManager.addCourse(bid, overlays)) {
             settings.courseId = courseId = bid;
         }
     }
 
     function removeCourse() {
-        var len = courseObjects.length;
-        for (var i = 0; i < len; ++i) {
-            console.log("Remove overlay " + (courseId + i));
-            map.removeOverlayObject((courseId + i));
-        }
-        courseObjects = [];
+        overlayManager.removeAllCourses();
         settings.courseId = courseId = 0;
     }
 

@@ -22,8 +22,6 @@ Item {
     property string message: ""
     property color backgroundColor: "red"
     property color foregroundColor: "white"
-    property color backgroundColor: "red"
-    property color foregroundColor: "white"
     property real edgeMargins: 0.0
     property real backgroundRadius: 0.0
     property real backgroundOpacity: 1.0

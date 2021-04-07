@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2021
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -106,12 +106,13 @@ PopOver {
             // vehicle
 
             Row {
-                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 spacing: units.gu(2)
+
                 MapIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/trip/walk.svg"
-                    height: units.gu(6)
+                    height: units.gu(7)
                     width: height
                     color: vehicle === "foot" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
                     onClicked: vehicle = "foot"
@@ -119,7 +120,7 @@ PopOver {
                 MapIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/trip/bike.svg"
-                    height: units.gu(6)
+                    height: units.gu(7)
                     width: height
                     color: vehicle === "bicycle" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
                     onClicked: vehicle = "bicycle"
@@ -127,7 +128,7 @@ PopOver {
                 MapIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     source: "qrc:/images/trip/car.svg"
-                    height: units.gu(6)
+                    height: units.gu(7)
                     width: height
                     color: vehicle === "car" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
                     onClicked: vehicle = "car"
@@ -301,7 +302,7 @@ PopOver {
                 width: parent.width
                 minimumValue: 0
                 maximumValue: 100
-                opacity: !route.ready && routeProgress > 0 ? 1.0 : 0.0
+                opacity: !routingModel.ready && routeProgress > 0 ? 1.0 : 0.0
                 value: routeProgress
             }
 
@@ -327,6 +328,7 @@ PopOver {
                 color: styleMap.popover.foregroundColor
                 font.pixelSize: units.fx("small")
                 text: routeMessage
+                horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.Wrap
                 visible: text !== ""
             }
@@ -347,9 +349,16 @@ PopOver {
                     width: parent.width / 2 - units.gu(1)
                     color: styleMap.popover.foregroundColor
                     onClicked: {
+                        // When current position cannot be defined, i.e sensor disabled,
+                        // reset the current position at the location of the start point
+                        // of the route. In other way it could schedule reroute.
+                        if (!position._posValid) {
+                            position._lat = placeFrom.lat;
+                            position._lon = placeFrom.lon;
+                        }
                         mapView.navigation = true;
                         navigator.stopped.connect(onNavigatorStopped);
-                        navigator.setup(vehicle, route.route, route.routeWay, placeTo.location);
+                        navigator.setup(vehicle, routingModel, placeTo.location);
                         routingDialog.state = "navigation";
                         routingDialog.close();
                     }
@@ -369,7 +378,7 @@ PopOver {
                     width: parent.width / 2 - units.gu(1)
                     color: styleMap.popover.foregroundColor
                     onClicked: {
-                        route.cancel();
+                        routingModel.cancel();
                         routingDialog.state = "dialog"
                     }
                     label.text: qsTr("Clear")
@@ -382,7 +391,7 @@ PopOver {
                 height: contentHeight
                 interactive: false
                 spacing: units.gu(1)
-                model: route
+                model: routingModel
 
                 header: Row {
                     spacing: units.gu(1)
@@ -394,7 +403,7 @@ PopOver {
                     }
                     Label {
                         id: distanceLabel
-                        text: Converter.readableDistance(route.length)
+                        text: Converter.readableDistance(routingModel.length)
                         color: styleMap.popover.highlightedColor
                         font.pixelSize: units.fx("small")
                     }
@@ -405,7 +414,7 @@ PopOver {
                     }
                     Label {
                         id: durationLabel
-                        text: Converter.panelDurationHM(route.duration)
+                        text: Converter.panelDurationHM(routingModel.duration)
                         color: styleMap.popover.highlightedColor
                         font.pixelSize: units.fx("small")
                     }
@@ -413,7 +422,7 @@ PopOver {
                 delegate: Row {
                     spacing: units.gu(2)
                     width: parent.width
-                    height: Math.max(entryDescription.implicitHeight, icon.height)
+                    height: Math.max(stepInfo.implicitHeight, icon.height)
 
                     WAYIcon {
                         id: icon
@@ -425,14 +434,26 @@ PopOver {
                         width: units.gu(7)
                         height: width
                     }
-                    Label {
-                        id: entryDescription
+                    Column {
+                        id: stepInfo
                         anchors.verticalCenter: parent.verticalCenter
-                        color: styleMap.popover.foregroundColor
                         width: parent.width - icon.width - units.gu(2)
-                        text: model.description
-                        font.pixelSize: units.fx("small")
-                        wrapMode: Text.Wrap
+                        Label {
+                            id: distance
+                            width: parent.width
+                            color: styleMap.popover.foregroundColor
+                            text: Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
+                            font.pixelSize: units.fx("small")
+                            horizontalAlignment: Label.AlignRight
+                        }
+                        Label {
+                            id: entryDescription
+                            width: parent.width
+                            color: styleMap.popover.foregroundColor
+                            text: model.description
+                            font.pixelSize: units.fx("small")
+                            wrapMode: Text.Wrap
+                        }
                     }
                 }
             }
@@ -444,7 +465,7 @@ PopOver {
     property bool computeRunning: false
 
     RoutingListModel {
-        id: route
+        id: routingModel
         onRouteFailed: {
             routeMessage = qsTranslate("message", reason);
             computeRunning = false;
@@ -456,13 +477,13 @@ PopOver {
             routeProgress = 0;
             if (!computeRunning) {
                 console.log("Computing aborted");
-                route.clear();
+                routingModel.clear();
             } else {
-                var count = route.count;
+                var count = routingModel.count;
                 if (count > 0) {
                     if (count > settings.maximumRouteStep) {
                         popInfo.open("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.");
-                        route.clear();
+                        routingModel.clear();
                     } else {
                         routingDialog.state = "navigate";
                     }
@@ -473,22 +494,22 @@ PopOver {
     }
 
     function breakCompute() {
-        route.cancel();
+        routingModel.cancel();
         computeRunning = false;
     }
 
     function computeRoute() {
         routeProgress = 0;
         routeMessage = "";
-        placeFrom.location = route.locationEntryFromPosition(placeFrom.lat, placeFrom.lon);
-        placeTo.location = route.locationEntryFromPosition(placeTo.lat, placeTo.lon);
+        placeFrom.location = routingModel.locationEntryFromPosition(placeFrom.lat, placeFrom.lon);
+        placeTo.location = routingModel.locationEntryFromPosition(placeTo.lat, placeTo.lon);
         if (placeFrom.location && placeTo.location) {
             computeRunning = true;
-            route.setStartAndTarget(placeFrom.location, placeTo.location, vehicle);
+            routingModel.setStartAndTarget(placeFrom.location, placeTo.location, vehicle);
             settings.lastVehicle = vehicle;
         } else {
             routeMessage = qsTr("Invalid entry");
-            route.clear();
+            routingModel.clear();
         }
     }
 
