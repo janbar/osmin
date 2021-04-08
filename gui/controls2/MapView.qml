@@ -356,9 +356,20 @@ MapPage {
         opacity: 0.7
         height: units.gu(6)
         onClicked: {
+            Tracker.pinPosition(); // pin the current position
             var name = "[" + Converter.panelDistance(Tracker.distance) + "]";
-            Tracker.markPosition("Pin, Red", name, "");
+            dialogMarkPosition.model = { "name": name };
+            dialogMarkPosition.open();
+            ToolBox.connectOnce(dialogMarkPosition.reply, function(model){
+                if (model !== null) {
+                    Tracker.markPosition(model.symbol, model.name, "");
+                }
+            });
         }
+    }
+
+    DialogMarkPosition {
+        id: dialogMarkPosition
     }
 
     // button for zoom out

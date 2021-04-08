@@ -124,11 +124,18 @@ void Tracker::stopRecording()
   emit doStopRecording();
 }
 
+void Tracker::pinPosition()
+{
+  if (m_p && m_p->isRecording()) {
+    m_p->pinPosition();
+  }
+}
+
 void Tracker::markPosition(const QString &symbol, const QString &name, const QString &description)
 {
   if (m_p && m_p->isRecording()) {
-    m_p->markPosition(symbol, name, description);
-    emit trackerPositionMarked(getLat(), getLon(), symbol, name);
+    osmscout::GeoCoord coord = m_p->markPosition(symbol, name, description);
+    emit trackerPositionMarked(coord.GetLat(), coord.GetLon(), symbol, name);
   }
 }
 
@@ -185,6 +192,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_azimuth(0)
 , m_currentSpeed(0)
 , m_lastPosition()
+, m_pinnedPosition()
 , m_lastRecord()
 , m_distance(0)
 , m_duration(0)
@@ -515,18 +523,28 @@ void TrackerModule::record()
   m_segment.append(point);
 }
 
-void TrackerModule::markPosition(const QString& symbol, const QString& name, const QString& description)
+void TrackerModule::pinPosition()
 {
+  m_pinnedPosition.reset(new position_t(m_lastPosition));
+}
+
+osmscout::GeoCoord TrackerModule::markPosition(const QString& symbol, const QString& name, const QString& description)
+{
+  if (m_pinnedPosition.isNull())
+    pinPosition();
+  QScopedPointer<position_t> pos;
+  pos.swap(m_pinnedPosition);
   qDebug("%s", __FUNCTION__);
   if (!m_mark.isNull())
     onFlushRecording();
-  osmscout::gpx::Waypoint* waypoint = new osmscout::gpx::Waypoint(m_lastPosition.coord);
-  waypoint->time = std::optional<osmscout::Timestamp>(m_lastPosition.time);
-  waypoint->course = std::optional<double>(m_lastPosition.bearing.AsDegrees());
-  waypoint->elevation = std::optional<double>(m_lastPosition.elevation);
+  osmscout::gpx::Waypoint* waypoint = new osmscout::gpx::Waypoint(pos->coord);
+  waypoint->time = std::optional<osmscout::Timestamp>(pos->time);
+  waypoint->course = std::optional<double>(pos->bearing.AsDegrees());
+  waypoint->elevation = std::optional<double>(pos->elevation);
   waypoint->symbol = std::optional<std::string>(symbol.toUtf8());
   waypoint->name = std::optional<std::string>(name.toUtf8());
   waypoint->description = std::optional<std::string>(description.toUtf8());
   m_mark.reset(waypoint);
   onFlushRecording();
+  return pos->coord;
 }

@@ -218,6 +218,7 @@ MapPage {
                                              : symbol === "Lodging" ? "qrc:/images/poi/lodging.svg"
                                              : symbol === "Restaurant" ? "qrc:/images/poi/restaurant.svg"
                                              : symbol === "Skull and Crossbones" ? "qrc:/images/poi/danger.svg"
+                                             : symbol === "Car Repair" ? "qrc:/images/poi/car.svg"
                                              : "qrc:/images/poi/marker.svg"
                         }
                         Column {

@@ -69,6 +69,7 @@ public:
   Q_INVOKABLE void startRecording();
   Q_INVOKABLE void resumeRecording(const QString& filename);
   Q_INVOKABLE void stopRecording();
+  Q_INVOKABLE void pinPosition();
   Q_INVOKABLE void markPosition(const QString& symbol, const QString& name, const QString& description);
 
 signals:
@@ -133,7 +134,8 @@ public:
   void record();
   bool isRecording() const { return m_recording; }
 
-  void markPosition(const QString& symbol, const QString& name, const QString& description);
+  void pinPosition();
+  osmscout::GeoCoord markPosition(const QString& symbol, const QString& name, const QString& description);
 
 signals:
   void dataChanged(double kmph, double distance, double duration, double ascent, double descent);
@@ -162,13 +164,15 @@ private:
   osmscout::PositionAgent::PositionState m_state;
   double m_azimuth;
   double m_currentSpeed;
-  struct {
+  typedef struct {
     osmscout::Timestamp time;
     osmscout::GeoCoord coord;
     osmscout::Bearing bearing;
     double elevation;
     inline operator bool() const { return time.time_since_epoch() != osmscout::Timestamp::duration::zero(); }
-  } m_lastPosition;
+  } position_t;
+  position_t m_lastPosition;
+  QScopedPointer<position_t> m_pinnedPosition;
   struct {
     osmscout::Timestamp time;
     osmscout::GeoCoord coord;
