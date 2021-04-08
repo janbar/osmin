@@ -66,6 +66,9 @@ Item {
 
     Connections {
         target: navigator
+        onStarted: {
+            state = "running"
+        }
         onRerouteRequested: {
             navigator.suspended = true;
             state = "suspended"
