@@ -147,7 +147,15 @@ MapPage {
                 MenuItem {
                     text: qsTr("Delete")
                     font.pointSize: units.fs("medium")
-                    onTriggered: removeFavorite(model.id);
+                    onTriggered: {
+                        dialogAction.title = qsTr("Delete");
+                        dialogAction.text = model.label;
+                        dialogAction.open();
+                        ToolBox.connectOnce(dialogAction.accepted, deleteFavorite);
+                    }
+                    function deleteFavorite() {
+                        removeFavorite(model.id);
+                    }
                 }
             ]
 
@@ -357,5 +365,9 @@ MapPage {
         onOpened: {
             inputLabel.text = model.label;
         }
+    }
+
+    DialogAction {
+        id: dialogAction
     }
 }
