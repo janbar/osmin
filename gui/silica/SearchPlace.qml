@@ -31,7 +31,7 @@ MapPage {
         },
         State {
             name: "poi"
-            PropertyChanges { target: searchPage; pageTitle: suggestionView.selectedItem.label; isRoot: false; }
+            PropertyChanges { target: searchPage; pageTitle: qsTr(suggestionView.selectedItem.label); isRoot: false; }
             PropertyChanges { target: searchField; visible: false; }
             PropertyChanges { target: suggestionView; visible: false; }
             PropertyChanges { target: searchView; visible: true; model: poiModel; }
@@ -165,6 +165,8 @@ MapPage {
                 } else {
                     placeModel.pattern = "";
                 }
+                // reset current of the search view
+                searchView.currentIndex = -1;
             }
         }
     }
