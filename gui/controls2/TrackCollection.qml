@@ -189,6 +189,12 @@ MapPage {
                                     text: qsTr("Delete")
                                     font.pointSize: units.fs("medium")
                                     onTriggered: {
+                                        dialogAction.title = model.dir ? qsTr("Delete folder") : qsTr("Delete file");
+                                        dialogAction.text = model.name;
+                                        dialogAction.open();
+                                        ToolBox.connectOnce(dialogAction.accepted, deleteItem);
+                                    }
+                                    function deleteItem() {
                                         if (display.checked)
                                             mapView.removeCourse();
                                         var index = null;
@@ -333,5 +339,9 @@ MapPage {
                 name = name.substr(0, p);
             inputLabel.text = name;
         }
+    }
+
+    DialogAction {
+        id: dialogAction
     }
 }
