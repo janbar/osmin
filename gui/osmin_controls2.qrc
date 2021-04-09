@@ -267,5 +267,6 @@
         <file>controls2/components/RouteOverview.qml</file>
         <file>controls2/components/NavigatorRouting.qml</file>
         <file>controls2/components/DialogMarkPosition.qml</file>
+        <file>controls2/components/DialogAction.qml</file>
     </qresource>
 </RCC>
