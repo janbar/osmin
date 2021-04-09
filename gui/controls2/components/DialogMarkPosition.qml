@@ -69,55 +69,44 @@ DialogBase {
         ListElement { symbol: "Pin, Red"; iconSource: "qrc:/images/trip/marker.svg"; iconColor: "red" }
         ListElement { symbol: "Pin, Green"; iconSource: "qrc:/images/trip/marker.svg"; iconColor: "green" }
         ListElement { symbol: "Pin, Blue"; iconSource: "qrc:/images/trip/marker.svg"; iconColor: "blue" }
-        ListElement { symbol: "Skull and Crossbones"; iconSource: "qrc:/images/poi/danger.svg"; }
-        ListElement { symbol: "Gas Station"; iconSource: "qrc:/images/poi/fuel.svg"; }
         ListElement { symbol: "Restaurant"; iconSource: "qrc:/images/poi/restaurant.svg"; }
         ListElement { symbol: "Bar"; iconSource: "qrc:/images/poi/bar.svg"; }
         ListElement { symbol: "Lodging"; iconSource: "qrc:/images/poi/lodging.svg" }
         ListElement { symbol: "Campground"; iconSource: "qrc:/images/poi/campsite.svg" }
         ListElement { symbol: "Car Repair"; iconSource: "qrc:/images/poi/car.svg"; }
+        ListElement { symbol: "Gas Station"; iconSource: "qrc:/images/poi/fuel.svg"; }
+        ListElement { symbol: "Skull and Crossbones"; iconSource: "qrc:/images/poi/danger.svg"; }
     }
 
     Rectangle {
         width: parent.width
         height: units.gu(8)
         color: "transparent"
-        ComboBox {
+        Tumbler {
             id : symbols
-            height: units.gu(8)
-            width: units.gu(14)
             anchors.centerIn: parent
-            flat: true
+            rotation: -90
+            height: parent.width
+            width: units.gu(8)
             model : markersModel
 
-            onActivated: {
-                updateIcon(index);
-            }
-            Component.onCompleted: {
-                updateIcon(currentIndex);
-            }
-
-            function updateIcon(idx) {
-                var item = symbols.model.get(idx);
-                selected.source = item.iconSource;
-                selected.color = item.iconColor !== undefined ? item.iconColor : styleMap.dialog.foregroundColor;
-            }
-
-            MapIcon {
-                id: selected
-                anchors.centerIn: parent
-                enabled: false
-                anchors.fill: parent
-            }
-
-            delegate: ItemDelegate {
-                height: units.gu(6)
-                width: parent.width
-                contentItem: MapIcon {
-                    enabled: false
+            delegate: Item {
+                property bool selected: (index === symbols.currentIndex)
+                Rectangle {
                     anchors.fill: parent
+                    color: styleMap.view.highlightedColor
+                    opacity: selected ? 0.3 : 0.0
+                }
+                MapIcon {
+                    anchors.centerIn: parent
+                    rotation: 90
+                    height: units.gu(6)
+                    enabled: true
                     source: iconSource
                     color: iconColor !== undefined ? iconColor : styleMap.dialog.foregroundColor
+                    onClicked: {
+                        symbols.currentIndex = index;
+                    }
                 }
             }
         }
@@ -130,7 +119,6 @@ DialogBase {
             for (var i = 0; i < markersModel.count; ++i) {
                 if (markersModel.get(i).symbol === model.symbol) {
                     symbols.currentIndex = i;
-                    symbols.updateIcon(i)
                     break;
                 }
             }
