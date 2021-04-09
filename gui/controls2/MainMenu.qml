@@ -116,6 +116,7 @@ PopOver {
                 height: units.gu(8)
                 color: "transparent"
                 paddingLeft: units.gu(0)
+                highlighted: pressed
 
                 column: Column {
                     Row {
@@ -147,7 +148,7 @@ PopOver {
                             Label {
                                 width: parent.width - units.gu(1)
                                 color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("medium")
+                                font.pointSize: units.fs("small")
                                 verticalAlignment: Text.AlignVCenter
                                 horizontalAlignment: Text.AlignLeft
                                 maximumLineCount: 2
