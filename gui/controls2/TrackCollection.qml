@@ -93,9 +93,8 @@ MapPage {
                                    mapView.removeCourse();
                                    if (!fileModel.fileValid) {
                                        ToolBox.connectOnce(fileModel.loaded, function(succeeded){
-                                           if (succeeded) {
+                                           if (succeeded)
                                                mapView.addCourse(bigId, fileModel.createOverlayObjects());
-                                           }
                                        });
                                        ToolBox.connectOnce(fileModel.parseFinished, function(succeeded){
                                            if (!succeeded)
@@ -199,7 +198,7 @@ MapPage {
                                     text: qsTr("Delete")
                                     font.pointSize: units.fs("medium")
                                     onTriggered: {
-                                        dialogAction.title = model.dir ? qsTr("Delete folder") : qsTr("Delete file");
+                                        dialogAction.title = model.dir ? qsTr("Delete folder ?") : qsTr("Delete file ?");
                                         dialogAction.text = model.name;
                                         dialogAction.open();
                                         ToolBox.connectOnce(dialogAction.accepted, deleteItem);

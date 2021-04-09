@@ -148,7 +148,7 @@ MapPage {
                     text: qsTr("Delete")
                     font.pointSize: units.fs("medium")
                     onTriggered: {
-                        dialogAction.title = qsTr("Delete");
+                        dialogAction.title = qsTr("Delete favorite ?");
                         dialogAction.text = model.label;
                         dialogAction.open();
                         ToolBox.connectOnce(dialogAction.accepted, deleteFavorite);
