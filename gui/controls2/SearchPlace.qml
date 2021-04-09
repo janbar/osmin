@@ -165,6 +165,8 @@ MapPage {
                 } else {
                     placeModel.pattern = "";
                 }
+                // reset current of the search view
+                searchView.currentIndex = -1;
             }
         }
     }
