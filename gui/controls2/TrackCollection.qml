@@ -59,8 +59,13 @@ MapPage {
                 GPXFileModel {
                     id: fileModel
                     onParseFinished: {
-                        if (succeeded)
+                        if (succeeded) {
                             loadData();
+                        } else {
+                            dialogAlert.title = name
+                            dialogAlert.text = qsTr("Parsing file has failed. The format is not supported or data are corrupted.");
+                            dialogAlert.open();
+                        }
                     }
                 }
 
@@ -88,8 +93,13 @@ MapPage {
                                    mapView.removeCourse();
                                    if (!fileModel.fileValid) {
                                        ToolBox.connectOnce(fileModel.loaded, function(succeeded){
-                                           if (succeeded)
+                                           if (succeeded) {
                                                mapView.addCourse(bigId, fileModel.createOverlayObjects());
+                                           }
+                                       });
+                                       ToolBox.connectOnce(fileModel.parseFinished, function(succeeded){
+                                           if (!succeeded)
+                                               display.checked = false;
                                        });
                                        fileModel.parseFile(model.absoluteFilePath);
                                     } else {
@@ -343,5 +353,9 @@ MapPage {
 
     DialogAction {
         id: dialogAction
+    }
+
+    DialogAlert {
+        id: dialogAlert
     }
 }

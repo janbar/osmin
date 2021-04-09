@@ -24,6 +24,7 @@ bool GPXFile::parse(const QString& filePath)
   m_path = filePath;
   m_breaker = std::make_shared<osmscout::ThreadedBreaker>();
   m_valid = osmscout::gpx::ImportGpx(filePath.toUtf8().constData(), m_gpx, m_breaker, m_callback);
+  m_valid = m_valid && (!m_gpx.tracks.empty() || !m_gpx.waypoints.empty());
   return m_valid;
 }
 
