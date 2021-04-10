@@ -22,6 +22,16 @@ import QtQml 2.2
 DialogBase {
     id: dialog
 
+    // note: connect the signal reply(bool) to process the response
+    signal reply(bool accepted)
+
+    onClosed: {
+        reply((result === Dialog.Accepted));
+    }
+    onOpened: {
+        result = Dialog.Rejected;
+    }
+
     footer: Row {
         leftPadding: units.gu(1)
         rightPadding: units.gu(1)

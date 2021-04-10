@@ -33,7 +33,7 @@ DialogBase {
             flat: true
             text: qsTr("Ok")
             onClicked: {
-                dialog.accept();
+                dialog.close();
             }
         }
     }

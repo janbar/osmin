@@ -201,17 +201,19 @@ MapPage {
                                         dialogAction.title = model.dir ? qsTr("Delete folder ?") : qsTr("Delete file ?");
                                         dialogAction.text = model.name;
                                         dialogAction.open();
-                                        ToolBox.connectOnce(dialogAction.accepted, deleteItem);
+                                        ToolBox.connectOnce(dialogAction.reply, deleteItem);
                                     }
-                                    function deleteItem() {
-                                        if (display.checked)
-                                            mapView.removeCourse();
-                                        var index = null;
-                                        if (availableList.tree.length > 0)
-                                            index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
-                                        else
-                                            index = GPXListModel.index(model.index, 0);
-                                        GPXListModel.removeItem(index);
+                                    function deleteItem(accepted) {
+                                        if (accepted) {
+                                            if (display.checked)
+                                                mapView.removeCourse();
+                                            var index = null;
+                                            if (availableList.tree.length > 0)
+                                                index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
+                                            else
+                                                index = GPXListModel.index(model.index, 0);
+                                            GPXListModel.removeItem(index);
+                                        }
                                     }
                                 }
                             }

@@ -151,10 +151,11 @@ MapPage {
                         dialogAction.title = qsTr("Delete favorite ?");
                         dialogAction.text = model.label;
                         dialogAction.open();
-                        ToolBox.connectOnce(dialogAction.accepted, deleteFavorite);
+                        ToolBox.connectOnce(dialogAction.reply, deleteFavorite);
                     }
-                    function deleteFavorite() {
-                        removeFavorite(model.id);
+                    function deleteFavorite(accepted) {
+                        if (accepted)
+                            removeFavorite(model.id);
                     }
                 }
             ]
