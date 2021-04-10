@@ -59,9 +59,10 @@ MapPage {
                 GPXFileModel {
                     id: fileModel
                     onParseFinished: {
-                        if (succeeded) {
-                            loadData();
-                        } else {
+                        // caller wait for signal loaded(bool)
+                        loadData();
+                        // on failure show alert
+                        if (!succeeded) {
                             dialogAlert.title = name
                             dialogAlert.text = qsTr("Parsing file has failed. The format is not supported or data are corrupted.");
                             dialogAlert.open();
@@ -95,9 +96,7 @@ MapPage {
                                        ToolBox.connectOnce(fileModel.loaded, function(succeeded){
                                            if (succeeded)
                                                mapView.addCourse(bigId, fileModel.createOverlayObjects());
-                                       });
-                                       ToolBox.connectOnce(fileModel.parseFinished, function(succeeded){
-                                           if (!succeeded)
+                                           else
                                                display.checked = false;
                                        });
                                        fileModel.parseFile(model.absoluteFilePath);
