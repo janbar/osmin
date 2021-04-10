@@ -46,7 +46,13 @@ Item {
         }
         onRouteFailed: {
             console.log("Route failed: " + reason);
-            routeFailed(reason);
+            // on failure computing has been canceled, causing the signal routeNoRoute
+            // but if it still running then handle cancelling here to stop computing
+            // and reset callback immediately, finally signal the failure 1 times
+            if (!routing.ready) {
+                routing.cancel();
+                routeFailed(reason);
+            }
         }
     }
 }
