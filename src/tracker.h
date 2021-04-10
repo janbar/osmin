@@ -36,6 +36,7 @@ class Tracker : public QObject
   Q_PROPERTY(QString recording READ getRecording WRITE setRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   Q_PROPERTY(bool isRecording READ getIsRecording NOTIFY trackerRecordingChanged)
+  Q_PROPERTY(int markCount READ getMarkCount NOTIFY trackerPositionMarked)
   //Q_PROPERTY(double remainingDistance READ getRemainingDistance NOTIFY remainingDistanceChanged)
   //Q_PROPERTY(QObject* nextRouteStep READ getNextRoutStep NOTIFY nextStepChanged)
 
@@ -60,6 +61,7 @@ public:
   void setRecording(const QString& filename);
   bool getProcessing() const { return m_busy; }
   bool getIsRecording() const;
+  int getMarkCount() const;
 
   Q_INVOKABLE void locationChanged(bool positionValid, double lat, double lon,
                                    bool horizontalAccuracyValid, double horizontalAccuracy,
@@ -134,6 +136,7 @@ public:
   void record();
   bool isRecording() const { return m_recording; }
 
+  int getMarkCount() const { return m_markCount; }
   void pinPosition();
   osmscout::GeoCoord markPosition(const QString& symbol, const QString& name, const QString& description);
 
@@ -186,6 +189,7 @@ private:
   double m_descent;
 
   bool m_recording;
+  int m_markCount;
   QList<osmscout::gpx::TrackPoint> m_segment;
   QMutex m_lock;
   QSharedPointer<QFile> m_file;

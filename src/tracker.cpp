@@ -88,6 +88,11 @@ bool Tracker::getIsRecording() const
   return (m_p ? m_p->isRecording() : false);
 }
 
+int Tracker::getMarkCount() const
+{
+  return (m_p ? m_p->getMarkCount() : 0);
+}
+
 void Tracker::locationChanged(bool positionValid, double lat, double lon,
                               bool horizontalAccuracyValid, double horizontalAccuracy,
                               double alt /*= 0.0*/)
@@ -199,6 +204,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_ascent(0)
 , m_descent(0)
 , m_recording(false)
+, m_markCount(0)
 , m_segment()
 , m_lock(QMutex::Recursive)
 , m_file(nullptr)
@@ -337,6 +343,7 @@ void TrackerModule::onStartRecording()
   {
     m_file->close();
     m_recording = true;
+    m_markCount = 0; // reset the counter on new recording
     emit recordingChanged(m_file->fileName());
   }
 }
@@ -532,6 +539,10 @@ osmscout::GeoCoord TrackerModule::markPosition(const QString& symbol, const QStr
 {
   if (m_pinnedPosition.isNull())
     pinPosition();
+  ++m_markCount;
+  QString _name(name);
+  if (_name.isEmpty())
+    _name.append('[').append(QString::number(m_markCount)).append(']');
   QScopedPointer<position_t> pos;
   pos.swap(m_pinnedPosition);
   qDebug("%s", __FUNCTION__);
@@ -542,7 +553,7 @@ osmscout::GeoCoord TrackerModule::markPosition(const QString& symbol, const QStr
   waypoint->course = std::optional<double>(pos->bearing.AsDegrees());
   waypoint->elevation = std::optional<double>(pos->elevation);
   waypoint->symbol = std::optional<std::string>(symbol.toUtf8());
-  waypoint->name = std::optional<std::string>(name.toUtf8());
+  waypoint->name = std::optional<std::string>(_name.toUtf8());
   waypoint->description = std::optional<std::string>(description.toUtf8());
   m_mark.reset(waypoint);
   onFlushRecording();
