@@ -26,18 +26,20 @@ DialogBase {
     // { symbol, name }
     property var model: ({})
 
+    // note: connect the signal reply(var) to process the response
     signal reply(var model)
 
-    onAccepted: {
-        var txt = inputName.text.trim();
-        if (txt.length > 0)
-            model.name = txt;
-        model.symbol = markersModel.get(symbols.currentIndex).symbol;
-        reply(model);
-    }
-    onRejected: {
-        // caller is waiting the signal
-        reply(null);
+    onClosed: {
+        if (result === Dialog.Accepted) {
+            var txt = inputName.text.trim();
+            if (txt.length > 0)
+                model.name = txt;
+            model.symbol = markersModel.get(symbols.currentIndex).symbol;
+            reply(model);
+        } else {
+            // caller is waiting the signal
+            reply(null);
+        }
     }
 
     footer: Row {
@@ -113,6 +115,9 @@ DialogBase {
     }
 
     onOpened: {
+        // reset dialog result
+        result = Dialog.Rejected;
+        // preset inputs
         if (model.name !== undefined)
             inputName.text = model.name + " ";
         if (model.symbol !== undefined) {
