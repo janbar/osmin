@@ -20,6 +20,7 @@ import QtQuick.Controls 2.2
 import QtQml 2.2
 import QtQml.Models 2.3
 import "./components"
+import "../toolbox.js" as ToolBox
 
 PopOver {
     id: mainMenu
@@ -34,6 +35,17 @@ PopOver {
             comment: qsTr("Manage your favorite places.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/Favorites.qml");
+                ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                    if (lat !== NaN && lon !== NaN) {
+                         map.showCoordinatesInstantly(lat, lon);
+                         mark.lat = lat;
+                         mark.lon = lon;
+                         mark.screenX = map.width / 2;
+                         mark.screenY = map.height / 2;
+                         if (navigation)
+                             navigation = false;
+                         popLocationInfo.show();                                 }
+                });
             }
         }
         ListElement {
