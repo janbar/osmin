@@ -155,12 +155,12 @@
 <context>
     <name>DialogAction</name>
     <message>
-        <location filename="../controls2/components/DialogAction.qml" line="34"/>
+        <location filename="../controls2/components/DialogAction.qml" line="44"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/components/DialogAction.qml" line="41"/>
+        <location filename="../controls2/components/DialogAction.qml" line="51"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -194,12 +194,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/components/DialogMarkPosition.qml" line="52"/>
+        <location filename="../controls2/components/DialogMarkPosition.qml" line="54"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/components/DialogMarkPosition.qml" line="62"/>
+        <location filename="../controls2/components/DialogMarkPosition.qml" line="64"/>
         <source>Enter the name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -225,7 +225,7 @@
     </message>
     <message>
         <location filename="../controls2/Favorites.qml" line="133"/>
-        <location filename="../controls2/Favorites.qml" line="324"/>
+        <location filename="../controls2/Favorites.qml" line="325"/>
         <location filename="../silica/Favorites.qml" line="286"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
@@ -241,25 +241,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="252"/>
+        <location filename="../controls2/Favorites.qml" line="253"/>
         <location filename="../silica/Favorites.qml" line="231"/>
         <source>Go</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="252"/>
+        <location filename="../controls2/Favorites.qml" line="253"/>
         <location filename="../silica/Favorites.qml" line="231"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="350"/>
+        <location filename="../controls2/Favorites.qml" line="351"/>
         <location filename="../silica/Favorites.qml" line="314"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="360"/>
+        <location filename="../controls2/Favorites.qml" line="361"/>
         <location filename="../silica/Favorites.qml" line="304"/>
         <source>Enter the label</source>
         <translation type="unfinished"></translation>
@@ -295,13 +295,13 @@
 <context>
     <name>MainMenu</name>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="26"/>
+        <location filename="../controls2/MainMenu.qml" line="27"/>
         <location filename="../silica/MainMenu.qml" line="25"/>
         <source>Main Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="33"/>
+        <location filename="../controls2/MainMenu.qml" line="34"/>
         <location filename="../silica/MainMenu.qml" line="35"/>
         <source>My Places</source>
         <translation type="unfinished"></translation>
@@ -312,19 +312,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="41"/>
+        <location filename="../controls2/MainMenu.qml" line="53"/>
         <location filename="../silica/MainMenu.qml" line="64"/>
         <source>Routes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="42"/>
+        <location filename="../controls2/MainMenu.qml" line="54"/>
         <location filename="../silica/MainMenu.qml" line="75"/>
         <source>Navigate to a destination.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="49"/>
+        <location filename="../controls2/MainMenu.qml" line="61"/>
         <location filename="../silica/MainMenu.qml" line="93"/>
         <source>Tracks</source>
         <translation type="unfinished"></translation>
@@ -335,7 +335,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="57"/>
+        <location filename="../controls2/MainMenu.qml" line="80"/>
         <location filename="../silica/MainMenu.qml" line="122"/>
         <source>Tracking</source>
         <translation type="unfinished"></translation>
@@ -346,60 +346,60 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="34"/>
+        <location filename="../controls2/MainMenu.qml" line="35"/>
         <source>Manage your favorite places.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="50"/>
+        <location filename="../controls2/MainMenu.qml" line="62"/>
         <source>Manage the collection of saved tracks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="58"/>
+        <location filename="../controls2/MainMenu.qml" line="81"/>
         <source>Statistics of the current track.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="65"/>
+        <location filename="../controls2/MainMenu.qml" line="88"/>
         <location filename="../silica/MainMenu.qml" line="151"/>
         <source>Configure Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="66"/>
+        <location filename="../controls2/MainMenu.qml" line="89"/>
         <source>Rendering and style of the map view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="73"/>
+        <location filename="../controls2/MainMenu.qml" line="96"/>
         <location filename="../silica/MainMenu.qml" line="169"/>
         <source>Download Maps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="74"/>
+        <location filename="../controls2/MainMenu.qml" line="97"/>
         <source>Manage the map database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="81"/>
+        <location filename="../controls2/MainMenu.qml" line="104"/>
         <source>Configure Voice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="82"/>
+        <location filename="../controls2/MainMenu.qml" line="105"/>
         <source>Choose a voice for driving directions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="96"/>
+        <location filename="../controls2/MainMenu.qml" line="119"/>
         <location filename="../silica/MainMenu.qml" line="204"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MainMenu.qml" line="97"/>
+        <location filename="../controls2/MainMenu.qml" line="120"/>
         <source>General settings, units system and more ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -630,7 +630,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Routing.qml" line="533"/>
+        <location filename="../controls2/Routing.qml" line="517"/>
+        <source>The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/Routing.qml" line="543"/>
         <location filename="../silica/Routing.qml" line="511"/>
         <source>Invalid entry</source>
         <translation type="unfinished"></translation>
@@ -879,47 +884,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="66"/>
-        <location filename="../silica/TrackCollection.qml" line="63"/>
+        <location filename="../controls2/TrackCollection.qml" line="70"/>
+        <location filename="../silica/TrackCollection.qml" line="64"/>
         <source>Parsing file has failed. The format is not supported or data are corrupted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="177"/>
-        <location filename="../controls2/TrackCollection.qml" line="301"/>
-        <location filename="../silica/TrackCollection.qml" line="305"/>
+        <location filename="../controls2/TrackCollection.qml" line="179"/>
+        <location filename="../controls2/TrackCollection.qml" line="426"/>
+        <location filename="../silica/TrackCollection.qml" line="304"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="198"/>
+        <location filename="../controls2/TrackCollection.qml" line="200"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="201"/>
+        <location filename="../controls2/TrackCollection.qml" line="203"/>
         <source>Delete folder ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="201"/>
+        <location filename="../controls2/TrackCollection.qml" line="203"/>
         <source>Delete file ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="329"/>
-        <location filename="../silica/TrackCollection.qml" line="333"/>
+        <location filename="../controls2/TrackCollection.qml" line="454"/>
+        <location filename="../silica/TrackCollection.qml" line="332"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="339"/>
-        <location filename="../silica/TrackCollection.qml" line="323"/>
+        <location filename="../controls2/TrackCollection.qml" line="464"/>
+        <location filename="../silica/TrackCollection.qml" line="322"/>
         <source>Enter the name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../silica/TrackCollection.qml" line="298"/>
+        <location filename="../silica/TrackCollection.qml" line="297"/>
         <source>Page Up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1022,85 +1027,85 @@
 <context>
     <name>osmin</name>
     <message>
-        <location filename="../controls2/osmin.qml" line="256"/>
+        <location filename="../controls2/osmin.qml" line="257"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="309"/>
+        <location filename="../controls2/osmin.qml" line="310"/>
         <location filename="../silica/osmin.qml" line="142"/>
         <source>meters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="310"/>
+        <location filename="../controls2/osmin.qml" line="311"/>
         <location filename="../silica/osmin.qml" line="143"/>
         <source>km</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="311"/>
+        <location filename="../controls2/osmin.qml" line="312"/>
         <location filename="../silica/osmin.qml" line="144"/>
         <source>feet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="312"/>
+        <location filename="../controls2/osmin.qml" line="313"/>
         <location filename="../silica/osmin.qml" line="145"/>
         <source>miles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="313"/>
+        <location filename="../controls2/osmin.qml" line="314"/>
         <location filename="../silica/osmin.qml" line="146"/>
         <source>north</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="314"/>
+        <location filename="../controls2/osmin.qml" line="315"/>
         <location filename="../silica/osmin.qml" line="147"/>
         <source>south</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="315"/>
+        <location filename="../controls2/osmin.qml" line="316"/>
         <location filename="../silica/osmin.qml" line="148"/>
         <source>west</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="316"/>
+        <location filename="../controls2/osmin.qml" line="317"/>
         <location filename="../silica/osmin.qml" line="149"/>
         <source>east</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="317"/>
+        <location filename="../controls2/osmin.qml" line="318"/>
         <location filename="../silica/osmin.qml" line="150"/>
         <source>northwest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="318"/>
+        <location filename="../controls2/osmin.qml" line="319"/>
         <location filename="../silica/osmin.qml" line="151"/>
         <source>northeast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="319"/>
+        <location filename="../controls2/osmin.qml" line="320"/>
         <location filename="../silica/osmin.qml" line="152"/>
         <source>southwest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="320"/>
+        <location filename="../controls2/osmin.qml" line="321"/>
         <location filename="../silica/osmin.qml" line="153"/>
         <source>southeast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/osmin.qml" line="408"/>
-        <location filename="../controls2/osmin.qml" line="418"/>
+        <location filename="../controls2/osmin.qml" line="409"/>
+        <location filename="../controls2/osmin.qml" line="419"/>
         <location filename="../silica/osmin.qml" line="217"/>
         <location filename="../silica/osmin.qml" line="227"/>
         <source>Saving change failed</source>
