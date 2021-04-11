@@ -42,7 +42,8 @@ MapPage {
     MapListView {
         id: availableList
         contentHeight: units.gu(8)
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height - mapPreview.height
 
         property var tree: []
 
@@ -219,40 +220,53 @@ MapPage {
                         }
                     }
 
-                    delegate: Row {
-                        MapIcon {
-                          id: poi
-                          anchors.verticalCenter: parent.verticalCenter
-                          color: type === 0 && displayColor !== "" ? displayColor : styleMap.view.foregroundColor
-                          width: units.gu(6)
-                          height: units.gu(6)
-                          enabled: false
-                          source: type === 0 ? "qrc:/images/trip/segment.svg"
-                                             : symbol === "Bar" ? "qrc:/images/poi/bar.svg"
-                                             : symbol === "Campground" ? "qrc:/images/poi/campsite.svg"
-                                             : symbol === "Gas Station" ? "qrc:/images/poi/fuel.svg"
-                                             : symbol === "Lodging" ? "qrc:/images/poi/lodging.svg"
-                                             : symbol === "Restaurant" ? "qrc:/images/poi/restaurant.svg"
-                                             : symbol === "Skull and Crossbones" ? "qrc:/images/poi/danger.svg"
-                                             : symbol === "Car Repair" ? "qrc:/images/poi/car.svg"
-                                             : "qrc:/images/poi/marker.svg"
-                        }
-                        Column {
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: fileView.width
-                            spacing: 0
-
-                            Label {
-                                text: name
-                                color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
+                    delegate: Item {
+                        width: fileRow.implicitWidth
+                        height: fileRow.implicitHeight
+                        Row {
+                            id: fileRow
+                            MapIcon {
+                              id: poi
+                              anchors.verticalCenter: parent.verticalCenter
+                              color: type === 0 && displayColor !== "" ? displayColor : styleMap.view.foregroundColor
+                              width: units.gu(6)
+                              height: units.gu(6)
+                              enabled: false
+                              source: type === 0 ? "qrc:/images/trip/segment.svg"
+                                                 : symbol === "Bar" ? "qrc:/images/poi/bar.svg"
+                                                 : symbol === "Campground" ? "qrc:/images/poi/campsite.svg"
+                                                 : symbol === "Gas Station" ? "qrc:/images/poi/fuel.svg"
+                                                 : symbol === "Lodging" ? "qrc:/images/poi/lodging.svg"
+                                                 : symbol === "Restaurant" ? "qrc:/images/poi/restaurant.svg"
+                                                 : symbol === "Skull and Crossbones" ? "qrc:/images/poi/danger.svg"
+                                                 : symbol === "Car Repair" ? "qrc:/images/poi/car.svg"
+                                                 : "qrc:/images/poi/marker.svg"
                             }
-                            Label {
-                                visible: text !== ""
-                                height: visible ? implicitHeight : 0
-                                text: type === 0 ? Converter.readableDistance(length) : "" /*symbol*/
-                                color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("medium")
+                            Column {
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: fileView.width
+                                spacing: 0
+
+                                Label {
+                                    text: name
+                                    color: styleMap.view.primaryColor
+                                    font.pointSize: units.fs("medium")
+                                }
+                                Label {
+                                    visible: text !== ""
+                                    height: visible ? implicitHeight : 0
+                                    text: type === 0 ? Converter.readableDistance(length) : "" /*symbol*/
+                                    color: styleMap.view.secondaryColor
+                                    font.pointSize: units.fs("medium")
+                                }
+                            }
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                // show the map preview
+                                if (type === 1) // waypoint
+                                    selectedPOI = { "lat": lat, "lon": lon, "label": name, "elevation": elevation };
                             }
                         }
                     }
@@ -294,6 +308,98 @@ MapPage {
                     }
                 }
             }
+        }
+    }
+
+    property var selectedPOI: null
+
+    Loader {
+        id: mapPreview
+         // active the preview on selection
+        active: selectedPOI !== null
+        height: active ? parent.height / 2 : 0
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        asynchronous: true
+        sourceComponent: Item {
+            id: preview
+            anchors.fill: parent
+            property alias map: map
+            Map {
+                id: map
+                showCurrentPosition: true
+                anchors.fill: parent
+            }
+
+            Rectangle {
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                color: "white"
+                opacity: 0.7
+                height: about.height
+                Column {
+                    id: about
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    padding: units.gu(1)
+                    Label {
+                        width: parent.width
+                        font.pointSize: units.fs("medium")
+                        font.bold: true
+                        color: "black"
+                        elide: Text.ElideRight
+                        text: selectedPOI.label
+                    }
+                    Label {
+                        width: parent.width
+                        font.pointSize: units.fs("small")
+                        color: "black"
+                        elide: Text.ElideRight
+                        text: Converter.readableCoordinatesNumeric(selectedPOI.lat, selectedPOI.lon) +
+                              (selectedPOI.elevation > 0 ? " Δ " + Converter.panelElevation(selectedPOI.elevation) : "") +
+                              " | " + Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon)
+                    }
+                }
+            }
+            MapIcon {
+                id: buttonClose
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.margins: units.gu(1)
+                source: "qrc:/images/close.svg"
+                color: "black"
+                backgroundColor: "white"
+                borderPadding: units.gu(1.5)
+                opacity: 0.7
+                height: units.gu(6)
+                onClicked: {
+                    selectedPOI = null; // deactivate the preview
+                }
+            }
+        }
+
+        onStatusChanged: {
+            if (active && status === Loader.Ready) {
+                console.log("Activate map preview");
+                trackCollection.selectedPOIChanged.connect(showSelectedLocation);
+                showSelectedLocation();
+            } else if (!active) {
+                console.log("Deactivate map preview");
+                trackCollection.selectedPOIChanged.disconnect(showSelectedLocation);
+            }
+        }
+
+        function showSelectedLocation() {
+            console.log("Show selected location on map preview");
+            item.map.showCoordinatesInstantly(selectedPOI.lat, selectedPOI.lon);
+            item.map.addPositionMark(0, selectedPOI.lat, selectedPOI.lon);
+            item.map.removeAllOverlayObjects();
+        }
+
+        Behavior on height {
+            NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
         }
     }
 
