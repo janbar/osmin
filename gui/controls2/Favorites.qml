@@ -366,6 +366,7 @@ MapPage {
         }
 
         onOpened: {
+            result = Dialog.Rejected;
             inputLabel.text = model.label;
         }
     }

@@ -469,6 +469,7 @@ MapPage {
         }
 
         onOpened: {
+            result = Dialog.Rejected;
             var name = model.name;
             var p = name.lastIndexOf(".");
             if (p >= 0)
