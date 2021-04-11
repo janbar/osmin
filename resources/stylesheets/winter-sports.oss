@@ -35,7 +35,8 @@ FLAG
   }
 
 ORDER WAYS
-  GROUP _route, _track
+  GROUP _route
+  GROUP _track
   GROUP _trackBlack, _trackDarkRed, _trackDarkGreen, _trackDarkYellow, _trackDarkBlue,
         _trackDarkMagenta, _trackDarkCyan, _trackDarkGray, _trackLightGray, _trackRed,
         _trackGreen, _trackYellow, _trackBlue, _trackMagenta, _trackCyan, _trackWhite

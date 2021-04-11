@@ -37,7 +37,8 @@ FLAG
   routes            = false; // routes are still a bit experimental and disrupting on standard stylesheet
 
 ORDER WAYS
-  GROUP _route, _track
+  GROUP _route
+  GROUP _track
   GROUP _trackBlack, _trackDarkRed, _trackDarkGreen, _trackDarkYellow, _trackDarkBlue,
         _trackDarkMagenta, _trackDarkCyan, _trackDarkGray, _trackLightGray, _trackRed,
         _trackGreen, _trackYellow, _trackBlue, _trackMagenta, _trackCyan, _trackWhite
@@ -741,6 +742,7 @@ STYLE
       [TYPE natural_wetland_marsh] AREA { color: @marshColor; }
       [TYPE natural_wetland, natural_wetland_tidalflat] AREA { color: @wetlandColor; }
       [TYPE natural_water] AREA { color: @waterColor; }
+      [TYPE natural_land] AREA { color: @landColor; }
     }
 
     [MAG stateOver-] {

@@ -4,7 +4,8 @@ FLAG
   hikingRoutes = true;
 
 ORDER WAYS
-  GROUP _route, _track, _highlighted
+  GROUP _route
+  GROUP _track, _highlighted
   GROUP _trackBlack, _trackDarkRed, _trackDarkGreen, _trackDarkYellow, _trackDarkBlue,
         _trackDarkMagenta, _trackDarkCyan, _trackDarkGray, _trackLightGray, _trackRed,
         _trackGreen, _trackYellow, _trackBlue, _trackMagenta, _trackCyan, _trackWhite

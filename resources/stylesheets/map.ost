@@ -227,7 +227,36 @@ TYPES
       IGNORESEALAND PIN_WAY
 
   //
-  // Motorways and motorways-like (only for cars)
+  // Motorways and motorways-like: Areas (see https://wiki.openstreetmap.org/wiki/Key:area:highway?uselang=de)
+  //
+
+  TYPE highway_area_residential IGNORE
+    = AREA ("area:highway"=="residential")
+      {Name, NameAlt, Ref}
+      PATH[FOOT BICYCLE CAR] LOCATION
+
+  TYPE highway_area_pedestrian IGNORE
+    = AREA ("area:highway"=="pedestrian")
+      {Name, NameAlt, Ref}
+      PATH[FOOT BICYCLE CAR] LOCATION
+
+  TYPE highway_area_path IGNORE
+    = AREA ("area:highway"=="path")
+      {Name, NameAlt, Ref}
+      PATH[FOOT BICYCLE CAR] LOCATION
+
+  TYPE highway_area_cycleway IGNORE
+    = AREA ("area:highway"=="cycleway")
+      {Name, NameAlt, Ref}
+      PATH[FOOT BICYCLE CAR] LOCATION
+
+  TYPE highway_area_footway IGNORE
+    = AREA ("area:highway"=="footway")
+      {Name, NameAlt, Ref}
+      PATH[FOOT BICYCLE CAR] LOCATION
+
+  //
+  // Motorways and motorways-like: Ways
   //
 
   TYPE highway_motorway
@@ -316,11 +345,6 @@ TYPES
       {Name, NameAlt, Ref, Sideway}
       PATH[FOOT BICYCLE CAR] LOCATION LANES[2 1]
 
-  TYPE highway_area__residential IGNORE
-    = WAY AREA ("area:highway"=="residential")
-      {Name, NameAlt, Ref}
-      PATH[FOOT BICYCLE CAR] LOCATION
-
   TYPE highway_living_street
     = WAY AREA ("highway"=="living_street")
       {Name, NameAlt, Sideway}
@@ -374,9 +398,9 @@ TYPES
   TYPE highway_footway
     = WAY AREA ("highway"=="footway") OR AREA ("area:highway"=="footway")
       {Name, NameAlt}
-      PATH[FOOT] LOCATION PIN_WAY
+      PATH[FOOT BICYCLE] LOCATION PIN_WAY
       DESC
-        en: "cycleway"
+        en: "footway"
         de: "Fußweg"
 
   TYPE highway_via_ferrata_easy
@@ -2453,4 +2477,5 @@ TYPES
 
   TYPE compound_any IGNORE
     = RELATION ("type"=="compound")
+
 END
