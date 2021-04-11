@@ -428,18 +428,20 @@ MapPage {
         property var model: null
 
         signal requestUpdate(var model, var newValue)
-        onAccepted: {
-            var newValue = inputLabel.text.trim();
-            if (newValue.length > 0) {
-                if (!model.dir)
-                    newValue += ".gpx";
-                requestUpdate(model, newValue);
-            } else
+
+        onClosed: {
+            if (result === Dialog.Accepted) {
+                var newValue = inputLabel.text.trim();
+                if (newValue.length > 0) {
+                    if (!model.dir)
+                        newValue += ".gpx";
+                    requestUpdate(model, newValue);
+                } else
+                    requestUpdate(null, "");
+            } else {
+                // caller is waiting the signal
                 requestUpdate(null, "");
-        }
-        onRejected: {
-            // caller is waiting the signal
-            requestUpdate(null, "");
+            }
         }
 
         footer: Row {

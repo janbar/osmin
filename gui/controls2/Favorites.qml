@@ -327,16 +327,18 @@ MapPage {
         property var model: null
 
         signal requestUpdate(var model)
-        onAccepted: {
-            if (inputLabel.text.length > 0) {
-                model.label = inputLabel.text;
-                requestUpdate(model);
-            } else
+
+        onClosed: {
+            if (result === Dialog.Accepted) {
+                if (inputLabel.text.length > 0) {
+                    model.label = inputLabel.text;
+                    requestUpdate(model);
+                } else
+                    requestUpdate(null);
+            } else {
+                // caller is waiting the signal
                 requestUpdate(null);
-        }
-        onRejected: {
-            // caller is waiting the signal
-            requestUpdate(null);
+            }
         }
 
         footer: Row {
