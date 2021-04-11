@@ -514,7 +514,7 @@ PopOver {
                 var count = routingModel.count;
                 if (count > 0) {
                     if (count > settings.maximumRouteStep) {
-                        popInfo.open("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.");
+                        popInfo.open(qsTr("The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation."));
                         routingModel.clear();
                     } else {
                         routingDialog.state = "navigate";
