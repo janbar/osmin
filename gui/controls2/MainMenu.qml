@@ -62,6 +62,17 @@ PopOver {
             comment: qsTr("Manage the collection of saved tracks.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/TrackCollection.qml", { "mapView": mapView });
+                ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                    if (lat !== NaN && lon !== NaN) {
+                         map.showCoordinatesInstantly(lat, lon);
+                         mark.lat = lat;
+                         mark.lon = lon;
+                         mark.screenX = map.width / 2;
+                         mark.screenY = map.height / 2;
+                         if (navigation)
+                             navigation = false;
+                         popLocationInfo.show();                                 }
+                });
             }
         }
         ListElement {

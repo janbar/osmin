@@ -35,6 +35,8 @@ MapPage {
 
     property var mapView: null
 
+    signal showPosition(double lat, double lon)
+
     Component.onCompleted: {
         GPXListModel.loadData();
     }
@@ -361,6 +363,22 @@ MapPage {
                               (selectedPOI.elevation > 0 ? " Δ " + Converter.panelElevation(selectedPOI.elevation) : "") +
                               " | " + Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon)
                     }
+                }
+            }
+            MapIcon {
+                id: buttonShowPosition
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: units.gu(1)
+                source: "qrc:/images/trip/here.svg"
+                color: "black"
+                backgroundColor: "white"
+                borderPadding: units.gu(1.0)
+                opacity: 0.7
+                height: units.gu(6)
+                onClicked: {
+                    showPosition(selectedPOI.lat, selectedPOI.lon);
+                    stackView.pop();
                 }
             }
             MapIcon {
