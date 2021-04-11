@@ -157,7 +157,13 @@ QVariant GPXFileModel::data(const QModelIndex& index, int role) const
   case DisplayColorRole:
     return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->displayColorHexString() : "";
   case LengthRole:
-    return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->length() : 0.0;
+    return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->length() : QVariant();
+  case LatRole:
+    return item->type() == GPXObject::WayPoint ? static_cast<const GPXObjectWayPoint*>(item)->lat() : QVariant();
+  case LonRole:
+    return item->type() == GPXObject::WayPoint ? static_cast<const GPXObjectWayPoint*>(item)->lon() : QVariant();
+  case ElevationRole:
+    return item->type() == GPXObject::WayPoint ? static_cast<const GPXObjectWayPoint*>(item)->elevation() : QVariant();
   default:
     return QVariant();
   }
@@ -173,6 +179,9 @@ QHash<int, QByteArray> GPXFileModel::roleNames() const
   roles[DisplayColorRole] = "displayColor";
   roles[SymbolRole] = "symbol";
   roles[LengthRole] = "length";
+  roles[LatRole] = "lat";
+  roles[LonRole] = "lon";
+  roles[ElevationRole] = "elevation";
   return roles;
 }
 
@@ -192,6 +201,9 @@ QVariantMap GPXFileModel::get(int row) const
   {
     const GPXObjectWayPoint* _item = static_cast<const GPXObjectWayPoint*>(item);
     model[roles[SymbolRole]] = _item->symbol();
+    model[roles[LatRole]] = _item->lat();
+    model[roles[LonRole]] = _item->lon();
+    model[roles[ElevationRole]] = _item->elevation();
   }
   else if (item->type() == GPXObject::Track)
   {

@@ -97,6 +97,9 @@ public:
   QString name() const override { return QString::fromUtf8(m_waypoint.name.value_or(std::to_string(m_id)).c_str()); }
   QString description() const override { return QString::fromUtf8(m_waypoint.description.value_or("").c_str()); }
   QString symbol() const { return QString::fromUtf8(m_waypoint.symbol.value_or("").c_str()); }
+  double lat() const { return m_waypoint.coord.GetLat(); }
+  double lon() const { return m_waypoint.coord.GetLon(); }
+  double elevation() const { return m_waypoint.elevation.value_or(0.0); }
 private:
   const osmscout::gpx::Waypoint& m_waypoint;
   int m_id;
@@ -122,6 +125,9 @@ public:
     SymbolRole        = Qt::UserRole + 4,
     DisplayColorRole  = Qt::UserRole + 5,
     LengthRole        = Qt::UserRole + 6,
+    LatRole           = Qt::UserRole + 7,
+    LonRole           = Qt::UserRole + 8,
+    ElevationRole     = Qt::UserRole + 9
   };
   Q_ENUM(GPXObjectRoles)
 
