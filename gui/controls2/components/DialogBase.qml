@@ -56,14 +56,14 @@ Dialog {
     property string text
 
     property real minimumWidth: units.gu(minSizeGU - 2)
-    property real minimumHeight: Math.max(256, units.gu(32))
+    property real minimumHeight: Math.max(160, units.gu(20))
     property real contentSpacing: units.gu(1)
 
     x: Math.round((mainView.width - width) / 2)
     y: Math.round((mainView.height - (height + header.height + footer.height)) / 2)
     width: Math.max(Math.round(Math.min(mainView.width, mainView.height) / 3 * 2), dialog.minimumWidth)
     readonly property real h: contentsColumn.height + units.gu(6) +
-                              2 * dialog.edgeMargins + dialog.header.height + dialog.footer.height
+                              dialog.header.height + dialog.footer.height
     height: Math.max(Math.min(h, Math.round(mainView.height / 4 * 3)), dialog.minimumHeight)
 
     Rectangle {
