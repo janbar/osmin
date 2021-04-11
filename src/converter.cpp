@@ -144,6 +144,8 @@ QString Converter::panelElevation(double elevation) const
 
 QString Converter::panelDurationHM(int seconds) const
 {
+  if (seconds < 0)
+    return "?";
   uint m = (uint) std::floor((seconds % 3600) / 60.0);
   uint h = (uint) std::floor(seconds / 3600.0);
   return QString("%1:%2").arg((uint)h, (int)2, (int)10, QChar('0')).arg((uint)m, (int)2, (int)10, QChar('0'));
@@ -151,6 +153,8 @@ QString Converter::panelDurationHM(int seconds) const
 
 QString Converter::panelDurationHMS(int seconds) const
 {
+  if (seconds < 0)
+    return "?";
   uint s = (uint) (seconds % 60);
   uint m = (uint) std::floor((seconds % 3600) / 60.0);
   uint h = (uint) std::floor(seconds / 3600.0);

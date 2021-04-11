@@ -73,9 +73,19 @@ Item {
                     id: distance
                     width: parent.width
                     color: styleMap.popover.foregroundColor
-                    text: Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
+                    text: {
+                        return settings.routeStepDelta
+                                ? "Δ " + Converter.panelDistance(model.distanceDelta) + " ~ " + Converter.panelDurationHM(model.timeDelta)
+                                : Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
+                    }
                     font.pointSize: units.fs("small")
                     horizontalAlignment: Label.AlignRight
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            settings.routeStepDelta = (settings.routeStepDelta ? false : true);
+                        }
+                    }
                 }
                 Label {
                     id: entryDescription

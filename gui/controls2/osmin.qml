@@ -56,6 +56,7 @@ ApplicationWindow {
         property int courseId: 0
         property real magneticDip: 0.0
         property string voiceName: ""
+        property bool routeStepDelta: false
 
         // Tracker settings
         property string trackerRecording: ""
