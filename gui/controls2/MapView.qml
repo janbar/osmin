@@ -348,7 +348,7 @@ MapPage {
         source: "qrc:/images/trip/marker.svg"
         color: "black"
         backgroundColor: "white"
-        visible: !showToolbar && Tracker.isRecording
+        visible: mapView.state === "view" && !showToolbar && Tracker.isRecording
         borderPadding: units.gu(1.0)
         label.text: qsTr("Mark")
         label.font.pointSize: units.fs("medium")
