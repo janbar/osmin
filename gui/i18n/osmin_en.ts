@@ -253,13 +253,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="351"/>
+        <location filename="../controls2/Favorites.qml" line="353"/>
         <location filename="../silica/Favorites.qml" line="314"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Favorites.qml" line="361"/>
+        <location filename="../controls2/Favorites.qml" line="363"/>
         <location filename="../silica/Favorites.qml" line="304"/>
         <source>Enter the label</source>
         <translation type="unfinished"></translation>
@@ -472,8 +472,8 @@
     </message>
     <message>
         <location filename="../controls2/MapView.qml" line="493"/>
-        <location filename="../controls2/MapView.qml" line="650"/>
-        <location filename="../controls2/MapView.qml" line="788"/>
+        <location filename="../controls2/MapView.qml" line="657"/>
+        <location filename="../controls2/MapView.qml" line="795"/>
         <location filename="../silica/MapView.qml" line="455"/>
         <location filename="../silica/MapView.qml" line="600"/>
         <location filename="../silica/MapView.qml" line="714"/>
@@ -481,24 +481,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="868"/>
+        <location filename="../controls2/MapView.qml" line="525"/>
+        <source>Delete favorite ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2/MapView.qml" line="879"/>
         <source>The voice GPS driving directions is not activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="930"/>
+        <location filename="../controls2/MapView.qml" line="941"/>
         <location filename="../silica/MapView.qml" line="835"/>
         <source>My Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="1009"/>
+        <location filename="../controls2/MapView.qml" line="1020"/>
         <location filename="../silica/MapView.qml" line="914"/>
         <source>Target reached at %1 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/MapView.qml" line="1026"/>
+        <location filename="../controls2/MapView.qml" line="1037"/>
         <location filename="../silica/MapView.qml" line="931"/>
         <source>Track recording failed</source>
         <translation type="unfinished"></translation>
@@ -912,13 +917,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="454"/>
+        <location filename="../controls2/TrackCollection.qml" line="456"/>
         <location filename="../silica/TrackCollection.qml" line="332"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/TrackCollection.qml" line="464"/>
+        <location filename="../controls2/TrackCollection.qml" line="466"/>
         <location filename="../silica/TrackCollection.qml" line="322"/>
         <source>Enter the name</source>
         <translation type="unfinished"></translation>
@@ -974,25 +979,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="138"/>
+        <location filename="../controls2/Tracking.qml" line="177"/>
         <location filename="../silica/Tracking.qml" line="137"/>
         <source>Reset statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="155"/>
+        <location filename="../controls2/Tracking.qml" line="138"/>
         <location filename="../silica/Tracking.qml" line="154"/>
         <source>Cut track recording</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="155"/>
+        <location filename="../controls2/Tracking.qml" line="138"/>
         <location filename="../silica/Tracking.qml" line="154"/>
         <source>Start track recording</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2/Tracking.qml" line="175"/>
+        <location filename="../controls2/Tracking.qml" line="158"/>
         <location filename="../silica/Tracking.qml" line="174"/>
         <source>Close track recording</source>
         <translation type="unfinished"></translation>
