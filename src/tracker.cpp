@@ -7,16 +7,15 @@
 #include <cmath>
 #include <QDebug>
 
-#define SEGMENT_SIZE    50
-#define MOVING_SPEED    1.0
-#define COURSE_SPEED    3.0
+#define SEGMENT_SIZE    20          /* when reaching this limit it will flush data to disk */
+#define MOVING_SPEED    1.0         /* motion detection */
+#define COURSE_SPEED    3.0         /* below this speed the direction is determined with sensor */
 #define BASE_DIRECTORY  "TRACKER"
-#define LIMIT_INTERVAL  5.0 /* time interval to estimate the limits as max speed etc */
-#define RECORD_INTERVAL 50.0 /* distance interval between recorded positions */
+#define RECORD_INTERVAL 50.0        /* max distance interval between recorded positions */
 
 #define TAG_TRKPT       "TRKPT"
 #define TAG_WAYPT       "WAYPT"
-#define MARK_SYMBOL     "Pin"
+#define MARK_SYMBOL     "Pin, Red"
 
 Tracker::Tracker(QObject* parent)
 : QObject(parent)
@@ -31,11 +30,11 @@ Tracker::Tracker(QObject* parent)
 , m_duration(0)
 , m_ascent(0)
 , m_descent(0)
+, m_maxSpeed(0)
 , m_busy(false)
 //, m_nextRouteStep()
 //, m_remainingDistance()
 {
-  m_maxSpeed = { 0, 0, 0 };
 }
 
 Tracker::~Tracker()
@@ -105,8 +104,9 @@ void Tracker::azimuthChanged(double azimuth)
 
 void Tracker::reset()
 {
-  m_maxSpeed = { 0, 0, 0 };
-  emit doReset();
+  // the reset is only effective if there is no recording in progress
+  if (!getIsRecording())
+    emit doReset();
 }
 
 void Tracker::startRecording()
@@ -149,21 +149,14 @@ void Tracker::onPositionChanged(const osmscout::PositionAgent::PositionState sta
   emit trackerPositionChanged();
 }
 
-void Tracker::onDataChanged(double kmph, double meters, double seconds, double ascent, double descent)
+void Tracker::onDataChanged(double kmph, double meters, double seconds, double ascent, double descent, double maxkmph)
 {
-  if (seconds >= (m_maxSpeed.seconds + LIMIT_INTERVAL))
-  {
-    double s = 3.6 * (meters - m_maxSpeed.meters) / (seconds - m_maxSpeed.seconds);
-    if (s > m_maxSpeed.value)
-      m_maxSpeed.value = s;
-    m_maxSpeed.seconds = seconds;
-    m_maxSpeed.meters = meters;
-  }
   m_currentSpeed = kmph;
   m_distance = meters;
   m_duration = seconds;
   m_ascent = ascent;
   m_descent = descent;
+  m_maxSpeed = maxkmph;
   emit trackerDataChanged();
 }
 
@@ -191,6 +184,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_state(osmscout::PositionAgent::PositionState::NoGpsSignal)
 , m_azimuth(0)
 , m_currentSpeed(0)
+, m_maxSpeed(0)
 , m_lastPosition()
 , m_pinnedPosition()
 , m_lastRecord()
@@ -202,6 +196,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_segment()
 , m_lock(QMutex::Recursive)
 , m_file(nullptr)
+, m_log(nullptr)
 , m_formater(nullptr)
 , m_mark(nullptr)
 {
@@ -254,8 +249,10 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
           m_ascent += a;
         else
           m_descent -= a;
+        if (m_currentSpeed > m_maxSpeed)
+          m_maxSpeed = m_currentSpeed;
       }
-      emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent);
+      emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent, m_maxSpeed);
     }
     // when we are stationary the direction is calculated according to the azimuth of the device
     // otherwise it is estimated according to the progress compared to the previous position
@@ -320,6 +317,7 @@ void TrackerModule::onReset()
   m_duration = 0;
   m_ascent = 0;
   m_descent = 0;
+  m_maxSpeed = 0;
 }
 
 void TrackerModule::onStartRecording()
@@ -328,16 +326,23 @@ void TrackerModule::onStartRecording()
   if (m_recording)
     onStopRecording();
   // prepare the new file to record data
-  m_file.reset(new QFile(m_baseDir.absoluteFilePath(QDateTime::currentDateTime().toString(Qt::ISODate).append(".csv"))));
-  if (!m_file->open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text))
+  QString recordingName = QDateTime::currentDateTime().toString(Qt::ISODate);
+  // log contains current state of the tracker, and this data will be restored upon recovery
+  m_log.reset(new QFile(m_baseDir.absoluteFilePath(QString(recordingName).append(".log"))));
+  // main file contains track data
+  m_file.reset(new QFile(m_baseDir.absoluteFilePath(QString(recordingName).append(".csv"))));
+  if (!m_log->open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text) &&
+      !m_file->open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text))
   {
     emit recordingFailed();
   }
   else
   {
+    onReset(); // reset state starting new recording
+    m_log->close();
     m_file->close();
     m_recording = true;
-    emit recordingChanged(m_file->fileName());
+    emit recordingChanged(recordingName);
   }
 }
 
@@ -345,18 +350,37 @@ void TrackerModule::onResumeRecording(const QString& filename)
 {
   if (m_recording)
     return;
-  // register file to record data
-  m_file.reset(new QFile(filename));
-  if (!m_file->open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text))
+  // register files of the previous session
+  m_log.reset(new QFile(m_baseDir.absoluteFilePath(QString(filename).append(".log"))));
+  m_file.reset(new QFile(m_baseDir.absoluteFilePath(QString(filename).append(".csv"))));
+  if (!m_log->open(QIODevice::ReadWrite | QIODevice::Text) &&
+      !m_file->open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text))
   {
     emit recordingChanged(QString());
     emit recordingFailed();
   }
   else
   {
+    // restoring state from log
+    for (;;)
+    {
+      QList<QByteArray*> row = m_formater->deserialize(m_log->readLine(0x3ff));
+      if (row.length() == 0)
+        break;
+      else if (row.length() >= 5)
+      {
+        m_distance = QString::fromUtf8(row[0]->constData()).toDouble();
+        m_duration = QString::fromUtf8(row[1]->constData()).toDouble();
+        m_ascent = QString::fromUtf8(row[2]->constData()).toDouble();
+        m_descent = QString::fromUtf8(row[3]->constData()).toDouble();
+        m_maxSpeed = QString::fromUtf8(row[4]->constData()).toDouble();
+      }
+      qDeleteAll(row);
+    }
+    m_log->close();
     m_file->close();
     m_recording = true;
-    emit recordingChanged(m_file->fileName());
+    emit recordingChanged(filename);
   }
 }
 
@@ -371,10 +395,11 @@ void TrackerModule::onStopRecording()
     return;
   emit processing(true);
   // fill gpx data
-  QList<osmscout::gpx::Waypoint> waypoints;
+  std::vector<osmscout::gpx::Waypoint> waypoints;
+  waypoints.reserve(20);
   osmscout::gpx::TrackSegment segment;
   segment.points.reserve(1000);
-  size_t c = 0;
+  size_t cp = 0, cwp = 0;
   for (;;)
   {
     QList<QByteArray*> row = m_formater->deserialize(file->readLine(0x3ff));
@@ -382,6 +407,8 @@ void TrackerModule::onStopRecording()
       break;
     else if (row.length() >= 6 && *row[0] == TAG_WAYPT)
     {
+      if (++cwp > waypoints.size())
+        waypoints.reserve(waypoints.size() + 20);
       osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
       double lat = QString::fromUtf8(row[2]->constData()).toDouble();
       double lon = QString::fromUtf8(row[3]->constData()).toDouble();
@@ -398,7 +425,7 @@ void TrackerModule::onStopRecording()
     }
     else if (row.length() >= 6 && *row[0] == TAG_TRKPT)
     {
-      if (++c > segment.points.size())
+      if (++cp > segment.points.size())
         segment.points.reserve(segment.points.size() + 1000);
       osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
       double lat = QString::fromUtf8(row[2]->constData()).toDouble();
@@ -415,7 +442,7 @@ void TrackerModule::onStopRecording()
   }
   file->close();
   // generate a simple GPX file
-  if (c > 0)
+  if (cp > 0)
   {
     osmscout::gpx::Track track;
     track.segments.push_back(segment);
@@ -426,12 +453,14 @@ void TrackerModule::onStopRecording()
     gpx.time = std::optional<osmscout::Timestamp>(segment.points[0].time.value());
     osmscout::gpx::Waypoint beg(segment.points[0].coord);
     beg.elevation = std::optional<double>(segment.points[0].elevation.value());
-    beg.symbol = std::optional<std::string>("Flag");
+    beg.symbol = std::optional<std::string>("Flag, Red");
     beg.time = std::optional<osmscout::Timestamp>(segment.points[0].time.value());
+    beg.name = std::optional<std::string>("[START]");
     osmscout::gpx::Waypoint end(segment.points[segment.points.size() - 1].coord);
     end.elevation = std::optional<double>(segment.points[segment.points.size() - 1].elevation.value());
-    end.symbol = std::optional<std::string>("Flag");
+    end.symbol = std::optional<std::string>("Flag, Red");
     end.time = std::optional<osmscout::Timestamp>(segment.points[segment.points.size() - 1].time.value());
+    end.name = std::optional<std::string>("[END]");
     gpx.waypoints.push_back(beg);
     gpx.waypoints.push_back(end);
     gpx.waypoints.insert(gpx.waypoints.end(), waypoints.begin(), waypoints.end());
@@ -447,6 +476,8 @@ void TrackerModule::onStopRecording()
     }
   }
   file->remove();
+  if (!m_log.isNull())
+    m_log->remove();
   emit processing(false);
 }
 
@@ -509,6 +540,24 @@ void TrackerModule::onFlushRecording()
     // all data are flushed
     m_file->close();
   }
+  // flush log
+  if (m_log->open(QIODevice::Truncate| QIODevice::WriteOnly | QIODevice::Text))
+  {
+    QList<QByteArray*> row;
+    QString num;
+    row << new QByteArray(num.setNum(m_distance, 'f', 3).toUtf8());
+    row << new QByteArray(num.setNum(m_duration, 'f', 3).toUtf8());
+    row << new QByteArray(num.setNum(m_ascent, 'f', 3).toUtf8());
+    row << new QByteArray(num.setNum(m_descent, 'f', 3).toUtf8());
+    row << new QByteArray(num.setNum(m_maxSpeed, 'f', 3).toUtf8());
+    row << new QByteArray("");
+    QByteArray data = m_formater->serialize(row);
+    qDeleteAll(row);
+    data.append("\r\n");
+    m_log->write(data);
+    // log is flushed
+    m_log->close();
+  }
   // end critical section
 }
 
@@ -530,11 +579,16 @@ void TrackerModule::pinPosition()
 
 osmscout::GeoCoord TrackerModule::markPosition(const QString& symbol, const QString& name, const QString& description)
 {
+  qDebug("%s", __FUNCTION__);
   if (m_pinnedPosition.isNull())
     pinPosition();
   QScopedPointer<position_t> pos;
   pos.swap(m_pinnedPosition);
-  qDebug("%s", __FUNCTION__);
+  // default an empty name
+  QString _name(name);
+  if (_name.isEmpty())
+    _name.append('[').append(QString::fromStdString(pos->coord.GetDisplayText())).append(']');
+  // save the mark
   if (!m_mark.isNull())
     onFlushRecording();
   osmscout::gpx::Waypoint* waypoint = new osmscout::gpx::Waypoint(pos->coord);
@@ -542,7 +596,7 @@ osmscout::GeoCoord TrackerModule::markPosition(const QString& symbol, const QStr
   waypoint->course = std::optional<double>(pos->bearing.AsDegrees());
   waypoint->elevation = std::optional<double>(pos->elevation);
   waypoint->symbol = std::optional<std::string>(symbol.toUtf8());
-  waypoint->name = std::optional<std::string>(name.toUtf8());
+  waypoint->name = std::optional<std::string>(_name.toUtf8());
   waypoint->description = std::optional<std::string>(description.toUtf8());
   m_mark.reset(waypoint);
   onFlushRecording();

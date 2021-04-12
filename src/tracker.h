@@ -53,7 +53,7 @@ public:
   double getDuration() const { return m_duration; }
   double getAscent() const { return m_ascent; }
   double getDescent() const { return m_descent; }
-  double getMaxSpeed() const { return m_maxSpeed.value; }
+  double getMaxSpeed() const { return m_maxSpeed; }
   double getLat() const { return m_vehicleCoord.GetLat(); }
   double getLon() const { return m_vehicleCoord.GetLon(); }
   QString getRecording() const { return m_recording; }
@@ -94,7 +94,7 @@ private slots:
   void onPositionChanged(const osmscout::PositionAgent::PositionState state,
                          const osmscout::GeoCoord coord,
                          const std::optional<osmscout::Bearing> bearing);
-  void onDataChanged(double kmph, double meters, double seconds, double ascent, double descent);
+  void onDataChanged(double kmph, double meters, double seconds, double ascent, double descent, double maxkmph);
   void onRecordingChanged(const QString& filename);
   void onProcessingChanged(bool busy);
   void onPositionRecorded(const osmscout::GeoCoord coord);
@@ -112,11 +112,7 @@ private:
   double m_duration;
   double m_ascent;
   double m_descent;
-  struct {
-    double seconds;
-    double meters;
-    double value;
-  } m_maxSpeed;
+  double m_maxSpeed;
   bool m_busy;
   QString m_recording;
   //std::vector<osmscout::RouteStep> m_routeSteps;
@@ -138,7 +134,7 @@ public:
   osmscout::GeoCoord markPosition(const QString& symbol, const QString& name, const QString& description);
 
 signals:
-  void dataChanged(double kmph, double distance, double duration, double ascent, double descent);
+  void dataChanged(double kmph, double distance, double duration, double ascent, double descent, double maxkmph);
   void positionChanged(const osmscout::PositionAgent::PositionState state,
                        const osmscout::GeoCoord coord,
                        const std::optional<osmscout::Bearing> bearing);
@@ -164,13 +160,15 @@ private:
   osmscout::PositionAgent::PositionState m_state;
   double m_azimuth;
   double m_currentSpeed;
-  typedef struct {
+  double m_maxSpeed;
+  struct position_t
+  {
     osmscout::Timestamp time;
     osmscout::GeoCoord coord;
     osmscout::Bearing bearing;
     double elevation;
     inline operator bool() const { return time.time_since_epoch() != osmscout::Timestamp::duration::zero(); }
-  } position_t;
+  };
   position_t m_lastPosition;
   QScopedPointer<position_t> m_pinnedPosition;
   struct {
@@ -189,6 +187,7 @@ private:
   QList<osmscout::gpx::TrackPoint> m_segment;
   QMutex m_lock;
   QSharedPointer<QFile> m_file;
+  QSharedPointer<QFile> m_log;
   osmin::CSVParser* m_formater;
   QScopedPointer<osmscout::gpx::Waypoint> m_mark;
 };
