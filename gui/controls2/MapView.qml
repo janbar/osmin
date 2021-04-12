@@ -357,7 +357,7 @@ MapPage {
         height: units.gu(6)
         onClicked: {
             Tracker.pinPosition(); // pin the current position
-            var name = "[" + (Tracker.markCount + 1).toString() + "]";
+            var name = "[" + Converter.panelDistance(Tracker.distance) + "]";
             dialogMarkPosition.model = { "name": name };
             dialogMarkPosition.open();
             ToolBox.connectOnce(dialogMarkPosition.reply, function(model){
