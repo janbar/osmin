@@ -107,6 +107,7 @@ public:
   Q_INVOKABLE void clearData();
 
   Q_INVOKABLE int isFavorite(double lat, double lon);
+  Q_INVOKABLE QVariantMap getById(int id);
 
   bool dataFailure() { return m_dataState == DataStatus::DataFailure; }
 

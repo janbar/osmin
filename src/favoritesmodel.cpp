@@ -358,3 +358,13 @@ int FavoritesModel::isFavorite(double lat, double lon)
   }
   return 0;
 }
+
+QVariantMap FavoritesModel::getById(int id)
+{
+  for (int row = 0; row < m_items.count(); ++row)
+  {
+    if (m_items[row]->id() == id)
+      return get(row);
+  }
+  return QVariantMap();
+}
