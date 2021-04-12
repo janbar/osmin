@@ -475,6 +475,7 @@ MapPage {
             if (p >= 0)
                 name = name.substr(0, p);
             inputLabel.text = name;
+            inputLabel.forceActiveFocus();
         }
     }
 

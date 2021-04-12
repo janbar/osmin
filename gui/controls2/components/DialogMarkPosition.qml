@@ -128,6 +128,5 @@ DialogBase {
                 }
             }
         }
-        inputName.forceActiveFocus();
     }
 }
