@@ -520,8 +520,15 @@ MapPage {
                                                 popLocationInfo.placeLon,
                                                 popLocationInfo.placeLabel,
                                                 popLocationInfo.placeType);
-            } else if (removeFavorite(popLocationInfo.isFavorite)) {
-                popLocationInfo.isFavorite = 0;
+            } else {
+                var favorite = FavoritesModel.getById(popLocationInfo.isFavorite);
+                dialogAction.title = qsTr("Delete favorite ?");
+                dialogAction.text = favorite.label;
+                dialogAction.open();
+                ToolBox.connectOnce(dialogAction.reply, function(accepted){
+                    if (accepted && removeFavorite(popLocationInfo.isFavorite))
+                        popLocationInfo.isFavorite = 0;
+                });
             }
         }
     }
@@ -831,6 +838,10 @@ MapPage {
     ////
     //// Widgets
     ////
+
+    DialogAction {
+        id: dialogAction
+    }
 
     PopInfo {
         id: popInfo
