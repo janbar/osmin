@@ -132,23 +132,6 @@ PopOver {
         Column {
             width: parent.width
             MapIcon {
-                source: "qrc:/images/reset.svg"
-                color: foregroundColor
-                height: units.gu(6)
-                label.text: "  " + qsTr("Reset statistics")
-                label.color: foregroundColor
-                label.font.pointSize: units.fs("medium")
-                label.elide: Text.ElideRight
-                label.width: parent.width - units.gu(7)
-                onClicked: {
-                    Tracker.reset();
-                }
-            }
-        }
-
-        Column {
-            width: parent.width
-            MapIcon {
                 source: "qrc:/images/record.svg"
                 color: Tracker.recording !== "" ? "red" : foregroundColor
                 height: units.gu(6)
@@ -181,6 +164,25 @@ PopOver {
                     Tracker.stopRecording();
                 }
                 enabled: Tracker.recording !== ""
+                opacity: enabled ? 1.0 : 0.5
+            }
+        }
+
+        Column {
+            width: parent.width
+            MapIcon {
+                source: "qrc:/images/reset.svg"
+                color: foregroundColor
+                height: units.gu(6)
+                label.text: "  " + qsTr("Reset statistics")
+                label.color: foregroundColor
+                label.font.pointSize: units.fs("medium")
+                label.elide: Text.ElideRight
+                label.width: parent.width - units.gu(7)
+                onClicked: {
+                    Tracker.reset();
+                }
+                enabled: Tracker.recording === ""
                 opacity: enabled ? 1.0 : 0.5
             }
         }
