@@ -75,7 +75,7 @@ Item {
                     color: styleMap.popover.foregroundColor
                     text: {
                         return settings.routeStepDelta
-                                ? "Δ " + Converter.panelDistance(model.distanceDelta) + " ~ " + Converter.panelDurationHM(model.timeDelta)
+                                ? Converter.panelDistance(model.distanceDelta) + " ~ " + Converter.panelDurationHM(model.timeDelta) + " Δ"
                                 : Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
                     }
                     font.pointSize: units.fs("small")
