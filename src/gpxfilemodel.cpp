@@ -60,6 +60,13 @@ QList<GPXObject*> GPXFile::waypoints() const
   return list;
 }
 
+QString GPXObjectTrack::displayColor() const
+{
+  if (m_track.displayColor.has_value())
+    return QString::fromUtf8(m_track.displayColor.value().ToHexString().c_str());
+  return "";
+}
+
 const QSet<QString>& GPXFileModel::trackTypeSet()
 {
   static QSet<QString> _track;
@@ -67,22 +74,6 @@ const QSet<QString>& GPXFileModel::trackTypeSet()
   if (!_init)
   {
     _track.insert(OVERLAY_WAY_TYPE);
-    _track.insert(OVERLAY_WAY_TYPE "Black");
-    _track.insert(OVERLAY_WAY_TYPE "DarkRed");
-    _track.insert(OVERLAY_WAY_TYPE "DarkGreen");
-    _track.insert(OVERLAY_WAY_TYPE "DarkYellow");
-    _track.insert(OVERLAY_WAY_TYPE "DarkBlue");
-    _track.insert(OVERLAY_WAY_TYPE "DarkMagenta");
-    _track.insert(OVERLAY_WAY_TYPE "DarkCyan");
-    _track.insert(OVERLAY_WAY_TYPE "DarkGray");
-    _track.insert(OVERLAY_WAY_TYPE "LightGray");
-    _track.insert(OVERLAY_WAY_TYPE "Red");
-    _track.insert(OVERLAY_WAY_TYPE "Green");
-    _track.insert(OVERLAY_WAY_TYPE "Yellow");
-    _track.insert(OVERLAY_WAY_TYPE "Blue");
-    _track.insert(OVERLAY_WAY_TYPE "Magenta");
-    _track.insert(OVERLAY_WAY_TYPE "Cyan");
-    _track.insert(OVERLAY_WAY_TYPE "White");
     _init = true;
   }
   return _track;
@@ -154,10 +145,10 @@ QVariant GPXFileModel::data(const QModelIndex& index, int role) const
     return item->description();
   case SymbolRole:
     return item->type() == GPXObject::WayPoint ? static_cast<const GPXObjectWayPoint*>(item)->symbol() : "";
-  case DisplayColorRole:
-    return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->displayColorHexString() : "";
   case LengthRole:
     return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->length() : QVariant();
+  case DisplayColorRole:
+    return item->type() == GPXObject::Track ? static_cast<const GPXObjectTrack*>(item)->displayColor() : "";
   case LatRole:
     return item->type() == GPXObject::WayPoint ? static_cast<const GPXObjectWayPoint*>(item)->lat() : QVariant();
   case LonRole:
@@ -208,8 +199,8 @@ QVariantMap GPXFileModel::get(int row) const
   else if (item->type() == GPXObject::Track)
   {
     const GPXObjectTrack* _item = static_cast<const GPXObjectTrack*>(item);
-    model[roles[DisplayColorRole]] = _item->displayColorHexString();
     model[roles[LengthRole]] = _item->length();
+    model[roles[DisplayColorRole]] = _item->displayColor();
   }
   return model;
 }
@@ -299,7 +290,6 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
       continue;
     if (item->type() == GPXObject::Track)
     {
-      const QSet<QString>& typeSet = trackTypeSet();
       const GPXObjectTrack* obj = static_cast<const GPXObjectTrack*>(item);
       for (auto const& segment : obj->m_track.segments)
       {
@@ -308,12 +298,8 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
         for (auto const& p : segment.points)
           points.emplace_back(0, p.coord);
         osmscout::OverlayWay* way = new osmscout::OverlayWay(points);
-        QString _type(OVERLAY_WAY_TYPE);
-        _type.append(obj->displayColorName());
-        if (typeSet.find(_type) != typeSet.end())
-          way->setTypeName(_type);
-        else
-          way->setTypeName(OVERLAY_WAY_TYPE);
+        way->setColor(obj->displayColor());
+        way->setTypeName(OVERLAY_WAY_TYPE);
         way->setName(obj->name());
         QVariant var;
         var.setValue<osmscout::OverlayObject*>(way);
@@ -325,7 +311,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
       const GPXObjectWayPoint* obj = static_cast<const GPXObjectWayPoint*>(item);
       osmscout::OverlayNode* node = new osmscout::OverlayNode();
       node->addPoint(obj->m_waypoint.coord.GetLat(), obj->m_waypoint.coord.GetLon());
-      node->setTypeName("_waypoint");
+      node->setTypeName(OVERLAY_NODE_TYPE);
       node->setName(obj->name());
       QVariant var;
       var.setValue<osmscout::OverlayObject*>(node);
@@ -333,45 +319,4 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
     }
   }
   return list;
-}
-
-QString GPXObjectTrack::displayColorName() const
-{
-  if (m_track.displayColor.has_value())
-  {
-    const osmscout::Color& color = m_track.displayColor.value();
-    if (color == osmscout::Color::GREEN)
-      return "Green";
-    if (color == osmscout::Color::RED)
-      return "Red";
-    if (color == osmscout::Color::BLUE)
-      return "Blue";
-    if (color == osmscout::Color::YELLOW)
-      return "Yellow";
-    if (color == osmscout::Color::FUCHSIA)
-      return "Magenta";
-    if (color == osmscout::Color::AQUA)
-      return "Cyan";
-    if (color == osmscout::Color::LIGHT_GRAY)
-      return "LightGray";
-    if (color == osmscout::Color::WHITE)
-      return "White";
-    if (color == osmscout::Color::BLACK)
-      return "Black";
-    if (color == osmscout::Color::DARK_GREEN)
-      return "DarkGreen";
-    if (color == osmscout::Color::DARK_RED)
-      return "DarkRed";
-    if (color == osmscout::Color::DARK_BLUE)
-      return "DarkBlue";
-    if (color == osmscout::Color::DARK_YELLOW)
-      return "DarkYellow";
-    if (color == osmscout::Color::DARK_FUCHSIA)
-      return "DarkMagenta";
-    if (color == osmscout::Color::DARK_AQUA)
-      return "DarkCyan";
-    if (color == osmscout::Color::DARK_GRAY)
-      return "DarkGray";
-  }
-  return "";
 }

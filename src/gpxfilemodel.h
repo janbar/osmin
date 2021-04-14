@@ -11,6 +11,7 @@
 #include <QSet>
 
 #define OVERLAY_WAY_TYPE "_track"
+#define OVERLAY_NODE_TYPE "_waypoint"
 
 class GPXObject;
 class GPXObjectTrack;
@@ -79,9 +80,7 @@ public:
   QString name() const override { return QString::fromUtf8(m_track.name.value_or(std::to_string(m_id)).c_str()); }
   QString description() const override { return QString::fromUtf8(m_track.desc.value_or("").c_str()); }
   double length() const { return m_track.GetLength().AsMeter(); }
-  std::optional<osmscout::Color> displayColor() const { return m_track.displayColor; }
-  QString displayColorHexString() const { return QString::fromUtf8(m_track.displayColor.value_or(osmscout::Color::DARK_GREEN).ToHexString().c_str()); }
-  QString displayColorName() const;
+  QString displayColor() const;
 private:
   const osmscout::gpx::Track& m_track;
   int m_id;

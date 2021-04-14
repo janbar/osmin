@@ -6,9 +6,6 @@ FLAG
 ORDER WAYS
   GROUP _route
   GROUP _track, _highlighted
-  GROUP _trackBlack, _trackDarkRed, _trackDarkGreen, _trackDarkYellow, _trackDarkBlue,
-        _trackDarkMagenta, _trackDarkCyan, _trackDarkGray, _trackLightGray, _trackRed,
-        _trackGreen, _trackYellow, _trackBlue, _trackMagenta, _trackCyan, _trackWhite
   GROUP highway_motorway, highway_motorway_trunk, highway_motorway_primary
   GROUP aerialway_gondola, aerialway_chair_lift, aerialway_drag_lift
   GROUP highway_trunk
@@ -80,22 +77,6 @@ CONST
   COLOR routeColor                 = #ae00ff88;
   COLOR highlightedColor           = #ff000088;
   COLOR trackColor                 = #10a000a0;
-  COLOR trackBlackColor            = #000000;
-  COLOR trackDarkRedColor          = #8b0000;
-  COLOR trackDarkGreenColor        = #006400;
-  COLOR trackDarkYellowColor       = #ffd700;
-  COLOR trackDarkBlueColor         = #00008b;
-  COLOR trackDarkMagentaColor      = #8b008b;
-  COLOR trackDarkCyanColor         = #008b8b;
-  COLOR trackDarkGrayColor         = #a9a9a9;
-  COLOR trackLightGrayColor        = #d3d3d3;
-  COLOR trackRedColor              = #ff0000;
-  COLOR trackGreenColor            = #00ff00;
-  COLOR trackYellowColor           = #ffff00;
-  COLOR trackBlueColor             = #0000ff;
-  COLOR trackMagentaColor          = #ff00ff;
-  COLOR trackCyanColor             = #00ffff;
-  COLOR trackWhiteColor            = #f8f8ff;
 
   // Ground tiles
 
@@ -437,13 +418,13 @@ STYLE
 
   [TYPE _track] {
     [MAG world-] {
-      WAY {color: alpha(@trackColor, 1.0); displayWidth: 0.3mm; priority: 100; }
+      WAY {preferColorFeature: true; color: alpha(@trackColor, 1.0); displayWidth: 0.3mm; priority: 100;}
     }
     [MAG city-] {
-      WAY {color: alpha(@trackColor, 0.9); displayWidth: 0.5mm; width: 2.2m; priority: 100; }
+      WAY {preferColorFeature: true; color: alpha(@trackColor, 0.9); displayWidth: 0.5mm; width: 2.2m; priority: 100;}
     }
     [MAG veryClose-] {
-      WAY {color: alpha(@trackColor, 0.4); displayWidth: 0.8mm; width: 2.2m; priority: 100; }
+      WAY {preferColorFeature: true; color: alpha(@trackColor, 0.4); displayWidth: 0.8mm; width: 2.2m; priority: 100;}
     }
   }
   [TYPE _route] {
@@ -462,23 +443,6 @@ STYLE
     [TYPE _highlighted] WAY {color: @highlightedColor; displayWidth: 1.5mm; priority: 100; }
     [TYPE _highlighted] AREA.BORDER {color: @highlightedColor; width: 1.0mm; }
     [TYPE _highlighted] NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
-
-    [TYPE _trackBlack] WAY {color: @trackBlackColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkRed] WAY {color: @trackDarkRedColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkGreen] WAY {color: @trackDarkGreenColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkYellow] WAY {color: @trackDarkYellowColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkBlue] WAY {color: @trackDarkBlueColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkMagenta] WAY {color: @trackDarkMagentaColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkCyan] WAY {color: @trackDarkCyanColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackDarkGray] WAY {color: @trackDarkGrayColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackLightGray] WAY {color: @trackLightGrayColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackRed] WAY {color: @trackRedColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackGreen] WAY {color: @trackGreenColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackYellow] WAY {color: @trackYellowColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackBlue] WAY {color: @trackBlueColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackMagenta] WAY {color: @trackMagentaColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackCyan] WAY {color: @trackCyanColor; displayWidth: 0.8mm; priority: 100; }
-    [TYPE _trackWhite] WAY {color: @trackWhiteColor; displayWidth: 0.8mm; priority: 100; }
 
     [TYPE _waypoint] {
         NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
