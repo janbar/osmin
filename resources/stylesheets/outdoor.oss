@@ -418,10 +418,10 @@ STYLE
 
   [TYPE _track] {
     [MAG world-] {
-      WAY {preferColorFeature: true; color: alpha(@trackColor, 1.0); displayWidth: 0.3mm; priority: 100;}
+      WAY {preferColorFeature: true; color: alpha(@trackColor, 1.0); displayWidth: 0.8mm; priority: 100;}
     }
     [MAG city-] {
-      WAY {preferColorFeature: true; color: alpha(@trackColor, 0.9); displayWidth: 0.5mm; width: 2.2m; priority: 100;}
+      WAY {preferColorFeature: true; color: alpha(@trackColor, 0.9); displayWidth: 0.8mm; width: 2.2m; priority: 100;}
     }
     [MAG veryClose-] {
       WAY {preferColorFeature: true; color: alpha(@trackColor, 0.4); displayWidth: 0.8mm; width: 2.2m; priority: 100;}

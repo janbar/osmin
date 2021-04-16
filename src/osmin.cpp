@@ -282,11 +282,10 @@ int main(int argc, char *argv[])
            .WithVoiceLookupDirectory(homeDir.absoluteFilePath(DIR_VOICES))
            .WithVoiceProviders(resDir.absoluteFilePath("voice-providers.json"))
            .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
-           .WithTileCacheSizes(60, 200)
-           .AddCustomPoiType("_waypoint");
+           .WithTileCacheSizes(60, 200);
 
-      for (const QString& trk : GPXFileModel::trackTypeSet())
-        builder.AddCustomPoiType(trk);
+      for (const QString& customType : GPXFileModel::customTypeSet())
+        builder.AddCustomPoiType(customType);
 
       if (!builder.Init())
       {

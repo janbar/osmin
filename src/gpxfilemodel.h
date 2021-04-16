@@ -10,8 +10,9 @@
 #include <QString>
 #include <QSet>
 
-#define OVERLAY_WAY_TYPE "_track"
-#define OVERLAY_NODE_TYPE "_waypoint"
+#define OVERLAY_WAY_TRACK_TYPE            "_track"
+#define OVERLAY_WAY_HIGHLIGHTED_TYPE      "_highlighted"
+#define OVERLAY_NODE_WAYPOINT_TYPE        "_waypoint"
 
 class GPXObject;
 class GPXObjectTrack;
@@ -136,7 +137,7 @@ public:
     DataLoaded    = 2,
   } DataStatus;
 
-  static const QSet<QString>& trackTypeSet();
+  static const QSet<QString>& customTypeSet();
 
   GPXFileModel(QObject* parent = nullptr);
   virtual ~GPXFileModel();

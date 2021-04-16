@@ -67,16 +67,18 @@ QString GPXObjectTrack::displayColor() const
   return "";
 }
 
-const QSet<QString>& GPXFileModel::trackTypeSet()
+const QSet<QString>& GPXFileModel::customTypeSet()
 {
-  static QSet<QString> _track;
+  static QSet<QString> _type;
   static bool _init = false;
   if (!_init)
   {
-    _track.insert(OVERLAY_WAY_TYPE);
+    _type.insert(OVERLAY_WAY_TRACK_TYPE);
+    _type.insert(OVERLAY_WAY_HIGHLIGHTED_TYPE);
+    _type.insert(OVERLAY_NODE_WAYPOINT_TYPE);
     _init = true;
   }
-  return _track;
+  return _type;
 }
 
 class GPXFileModel::Loader : public QThread
@@ -299,7 +301,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
           points.emplace_back(0, p.coord);
         osmscout::OverlayWay* way = new osmscout::OverlayWay(points);
         way->setColor(obj->displayColor());
-        way->setTypeName(OVERLAY_WAY_TYPE);
+        way->setTypeName(OVERLAY_WAY_TRACK_TYPE);
         way->setName(obj->name());
         QVariant var;
         var.setValue<osmscout::OverlayObject*>(way);
@@ -311,7 +313,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
       const GPXObjectWayPoint* obj = static_cast<const GPXObjectWayPoint*>(item);
       osmscout::OverlayNode* node = new osmscout::OverlayNode();
       node->addPoint(obj->m_waypoint.coord.GetLat(), obj->m_waypoint.coord.GetLon());
-      node->setTypeName(OVERLAY_NODE_TYPE);
+      node->setTypeName(OVERLAY_NODE_WAYPOINT_TYPE);
       node->setName(obj->name());
       QVariant var;
       var.setValue<osmscout::OverlayObject*>(node);
