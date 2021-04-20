@@ -18,6 +18,8 @@
 #include <QIcon>
 #include <QTime>
 
+#include <locale>
+
 //#define Q_OS_ANDROID
 
 #define DIR_MAPS          "Maps"
@@ -405,8 +407,9 @@ void setupApp(QGuiApplication& app) {
     sh->catchSignal(SIGHUP);
     sh->catchSignal(SIGALRM);
 
-    // set translators
     QLocale locale = QLocale::system();
+    qInfo("User locale setting is %s", std::locale().name().c_str());
+    // set translators
     prepareTranslator(app, QString(":/i18n"), QString(APP_TR_NAME), locale);
 #ifdef Q_OS_MAC
     QDir appDir(app.applicationDirPath());
@@ -420,15 +423,17 @@ void setupApp(QGuiApplication& app) {
 
 void prepareTranslator(QGuiApplication& app, const QString& translationPath, const QString& translationPrefix, const QLocale& locale)
 {
+    QString i18Path(translationPath);
+    i18Path.append("/").append(translationPrefix).append("_").append(locale.name().left(2)).append(".qm");
     QTranslator * translator = new QTranslator();
     if (!translator->load(locale, translationPrefix, QString("_"), translationPath))
     {
-        qWarning() << "no file found for translations '"+ translationPath + "/" + translationPrefix + "_" + locale.name().left(2) + ".qm' (using default).";
+        qWarning("no file found for translations '%s' (using default).", i18Path.toUtf8().constData());
     }
     else
     {
-        qInfo() << "using file '"+ translationPath + "/" + translationPrefix + "_" + locale.name().left(2) + ".qm ' for translations.";
         app.installTranslator(translator);
+        qInfo("using file '%s' for translations.", i18Path.toUtf8().constData());
     }
 }
 
