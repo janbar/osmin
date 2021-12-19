@@ -1,16 +1,16 @@
-rm -rf build-arm64/*
-mkdir -p build-arm64
-cd build-arm64
+BUILD_DIR=build-arm64-515
+rm -rf $BUILD_DIR/*
+mkdir -p $BUILD_DIR
 
-export JAVA_HOME=/home/jlb/bin/jdk1.8.0
+export JAVA_HOME=/home/shared/java/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
-export ANDROID_NDK=/home/shared/Android/android-ndk-r21e
+export ANDROID_NDK=/home/shared/Android/Sdk/ndk/21.4.7075529
 export ANDROID_NATIVE_API_LEVEL=24
 export ANDROID_SDK_MINVER=24
 export ANDROID_SDK_TARGET=26
 export QT_DIR=/home/shared/Qt/5.15.2/android
 
-cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
+cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_PREFIX_PATH=$QT_DIR \
 -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
 -DCMAKE_MAKE_PROGRAM=$ANDROID_NDK/prebuilt/linux-x86_64/bin/make \
@@ -43,3 +43,6 @@ cmake ../.. -DCMAKE_SYSTEM_NAME=Android \
 -DQt5AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt5AndroidExtras \
 -DQt5QmlModels_DIR=$QT_DIR/lib/cmake/Qt5QmlModels \
 $@
+
+[ $? -eq 0 ] && cmake --build $BUILD_DIR --parallel 8
+
