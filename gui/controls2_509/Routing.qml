@@ -443,7 +443,7 @@ PopOver {
                 }
                 delegate: Row {
                     spacing: units.gu(2)
-                    width: parent.width
+                    width: parent ? parent.width : 0
                     height: Math.max(stepInfo.implicitHeight, icon.height)
 
                     WAYIcon {

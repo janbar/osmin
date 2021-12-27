@@ -311,7 +311,7 @@ MapPage {
         model: null
         delegate: MouseArea {
             height: rowEntry.implicitHeight + units.gu(1)
-            width: parent.width
+            width: parent ? parent.width : 0
             Rectangle {
                 anchors.fill: parent
                 visible: parent.pressed || index === searchView.currentIndex

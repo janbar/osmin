@@ -103,7 +103,7 @@ MapPage {
                 }
             }
 
-            highlighted: parent.pressed || index === favoritesView.currentIndex
+            highlighted: (parent && parent.pressed) || index === favoritesView.currentIndex
 
             onPressAndHold: {
                 if (favoritesPage.state === "default") {
