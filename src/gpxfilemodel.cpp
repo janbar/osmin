@@ -1,6 +1,6 @@
 
 #include "gpxfilemodel.h"
-#include "osmscout/gpx/GpxFile.h"
+#include "osmscoutgpx/GpxFile.h"
 
 #include <QThread>
 

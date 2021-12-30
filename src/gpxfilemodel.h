@@ -3,8 +3,8 @@
 
 #include "locked.h"
 
-#include <osmscout/gpx/Import.h>
-#include <osmscout/OverlayObject.h>
+#include <osmscoutgpx/Import.h>
+#include <osmscoutclientqt/OverlayObject.h>
 #include <QAbstractListModel>
 #include <QDateTime>
 #include <QString>

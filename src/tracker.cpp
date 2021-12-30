@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "csvparser.h"
 
-#include <osmscout/gpx/Export.h>
+#include <osmscoutgpx/Export.h>
 #include <cmath>
 #include <QDebug>
 

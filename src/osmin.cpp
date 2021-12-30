@@ -57,14 +57,14 @@
 #define RES_HILLSHADE_SERVER_FILE "hillshade-tile-server.json"
 #define RES_HILLSHADE_FILE_SAMPLE "hillshade-tile-server.json.sample"
 
-#include <osmscout/OSMScoutQt.h>
+#include <osmscoutclientqt/OSMScoutQt.h>
 // Custom QML objects
-#include <osmscout/MapWidget.h>
-#include <osmscout/SearchLocationModel.h>
-#include <osmscout/RoutingModel.h>
-#include <osmscout/AvailableMapsModel.h>
-#include <osmscout/MapDownloadsModel.h>
-#include <osmscout/Settings.h>
+#include <osmscoutclientqt/MapWidget.h>
+#include <osmscoutclientqt/SearchLocationModel.h>
+#include <osmscoutclientqt/RoutingModel.h>
+#include <osmscoutclientqt/AvailableMapsModel.h>
+#include <osmscoutclientqt/MapDownloadsModel.h>
+#include <osmscoutclientqt/Settings.h>
 #include <osmscout/util/Logger.h>
 
 #include "platformextras.h"

@@ -3,10 +3,10 @@
 
 #include "csvparser.h"
 
-#include <osmscout/VehiclePosition.h>
-#include <osmscout/RouteStep.h>
-#include <osmscout/gpx/TrackPoint.h>
-#include <osmscout/gpx/Waypoint.h>
+#include <osmscoutclientqt/VehiclePosition.h>
+#include <osmscoutclientqt/RouteStep.h>
+#include <osmscoutgpx/TrackPoint.h>
+#include <osmscoutgpx/Waypoint.h>
 
 #include <QObject>
 #include <QDateTime>
