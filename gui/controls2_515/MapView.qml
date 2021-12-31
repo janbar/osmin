@@ -154,7 +154,6 @@ MapPage {
 
         Component.onCompleted: {
             map.setVehicleScaleFactor(0.0); // hide vehicle
-            positionSource.dataUpdated.connect(Tracker.locationChanged);
             positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
                 locationChanged(valid, lat, lon, accValid, acc);
             });

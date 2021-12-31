@@ -322,6 +322,8 @@ ApplicationWindow {
         Osmin.Converter.system = settings.systemOfUnits;
         positionSource.active = true;
         launcher.start();
+        // Connect the tracker to the sensor
+        positionSource.dataUpdated.connect(Osmin.Tracker.locationChanged);
     }
 
     // The initial stacked page (banner) will set the startup mode.
