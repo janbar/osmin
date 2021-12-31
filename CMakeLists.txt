@@ -149,9 +149,9 @@ set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/compass/genericcompass.cpp
     src/compass/plugin.cpp
 )
-set(osmin_HEADERS src/converter.h platformextras.h
+set(osmin_HEADERS src/converter.h src/platformextras.h
     src/locked.h
-    /src/utils.h
+    src/utils.h
     src/csvparser.h
     src/qmlfilterbehavior.h
     src/qmlsortbehavior.h
@@ -182,9 +182,9 @@ endif()
 include_directories(${LIBOSMSCOUT_INCLUDE_DIRS})
 
 if(ANDROID)
-    add_library(osmin SHARED ${osmin_SOURCES} ${osmin-resources})
+    add_library(osmin SHARED ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 else()
-    add_executable(osmin ${osmin_SOURCES} ${osmin-resources})
+    add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 endif()
 
 target_link_libraries(osmin ${LIBOSMSCOUT_LIBRARIES})
