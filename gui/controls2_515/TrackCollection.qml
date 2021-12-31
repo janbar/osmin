@@ -116,7 +116,7 @@ MapPage {
                            }
                            Connections {
                                target: mapView
-                               onCourseIdChanged: {
+                               function onCourseIdChanged() {
                                    display.checked = (mapView.courseId === bigId);
                                }
                            }

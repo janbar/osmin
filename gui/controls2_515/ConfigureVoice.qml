@@ -114,7 +114,7 @@ MapPage {
                            }
                            Connections {
                                target: mapVoice
-                               onVoiceSelected: {
+                               function onVoiceSelected() {
                                    selector.checked = (mapVoice.voiceName === model.name);
                                }
                            }
