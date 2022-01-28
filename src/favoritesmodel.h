@@ -120,7 +120,7 @@ protected:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  QMutex* m_lock;
+  QRecursiveMutex* m_lock;
   QList<FavoriteItem*> m_items;
   int m_seq;
   DataStatus m_dataState;

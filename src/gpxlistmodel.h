@@ -98,7 +98,7 @@ protected:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  QMutex* m_lock;
+  QRecursiveMutex* m_lock;
   QMultiMap<QString, GPXItem*> m_items;
   DataStatus m_dataState;
   QString m_root;

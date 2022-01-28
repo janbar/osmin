@@ -66,7 +66,7 @@ GPXListModel::GPXListModel(QObject* parent)
 , m_dataState(DataStatus::DataBlank)
 , m_root()
 {
-  m_lock = new QMutex(QMutex::Recursive);
+  m_lock = new QRecursiveMutex();
 }
 
 GPXListModel::~GPXListModel()
@@ -78,7 +78,7 @@ GPXListModel::~GPXListModel()
 
 int GPXListModel::rowCount(const QModelIndex& parent) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   QString path("."); // base path
   if (parent.isValid())
   {
@@ -91,7 +91,7 @@ int GPXListModel::rowCount(const QModelIndex& parent) const
 
 QModelIndex GPXListModel::index(int row, int column, const QModelIndex& parent) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   QString path("."); // base path
   if (parent.isValid())
   {
@@ -110,7 +110,7 @@ QModelIndex GPXListModel::parent(const QModelIndex& index) const
   if (!index.isValid())
     return QModelIndex();
 
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   GPXItem* childItem = static_cast<GPXItem*>(index.internalPointer());
   QDir dir(childItem->path());
   if (dir.path() == ".") // base path
@@ -134,7 +134,7 @@ QVariant GPXListModel::data(const QModelIndex& index, int role) const
   if (!index.isValid())
     return QVariant();
 
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   const GPXItem* item = static_cast<GPXItem*>(index.internalPointer());
   switch (role)
   {
@@ -172,7 +172,7 @@ QHash<int, QByteArray> GPXListModel::roleNames() const
 
 QVariantMap GPXListModel::get(int row, const QModelIndex& parent) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   QString path("."); // base path
   if (parent.isValid())
   {
@@ -198,7 +198,7 @@ QVariantMap GPXListModel::get(int row, const QModelIndex& parent) const
 
 bool GPXListModel::init(const QString& root)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   m_root = root;
   return true;
 }
@@ -206,7 +206,7 @@ bool GPXListModel::init(const QString& root)
 bool GPXListModel::loadData()
 {
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     beginResetModel();
     if (m_items.count() > 0)
     {
@@ -225,7 +225,7 @@ bool GPXListModel::loadData()
 void GPXListModel::clearData()
 {
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     beginResetModel();
     if (m_items.count() > 0)
     {
@@ -244,7 +244,7 @@ int GPXListModel::maxTreeDepth()
 
 bool GPXListModel::renameItem(const QString& newName, const QModelIndex& index)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (!index.isValid())
     return false;
   GPXItem* item = static_cast<GPXItem*>(index.internalPointer());
@@ -261,7 +261,7 @@ bool GPXListModel::renameItem(const QString& newName, const QModelIndex& index)
 
 bool GPXListModel::removeItem(const QModelIndex& index)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (!index.isValid())
     return false;
   GPXItem* item = static_cast<GPXItem*>(index.internalPointer());
@@ -294,7 +294,7 @@ bool GPXListModel::removeItem(const QModelIndex& index)
 
 QString GPXListModel::findFileById(int bid)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   for (GPXItem* item : m_items)
   {
     if (item->bigId() == bid)

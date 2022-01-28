@@ -105,7 +105,7 @@ GPXFileModel::GPXFileModel(QObject* parent)
 , m_file(nullptr)
 , m_loader(nullptr)
 {
-  m_lock = new QMutex(QMutex::Recursive);
+  m_lock = new QRecursiveMutex();
   m_loader = new Loader(*this);
   connect(m_loader, &Loader::started, this, &GPXFileModel::parsingChanged);
   connect(m_loader, &Loader::finished, this, &GPXFileModel::parsingChanged);
@@ -124,13 +124,13 @@ GPXFileModel::~GPXFileModel()
 int GPXFileModel::rowCount(const QModelIndex& parent) const
 {
   Q_UNUSED(parent)
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   return m_items.count();
 }
 
 QVariant GPXFileModel::data(const QModelIndex& index, int role) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (index.row() < 0 || index.row() >= m_items.count())
       return QVariant();
 
@@ -180,7 +180,7 @@ QHash<int, QByteArray> GPXFileModel::roleNames() const
 
 QVariantMap GPXFileModel::get(int row) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (row < 0 || row >= m_items.count())
     return QVariantMap();
   const GPXObject* item = m_items[row];
@@ -211,7 +211,7 @@ bool GPXFileModel::loadData()
 {
   bool ret = false;
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     beginResetModel();
     if (m_items.count() > 0)
     {
@@ -245,7 +245,7 @@ void GPXFileModel::parse(const QString& filePath)
 {
   bool parsed = false;
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     if (m_file)
       delete m_file;
     m_file = new GPXFile();
@@ -263,7 +263,7 @@ void GPXFileModel::parseFile(const QString &filePath)
 void GPXFileModel::clearData()
 {
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     beginResetModel();
     if (m_items.count() > 0)
     {
@@ -284,7 +284,7 @@ bool GPXFileModel::parsing()
 
 QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   QVariantList list;
   for (const GPXObject* item : m_items)
   {

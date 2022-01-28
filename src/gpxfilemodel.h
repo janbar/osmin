@@ -171,7 +171,7 @@ protected:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  QMutex* m_lock;
+  QRecursiveMutex* m_lock;
   QList<GPXObject*> m_items;
   DataStatus m_dataState;
   GPXFile* m_file;

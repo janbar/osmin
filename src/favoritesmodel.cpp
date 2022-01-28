@@ -38,7 +38,7 @@ FavoritesModel::FavoritesModel(QObject* parent)
 , m_dataState(DataStatus::DataBlank)
 , m_io(nullptr)
 {
-  m_lock = new QMutex(QMutex::Recursive);
+  m_lock = new QRecursiveMutex();
 }
 
 FavoritesModel::~FavoritesModel()
@@ -51,7 +51,7 @@ FavoritesModel::~FavoritesModel()
 void FavoritesModel::addItem(FavoriteItem* item)
 {
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
     m_items << item;
     endInsertRows();
@@ -62,13 +62,13 @@ void FavoritesModel::addItem(FavoriteItem* item)
 int FavoritesModel::rowCount(const QModelIndex& parent) const
 {
   Q_UNUSED(parent)
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   return m_items.count();
 }
 
 QVariant FavoritesModel::data(const QModelIndex& index, int role) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (index.row() < 0 || index.row() >= m_items.count())
       return QVariant();
 
@@ -98,7 +98,7 @@ QVariant FavoritesModel::data(const QModelIndex& index, int role) const
 
 bool FavoritesModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (index.row() < 0 || index.row() >= m_items.count())
       return false;
 
@@ -135,7 +135,7 @@ bool FavoritesModel::insertRow(int row, const QModelIndex& parent)
 {
   Q_UNUSED(parent)
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     if (row < 0 || row > m_items.count() || row == MAX_ROWCOUNT)
       return false;
     FavoriteItem* item = new FavoriteItem();
@@ -152,7 +152,7 @@ bool FavoritesModel::removeRow(int row, const QModelIndex& parent)
 {
   Q_UNUSED(parent)
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     if (row < 0 || row >= m_items.count())
       return false;
     beginRemoveRows(QModelIndex(), row, row);
@@ -200,7 +200,7 @@ QHash<int, QByteArray> FavoritesModel::roleNames() const
 
 QVariantMap FavoritesModel::get(int row) const
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (row < 0 || row >= m_items.count())
     return QVariantMap();
   const FavoriteItem* item = m_items[row];
@@ -218,7 +218,7 @@ QVariantMap FavoritesModel::get(int row) const
 
 bool FavoritesModel::init(QIODevice* io)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (io->open(QIODevice::ReadWrite | QIODevice::Text)) {
     io->close();
     m_io = io;
@@ -230,7 +230,7 @@ bool FavoritesModel::init(QIODevice* io)
 bool FavoritesModel::storeData()
 {
   bool succeeded = false;
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (!m_io)
     return succeeded;
   QList<FavoriteItem*> data;
@@ -269,7 +269,7 @@ bool FavoritesModel::storeData()
 bool FavoritesModel::loadData()
 {
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     if (!m_io) {
       return false; }
     beginResetModel();
@@ -333,7 +333,7 @@ bool FavoritesModel::loadData()
 void FavoritesModel::clearData()
 {
   {
-    osmin::LockGuard g(m_lock);
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
     beginResetModel();
     if (m_items.count() > 0)
     {
@@ -349,7 +349,7 @@ void FavoritesModel::clearData()
 
 int FavoritesModel::isFavorite(double lat, double lon)
 {
-  osmin::LockGuard g(m_lock);
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
   for (FavoriteItem* item : m_items)
   {
     double r = osmin::Utils::sphericalDistance(item->lat(), item->lon(), lat, lon);
