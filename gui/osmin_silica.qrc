@@ -193,15 +193,15 @@
         <file>images/trip/car.svg</file>
         <file>images/trip/finish.svg</file>
         <file>images/trip/walk.svg</file>
-        <file>images/way/change-motorway-lhd.svg</file>
-        <file>images/way/change-motorway.svg</file>
         <file>images/way/continue-straight-on.svg</file>
         <file>images/way/drive-along.svg</file>
+        <file>images/way/enter-motorway.svg</file>
         <file>images/way/enter-roundabout-lhd.svg</file>
         <file>images/way/enter-roundabout.svg</file>
         <file>images/way/information.svg</file>
         <file>images/way/invalid-straight.svg</file>
-        <file>images/way/leave-motorway-lhd.svg</file>
+        <file>images/way/leave-motorway-left.svg</file>
+        <file>images/way/leave-motorway-right.svg</file>
         <file>images/way/leave-motorway.svg</file>
         <file>images/way/leave-roundabout-1-lhd.svg</file>
         <file>images/way/leave-roundabout-1.svg</file>

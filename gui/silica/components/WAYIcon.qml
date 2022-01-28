@@ -45,21 +45,21 @@ MapIcon {
         'turn-right': 'turn-right',
         'turn-sharp-right': 'turn-sharp-right',
 
-        'enter-roundabout': 'enter-roundabout',
-        'leave-roundabout-1': 'leave-roundabout-1',
-        'leave-roundabout-2': 'leave-roundabout-2',
-        'leave-roundabout-3': 'leave-roundabout-3',
-        'leave-roundabout-4': 'leave-roundabout-4',
-
         'enter-roundabout-lhd': 'enter-roundabout-lhd',
         'leave-roundabout-1-lhd': 'leave-roundabout-1-lhd',
         'leave-roundabout-2-lhd': 'leave-roundabout-2-lhd',
         'leave-roundabout-3-lhd': 'leave-roundabout-3-lhd',
         'leave-roundabout-4-lhd': 'leave-roundabout-4-lhd',
 
-        'enter-motorway': 'change-motorway',
-        'change-motorway': 'change-motorway',
+        'enter-motorway': 'enter-motorway',
+
+        'change-motorway': 'leave-motorway',
+        'change-motorway-left': 'leave-motorway-left',
+        'change-motorway-right': 'leave-motorway-right',
+
         'leave-motorway': 'leave-motorway',
+        'leave-motorway-left': 'leave-motorway-left',
+        'leave-motorway-right': 'leave-motorway-right',
 
         'name-change': 'information'
     }
