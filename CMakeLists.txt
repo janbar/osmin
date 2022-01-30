@@ -1,13 +1,12 @@
-cmake_policy(SET CMP0048 NEW)
 cmake_minimum_required(VERSION 3.8.2)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-project(osmin VERSION "1.7.0" LANGUAGES C CXX)
-message(STATUS "Project ${CMAKE_PROJECT_NAME} ${CMAKE_PROJECT_VERSION}")
+
+project(osmin C CXX)
 
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_SAILFISHOS "Build the SailfishOS application" OFF)
 
-set(APP_VERSION       "${CMAKE_PROJECT_VERSION}")
+set(APP_VERSION       "1.7.0")
 set(APP_VERSION_CODE  37)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")

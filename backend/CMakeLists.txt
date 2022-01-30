@@ -32,7 +32,7 @@ endif()
 if(NOT ZLIB_FOUND)
     download_project(PROJ zlib
         URL "${CMAKE_CURRENT_SOURCE_DIR}/zlib-1.2.11.tar.gz"
-        URL_HASH MD5=9360ea14677db33dfdc2cfde1914918e
+        URL_HASH MD5=d8c654d5d16f31de88db6b8c6a1bdc48
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -59,7 +59,7 @@ if(NOT OPENSSL_FOUND)
     if(OPENSSL_DL_ABI STREQUAL "1.0")
         download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
             GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.0.2p-20191208
+            GIT_TAG 1.0.2p-20220130
             GIT_SHALLOW 1
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}
             UPDATE_DISCONNECTED ON)
@@ -67,7 +67,7 @@ if(NOT OPENSSL_FOUND)
         set(OPENSSL_DL_ABI "1.1")
         download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
             GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.1.1k-20210430
+            GIT_TAG 1.1.1m-20220130
             GIT_SHALLOW 1
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}
             UPDATE_DISCONNECTED ON)
@@ -116,7 +116,7 @@ endif()
 if(NOT MARISA_FOUND)
     download_project(PROJ marisa
         URL "${CMAKE_CURRENT_SOURCE_DIR}/marisa-0.2.5.tar.gz"
-        URL_HASH MD5=6b45302ca31ff7318ac81f4d0bde6694
+        URL_HASH MD5=553e2318bc147bc206d7b80945bd64fb
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
