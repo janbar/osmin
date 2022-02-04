@@ -116,7 +116,7 @@ endif()
 if(NOT MARISA_FOUND)
     download_project(PROJ marisa
         URL "${CMAKE_CURRENT_SOURCE_DIR}/marisa-0.2.5.tar.gz"
-        URL_HASH MD5=553e2318bc147bc206d7b80945bd64fb
+        URL_HASH MD5=036ab06e7edf0059d602264cb6b26aca
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -127,7 +127,7 @@ if(NOT MARISA_FOUND)
         EXCLUDE_FROM_ALL
     )
     set(MARISA_LIBRARIES marisa)
-    set(MARISA_INCLUDE_DIRS "${marisa_SOURCE_DIR}/include")
+    set(MARISA_INCLUDE_DIRS "${marisa_BINARY_DIR}")
     set(MARISA_FOUND ON)
     message(STATUS "Build MARISA: ${marisa_BINARY_DIR}")
 endif()
