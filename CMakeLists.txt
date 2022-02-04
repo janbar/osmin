@@ -237,7 +237,7 @@ endif()
 add_custom_target(
     "run"
     QML2_IMPORT_PATH=${CMAKE_BINARY_DIR}/backend/qml ${CMAKE_BINARY_DIR}/${EXEC} --debug
-    DEPENDS osmin-gui
+    DEPENDS osmin
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
