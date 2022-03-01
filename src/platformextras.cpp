@@ -55,24 +55,14 @@ QStringList PlatformExtras::getStorageDirs()
 {
   QStringList dirs;
 #ifdef Q_OS_ANDROID
-  QAndroidJniEnvironment jniEnv;
-  // search for a mounted sdcard
+  /*
+   * WARNING: SDCARD storage cannot be properly managed since Android 10. Therefore I return only the internal storage.
+   */
   QAndroidJniObject activity = QtAndroid::androidActivity();
   QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
-  QAndroidJniObject files = activity.callObjectMethod("getExternalFilesDirs", "(Ljava/lang/String;)[Ljava/io/File;", nullstr.object<jstring>());
-
-  int len = jniEnv->GetArrayLength(files.object<jarray>());
-  for (int i = 0; i < len; ++i)
-  {
-    QAndroidJniObject file = jniEnv->GetObjectArrayElement(files.object<jobjectArray>(), i);
-    // android API returns null for unmounted storage
-    if (!file.isValid())
-      continue;
-    QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-    QString pathStr = path.toString();
-    qInfo("Found storage: %s", pathStr.toUtf8().constData());
-    dirs.push_back(pathStr);
-  }
+  QAndroidJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
+  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  dirs.push_back(path.toString());
 #else
   // search for a mounted sdcard
   for (const QStorageInfo& storage : QStorageInfo::mountedVolumes())
