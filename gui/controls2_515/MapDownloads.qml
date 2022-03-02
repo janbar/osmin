@@ -216,7 +216,10 @@ MapPage {
                     Timer {
                         id: delayUpdate
                         interval: 2000
-                        onTriggered: updateMap()
+                        onTriggered: {
+                            updateMap();
+                            availableList.positionViewAtBeginning();
+                        }
                     }
                     action2 {
                         visible: updateAvailable
@@ -339,7 +342,7 @@ MapPage {
                         font.pointSize: units.fs("x-small")
                         color: styleMap.view.secondaryColor
                         text: size
-                        visible: size != ""
+                        visible: size !== ""
                     }
                 }
 
@@ -351,6 +354,7 @@ MapPage {
                         if (map) {
                             var dir = mapDownloadsModel.suggestedDirectory(map, mapDownloadsModel.preferedDirectory);
                             mapDownloadsModel.downloadMap(map, dir);
+                            availableList.positionViewAtBeginning();
                         }
                     }
                 }
