@@ -7,20 +7,17 @@
 GPXFile::GPXFile()
 : m_valid(false)
 , m_path()
-, m_error()
-, m_progress(0.0)
 , m_gpx()
-, m_callback(std::make_shared<Callback>(*this))
 {
 }
 
-bool GPXFile::parse(const QString& filePath)
+bool GPXFile::parse(const QString& filePath, osmscout::gpx::ProcessCallbackRef& callback)
 {
   if (m_breaker)
     m_breaker->Break();
   m_breaker.reset(new osmscout::ThreadedBreaker());
   m_path = filePath;
-  m_valid = osmscout::gpx::ImportGpx(filePath.toUtf8().constData(), m_gpx, m_breaker, m_callback);
+  m_valid = osmscout::gpx::ImportGpx(filePath.toUtf8().constData(), m_gpx, m_breaker, callback);
   m_valid = m_valid && (!m_gpx.tracks.empty() || !m_gpx.waypoints.empty());
   return m_valid;
 }
@@ -114,6 +111,8 @@ GPXFileModel::GPXFileModel(QObject* parent)
 , m_dataState(DataStatus::DataBlank)
 , m_file(nullptr)
 , m_loader(nullptr)
+, m_error()
+, m_progress(0.0)
 {
   m_lock = new QRecursiveMutex();
   m_loader = new Loader(*this);
@@ -270,7 +269,10 @@ void GPXFileModel::parse(const QString& filePath)
     if (m_file)
       delete m_file;
     m_file = new GPXFile();
-    parsed = m_file->parse(filePath);
+    m_callback.reset(new Callback(*this));
+    m_progress = 0.0;
+    m_error.clear();
+    parsed = m_file->parse(filePath, m_callback);
     if (!parsed)
     {
       if (m_file->isAborted())
@@ -349,4 +351,14 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
     }
   }
   return list;
+}
+
+void GPXFileModel::Callback::Progress(double p)
+{
+  double _p = round(p * 1000.0);
+  if (_p > round(_model.m_progress * 1000.0))
+  {
+    _model.m_progress = _p / 1000.0;
+    emit _model.progressChanged();
+  }
 }

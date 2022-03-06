@@ -24,7 +24,7 @@ public:
   GPXFile();
   virtual ~GPXFile() { }
 
-  bool parse(const QString& filePath);
+  bool parse(const QString& filePath, osmscout::gpx::ProcessCallbackRef& callback);
   void breakParse();
   bool isAborted() const;
   bool isValid() const { return m_valid; }
@@ -35,23 +35,10 @@ public:
   QList<GPXObject*> tracks() const;
   QList<GPXObject*> waypoints() const;
 
-  class Callback : public osmscout::gpx::ProcessCallback
-  {
-  public:
-    Callback(GPXFile& file) : _file(file) { }
-    void Progress(double p) override { _file.m_progress = p; }
-    void Error(const std::string& error) override { _file.m_error = QString::fromStdString(error); }
-  private:
-    GPXFile& _file;
-  };
-
 private:
   bool m_valid;
   QString m_path;
-  QString m_error;
-  double m_progress;
   osmscout::gpx::GpxFile m_gpx;
-  osmscout::gpx::ProcessCallbackRef m_callback;
   osmscout::BreakerRef m_breaker;
 };
 
@@ -112,6 +99,7 @@ class GPXFileModel : public QAbstractListModel
   Q_OBJECT
   Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
   Q_PROPERTY(bool parsing READ parsing NOTIFY parsingChanged)
+  Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
   Q_PROPERTY(bool failure READ dataFailure NOTIFY loaded)
   Q_PROPERTY(bool fileValid READ isValid NOTIFY loaded)
   Q_PROPERTY(QString filePath READ filePath NOTIFY loaded)
@@ -157,6 +145,7 @@ public:
   bool dataFailure() { return m_dataState == DataStatus::DataFailure; }
 
   bool parsing();
+  double progress() { return m_progress; }
   bool isValid() const { return m_file ? m_file->isValid() : false; }
   QString filePath() const { return m_file ? m_file->path() : ""; }
   QString description() const { return m_file ? m_file->description() : ""; }
@@ -165,6 +154,7 @@ public:
 
 signals:
   void parsingChanged();
+  void progressChanged();
   void parseFinished(bool succeeded);
   void loaded(bool succeeded);
   void countChanged();
@@ -182,6 +172,21 @@ private:
   Loader* m_loader;
 
   void parse(const QString& filePath);
+
+  class Callback : public osmscout::gpx::ProcessCallback
+  {
+    friend class GPXFileModel;
+  public:
+    Callback(GPXFileModel& model) : _model(model) { }
+    void Progress(double p) override;
+    void Error(const std::string& error) override { _model.m_error = QString::fromStdString(error); }
+  private:
+    GPXFileModel& _model;
+  };
+
+  QString m_error;
+  double m_progress;
+  osmscout::gpx::ProcessCallbackRef m_callback;
 };
 
 Q_DECLARE_METATYPE(GPXFile)
