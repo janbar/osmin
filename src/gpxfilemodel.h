@@ -175,18 +175,16 @@ private:
 
   class Callback : public osmscout::gpx::ProcessCallback
   {
-    friend class GPXFileModel;
   public:
-    Callback(GPXFileModel& model) : _model(model) { }
+    Callback(GPXFileModel& model);
     void Progress(double p) override;
-    void Error(const std::string& error) override { _model.m_error = QString::fromStdString(error); }
+    void Error(const std::string& error) override;
   private:
     GPXFileModel& _model;
   };
 
   QString m_error;
   double m_progress;
-  osmscout::gpx::ProcessCallbackRef m_callback;
 };
 
 Q_DECLARE_METATYPE(GPXFile)

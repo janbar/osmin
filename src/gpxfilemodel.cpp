@@ -269,10 +269,8 @@ void GPXFileModel::parse(const QString& filePath)
     if (m_file)
       delete m_file;
     m_file = new GPXFile();
-    m_callback.reset(new Callback(*this));
-    m_progress = 0.0;
-    m_error.clear();
-    parsed = m_file->parse(filePath, m_callback);
+    osmscout::gpx::ProcessCallbackRef cb(new Callback(*this));
+    parsed = m_file->parse(filePath, cb);
     if (!parsed)
     {
       if (m_file->isAborted())
@@ -353,6 +351,13 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
   return list;
 }
 
+GPXFileModel::Callback::Callback(GPXFileModel& model)
+: _model(model)
+{
+  model.m_error.clear();
+  model.m_progress = 0.0;
+}
+
 void GPXFileModel::Callback::Progress(double p)
 {
   double _p = round(p * 1000.0);
@@ -361,4 +366,9 @@ void GPXFileModel::Callback::Progress(double p)
     _model.m_progress = _p / 1000.0;
     emit _model.progressChanged();
   }
+}
+
+void GPXFileModel::Callback::Error(const std::string &error)
+{
+  _model.m_error = QString::fromStdString(error);
 }
