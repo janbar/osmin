@@ -233,7 +233,7 @@ ApplicationWindow {
                         stackView.pop()
                     }
 
-                    visible: (stackView.currentItem !== null && !stackView.currentItem.isRoot)
+                    visible: (stackView.currentItem != null && !stackView.currentItem.isRoot)
                     enabled: visible
                 }
 
@@ -243,7 +243,7 @@ ApplicationWindow {
                     anchors.centerIn: parent
                     source: "qrc:/images/contextual-menu.svg"
 
-                    visible: (stackView.currentItem === null || stackView.currentItem.isRoot)
+                    visible: (stackView.currentItem == null || stackView.currentItem.isRoot)
                     enabled: visible
 
                     onClicked: optionsMenu.open()
