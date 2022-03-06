@@ -194,7 +194,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_descent(0)
 , m_recording(false)
 , m_segment()
-, m_lock(QMutex::Recursive)
+, m_lock()
 , m_file(nullptr)
 , m_log(nullptr)
 , m_formater(nullptr)
@@ -491,7 +491,7 @@ void TrackerModule::onFlushRecording()
     return;
   }
   // start critical section
-  QMutexLocker guard(&m_lock);
+  m_lock.lock();
   if (m_file->open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text))
   {
     // flush segment
@@ -558,6 +558,7 @@ void TrackerModule::onFlushRecording()
     // log is flushed
     m_log->close();
   }
+  m_lock.unlock();
   // end critical section
 }
 
