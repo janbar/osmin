@@ -90,9 +90,13 @@ Item {
         message = msgtxt;
         popinfo.color = (bg !== undefined ? bg : backgroundColor);
         label.color = (fg !== undefined ? fg : foregroundColor)
-        area.visible = true;
-        timer.interval = 1000 * (5 + Math.floor(msgtxt.length / 10));
-        timer.start()
+        if (area.visible) {
+            timer.restart();
+        } else {
+            area.visible = true;
+            timer.interval = 1000 * (5 + Math.floor(msgtxt.length / 10));
+            timer.start()
+        }
     }
 
     function close() {

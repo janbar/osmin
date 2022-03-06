@@ -52,17 +52,29 @@ MapPage {
         }
     }
 
-    Component.onCompleted: {
-        positionSource.update();
+    function showPositionInfo() {
         if (positionSource._posValid) {
-            map.showCoordinates(positionSource._lat, positionSource._lon);
             popInfo.open(qsTr("Current position is %1").arg(Converter.readableCoordinatesGeocaching(positionSource._lat, positionSource._lon)));
         } else {
             popInfo.open(qsTr("Current position cannot be gathered"));
         }
+    }
+
+    Component.onCompleted: {
+        positionSource.update();
+        if (positionSource._posValid) {
+            map.showCoordinates(positionSource._lat, positionSource._lon);
+        }
         // load current course or clean
-        if (settings.courseId > 0 && !loadGPX(settings.courseId))
-            settings.courseId = 0;
+        if (settings.courseId > 0) {
+            // delay position info
+            ToolBox.connectOnce(courseFile.parseFinished, showPositionInfo);
+            if (!loadGPX(settings.courseId)) {
+                settings.courseId = 0;
+            }
+        } else {
+            showPositionInfo();
+        }
         // on azimuth changed
         compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
         // resume current recording
@@ -1075,6 +1087,9 @@ MapPage {
         onParseFinished: {
             if (succeeded)
                 loadData();
+        }
+        onProgressChanged: {
+            popInfo.open(qsTr("Loading") + " " + (Math.round(courseFile.progress * 1000) / 10).toFixed(1) + " %");
         }
     }
 
