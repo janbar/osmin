@@ -25,6 +25,8 @@ public:
   virtual ~GPXFile() { }
 
   bool parse(const QString& filePath);
+  void breakParse();
+  bool isAborted() const;
   bool isValid() const { return m_valid; }
   const QString& path() const { return m_path; }
 

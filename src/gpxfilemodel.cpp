@@ -17,15 +17,23 @@ GPXFile::GPXFile()
 bool GPXFile::parse(const QString& filePath)
 {
   if (m_breaker)
-  {
     m_breaker->Break();
-    m_breaker.reset();
-  }
+  m_breaker.reset(new osmscout::ThreadedBreaker());
   m_path = filePath;
-  m_breaker = std::make_shared<osmscout::ThreadedBreaker>();
   m_valid = osmscout::gpx::ImportGpx(filePath.toUtf8().constData(), m_gpx, m_breaker, m_callback);
   m_valid = m_valid && (!m_gpx.tracks.empty() || !m_gpx.waypoints.empty());
   return m_valid;
+}
+
+void GPXFile::breakParse()
+{
+  if (m_breaker)
+    m_breaker->Break();
+}
+
+bool GPXFile::isAborted() const
+{
+  return (m_breaker && m_breaker->IsAborted());
 }
 
 QString GPXFile::name() const
@@ -85,7 +93,9 @@ class GPXFileModel::Loader : public QThread
 {
 public:
   Loader(GPXFileModel& model) : _model(model) { }
-  ~Loader() override { }
+  ~Loader() override {
+    Q_ASSERT(!isRunning());
+  }
   void setPath(const QString& path) { _path = path; }
   void run() override;
 private:
@@ -115,6 +125,17 @@ GPXFileModel::~GPXFileModel()
 {
   qDeleteAll(m_items);
   m_items.clear();
+  if (m_loader->isRunning())
+  {
+    qDebug("(%p) waiting for thread finished", this);
+    do
+    {
+      if (m_file)
+        m_file->breakParse();
+      if (m_loader->wait(100)) // 100 millisec
+        qDebug("(%p) thread finished", this);
+    } while (m_loader->isRunning());
+  }
   if (m_file)
     delete m_file;
   delete m_loader;
@@ -250,6 +271,13 @@ void GPXFileModel::parse(const QString& filePath)
       delete m_file;
     m_file = new GPXFile();
     parsed = m_file->parse(filePath);
+    if (!parsed)
+    {
+      if (m_file->isAborted())
+        qDebug("parse aborted for file %s", filePath.toUtf8().constData());
+      else
+        qWarning("parse failed for file %s", filePath.toUtf8().constData());
+    }
   }
   emit parseFinished(parsed);
 }
