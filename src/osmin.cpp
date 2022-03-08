@@ -185,11 +185,11 @@ int main(int argc, char *argv[])
     g_favoritesFile = new QFile(resDir.absoluteFilePath(RES_FAVORITES_FILE), &app);
     g_hillshadeProvider = new QString("{}");
     // create the hillshade server file from sample if needed
-    if (!resDir.exists(RES_HILLSHADE_SERVER_FILE) && resDir.exists(RES_HILLSHADE_FILE_SAMPLE))
-    {
-      qInfo("Create hillshade tile server file '%s' from sample", resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE).toUtf8().constData());
-      QFile::copy(resDir.absoluteFilePath(RES_HILLSHADE_FILE_SAMPLE), resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE));
-    }
+    //if (!resDir.exists(RES_HILLSHADE_SERVER_FILE) && resDir.exists(RES_HILLSHADE_FILE_SAMPLE))
+    //{
+    //  qInfo("Create hillshade tile server file '%s' from sample", resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE).toUtf8().constData());
+    //  QFile::copy(resDir.absoluteFilePath(RES_HILLSHADE_FILE_SAMPLE), resDir.absoluteFilePath(RES_HILLSHADE_SERVER_FILE));
+    //}
     // load hillshade server file
     if (resDir.exists(RES_HILLSHADE_SERVER_FILE))
     {
