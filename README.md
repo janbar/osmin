@@ -45,3 +45,19 @@ Downloading big map could failed in background because android stop the activity
 
 On startup, the application creates storage folders in the user's home directory: `osmin` and `Maps`. The first contains user data, configuration files and resources. The last contains downloaded maps.
 
+## Configure hillshade tile server
+
+To enable the hill shading feature, you need to configure the file `hillshade-tile-server.json` from the folder *resources*, i.e. *~/osmin/resources* or *Android/data/io.github.janbar.osmin/files/resources*. Previously the service was provided by wmflabs.org. Unfortunately it is no longer available today. So you can use your own server or any other providing the tile service. An example file looks like the following.
+```
+{
+  "id": "wmflabs",
+  "name": "wmflabs",
+  "servers": [
+    "http://tiles.wmflabs.org/hillshading/%1/%2/%3.png"
+  ],
+  "maximumZoomLevel": 18, 
+  "copyright": "© wmflabs Hillshading"
+}
+```
+The arguments 1-3 are respectively the zoom (Z), and coordinates (X , Y).
+
