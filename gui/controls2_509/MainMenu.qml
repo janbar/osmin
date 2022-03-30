@@ -164,22 +164,26 @@ PopOver {
                                 width: parent.width - units.gu(1)
                                 color: styleMap.view.primaryColor
                                 font.pointSize: units.fs("large")
-                                font.bold: true
+                                font.bold: false
                                 text: name
                                 elide: Text.ElideRight
                             }
-                            Label {
-                                width: parent.width - units.gu(1)
-                                color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("small")
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignLeft
-                                maximumLineCount: 2
-                                wrapMode: Text.Wrap
-                                text: comment
-                            }
+//                            Label {
+//                                width: parent.width - units.gu(1)
+//                                color: styleMap.view.secondaryColor
+//                                font.pointSize: units.fs("small")
+//                                verticalAlignment: Text.AlignVCenter
+//                                horizontalAlignment: Text.AlignLeft
+//                                maximumLineCount: 2
+//                                wrapMode: Text.Wrap
+//                                text: comment
+//                            }
                         }
                     }
+                }
+
+                onPressAndHold: {
+                    popInfo.open(comment, mainMenu.foregroundColor, mainMenu.backgroundColor)
                 }
 
                 onClicked: {
