@@ -536,18 +536,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="364"/>
-        <location filename="../controls2_515/MapView.qml" line="364"/>
+        <location filename="../controls2_509/MapView.qml" line="351"/>
+        <location filename="../controls2_515/MapView.qml" line="351"/>
         <source>Mark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="504"/>
-        <location filename="../controls2_509/MapView.qml" line="668"/>
-        <location filename="../controls2_509/MapView.qml" line="806"/>
-        <location filename="../controls2_515/MapView.qml" line="504"/>
-        <location filename="../controls2_515/MapView.qml" line="668"/>
-        <location filename="../controls2_515/MapView.qml" line="806"/>
+        <location filename="../controls2_509/MapView.qml" line="491"/>
+        <location filename="../controls2_509/MapView.qml" line="655"/>
+        <location filename="../controls2_509/MapView.qml" line="793"/>
+        <location filename="../controls2_515/MapView.qml" line="491"/>
+        <location filename="../controls2_515/MapView.qml" line="655"/>
+        <location filename="../controls2_515/MapView.qml" line="793"/>
         <location filename="../silica/MapView.qml" line="455"/>
         <location filename="../silica/MapView.qml" line="600"/>
         <location filename="../silica/MapView.qml" line="714"/>
@@ -555,42 +555,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="536"/>
-        <location filename="../controls2_515/MapView.qml" line="536"/>
+        <location filename="../controls2_509/MapView.qml" line="523"/>
+        <location filename="../controls2_515/MapView.qml" line="523"/>
         <source>Delete favorite ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="890"/>
-        <location filename="../controls2_515/MapView.qml" line="890"/>
+        <location filename="../controls2_509/MapView.qml" line="877"/>
+        <location filename="../controls2_515/MapView.qml" line="877"/>
         <source>The voice GPS driving directions is not activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="952"/>
-        <location filename="../controls2_515/MapView.qml" line="952"/>
+        <location filename="../controls2_509/MapView.qml" line="939"/>
+        <location filename="../controls2_515/MapView.qml" line="939"/>
         <location filename="../silica/MapView.qml" line="835"/>
         <source>My Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="1031"/>
-        <location filename="../controls2_515/MapView.qml" line="1031"/>
+        <location filename="../controls2_509/MapView.qml" line="1018"/>
+        <location filename="../controls2_515/MapView.qml" line="1018"/>
         <location filename="../silica/MapView.qml" line="914"/>
         <source>Target reached at %1 %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="1048"/>
-        <location filename="../controls2_515/MapView.qml" line="1048"/>
+        <location filename="../controls2_509/MapView.qml" line="1035"/>
+        <location filename="../controls2_515/MapView.qml" line="1035"/>
         <location filename="../silica/MapView.qml" line="931"/>
         <source>Track recording failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/MapView.qml" line="1092"/>
-        <location filename="../controls2_515/MapView.qml" line="1092"/>
+        <location filename="../controls2_509/MapView.qml" line="1079"/>
+        <location filename="../controls2_515/MapView.qml" line="1079"/>
         <source>Loading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2_509/MapView.qml" line="1138"/>
+        <location filename="../controls2_515/MapView.qml" line="1138"/>
+        <source>Tracker service is connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../controls2_509/MapView.qml" line="1140"/>
+        <location filename="../controls2_515/MapView.qml" line="1140"/>
+        <source>Tracker service has been disconnected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1295,10 +1307,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/osmin.qml" line="411"/>
-        <location filename="../controls2_509/osmin.qml" line="421"/>
-        <location filename="../controls2_515/osmin.qml" line="411"/>
-        <location filename="../controls2_515/osmin.qml" line="421"/>
+        <location filename="../controls2_509/osmin.qml" line="416"/>
+        <location filename="../controls2_509/osmin.qml" line="426"/>
+        <location filename="../controls2_515/osmin.qml" line="416"/>
+        <location filename="../controls2_515/osmin.qml" line="426"/>
         <location filename="../silica/osmin.qml" line="217"/>
         <location filename="../silica/osmin.qml" line="227"/>
         <source>Saving change failed</source>

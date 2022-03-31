@@ -61,7 +61,9 @@ MapPage {
     }
 
     Component.onCompleted: {
-        positionSource.update();
+        // Syncing all data from the tracker
+        Service.ping("ALL");
+        // show current coordinates
         if (positionSource._posValid) {
             map.showCoordinates(positionSource._lat, positionSource._lon);
         }
@@ -77,11 +79,6 @@ MapPage {
         }
         // on azimuth changed
         compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
-        // resume current recording
-        if (settings.trackerRecording !== "") {
-            console.log("Resuming recording " + settings.trackerRecording);
-            Tracker.resumeRecording(settings.trackerRecording);
-        }
     }
 
     property QtObject mark: QtObject {
@@ -231,21 +228,14 @@ MapPage {
             // unlock rotation and disable rotate
             lockRotation = false;
             rotateEnabled = false;
-            // connect the Tracker to azimuth
+            // activate azimuth
             compass.active = !applicationSuspended;
-            compass.polled.connect(Tracker.azimuthChanged);
             // show vehicle icon
             map.setVehicleScaleFactor(1.0);
-            // log this position
-            Tracker.locationChanged(positionSource._posValid,
-                                    positionSource._lat, positionSource._lon,
-                                    positionSource._accValid, positionSource._acc,
-                                    positionSource._alt);
         } else {
             // hide vehicle icon
             map.setVehicleScaleFactor(0.0);
-            // disconnect the Tracker from azimuth
-            compass.polled.disconnect(Tracker.azimuthChanged);
+            // deactivate azimuth
             compass.active = false;
             // lock rotation
             mapView.rotation = 0.0;
@@ -1038,21 +1028,21 @@ MapPage {
     }
 
     property var overlayRecording: map.createOverlayWay("_track");
+    property bool isRecording: false
 
     Connections {
         target: Tracker
-        function onRecordingChanged() {
-            settings.trackerRecording = Tracker.recording;
-        }
         function onRecordingFailed() {
             popInfo.open(qsTr("Track recording failed"));
         }
         function onIsRecordingChanged() {
-            if (!Tracker.isRecording) {
-                overlayRecording.clear();
+            // clear previous recording
+            if (Tracker.isRecording && !mapView.isRecording) {
                 overlayManager.removeRecording();
                 overlayManager.removeMark(1);
+                overlayRecording.clear();
             }
+            mapView.isRecording = Tracker.isRecording;
         }
         function onTrackerPositionRecorded(lat, lon) {
             overlayRecording.addPoint(lat, lon);
@@ -1136,6 +1126,27 @@ MapPage {
             d = d + Math.PI*2.0;
         if (d > 0.14 || d < -0.14) {
             mapView.rotation = (map.view.angle + d);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////
+    //// About the tracker service
+    ////
+
+    Connections {
+        target: Service
+        function onStatusChanged() {
+            if (Service.status === Service.ServiceConnected) {
+                popInfo.open(qsTr("Tracker service is connected"), "limegreen", "black");
+                // clear all data before ping ALL
+                overlayManager.removeRecording();
+                overlayManager.removeMark(1);
+                overlayRecording.clear();
+                Service.ping("ALL");
+            } else {
+                popInfo.open(qsTr("Tracker service has been disconnected"));
+            }
         }
     }
 }

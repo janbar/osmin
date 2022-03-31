@@ -17,8 +17,8 @@
 
 import QtQuick 2.0
 import QtQml 2.2
-import QtSensors 5.2 as Legacy
-import Osmin 1.0 as Builtin
+//import QtSensors 5.2 as Legacy
+import Osmin 1.0 as Osmin
 
 Item {
     id: compass
@@ -43,7 +43,7 @@ Item {
         return angle360 / 360 * compassScaleVal
     }
 
-    Builtin.Compass {
+    Osmin.Compass {
         id: compassBuiltin
         active: compass.active
         dataRate: 2
@@ -54,5 +54,6 @@ Item {
             compass.rightDirection = d < 4.0 || d > 356.0;
             compass.calibration = reading.calibrationLevel;
         }
+        Component.onCompleted: { connectToService(Osmin.Service.getServiceHandle()) }
     }
 }

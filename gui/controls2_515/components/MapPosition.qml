@@ -16,32 +16,33 @@
  */
 
 import QtQuick 2.2
-import QtPositioning 5.2
+//import QtPositioning 5.2 as Legacy
+import Osmin 1.0 as Osmin
 
-PositionSource {
-    id: postionSource
+Osmin.PositionSource {
+    id: positionSource
     property double _lat: 0.0
     property double _lon: 0.0
     property double _alt: 0.0
     property real _acc: 0.0
     property bool _posValid: false
     property bool _accValid: false
-    property bool _altValid: false
 
     signal dataUpdated(bool valid, double lat, double lon, bool accValid, real acc, double alt)
 
     onPositionChanged: {
-        _lat = position.coordinate.latitude;
-        _lon = position.coordinate.longitude;
-        _alt = position.coordinate.altitude;
+        _lat = position.latitude;
+        _lon = position.longitude;
+        _alt = position.altitude;
         _acc = position.horizontalAccuracy;
-        _posValid = position.latitudeValid && position.longitudeValid;
+        _posValid = position.valid;
         _accValid = position.horizontalAccuracyValid;
-        _altValid = position.altitudeValid;
         dataUpdated(_posValid, _lat, _lon, _accValid, _acc, _alt);
     }
 
     active: true
     updateInterval: 1000
-    preferredPositioningMethods: PositionSource.SatellitePositioningMethods
+    //preferredPositioningMethods: PositionSource.SatellitePositioningMethods
+
+    Component.onCompleted: { connectToService(Osmin.Service.getServiceHandle()) }
 }

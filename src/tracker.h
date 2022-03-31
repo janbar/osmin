@@ -42,6 +42,7 @@ class Tracker : public QObject
 public:
   Tracker(QObject* parent = nullptr);
   virtual ~Tracker();
+  Tracker(const Tracker&) = delete;
 
   bool init(const QString& root);
 
@@ -71,6 +72,7 @@ public:
   Q_INVOKABLE void stopRecording();
   Q_INVOKABLE void pinPosition();
   Q_INVOKABLE void markPosition(const QString& symbol, const QString& name, const QString& description);
+  Q_INVOKABLE void dumpRecording();
 
 signals:
   void trackerPositionChanged();
@@ -89,6 +91,8 @@ signals:
   void doStartRecording();
   void doResumeRecording(const QString& filename);
   void doStopRecording();
+  void doMarkPosition(const QString& symbol, const QString& name, const QString& description);
+  void doDumpRecording();
 
 private slots:
   void onPositionChanged(const osmscout::PositionAgent::PositionState state,
@@ -98,6 +102,7 @@ private slots:
   void onRecordingChanged(const QString& filename);
   void onProcessingChanged(bool busy);
   void onPositionRecorded(const osmscout::GeoCoord coord);
+  void onPositionMarked(const osmscout::GeoCoord coord, const QString& symbol, const QString& name);
 
 private:
   TrackerModule* m_p;
@@ -131,7 +136,7 @@ public:
   bool isRecording() const { return m_recording; }
 
   void pinPosition();
-  osmscout::GeoCoord markPosition(const QString& symbol, const QString& name, const QString& description);
+  void markPosition(const QString& symbol, const QString& name, const QString& description);
 
 signals:
   void dataChanged(double kmph, double distance, double duration, double ascent, double descent, double maxkmph);
@@ -142,6 +147,7 @@ signals:
   void recordingChanged(const QString& filename);
   void processing(bool busy);
   void positionRecorded(const osmscout::GeoCoord coord);
+  void positionMarked(const osmscout::GeoCoord coord, const QString& symbol, const QString& name);
 
 public slots:
   void onTimeout();
@@ -151,7 +157,9 @@ public slots:
   void onStartRecording();
   void onResumeRecording(const QString& filename);
   void onStopRecording();
+  void onMarkPosition(const QString& symbol, const QString& name, const QString& description);
   void onFlushRecording();
+  void onDumpRecording();
 
 private:
   QThread* m_t;

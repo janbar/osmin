@@ -61,10 +61,13 @@ bool Tracker::init(const QString& root)
   connect(this, &Tracker::doStartRecording, m_p, &TrackerModule::onStartRecording, Qt::QueuedConnection);
   connect(this, &Tracker::doResumeRecording, m_p, &TrackerModule::onResumeRecording, Qt::QueuedConnection);
   connect(this, &Tracker::doStopRecording, m_p, &TrackerModule::onStopRecording, Qt::QueuedConnection);
+  connect(this, &Tracker::doMarkPosition, m_p, &TrackerModule::onMarkPosition, Qt::QueuedConnection);
+  connect(this, &Tracker::doDumpRecording, m_p, &TrackerModule::onDumpRecording, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::recordingChanged, this, &Tracker::onRecordingChanged, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::recordingFailed, this, &Tracker::recordingFailed, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::processing, this, &Tracker::onProcessingChanged, Qt::QueuedConnection);
   connect(m_p, &TrackerModule::positionRecorded, this, &Tracker::onPositionRecorded, Qt::QueuedConnection);
+  connect(m_p, &TrackerModule::positionMarked, this, &Tracker::onPositionMarked, Qt::QueuedConnection);
 
   return true;
 }
@@ -133,10 +136,12 @@ void Tracker::pinPosition()
 
 void Tracker::markPosition(const QString &symbol, const QString &name, const QString &description)
 {
-  if (m_p && m_p->isRecording()) {
-    osmscout::GeoCoord coord = m_p->markPosition(symbol, name, description);
-    emit trackerPositionMarked(coord.GetLat(), coord.GetLon(), symbol, name);
-  }
+  emit doMarkPosition(symbol, name, description);
+}
+
+void Tracker::dumpRecording()
+{
+  emit doDumpRecording();
 }
 
 void Tracker::onPositionChanged(const osmscout::PositionAgent::PositionState state,
@@ -175,6 +180,11 @@ void Tracker::onProcessingChanged(bool busy)
 void Tracker::onPositionRecorded(const osmscout::GeoCoord coord)
 {
   emit trackerPositionRecorded(coord.GetLat(), coord.GetLon());
+}
+
+void Tracker::onPositionMarked(const osmscout::GeoCoord coord, const QString& symbol, const QString& name)
+{
+  emit trackerPositionMarked(coord.GetLat(), coord.GetLon(), symbol, name);
 }
 
 TrackerModule::TrackerModule(QThread* thread, const QString& root)
@@ -481,6 +491,32 @@ void TrackerModule::onStopRecording()
   emit processing(false);
 }
 
+void TrackerModule::onMarkPosition(const QString& symbol, const QString& name, const QString& description)
+{
+  qDebug("%s", __FUNCTION__);
+  if (m_pinnedPosition.isNull())
+    pinPosition();
+  QScopedPointer<position_t> pos;
+  pos.swap(m_pinnedPosition);
+  // default an empty name
+  QString _name(name);
+  if (_name.isEmpty())
+    _name.append('[').append(QString::fromStdString(pos->coord.GetDisplayText())).append(']');
+  // save the mark
+  if (!m_mark.isNull())
+    onFlushRecording();
+  osmscout::gpx::Waypoint* waypoint = new osmscout::gpx::Waypoint(pos->coord);
+  waypoint->time = std::optional<osmscout::Timestamp>(pos->time);
+  waypoint->course = std::optional<double>(pos->bearing.AsDegrees());
+  waypoint->elevation = std::optional<double>(pos->elevation);
+  waypoint->symbol = std::optional<std::string>(symbol.toUtf8());
+  waypoint->name = std::optional<std::string>(_name.toUtf8());
+  waypoint->description = std::optional<std::string>(description.toUtf8());
+  m_mark.reset(waypoint);
+  onFlushRecording();
+  emit positionMarked(pos->coord, symbol, name);
+}
+
 void TrackerModule::onFlushRecording()
 {
   qDebug("%s", __FUNCTION__);
@@ -562,6 +598,51 @@ void TrackerModule::onFlushRecording()
   // end critical section
 }
 
+void TrackerModule::onDumpRecording()
+{
+  qDebug("%s", __FUNCTION__);
+  QSharedPointer<QFile> file = m_file;
+  if (file.isNull())
+    return;
+  // start critical section
+  m_lock.lock();
+  if (file->open(QIODevice::ReadOnly | QIODevice::Text))
+  {
+    // dump stored data
+    for (;;)
+    {
+      QList<QByteArray*> row = m_formater->deserialize(file->readLine(0x3ff));
+      if (row.length() == 0)
+        break;
+      else if (row.length() >= 6 && *row[0] == TAG_WAYPT)
+      {
+        osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
+        double lat = QString::fromUtf8(row[2]->constData()).toDouble();
+        double lon = QString::fromUtf8(row[3]->constData()).toDouble();
+        QString symbol(row[6]->constData());
+        QString name(row[7]->constData());
+        emit positionMarked(osmscout::GeoCoord(lat, lon), symbol, name);
+      }
+      else if (row.length() >= 6 && *row[0] == TAG_TRKPT)
+      {
+        osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
+        double lat = QString::fromUtf8(row[2]->constData()).toDouble();
+        double lon = QString::fromUtf8(row[3]->constData()).toDouble();
+        emit positionRecorded(osmscout::GeoCoord(lat, lon));
+      }
+      qDeleteAll(row);
+    }
+    file->close();
+  }
+  // dump in memory data
+  for (auto& p : m_segment)
+    emit positionRecorded(p.coord);
+  if (!m_mark.isNull())
+    emit positionMarked(m_mark->coord, QString::fromUtf8(m_mark->symbol.value_or(MARK_SYMBOL).data()), QString::fromUtf8(m_mark->name.value_or("").data()));
+  m_lock.unlock();
+  // end critical section
+}
+
 void TrackerModule::record()
 {
   if (m_segment.count() >= SEGMENT_SIZE)
@@ -576,30 +657,4 @@ void TrackerModule::record()
 void TrackerModule::pinPosition()
 {
   m_pinnedPosition.reset(new position_t(m_lastPosition));
-}
-
-osmscout::GeoCoord TrackerModule::markPosition(const QString& symbol, const QString& name, const QString& description)
-{
-  qDebug("%s", __FUNCTION__);
-  if (m_pinnedPosition.isNull())
-    pinPosition();
-  QScopedPointer<position_t> pos;
-  pos.swap(m_pinnedPosition);
-  // default an empty name
-  QString _name(name);
-  if (_name.isEmpty())
-    _name.append('[').append(QString::fromStdString(pos->coord.GetDisplayText())).append(']');
-  // save the mark
-  if (!m_mark.isNull())
-    onFlushRecording();
-  osmscout::gpx::Waypoint* waypoint = new osmscout::gpx::Waypoint(pos->coord);
-  waypoint->time = std::optional<osmscout::Timestamp>(pos->time);
-  waypoint->course = std::optional<double>(pos->bearing.AsDegrees());
-  waypoint->elevation = std::optional<double>(pos->elevation);
-  waypoint->symbol = std::optional<std::string>(symbol.toUtf8());
-  waypoint->name = std::optional<std::string>(_name.toUtf8());
-  waypoint->description = std::optional<std::string>(description.toUtf8());
-  m_mark.reset(waypoint);
-  onFlushRecording();
-  return pos->coord;
 }

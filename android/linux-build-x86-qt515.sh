@@ -2,6 +2,7 @@ BUILD_DIR=build-x86-515
 rm -rf $BUILD_DIR/*
 mkdir -p $BUILD_DIR
 
+export PLATFORM_LEVEL=29
 export JAVA_HOME=/home/shared/java/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
 export ANDROID_NDK=/home/shared/Android/Sdk/ndk/21.4.7075529
@@ -14,14 +15,14 @@ cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_PREFIX_PATH=$QT_DIR \
 -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
 -DCMAKE_MAKE_PROGRAM=$ANDROID_NDK/prebuilt/linux-x86_64/bin/make \
--DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_BUILD_TYPE=Debug \
 -DANDROID_ABI="x86" \
 -DANDROID_STL_PREFIX="llvm-libc++" \
 -DANDROID_STL_SHARED_LIBRARIES="c++_shared" \
 -DANDROID_SDK_MINVER=$ANDROID_SDK_MINVER \
 -DANDROID_SDK_TARGET=$ANDROID_SDK_TARGET \
 -DANDROID_NATIVE_API_LEVEL=$ANDROID_NATIVE_API_LEVEL \
--DQT_ANDROID_PLATFORM_LEVEL=$ANDROID_NATIVE_API_LEVEL \
+-DQT_ANDROID_PLATFORM_LEVEL=$PLATFORM_LEVEL \
 -DQT_ANDROID_TOOL_PREFIX="i686-linux-android" \
 -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK \
 -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK \
@@ -42,6 +43,7 @@ cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DQt5Multimedia_DIR=$QT_DIR/lib/cmake/Qt5Multimedia \
 -DQt5AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt5AndroidExtras \
 -DQt5QmlModels_DIR=$QT_DIR/lib/cmake/Qt5QmlModels \
+-DQt5RemoteObjects_DIR=$QT_DIR/lib/cmake/Qt5RemoteObjects \
 $@
 
 [ $? -eq 0 ] && cmake --build $BUILD_DIR --parallel 8

@@ -2,6 +2,7 @@ BUILD_DIR=build-armv7-512
 rm -rf $BUILD_DIR/*
 mkdir -p $BUILD_DIR
 
+export PLATFORM_LEVEL=29
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/
 export ANDROID_SDK=/Users/Shared/Android/Sdk
 export ANDROID_NDK=/Users/Shared/Android/Sdk/ndk/18.1.5063045
@@ -21,7 +22,7 @@ cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DANDROID_SDK_MINVER=$ANDROID_SDK_MINVER \
 -DANDROID_SDK_TARGET=$ANDROID_SDK_TARGET \
 -DANDROID_NATIVE_API_LEVEL=$ANDROID_NATIVE_API_LEVEL \
--DQT_ANDROID_PLATFORM_LEVEL=$ANDROID_NATIVE_API_LEVEL \
+-DQT_ANDROID_PLATFORM_LEVEL=$PLATFORM_LEVEL \
 -DQT_ANDROID_TOOL_PREFIX="arm-linux-androideabi" \
 -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK \
 -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK \
@@ -41,6 +42,7 @@ cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DQt5Positioning_DIR=$QT_DIR/lib/cmake/Qt5Positioning \
 -DQt5Multimedia_DIR=$QT_DIR/lib/cmake/Qt5Multimedia \
 -DQt5AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt5AndroidExtras \
+-DQt5RemoteObjects_DIR=$QT_DIR/lib/cmake/Qt5RemoteObjects \
 $@
 
 [ $? -eq 0 ] && cmake --build $BUILD_DIR --parallel 4

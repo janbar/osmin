@@ -1,0 +1,56 @@
+class ServiceMessenger {
+  SLOT(void ping(const QString &message));
+  SIGNAL(pong(const QString &message));
+
+  // Compass sensor
+  SLOT(void compass_setActive(bool active));
+  SLOT(void compass_setDataRate(int dataRate));
+  SIGNAL(compass_readingChanged(
+            float azimuth,
+            float calibrationLevel
+  ));
+  SIGNAL(compass_activeChanged(bool active));
+  SIGNAL(compass_dataRateChanged(int dataRate));
+
+  // Geo position
+  SLOT(void position_setUpdateInterval(int interval));
+  SLOT(void position_setPreferredPositioningMethods(int methods));
+  SLOT(void position_startUpdates());
+  SLOT(void position_stopUpdates());
+  SIGNAL(position_positionUpdated(
+            bool positionValid,
+            double latitude,
+            double longitude,
+            bool horizontalAccuracyValid,
+            float horizontalAccuracy,
+            double altitude
+  ));
+  SIGNAL(position_activeChanged(bool active));
+  SIGNAL(position_updateIntervalChanged(int interval));
+  SIGNAL(position_preferredPositioningMethodsChanged(int methods));
+
+  // Tracker
+  SLOT(void tracker_setRecording(const QString& filename));
+  SLOT(void tracker_startRecording());
+  SLOT(void tracker_stopRecording());
+  SLOT(void tracker_pinPosition());
+  SLOT(void tracker_markPosition(const QString& symbol, const QString& name, const QString& description));
+  SLOT(void tracker_resetData());
+  SIGNAL(tracker_resumeRecording());
+  SIGNAL(tracker_isRecordingChanged(bool recording));
+  SIGNAL(tracker_recordingChanged(const QString& filename));
+  SIGNAL(tracker_processingChanged(bool processing));
+  SIGNAL(tracker_positionRecorded(double lat, double lon));
+  SIGNAL(tracker_positionMarked(double lat, double lon, const QString& symbol, const QString& name));
+  SIGNAL(tracker_positionChanged(bool valid, double lat, double lon, double bearing));
+  SIGNAL(tracker_recordingFailed());
+  SIGNAL(tracker_dataChanged(
+            double elevation,
+            double currentSpeed,
+            double distance,
+            double duration,
+            double ascent,
+            double descent,
+            double maxSpeed
+  ));
+}
