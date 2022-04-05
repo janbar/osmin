@@ -1053,6 +1053,15 @@ MapPage {
         }
     }
 
+    // On android disable navigation when the app is suspended
+    Connections {
+        target: mainView
+        function onApplicationSuspendedChanged() {
+            if (Android && applicationSuspended && navigation)
+                navigation = false;
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     ////
     //// Courses
