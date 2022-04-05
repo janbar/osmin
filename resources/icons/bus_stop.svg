@@ -13,7 +13,7 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="bus_stop.svg"
    inkscape:export-filename="/home/tim/projects/OSMScout/libosmscout/data/icons/14x14/standard/bus_stop.png"
    inkscape:export-xdpi="19.690001"
@@ -82,18 +82,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="14.078125"
-     inkscape:cx="17.438402"
-     inkscape:cy="32"
-     inkscape:current-layer="layer1"
+     inkscape:cx="28.907593"
+     inkscape:cy="31.715871"
+     inkscape:current-layer="g31"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      guidetolerance="10000"
-     inkscape:window-width="2499"
-     inkscape:window-height="1384"
-     inkscape:window-x="61"
-     inkscape:window-y="28"
-     inkscape:window-maximized="1">
+     inkscape:window-width="1709"
+     inkscape:window-height="1082"
+     inkscape:window-x="64"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid2826"
@@ -110,7 +110,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -128,7 +128,8 @@
          height="41"
          width="52"
          id="rect2874"
-         style="fill:#0b96da;fill-opacity:1;stroke:none;stroke-width:0.83928573;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.9000001;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+         style="fill:#0b96da;fill-opacity:1;stroke:none;stroke-width:0.83928573;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.9000001;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         ry="4.1964278" />
       <rect
          y="50"
          x="10"
@@ -144,12 +145,12 @@
          id="rect3648-3"
          style="fill:#0b96da;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.83928573" />
       <rect
-         y="16"
+         y="14.035713"
          x="10"
-         height="12"
-         width="41"
+         height="13.964287"
+         width="42"
          id="rect3674"
-         style="fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.83928573" />
+         style="fill:#fffffd;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.83928567" />
       <circle
          transform="matrix(1.75,0,0,1.75,25,-34)"
          id="path3676-1"
