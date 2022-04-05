@@ -8,6 +8,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QSharedPointer>
 #include "rep_servicemessenger_replica.h"
 
 class ServiceFrontend;

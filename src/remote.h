@@ -3,8 +3,6 @@
 
 #include "servicefrontend.h"
 
-#include <QSharedPointer>
-
 class Remote
 {
 public:
