@@ -1,12 +1,12 @@
 
 ### Requirements:
 
-- Android SDK 26-28
+- Android SDK 29
 - Java jdk 1.8
 - Qt Creator 4.12
 
-- Qt <= 5.12 : Android NDK r18b
-- Qt >= 5.15 : Android NDK r21e
+- Qt = 5.12 : Android NDK r18b
+- Qt = 5.15 : Android NDK r21e
 
 ### Configure the build:
 
@@ -21,6 +21,6 @@ source ./linux-build.sh -DKEYSTORE_FILE=~/.android/janbar.keystore -DKEYSTORE_AL
 
 ### Extras
 
-- Setup for marshmallow (sdk23):
+- Setup for marshmallow:
   ANDROID_NATIVE_API_LEVEL=23, ANDROID_SDK_MINVER=23, ANDROID_SDK_TARGET=23
 
