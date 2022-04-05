@@ -4,12 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSettings>
-#ifdef SAILFISHOS
-#include <sailfishapp/sailfishapp.h>
-#include <QQuickView>
-#else
 #include <QtQuickControls2>
-#endif
 #include <QStandardPaths>
 #include <QTranslator>
 #include <QDebug>
@@ -32,13 +27,6 @@
 #define DIR_VOICES        "voices"
 #define DIR_RES           "resources"
 #define APP_TR_NAME       "osmin"
-#ifdef SAILFISHOS
-#define ORG_NAME          "harbour-osmin"
-#define APP_NAME          "harbour-osmin"
-#define APP_DISPLAY_NAME  "Osmin"
-#define APP_ID            APP_NAME
-#define AUTO_MOUNT        "/run/media/"
-#else
 #define ORG_NAME          "io.github.janbar"
 #define APP_NAME          "osmin"
 #define APP_DISPLAY_NAME  "Osmin"
@@ -48,7 +36,6 @@
 #else
 #define APP_ID            APP_NAME
 #define AUTO_MOUNT        "/media/"
-#endif
 #endif
 
 #include "signalhandler.h"
@@ -342,20 +329,6 @@ int main(int argc, char *argv[])
           break;
       }
     }
-#elif defined(SAILFISHOS)
-    storages.push_back(PlatformExtras::getHomeDir());
-    storages.append(PlatformExtras::getStorageDirs());
-    for (QString& storage : storages)
-    {
-      QDir dir(storage);
-      if (!dir.exists(DIR_MAPS) && !dir.mkdir(DIR_MAPS))
-        qWarning("Failed to create maps storage at %s", dir.absoluteFilePath(DIR_MAPS).toUtf8().constData());
-      else
-      {
-        mapDirs.push_back(dir.absoluteFilePath(DIR_MAPS));
-        break; // no more 2
-      }
-    }
 #else
     storages.push_back(PlatformExtras::getHomeDir());
     for (QString& storage : storages)
@@ -427,7 +400,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<RemotePosition>(OSMIN_MODULE, 1, 0, "Position");
 
     QSettings settings;
-#ifndef SAILFISHOS
     QString style = QQuickStyle::name();
     if (!style.isEmpty())
         settings.setValue("style", style);
@@ -484,26 +456,6 @@ int main(int argc, char *argv[])
         qWarning() << "Failed to load QML";
         return -1;
     }
-#else
-    QScopedPointer<QQuickView> view(SailfishApp::createView());
-#ifdef QT_STATICPLUGIN
-    importStaticPlugins(view->engine());
-#endif
-    QObject::connect(view->engine(), &QQmlApplicationEngine::quit, &app, QCoreApplication::quit);
-    // bind version string
-    view->engine()->rootContext()->setContextProperty("VersionString", QString(APP_VERSION));
-    // bind arguments
-    view->engine()->rootContext()->setContextProperty("ApplicationArguments", app.arguments());
-    // bind SCALE_FACTOR
-    view->engine()->rootContext()->setContextProperty("ScreenScaleFactor", QVariant(app.primaryScreen()->devicePixelRatio()));
-    // bind directories
-    view->engine()->rootContext()->setContextProperty("DataDirectory", homeDir.absolutePath());
-    view->engine()->rootContext()->setContextProperty("MapsDirectories", mapDirs);
-    // bind hillshade provider
-    view->engine()->rootContext()->setContextProperty("HillshadeProvider", *g_hillshadeProvider);
-    view->setSource(QUrl("qrc:/silica/osmin.qml"));
-    view->showFullScreen();
-#endif
 
     ret = app.exec();
     osmscout::OSMScoutQt::FreeInstance();

@@ -4,23 +4,15 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 project(osmin C CXX)
 
 option(INSTALL_TESTS "Install the tests on make install" OFF)
-option(BUILD_SAILFISHOS "Build the SailfishOS application" OFF)
 
 set(APP_VERSION       "1.7.2")
 set(APP_VERSION_CODE  40)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
-if(BUILD_SAILFISHOS)
-    set(EXEC            "harbour-osmin")
-    set(ICON_NAME       "${EXEC}")
-    set(APP_DESKTOP_ID  "${EXEC}")
-else()
-    set(EXEC          	"osmin")
-    set(ICON_NAME     	"${EXEC}")
-    set(APP_DESKTOP_ID	"${EXEC}")
-endif()
-
+set(EXEC              "osmin")
+set(ICON_NAME         "${EXEC}")
+set(APP_DESKTOP_ID    "${EXEC}")
 set(ICON_FILE         "osmin.png")
 set(DESKTOP_FILE_NAME "osmin.desktop")
 set(APPDATA_FILE_NAME "osmin.appdata.xml")
@@ -38,41 +30,7 @@ set(APPDATA_DIR ${CMAKE_INSTALL_DATADIR}/metainfo)
 set(DESKTOP_DIR ${CMAKE_INSTALL_DATADIR}/applications)
 set(PLUGINS_DIR ${CMAKE_INSTALL_FULL_LIBDIR}/${EXEC})
 
-if(BUILD_SAILFISHOS)
-    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${APP_DESKTOP_ID}.desktop "[Desktop Entry]
-Name=${APP_NAME}
-Exec=${EXEC}
-Icon=${ICON_NAME}
-Type=Application
-Categories=Maps;
-X-Nemo-Application-Type=generic")
-
-    install(
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/${APP_DESKTOP_ID}.desktop
-        DESTINATION ${DESKTOP_DIR}
-    )
-
-    install(
-        FILES "gui/images/${ICON_NAME}-86x86.png"
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/86x86/apps RENAME "${ICON_NAME}.png"
-    )
-
-    install(
-        FILES "gui/images/${ICON_NAME}-108x108.png"
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/108x108/apps RENAME "${ICON_NAME}.png"
-    )
-
-    install(
-        FILES "gui/images/${ICON_NAME}-128x128.png"
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps RENAME "${ICON_NAME}.png"
-    )
-
-    install(
-        FILES "gui/images/${ICON_NAME}-172x172.png"
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/172x172/apps RENAME "${ICON_NAME}.png"
-    )
-else()
-    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${APP_DESKTOP_ID}.desktop "[Desktop Entry]
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${APP_DESKTOP_ID}.desktop "[Desktop Entry]
 Name=${APP_NAME}
 Exec=${EXEC}
 Icon=${ICON_NAME}
@@ -80,21 +38,20 @@ Terminal=false
 Type=Application
 Categories=Maps;")
 
-    install(
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/${APP_DESKTOP_ID}.desktop
-        DESTINATION ${DESKTOP_DIR}
-    )
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${APP_DESKTOP_ID}.desktop
+    DESTINATION ${DESKTOP_DIR}
+)
 
-    install(
-        FILES "gui/images/${ICON_FILE}"
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps RENAME "${ICON_NAME}.png"
-    )
+install(
+    FILES "gui/images/${ICON_FILE}"
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps RENAME "${ICON_NAME}.png"
+)
 
-    configure_file(
-        ${APPDATA_FILE_NAME}.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${APPDATA_FILE_NAME}
-    )
-endif()
+configure_file(
+    ${APPDATA_FILE_NAME}.in
+    ${CMAKE_CURRENT_BINARY_DIR}/${APPDATA_FILE_NAME}
+)
 
 if(NOT APPLE)
     # Provides OpenMP
@@ -117,13 +74,10 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5Quick REQUIRED)
-if(BUILD_SAILFISHOS)
-    find_package(PkgConfig)
-    pkg_check_modules(LIBSAILFISHAPP REQUIRED sailfishapp)
-else()
-    set(QT_MIN_VERSION 5.12.0)
-    find_package(Qt5QuickControls2 ${QT_MIN_VERSION} REQUIRED)
-endif()
+
+set(QT_MIN_VERSION 5.12.0)
+find_package(Qt5QuickControls2 ${QT_MIN_VERSION} REQUIRED)
+
 if(ANDROID)
     find_package(Qt5AndroidExtras REQUIRED)
 endif()
@@ -187,9 +141,7 @@ endif()
 
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
 
-if(BUILD_SAILFISHOS)
-    qt5_add_resources(osmin-resources gui/osmin_silica.qrc)
-elseif(Qt5Core_VERSION VERSION_LESS 5.15.0)
+if(Qt5Core_VERSION VERSION_LESS 5.15.0)
     qt5_add_resources(osmin-resources gui/osmin_controls2_509.qrc)
 else()
     qt5_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
@@ -210,12 +162,7 @@ target_link_libraries(osmin ${LIBOSMSCOUT_LIBRARIES})
 
 add_definitions(-DQT_STATICPLUGIN)
 
-if(BUILD_SAILFISHOS)
-    add_definitions(-DSAILFISHOS)
-    include_directories(${LIBSAILFISHAPP_INCLUDE_DIRS})
-    target_link_libraries(osmin ${LIBSAILFISHAPP_LIBRARIES}
-                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
-elseif(ANDROID)
+if(ANDROID)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
     target_link_libraries(osmin Qt5::QuickControls2 Qt5::AndroidExtras android log Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
