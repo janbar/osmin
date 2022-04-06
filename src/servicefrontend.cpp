@@ -12,7 +12,6 @@ ServiceFrontend::ServiceFrontend(const QString& url)
   this->moveToThread(m_t);
   connect(m_t, &QThread::finished, this, &ServiceFrontend::onFinished);
   connect(m_t, &QThread::started, this, &ServiceFrontend::run);
-  connect(this, &ServiceFrontend::ping, this, &ServiceFrontend::onPing, Qt::QueuedConnection);
   m_t->start();
 }
 
@@ -27,6 +26,13 @@ ServiceFrontend::~ServiceFrontend()
 void ServiceFrontend::terminate()
 {
   m_t->quit();
+}
+
+void ServiceFrontend::ping(const QString &message)
+{
+  auto m = m_messenger;
+  if (!m.isNull())
+    m->ping(message);
 }
 
 void ServiceFrontend::setRecording(const QString &filename)
@@ -153,13 +159,6 @@ void ServiceFrontend::onStateChanged(QRemoteObjectReplica::State state, QRemoteO
     emit serviceDisconnected();
     this->run();
   }
-}
-
-void ServiceFrontend::onPing(const QString &message)
-{
-  auto m = m_messenger;
-  if (!m.isNull())
-    m->ping(message);
 }
 
 void ServiceFrontend::onFinished()

@@ -27,8 +27,6 @@ public:
   void terminate();
 
 signals:
-  // operations
-  void ping(const QString& message);
   // callbacks
   void trackerRecordingFailed();
   void trackerResumeRecording();
@@ -60,6 +58,7 @@ signals:
   void serviceConnected();
 
 public slots:
+  void ping(const QString& message);
   void setRecording(const QString& filename);
   void resetTrackingData();
   void startRecording();
@@ -73,7 +72,6 @@ public slots:
 private slots:
   void run();
   void onStateChanged(QRemoteObjectReplica::State state, QRemoteObjectReplica::State oldState);
-  void onPing(const QString& message);
   void onFinished();
 
 private:
