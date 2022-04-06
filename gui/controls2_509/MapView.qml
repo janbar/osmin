@@ -66,7 +66,7 @@ MapPage {
         // show current coordinates
         ToolBox.connectOnce(positionSource.dataUpdated, function(){
             if (positionSource._posValid) {
-                map.showCoordinates(positionSource._lat, positionSource._lon);
+                map.showCoordinatesInstantly(positionSource._lat, positionSource._lon);
             }
         });
         // load current course or clean
@@ -751,10 +751,11 @@ MapPage {
                         opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
-                            if (lockRotation)
-                                rotator.rotateTo(rotation, true);
-                            else
+                            if (!lockRotation) {
                                 map.lockToPosition = true;
+                            } else if(positionSource._posValid) {
+                                map.showCoordinatesInstantly(positionSource._lat, positionSource._lon);
+                            }
                         }
                     }
 
