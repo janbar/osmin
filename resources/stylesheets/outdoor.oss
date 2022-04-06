@@ -226,6 +226,19 @@ CONST
   COLOR viaFerrataDifficultColor    = #ec4044;
   COLOR viaFerrataExtremeColor      = #ff0000;
 
+  IF daylight {
+    COLOR aerodromeColor           = #d5ddbd;
+    COLOR aerodromeTerminalColor   = #cc99ff;
+    COLOR aerodromeRunwayColor     = #bbbbcc;
+    COLOR aerodromeApron           = #e8d1fe;
+  }
+  ELSE {
+    COLOR aerodromeColor           = darken(#d5ddbd, 0.6);
+    COLOR aerodromeTerminalColor   = darken(#cc99ff, 0.6);
+    COLOR aerodromeRunwayColor     = darken(#bbbbcc, 0.6);
+    COLOR aerodromeApron           = darken(#e8d1fe, 0.6);
+  }
+
 SYMBOL debug_oneway_arrow
   POLYGON 0,1.2 2.4,0 0,-1.2 0,-0.4 -1.5,-0.4 -1.5,0.4 0,0.4 {
     AREA { color:  @onewayArrowColor; }
@@ -2013,16 +2026,16 @@ STYLE
 
  [MAG cityOver-] {
    [TYPE aeroway_aerodrome,
-         aeroway_helipad] AREA { color: #d5ddbd; }
+         aeroway_helipad] AREA { color: @aerodromeColor; }
 
-   [TYPE aeroway_terminal] AREA { color: #cc99ff; }
-   [TYPE aeroway_runway] AREA { color: #bbbbcc; }
-   [TYPE aeroway_apron] AREA { color: #e8d1fe; }
+   [TYPE aeroway_terminal] AREA { color: @aerodromeTerminalColor; }
+   [TYPE aeroway_runway] AREA { color: @aerodromeRunwayColor; }
+   [TYPE aeroway_apron] AREA { color: @aerodromeApron; }
  }
 
  [MAG suburb-] {
-   [TYPE aeroway_runway] WAY {color: #bbbbcc; displayWidth: 0.5mm; width: 20m;}
-   [TYPE aeroway_taxiway] WAY {color: #bbbbcc; displayWidth: 0.5mm; width: 15m;}
+   [TYPE aeroway_runway] WAY {color: @aerodromeRunwayColor; displayWidth: 0.5mm; width: 20m;}
+   [TYPE aeroway_taxiway] WAY {color: @aerodromeRunwayColor; displayWidth: 0.5mm; width: 15m;}
  }
 
  [MAG close-] {
