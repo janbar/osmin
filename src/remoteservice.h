@@ -12,6 +12,7 @@ class RemoteService : public QObject, public Remote
   Q_PROPERTY(ServiceStatus status READ getStatus NOTIFY statusChanged)
   Q_PROPERTY(int positionUpdateInterval READ getPositionUpdateInterval WRITE setPositionUpdateInterval NOTIFY positionUpdateIntervalChanged)
   Q_PROPERTY(int preferredPositioningMethods READ getPreferredPositioningMethods WRITE setPreferredPositioningMethods NOTIFY preferredPositioningMethodsChanged)
+  Q_PROPERTY(int compassDataRate READ getCompassDataRate WRITE setCompassDataRate NOTIFY compassDataRateChanged)
 
 public:
   enum ServiceStatus {
@@ -39,23 +40,26 @@ public:
 
   int getPositionUpdateInterval() { return m_positionUpdateInterval; }
   int getPreferredPositioningMethods() { return m_preferredPositioningMethods; }
-
+  int getCompassDataRate() { return m_compassDataRate; }
 
 signals:
   // operations
   void ping(const QString& message);
   void setPositionUpdateInterval(int interval);
   void setPreferredPositioningMethods(int methods);
+  void setCompassDataRate(int datarate);
   // callbacks
   void statusChanged();
   void positionUpdateIntervalChanged();
   void preferredPositioningMethodsChanged();
+  void compassDataRateChanged();
 
 private slots:
   void _serviceConnected();
   void _serviceDisconnected();
   void _positionUpdateIntervalChanged(int interval);
   void _preferredPositioningMethodsChanged(int methods);
+  void _compassDataRateChanged(int dataRate);
 
 private:
   ServiceFrontendPtr m_service;
@@ -63,6 +67,7 @@ private:
 
   int m_positionUpdateInterval = 0;
   int m_preferredPositioningMethods = NoPositioningMethods;
+  int m_compassDataRate = 0;
 };
 
 #endif // REMOTESERVICE_H

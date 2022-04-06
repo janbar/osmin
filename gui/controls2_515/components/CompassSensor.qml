@@ -46,7 +46,6 @@ Item {
     Osmin.Compass {
         id: compassBuiltin
         active: compass.active
-        dataRate: 2
         onReadingChanged: {
             var n = normalize360(reading.azimuth + magneticDip);
             compass.azimuth = n;
