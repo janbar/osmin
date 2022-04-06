@@ -41,8 +41,6 @@ Osmin.PositionSource {
     }
 
     active: true
-    updateInterval: 1000
-    //preferredPositioningMethods: PositionSource.SatellitePositioningMethods
 
     Component.onCompleted: { connectToService(Osmin.Service.getServiceHandle()) }
 }

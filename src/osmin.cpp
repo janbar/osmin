@@ -393,7 +393,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<GPXFileModel::GPXObjectRoles>("GPXFileModel::Roles");
     qRegisterMetaType<QList<osmscout::OverlayObject*> >("QList<osmscout::OverlayObject*>");
     qmlRegisterSingletonType<RemoteService>(OSMIN_MODULE, 1, 0, "Service", getRemoteService);
-    qRegisterMetaType<RemoteService::ServiceStatus>("Service.ServiceStatus");
+    qRegisterMetaType<RemoteService::ServiceStatus>("Service::ServiceStatus");
+    qRegisterMetaType<RemoteService::PositioningMethods>("Service::PositioningMethods");
     qmlRegisterSingletonType<RemoteTracker>(OSMIN_MODULE, 1, 0, "Tracker", getRemoteTracker);
     qmlRegisterType<RemoteCompass>(OSMIN_MODULE, 1, 0, "Compass");
     qmlRegisterType<RemotePositionSource>(OSMIN_MODULE, 1, 0, "PositionSource");

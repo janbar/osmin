@@ -27,6 +27,14 @@ public:
   Service(const QString& url, const QString& rootDir);
   virtual ~Service();
 
+  enum PositioningMethods
+  {
+    NoPositioningMethods            = 0,
+    SatellitePositioningMethods     = 1,
+    NonSatellitePositioningMethods  = 2,
+    AllPositioningMethods           = 3,
+  };
+
 signals:
   void compass_azimuthChanged(double azimuth);
 

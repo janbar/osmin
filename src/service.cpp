@@ -122,16 +122,20 @@ void Service::position_setPreferredPositioningMethods(int methods)
   if (m_position == nullptr)
     return;
   QGeoPositionInfoSource::PositioningMethods m;
-  if (methods & QGeoPositionInfoSource::AllPositioningMethods)
-    m.setFlag(QGeoPositionInfoSource::AllPositioningMethods);
-  else if (methods & QGeoPositionInfoSource::NoPositioningMethods)
-    m.setFlag(QGeoPositionInfoSource::NoPositioningMethods);
-  else
+  switch (methods)
   {
-    if (methods & QGeoPositionInfoSource::SatellitePositioningMethods)
-      m.setFlag(QGeoPositionInfoSource::SatellitePositioningMethods);
-    if (methods & QGeoPositionInfoSource::NonSatellitePositioningMethods)
-      m.setFlag(QGeoPositionInfoSource::NonSatellitePositioningMethods);
+  case NoPositioningMethods:
+    m.setFlag(QGeoPositionInfoSource::NoPositioningMethods);
+    break;
+  case SatellitePositioningMethods:
+    m.setFlag(QGeoPositionInfoSource::SatellitePositioningMethods);
+    break;
+  case NonSatellitePositioningMethods:
+    m.setFlag(QGeoPositionInfoSource::NonSatellitePositioningMethods);
+    break;
+  case AllPositioningMethods:
+    m.setFlag(QGeoPositionInfoSource::AllPositioningMethods);
+    break;
   }
   m_position->setPreferredPositioningMethods(m);
 }

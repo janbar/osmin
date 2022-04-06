@@ -47,18 +47,14 @@ class RemotePositionSource: public QObject, public Remote
   Q_OBJECT
   Q_PROPERTY(RemotePosition* position READ getPosition NOTIFY positionChanged)
   Q_PROPERTY(bool active READ getActive WRITE setActive NOTIFY activeChanged)
-  Q_PROPERTY(int updateInterval READ getUpdateInterval WRITE setUpdateInterval NOTIFY updateIntervalChanged)
-  Q_PROPERTY(int preferredPositioningMethods READ getPositioningMethods WRITE setPositioningMethods NOTIFY preferredPositioningMethodsChanged)
 
 public:
+
   explicit RemotePositionSource(QObject * parent = nullptr) : QObject(parent), m_position(this) { }
 
   RemotePosition* getPosition() { return &m_position; }
   bool getActive() { return m_active; }
-  int getUpdateInterval() { return m_updateInterval; }
-  int getPositioningMethods() { return m_positioningMethods; }
   void setActive(bool active);
-  void setUpdateInterval(int interval) { (void)interval; /*disabled*/ }
 
   // for testing
   void set(bool valid, double lat, double lon, bool haccvalid, float hacc, double alt)
@@ -70,25 +66,17 @@ public:
   void connectToService(ServiceFrontendPtr& service) override;
 
 signals:
-  // operations
-  void setPositioningMethods(int methods);
   // callbacks
   void positionChanged();
   void activeChanged();
-  void updateIntervalChanged();
-  void preferredPositioningMethodsChanged();
 
 private slots:
   void _positionUpdated(bool valid, double lat, double lon, bool haccvalid, float hacc, double alt);
-  void _updateIntervalChanged(int interval);
-  void _preferredPositioningMethodsChanged(int methods);
 
 private:
   ServiceFrontendPtr m_service;
   RemotePosition m_position;
   bool m_active = false;
-  int m_updateInterval = 0;
-  int m_positioningMethods;
 };
 
 #endif // REMOTEPOSITIONSOURCE_H
