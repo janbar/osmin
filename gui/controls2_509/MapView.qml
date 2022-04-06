@@ -64,9 +64,11 @@ MapPage {
         // Syncing all data from the tracker
         Service.ping("ALL");
         // show current coordinates
-        if (positionSource._posValid) {
-            map.showCoordinates(positionSource._lat, positionSource._lon);
-        }
+        ToolBox.connectOnce(positionSource.dataUpdated, function(){
+            if (positionSource._posValid) {
+                map.showCoordinates(positionSource._lat, positionSource._lon);
+            }
+        });
         // load current course or clean
         if (settings.courseId > 0) {
             // delay position info
