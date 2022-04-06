@@ -105,6 +105,7 @@ void Service::compass_setActive(bool active)
 void Service::compass_setDataRate(int rate)
 {
   m_compass->setDataRate(rate);
+  onCompassDataRateChanged();
 }
 
 void Service::position_setUpdateInterval(int interval)
@@ -114,7 +115,7 @@ void Service::position_setUpdateInterval(int interval)
   if (interval < m_position->minimumUpdateInterval())
     interval = m_position->minimumUpdateInterval();
   m_position->setUpdateInterval(interval);
-  emit position_updateIntervalChanged(interval);
+  onPositionUpdateIntervalChanged();
 }
 
 void Service::position_setPreferredPositioningMethods(int methods)
@@ -138,6 +139,7 @@ void Service::position_setPreferredPositioningMethods(int methods)
     break;
   }
   m_position->setPreferredPositioningMethods(m);
+  onPositionSupportedPositioningMethodsChanged();
 }
 
 void Service::position_startUpdates()
@@ -234,7 +236,15 @@ void Service::onPositionUpdateIntervalChanged()
 
 void Service::onPositionSupportedPositioningMethodsChanged()
 {
-  emit position_preferredPositioningMethodsChanged(m_position->preferredPositioningMethods());
+  QGeoPositionInfoSource::PositioningMethods m = m_position->preferredPositioningMethods();
+  int methods = NoPositioningMethods;
+  if (m.testFlag(QGeoPositionInfoSource::AllPositioningMethods))
+    methods = AllPositioningMethods;
+  else if (m.testFlag(QGeoPositionInfoSource::SatellitePositioningMethods))
+    methods = SatellitePositioningMethods;
+  else if (m.testFlag(QGeoPositionInfoSource::NonSatellitePositioningMethods))
+    methods = NonSatellitePositioningMethods;
+  emit position_preferredPositioningMethodsChanged(methods);
 }
 
 void Service::onTrackerRecordingChanged()
