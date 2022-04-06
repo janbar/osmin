@@ -80,6 +80,16 @@ CONST
   COLOR highlightedColor            = #ff000088;
   COLOR trackColor                  = #10a000a0;
 
+  // Default label color
+  IF daylight {
+    COLOR labelColor               = #000000;
+    COLOR emphasizeColor           = #ffffff;
+  }
+  ELSE {
+    COLOR labelColor               = #a0a0a0;
+    COLOR emphasizeColor           = #707070;
+  }
+
   // Ground tiles
 
   IF daylight {

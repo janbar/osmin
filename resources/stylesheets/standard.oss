@@ -144,6 +144,16 @@ CONST
   COLOR routeColor                 = #ae00ff88;
   COLOR trackColor                 = #10a000a0;
 
+  // Default label color
+  IF daylight {
+    COLOR labelColor               = #000000;
+    COLOR emphasizeColor           = #ffffff;
+  }
+  ELSE {
+    COLOR labelColor               = #a0a0a0;
+    COLOR emphasizeColor           = #707070;
+  }
+
   // Ground tiles
 
   IF daylight {
@@ -2155,7 +2165,7 @@ STYLE
  //
 
  [MAG world-continent] {
-   [TYPE place_continent] NODE.TEXT {label: IName; style: emphasize; size: 1.6; color: #00000080; priority: @labelPrioContinent; }
+   [TYPE place_continent] NODE.TEXT {label: IName; style: emphasize; emphasizeColor: @emphasizeColor; size: 1.6; color: alpha(@labelColor, 0.5); priority: @labelPrioContinent; }
  }
  [MAG 2-] { [TYPE place_continent] NODE.TEXT { size: 4; color: #00000060; }}
  [MAG continent-] { [TYPE place_continent] NODE.TEXT { size: 6; color: #00000040; }}
