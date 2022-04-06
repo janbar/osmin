@@ -112,58 +112,65 @@ CONST
   IF daylight {
     COLOR allotmentsColor           = #c8b084;
     COLOR farmColor                 = #ead8bd;
-  }
-  ELSE {
-    COLOR allotmentsColor           = darken(#c8b084, 0.5);
-    COLOR farmColor                 = darken(#ead8bd, 0.5);
-  }
-  COLOR beachColor                  = #fefab8;
-  COLOR brownFieldColor             = #ebd7fe;
-  COLOR cemeteryColor               = #a9caae;
-  COLOR commercialColor             = #efc8c8;
-  COLOR constructionColor           = #9d9d6c;
-  COLOR farmyardColor               = #dcbe92;
-  COLOR fellColor                   = #f9f9f9;
-  COLOR glacierColor                = #ddecec;
-  COLOR heathColor                  = #d6d99f;
-  IF daylight {
+    COLOR beachColor                = #fefab8;
+    COLOR brownFieldColor           = #ebd7fe;
+    COLOR cemeteryColor             = #a9caae;
+    COLOR commercialColor           = #efc8c8;
+    COLOR constructionColor         = #9d9d6c;
+    COLOR farmyardColor             = #dcbe92;
+    COLOR fellColor                 = #f9f9f9;
+    COLOR glacierColor              = #ddecec;
+    COLOR heathColor                = #d6d99f;
     COLOR grassColor                = #cfeca8;
     COLOR greenFieldColor           = #dcdcc8;
     COLOR industrialColor           = #dfd1d6;
     COLOR landFillColor             = #b6b591;
     COLOR villageGreenColor         = #cfeca8;
     COLOR golfCourseColor           = #c7f1a3;
+    COLOR quarryColor               = #b3b3b3;
+    COLOR recreationColor           = #bce2ca;
+    COLOR residentialColor          = #dcdcdc;
+    COLOR retailColor               = #feeaea;
+    COLOR woodColor                 = #aed1a0;
+    COLOR scrubColor                = #b5e2b5;
+    COLOR sandColor                 = #fbefcb;
+    COLOR vineyardColor             = #b3e2a8;
+    COLOR wetlandColor              = #bdd8d8;
+    COLOR wetlandMarshColor         = #efe8ff;
+    COLOR rockColor                 = #cccccc;
   }
   ELSE {
+    COLOR allotmentsColor           = darken(#c8b084, 0.5);
+    COLOR farmColor                 = darken(#ead8bd, 0.5);
+    COLOR beachColor                = darken(#fefab8, 0.5);
+    COLOR brownFieldColor           = darken(#ebd7fe, 0.5);
+    COLOR cemeteryColor             = darken(#a9caae, 0.5);
+    COLOR commercialColor           = darken(#efc8c8, 0.5);
+    COLOR constructionColor         = darken(#9d9d6c, 0.5);
+    COLOR farmyardColor             = darken(#dcbe92, 0.5);
+    COLOR fellColor                 = darken(#f9f9f9, 0.5);
+    COLOR glacierColor              = darken(#ddecec, 0.5);
+    COLOR heathColor                = darken(#d6d99f, 0.5);
     COLOR grassColor                = darken(#cfeca8, 0.5);
     COLOR greenFieldColor           = darken(#dcdcc8, 0.5);
     COLOR industrialColor           = darken(#dfd1d6, 0.5);
     COLOR landFillColor             = darken(#b6b591, 0.5);
     COLOR villageGreenColor         = darken(#cfeca8, 0.5);
     COLOR golfCourseColor           = darken(#c7f1a3, 0.5);
-  }
-  COLOR militaryColor               = #fe989822;
-  COLOR quarryColor                 = #b3b3b3;
-  COLOR recreationColor             = #bce2ca;
-  IF daylight {
-    COLOR residentialColor          = #dcdcdc;
-    COLOR retailColor               = #feeaea;
-  }
-  ELSE {
+    COLOR quarryColor               = darken(#b3b3b3, 0.5);
+    COLOR recreationColor           = darken(#bce2ca, 0.5);
     COLOR residentialColor          = darken(#dcdcdc, 0.5);
     COLOR retailColor               = darken(#feeaea, 0.5);
-  }
-  COLOR scrubColor                  = #b5e2b5;
-  COLOR sandColor                   = #fbefcb;
-  COLOR vineyardColor               = #b3e2a8;
-  COLOR wetlandColor                = #bdd8d8;
-  IF daylight {
-    COLOR woodColor                 = #aed1a0;
-  }
-  ELSE {
     COLOR woodColor                 = darken(#aed1a0, 0.5);
+    COLOR scrubColor                = darken(#b5e2b5, 0.5);
+    COLOR sandColor                 = darken(#fbefcb, 0.5);
+    COLOR vineyardColor             = darken(#b3e2a8, 0.5);
+    COLOR wetlandColor              = darken(#bdd8d8, 0.5);
+    COLOR wetlandMarshColor         = darken(#efe8ff, 0.5);
+    COLOR rockColor                 = darken(#cccccc, 0.5);
   }
-  COLOR rockColor                   = #cccccc;
+
+  COLOR militaryColor               = #fe989822;
 
   COLOR natureReserveColor          = #abde9622;
   COLOR natureReserveLabelColor     = #566f4bb0;
@@ -568,7 +575,7 @@ STYLE
    [TYPE natural_heath] AREA { color: @heathColor; }
    [TYPE natural_grassland] AREA { color: @grassColor; }
    [TYPE wood] AREA { color: @woodColor; }
-   [TYPE natural_wetland_marsh] AREA { color: #efe8ff;pattern: "wetland_bog";patternMinMag: cityOver;}
+   [TYPE natural_wetland_marsh] AREA { color: @wetlandMarshColor;pattern: "wetland_bog";patternMinMag: cityOver;}
    [TYPE natural_wetland, natural_wetland_tidalflat] AREA { color: @wetlandColor;pattern: "wetland"; patternMinMag: cityOver;}
    [TYPE natural_water] AREA { color: @waterColor; }
    [TYPE natural_beach] AREA { color: @beachColor; }
