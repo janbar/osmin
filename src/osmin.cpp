@@ -45,7 +45,7 @@
 #endif
 
 /* The name of the service end-point must include the revision of the API */
-#define SERVICE_URL               "local:osmin41"
+#define SERVICE_URL               "local:osmin42"
 #define SERVICE_FLAG              "-service"
 
 #define OSMIN_MODULE              "Osmin"
