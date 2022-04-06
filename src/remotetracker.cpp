@@ -26,12 +26,6 @@ osmscout::VehiclePosition *RemoteTracker::getTrackerPosition() const
   return new osmscout::VehiclePosition(m_vehicle, m_vehicleState, m_vehicleCoord, m_vehicleBearing, nextPosition);
 }
 
-void RemoteTracker::setRecording(const QString &filename)
-{
-  if (m_service)
-    m_service->setRecording(filename);
-}
-
 void RemoteTracker::connectToService(QVariant service)
 {
   ServiceFrontendPtr _service = service.value<ServiceFrontendPtr>();
