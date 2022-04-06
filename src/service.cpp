@@ -86,7 +86,7 @@ void Service::ping(const QString &message)
   onTrackerProcessingChanged();
   onTrackerDataChanged();
   onPositionUpdateIntervalChanged();
-  onPositionSupportedPositioningMethodsChanged();
+  onPositionPreferredPositioningMethodsChanged();
   onCompassActiveChanged();
   onCompassDataRateChanged();
   onCompassReadingChanged();
@@ -139,7 +139,7 @@ void Service::position_setPreferredPositioningMethods(int methods)
     break;
   }
   m_position->setPreferredPositioningMethods(m);
-  onPositionSupportedPositioningMethodsChanged();
+  onPositionPreferredPositioningMethodsChanged();
 }
 
 void Service::position_startUpdates()
@@ -234,7 +234,7 @@ void Service::onPositionUpdateIntervalChanged()
   emit position_updateIntervalChanged(m_position->updateInterval());
 }
 
-void Service::onPositionSupportedPositioningMethodsChanged()
+void Service::onPositionPreferredPositioningMethodsChanged()
 {
   QGeoPositionInfoSource::PositioningMethods m = m_position->preferredPositioningMethods();
   int methods = NoPositioningMethods;

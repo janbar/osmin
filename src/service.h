@@ -65,7 +65,7 @@ private slots:
 
   void onPositionPositionUpdated(QGeoPositionInfo info);
   void onPositionUpdateIntervalChanged();
-  void onPositionSupportedPositioningMethodsChanged();
+  void onPositionPreferredPositioningMethodsChanged();
 
   void onTrackerRecordingChanged();
   void onTrackerProcessingChanged();
