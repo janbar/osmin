@@ -68,16 +68,13 @@ MapPage {
             if (positionSource._posValid) {
                 map.showCoordinatesInstantly(positionSource._lat, positionSource._lon);
             }
+            showPositionInfo();
         });
         // load current course or clean
         if (settings.courseId > 0) {
-            // delay position info
-            ToolBox.connectOnce(courseFile.parseFinished, showPositionInfo);
             if (!loadGPX(settings.courseId)) {
                 settings.courseId = 0;
             }
-        } else {
-            showPositionInfo();
         }
         // on azimuth changed
         compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
@@ -613,11 +610,14 @@ MapPage {
                         opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
-                            if (lockRotation) {
-                                compass.
-                                rotator.rotateTo(rotation, true);
-                            } else
+                            if (!lockRotation) {
                                 map.lockToPosition = true;
+                            } else if(positionSource._posValid) {
+                                map.showCoordinatesInstantly(positionSource._lat, positionSource._lon);
+                                showPositionInfo();
+                            } else {
+                                showPositionInfo();
+                            }
                         }
                     }
 
@@ -756,6 +756,9 @@ MapPage {
                                 map.lockToPosition = true;
                             } else if(positionSource._posValid) {
                                 map.showCoordinatesInstantly(positionSource._lat, positionSource._lon);
+                                showPositionInfo();
+                            } else {
+                                showPositionInfo();
                             }
                         }
                     }
