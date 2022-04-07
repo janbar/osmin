@@ -5,8 +5,8 @@ project(osmin C CXX)
 
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 
-set(APP_VERSION       "1.8.1")
-set(APP_VERSION_CODE  42)
+set(APP_VERSION       "1.8.2")
+set(APP_VERSION_CODE  43)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
