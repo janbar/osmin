@@ -111,8 +111,8 @@ MapPage {
         id: map
         anchors.fill: parent
 
-        // use tiled when map rotation is enabled
-        renderingType: (settings.renderingTypeTiled || mapView.rotateEnabled || mapView.navigation ? "tiled" : "plane")
+        // by default use plane unless tiled is forced
+        renderingType: ((mapView.rotateEnabled || mapView.navigation) && settings.renderingTypeTiled  ? "tiled" : "plane")
 
         followVehicle: mapView.navigation
         vehiclePosition: mapView.navigation && navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition
