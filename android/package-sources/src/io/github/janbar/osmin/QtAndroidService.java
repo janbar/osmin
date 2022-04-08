@@ -31,7 +31,7 @@ public class QtAndroidService extends QtService
         int ret = super.onStartCommand(intent, flags, startId);
         Log.i(TAG, "Service started");
 
-        createNotificationChannel();
+        createNotificationChannel(getResources().getString(R.string.svc_channel));
         Notification.Builder builder = new Notification.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId(CHANNEL_ID);
@@ -46,10 +46,10 @@ public class QtAndroidService extends QtService
 
     private static String CHANNEL_ID = "ForegroundServiceChannel";
 
-    private void createNotificationChannel() {
+    private void createNotificationChannel(String name) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID, "Foreground Service Channel",
+                    CHANNEL_ID, name,
                     NotificationManager.IMPORTANCE_DEFAULT
             );
             NotificationManager manager = getSystemService(NotificationManager.class);

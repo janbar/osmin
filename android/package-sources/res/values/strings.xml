@@ -1,3 +1,4 @@
 <resources>
   <string name="svc_running">Location service is running.</string>
+  <string name="svc_channel">Service notifications</string>
 </resources>
