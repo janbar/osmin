@@ -98,6 +98,20 @@ void ServiceFrontend::setPreferedPositioningMethods(int methods)
     m->position_setPreferredPositioningMethods(methods);
 }
 
+void ServiceFrontend::positionStartUpdates()
+{
+  auto m = m_messenger;
+  if (!m.isNull())
+    m->position_startUpdates();
+}
+
+void ServiceFrontend::positionStopUpdates()
+{
+  auto m = m_messenger;
+  if (!m.isNull())
+    m->position_stopUpdates();
+}
+
 void ServiceFrontend::run()
 {
   m_messenger.reset();

@@ -48,6 +48,8 @@ signals:
   void setPositionUpdateInterval(int interval);
   void setPreferredPositioningMethods(int methods);
   void setCompassDataRate(int datarate);
+  void positionStartUpdates();
+  void positionStopUpdates();
   // callbacks
   void statusChanged();
   void positionUpdateIntervalChanged();

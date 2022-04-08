@@ -68,6 +68,8 @@ public slots:
   void setCompassDataRate(int datarate);
   void setPositionUpdateInterval(int interval);
   void setPreferedPositioningMethods(int methods);
+  void positionStartUpdates();
+  void positionStopUpdates();
 
 private slots:
   void run();

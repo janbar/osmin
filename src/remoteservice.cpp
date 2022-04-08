@@ -31,6 +31,8 @@ void RemoteService::connectToService(ServiceFrontendPtr& service)
     disconnect(this, &RemoteService::setPositionUpdateInterval, m_service.data(), &ServiceFrontend::setPositionUpdateInterval);
     disconnect(this, &RemoteService::setPreferredPositioningMethods, m_service.data(), &ServiceFrontend::setPreferedPositioningMethods);
     disconnect(this, &RemoteService::setCompassDataRate, m_service.data(), &ServiceFrontend::setCompassDataRate);
+    disconnect(this, &RemoteService::positionStartUpdates, m_service.data(), &ServiceFrontend::positionStartUpdates);
+    disconnect(this, &RemoteService::positionStopUpdates, m_service.data(), &ServiceFrontend::positionStopUpdates);
   }
   m_service = service;
   if (m_service)
@@ -44,6 +46,8 @@ void RemoteService::connectToService(ServiceFrontendPtr& service)
     connect(this, &RemoteService::setPositionUpdateInterval, m_service.data(), &ServiceFrontend::setPositionUpdateInterval);
     connect(this, &RemoteService::setPreferredPositioningMethods, m_service.data(), &ServiceFrontend::setPreferedPositioningMethods);
     connect(this, &RemoteService::setCompassDataRate, m_service.data(), &ServiceFrontend::setCompassDataRate);
+    connect(this, &RemoteService::positionStartUpdates, m_service.data(), &ServiceFrontend::positionStartUpdates);
+    connect(this, &RemoteService::positionStopUpdates, m_service.data(), &ServiceFrontend::positionStopUpdates);
   }
 }
 
