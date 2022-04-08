@@ -187,6 +187,11 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     g_homeDir = QDir(PlatformExtras::getHomeDir());
 #ifdef Q_OS_ANDROID
+    {
+      QStringList androidPermissions;
+      androidPermissions.append("android.permission.ACCESS_FINE_LOCATION");
+      QtAndroid::requestPermissionsSync(androidPermissions);
+    }
     if (!g_homeDir.mkpath(DIR_RES))
       return EXIT_FAILURE;
 #else
