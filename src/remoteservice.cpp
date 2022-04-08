@@ -24,6 +24,7 @@ void RemoteService::connectToService(ServiceFrontendPtr& service)
   {
     disconnect(m_service.data(), &ServiceFrontend::serviceConnected, this, &RemoteService::_serviceConnected);
     disconnect(m_service.data(), &ServiceFrontend::serviceDisconnected, this, &RemoteService::_serviceDisconnected);
+    disconnect(m_service.data(), &ServiceFrontend::positionActiveChanged, this, &RemoteService::_positionActiveChanged);
     disconnect(m_service.data(), &ServiceFrontend::positionUpdateIntervalChanged, this, &RemoteService::_positionUpdateIntervalChanged);
     disconnect(m_service.data(), &ServiceFrontend::positionPreferredPositioningMethodsChanged, this, &RemoteService::_preferredPositioningMethodsChanged);
     disconnect(m_service.data(), &ServiceFrontend::compassDataRateChanged, this, &RemoteService::_compassDataRateChanged);
@@ -39,6 +40,7 @@ void RemoteService::connectToService(ServiceFrontendPtr& service)
   {
     connect(m_service.data(), &ServiceFrontend::serviceConnected, this, &RemoteService::_serviceConnected);
     connect(m_service.data(), &ServiceFrontend::serviceDisconnected, this, &RemoteService::_serviceDisconnected);
+    connect(m_service.data(), &ServiceFrontend::positionActiveChanged, this, &RemoteService::_positionActiveChanged);
     connect(m_service.data(), &ServiceFrontend::positionUpdateIntervalChanged, this, &RemoteService::_positionUpdateIntervalChanged);
     connect(m_service.data(), &ServiceFrontend::positionPreferredPositioningMethodsChanged, this, &RemoteService::_preferredPositioningMethodsChanged);
     connect(m_service.data(), &ServiceFrontend::compassDataRateChanged, this, &RemoteService::_compassDataRateChanged);
@@ -51,6 +53,14 @@ void RemoteService::connectToService(ServiceFrontendPtr& service)
   }
 }
 
+void RemoteService::setPositionActive(bool active)
+{
+  if (active)
+    emit positionStartUpdates();
+  else
+    emit positionStopUpdates();
+}
+
 void RemoteService::_serviceConnected()
 {
   m_status = ServiceConnected;
@@ -61,6 +71,12 @@ void RemoteService::_serviceDisconnected()
 {
   m_status = ServiceDisconnected;
   emit statusChanged();
+}
+
+void RemoteService::_positionActiveChanged(bool active)
+{
+  m_positionActive = active;
+  emit positionActiveChanged();
 }
 
 void RemoteService::_positionUpdateIntervalChanged(int interval)

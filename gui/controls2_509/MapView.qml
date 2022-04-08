@@ -272,8 +272,8 @@ MapPage {
         onClicked: {
             switch(positionState) {
             case 0:
-                // try to enable the source
-                positionSource.active = true;
+                // try to activate the source provided by service
+                Service.positionActive = true;
                 break;
             case 1:
                 // enable navigation

@@ -13,6 +13,7 @@ class RemoteService : public QObject, public Remote
   Q_PROPERTY(int positionUpdateInterval READ getPositionUpdateInterval WRITE setPositionUpdateInterval NOTIFY positionUpdateIntervalChanged)
   Q_PROPERTY(int preferredPositioningMethods READ getPreferredPositioningMethods WRITE setPreferredPositioningMethods NOTIFY preferredPositioningMethodsChanged)
   Q_PROPERTY(int compassDataRate READ getCompassDataRate WRITE setCompassDataRate NOTIFY compassDataRateChanged)
+  Q_PROPERTY(bool positionActive READ getPositionActive WRITE setPositionActive NOTIFY positionActiveChanged)
 
 public:
   enum ServiceStatus {
@@ -41,6 +42,8 @@ public:
   int getPositionUpdateInterval() { return m_positionUpdateInterval; }
   int getPreferredPositioningMethods() { return m_preferredPositioningMethods; }
   int getCompassDataRate() { return m_compassDataRate; }
+  bool getPositionActive() { return m_positionActive; }
+  void setPositionActive(bool active);
 
 signals:
   // operations
@@ -52,6 +55,7 @@ signals:
   void positionStopUpdates();
   // callbacks
   void statusChanged();
+  void positionActiveChanged();
   void positionUpdateIntervalChanged();
   void preferredPositioningMethodsChanged();
   void compassDataRateChanged();
@@ -59,6 +63,7 @@ signals:
 private slots:
   void _serviceConnected();
   void _serviceDisconnected();
+  void _positionActiveChanged(bool active);
   void _positionUpdateIntervalChanged(int interval);
   void _preferredPositioningMethodsChanged(int methods);
   void _compassDataRateChanged(int dataRate);
@@ -67,6 +72,7 @@ private:
   ServiceFrontendPtr m_service;
   ServiceStatus m_status = ServiceDisconnected;
 
+  bool m_positionActive = false;
   int m_positionUpdateInterval = 0;
   int m_preferredPositioningMethods = NoPositioningMethods;
   int m_compassDataRate = 0;
