@@ -1064,7 +1064,7 @@ MapPage {
     Connections {
         target: mainView
         function onApplicationSuspendedChanged() {
-            if (Android && applicationSuspended && navigation)
+            if ((Android || DeviceMobile) && applicationSuspended && navigation)
                 navigation = false;
         }
     }

@@ -4,6 +4,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 project(osmin C CXX)
 
 option(INSTALL_TESTS "Install the tests on make install" OFF)
+option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
 set(APP_VERSION       "1.8.3")
 set(APP_VERSION_CODE  44)
@@ -190,10 +191,14 @@ target_link_libraries(osmin ${LIBOSMSCOUT_LIBRARIES})
 add_definitions(-DQT_STATICPLUGIN)
 
 if(ANDROID)
+    add_definitions(-DDEVICE_MOBILE)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
     target_link_libraries(osmin Qt5::QuickControls2 Qt5::AndroidExtras android log Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 else()
+    if(BUILD_DEVICE_MOBILE)
+        add_definitions(-DDEVICE_MOBILE)
+    endif()
     target_link_libraries(osmin Qt5::QuickControls2 Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 endif()

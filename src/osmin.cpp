@@ -429,11 +429,17 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("MapsDirectories", mapDirs);
     // bind hillshade provider
     engine.rootContext()->setContextProperty("HillshadeProvider", *g_hillshadeProvider);
-    // bind Android flag
+    // bind flag Android
 #if defined(Q_OS_ANDROID)
     engine.rootContext()->setContextProperty("Android", QVariant(true));
 #else
     engine.rootContext()->setContextProperty("Android", QVariant(false));
+#endif
+    // bind flag DeviceMobile
+#if defined(DEVICE_MOBILE)
+    engine.rootContext()->setContextProperty("DeviceMobile", QVariant(true));
+#else
+    engine.rootContext()->setContextProperty("DeviceMobile", QVariant(false));
 #endif
     // select and bind styles available and known to work
     QStringList availableStyles;
