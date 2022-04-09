@@ -406,22 +406,16 @@ int main(int argc, char *argv[])
     qmlRegisterType<RemotePosition>(OSMIN_MODULE, 1, 0, "Position");
 
     QSettings settings;
-    QString style = QQuickStyle::name();
-    if (!style.isEmpty())
-        settings.setValue("style", style);
-    else
+    if (settings.value("style").isNull())
     {
-        if (settings.value("style").isNull())
-        {
 #if defined(Q_OS_ANDROID)
-            QQuickStyle::setStyle("Material");
+      QQuickStyle::setStyle("Material");
 #else
-            QQuickStyle::setStyle("Material");
+      QQuickStyle::setStyle("Material");
 #endif
-            settings.setValue("style", QQuickStyle::name());
-        }
-        QQuickStyle::setStyle(settings.value("style").toString());
+      settings.setValue("style", QQuickStyle::name());
     }
+    QQuickStyle::setStyle(settings.value("style").toString());
 
     QQmlApplicationEngine engine;
     // bind version string
