@@ -29,7 +29,14 @@ cd osmin
 git submodule init
 git submodule update
 mkdir build
-cmake -B build -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ . 
+```
+To build for desktop, use the following command.
+```
+cmake -B build -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
+```
+To build for mobile devices, use the following command to enable behaviors for mobile.
+```
+cmake -B build -DBUILD_DEVICE_MOBILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
 ```
 Finally build it to make the target binary `osmin`
 ```
