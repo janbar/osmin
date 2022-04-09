@@ -406,7 +406,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<RemotePosition>(OSMIN_MODULE, 1, 0, "Position");
 
     QSettings settings;
-    if (settings.value("style").isNull())
+    if (settings.value("style").isNull() || settings.value("firstRun", QVariant::fromValue(true)).toBool())
     {
 #if defined(Q_OS_ANDROID)
       QQuickStyle::setStyle("Material");
@@ -458,6 +458,13 @@ int main(int argc, char *argv[])
     }
 
     ret = app.exec();
+
+    // next run won't be the first
+    if (settings.value("firstRun", QVariant::fromValue(true)).toBool())
+    {
+      settings.setValue("firstRun", QVariant::fromValue(false));
+    }
+
     osmscout::OSMScoutQt::FreeInstance();
     serviceFrontend->terminate();
 
