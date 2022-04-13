@@ -328,6 +328,7 @@ void TrackerModule::onReset()
   m_ascent = 0;
   m_descent = 0;
   m_maxSpeed = 0;
+  emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent, m_maxSpeed);
 }
 
 void TrackerModule::onStartRecording()
