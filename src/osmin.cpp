@@ -48,10 +48,8 @@
 #define APP_DISPLAY_NAME  "Osmin"                   // application display name
 #ifdef Q_OS_ANDROID
 #define APP_ID            ORG_NAME "." APP_NAME     // Android application id
-#define AUTO_MOUNT        "/storage/"               // external mount base
 #else
 #define APP_ID            APP_NAME                  // Unix default application id
-#define AUTO_MOUNT        "/media/"                 // external mount base
 #endif
 
 #include "signalhandler.h"
