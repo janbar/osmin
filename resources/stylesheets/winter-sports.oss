@@ -147,7 +147,7 @@ CONST
     COLOR waterColor               = darken(#9acffd, 0.5);
     COLOR waterLabelColor          = darken(@waterColor, 0.5);
     COLOR landColor                = #333333;
-    COLOR unknownColor             = #000000;
+    COLOR unknownColor             = @landColor;
   }
 
   // Borders
@@ -231,7 +231,6 @@ CONST
   COLOR bridgeColor                = #000000; // black
 
   IF daylight {
-    COLOR aerowayColor             = #d5ddbd;
     COLOR motorwayColor            = #4440ec; // dark blue
     COLOR trunkColor               = #7674ec; // lighther blue
     COLOR primaryColor             = #f38689; // red
@@ -245,7 +244,6 @@ CONST
     COLOR wayLabelColor            = #000000; // black
   }
   ELSE {
-    COLOR aerowayColor             = darken(#d5ddbd, 0.3);
     COLOR motorwayColor            = darken(#4440ec, 0.3);
     COLOR trunkColor               = darken(#7674ec, 0.3);
     COLOR primaryColor             = darken(#ec4044, 0.3);
@@ -504,8 +502,8 @@ STYLE
     ICON { name: target;} */
 
   [MAG world-] {
-    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; width: 6m; priority: 100;}
-    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
+    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; priority: 100;}
+    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; priority: 100;}
     [TYPE _waypoint] {
       NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
       NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
@@ -710,7 +708,7 @@ STYLE
    }
  }
 
- [MAG county-] {
+ [MAG state-] {
    [TYPE highway_trunk,
          highway_motorway_trunk] {
      [SIZE 18m 0.4mm:3px<] {
@@ -719,7 +717,9 @@ STYLE
      }
      [SIZE 18m <0.4mm:3px] WAY { color: lighten(@trunkColor,0.3); displayWidth: 0.4mm;}
    }
+ }
 
+ [MAG county-] {
    [TYPE highway_primary,
          highway_motorway_primary] {
      [SIZE 14m 0.4mm:3px<] {
@@ -736,7 +736,7 @@ STYLE
        WAY#outline { color: darken(@secondaryColor,0.4); width: 12m; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
        WAY { color: @secondaryColor; width: 12m;}
      }
-     [SIZE 12m <0.25mm:3px] WAY { color: @secondaryColor; displayWidth: 0.25mm; }
+     [SIZE 12m <0.25mm:3px] WAY { color: #fdd654; displayWidth: 0.25mm; }
    }
  }
 
@@ -746,7 +746,7 @@ STYLE
        WAY#outline { color: darken(@tertiaryColor,0.4); width: 10m; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
        WAY { color: @tertiaryColor; width: 10m;}
      }
-     [SIZE 10m <0.25mm:3px] WAY { color: @tertiaryColor; displayWidth: 0.25mm;}
+     [SIZE 10m <0.25mm:3px] WAY { color: #fefe73; displayWidth: 0.25mm;}
    }
  }
 
@@ -763,9 +763,7 @@ STYLE
      WAY#outline { color: #ffffff50; displayWidth: 0.8mm; priority: -1; joinCap: butt; endCap: butt; }
      WAY {color: #0000ff; dash: 1,1; joinCap: butt; endCap: butt; displayWidth: 0.4mm;}
    }
- }
 
- [MAG suburb-] {
    [TYPE highway_trunk_link] {
      [SIZE 18m 0.4mm:3px<] {
        WAY#outline { color: darken(@trunkColor,0.4); width: 18m; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
@@ -787,7 +785,7 @@ STYLE
        WAY#outline { color: darken(@secondaryColor,0.4); width: 12m; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
        WAY { color: @secondaryColor; width: 12m;}
      }
-     [SIZE 12m <0.25mm:3px] WAY { color: @secondaryColor; displayWidth: 0.25mm;}
+     [SIZE 12m <0.25mm:3px] WAY { color: #fdd654; displayWidth: 0.25mm;}
    }
 
    [TYPE highway_tertiary_link] {
@@ -795,9 +793,11 @@ STYLE
        WAY#outline { color: darken(@secondaryColor,0.4); width: 12m; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
        WAY { color: @secondaryColor; width: 12m;}
      }
-     [SIZE 12m <0.25mm:3px] WAY { color: @secondaryColor; displayWidth: 0.25mm; }
+     [SIZE 12m <0.25mm:3px] WAY { color: #fdd654; displayWidth: 0.25mm; }
    }
+ }
 
+ [MAG detail-] {
    [TYPE highway_road] {
      [SIZE 8m 0.1mm:3px<] {
        WAY#outline { color: @roadBColor; width: 8m; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
@@ -838,7 +838,6 @@ STYLE
      }
      [SIZE 8m <0.1mm:3px] WAY { color: @livingStreetColor; displayWidth: 0.1mm;}
    }
-
 
    [TYPE highway_construction] WAY {color: #99cccc; displayWidth: 0.1mm; width: 2m;}
 
@@ -1641,15 +1640,15 @@ STYLE
  }
  [MAG close-]{
      [TYPE piste_downhill_easy]{
-        WAY.TEXT { label: Name.name; size: 1.0; color: #3030ff; displayOffset: 2.5mm; priority: @labelPrioPiste; }
+        WAY.TEXT { label: Name.name; size: 1.0; color: #3030ff; displayOffset: 2.0mm; offset: 10m; priority: @labelPrioPiste; }
         AREA.TEXT { label: Name.name; size: 1.0; color: #3030ff; }
      }
      [TYPE piste_downhill_intermediate]{
-        WAY.TEXT { label: Name.name; size: 1.0; color: #ff3030; displayOffset: 2.5mm; priority: @labelPrioPiste; }
+        WAY.TEXT { label: Name.name; size: 1.0; color: #ff3030; displayOffset: 2.0mm; offset: 10m; priority: @labelPrioPiste; }
         AREA.TEXT { label: Name.name; size: 1.0; color: #ff3030; }
      }
      [TYPE piste_downhill_advanced]{
-        WAY.TEXT { label: Name.name; size: 1.0; color: #505050; displayOffset: 2.5mm; priority: @labelPrioPiste; }
+        WAY.TEXT { label: Name.name; size: 1.0; color: #505050; displayOffset: 2.0mm; offset: 10m; priority: @labelPrioPiste; }
         AREA.TEXT { label: Name.name; size: 1.0; color: #505050; }
      }
  }
@@ -1956,7 +1955,7 @@ STYLE
 
  [MAG city-] {
    [TYPE aeroway_aerodrome,
-         aeroway_helipad] AREA { color: @aerowayColor; }
+         aeroway_helipad] AREA { color: #d5ddbd; }
 
    [TYPE aeroway_terminal] AREA { color: #cc99ff; }
    [TYPE aeroway_runway] AREA { color: #bbbbcc; }
