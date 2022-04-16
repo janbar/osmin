@@ -675,8 +675,8 @@ STYLE
     ICON { name: target;} */
 
   [MAG world-] {
-    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; priority: 100;}
-    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; priority: 100;}
+    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; width: 6m; priority: 100;}
+    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
     [TYPE _waypoint] {
       NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
       NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
