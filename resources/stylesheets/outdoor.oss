@@ -512,10 +512,10 @@ STYLE
       WAY {color: alpha(@routeColor, 1.00); displayWidth: 0.8mm; priority: 100; }
     }
     [MAG city-] {
-      WAY {color: alpha(@routeColor, 0.80); displayWidth: 1.8mm; priority: 100; }
+      WAY {color: alpha(@routeColor, 0.80); displayWidth: 1.8mm; width: 6m; priority: 100; }
     }
     [MAG veryClose-] {
-      WAY {color: alpha(@routeColor, 0.70); displayWidth: 3.0mm; priority: 100; }
+      WAY {color: alpha(@routeColor, 0.70); displayWidth: 1.8mm; width: 6m; priority: 100; }
     }
   }
 
