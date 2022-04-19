@@ -139,6 +139,7 @@ set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/remotecompass.cpp
     src/remotepositionsource.cpp
     src/remotetracker.cpp
+    src/mapextras.cpp
 )
 set(osmin_HEADERS src/converter.h src/platformextras.h
     src/locked.h
@@ -160,6 +161,7 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/remotecompass.h
     src/remotepositionsource.h
     src/remotetracker.h
+    src/mapextras.h
 )
 
 if(UNIX)

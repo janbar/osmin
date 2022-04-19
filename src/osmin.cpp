@@ -79,6 +79,7 @@
 #include <osmscout/util/Logger.h>
 
 #include "platformextras.h"
+#include "mapextras.h"
 #include "converter.h"
 #include "favoritesmodel.h"
 #include "gpxlistmodel.h"
@@ -434,6 +435,7 @@ int startGUI(int argc, char* argv[])
   qmlRegisterType<RemoteCompass>(OSMIN_MODULE, 1, 0, "Compass");
   qmlRegisterType<RemotePositionSource>(OSMIN_MODULE, 1, 0, "PositionSource");
   qmlRegisterType<RemotePosition>(OSMIN_MODULE, 1, 0, "Position");
+  qmlRegisterSingletonType<MapExtras>(OSMIN_MODULE, 1, 0, "MapExtras", MapExtras::createMapExtras);
 
   QSettings settings;
   if (settings.value("style").isNull() || settings.value("firstRun", QVariant::fromValue(true)).toBool())
