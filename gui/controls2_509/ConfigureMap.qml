@@ -20,6 +20,7 @@ import QtQuick.Controls 2.2
 import QtQml 2.2
 import Osmin 1.0
 import "./components"
+import "../toolbox.js" as ToolBox
 
 PopOver {
     id: configureMap
@@ -103,38 +104,6 @@ PopOver {
         }
 
         Label {
-            text: qsTr("Style")
-            color: styleMap.popover.foregroundColor
-            font.pointSize: units.fs("small")
-        }
-        ComboBox {
-            id: mapStyleSheet
-            width: parent.width
-            height: units.gu(4)
-            flat: true
-            background: Rectangle {
-                color: styleMap.view.backgroundColor
-                anchors.fill: parent
-            }
-            textRole: "text"
-            onActivated: {
-                var stylesheet = mapStyle.file(currentIndex);
-                mapStyle.style = stylesheet;
-                mapSettings.styleSheetFile = stylesheet;
-            }
-            MapStyleModel { id: mapStyle }
-            Component.onCompleted: {
-                var tab = []
-                for (var i = 0; i < mapStyle.rowCount(); ++i) {
-                    tab.push({ "text": mapStyle.data(mapStyle.index(i, 0), MapStyleModel.NameRole), "value": i });
-                }
-                model = tab.slice();
-                var stylesheet = mapStyle.style;
-                currentIndex = mapStyle.indexOf(stylesheet);
-            }
-        }
-
-        Label {
             text: qsTr("Font name")
             color: styleMap.popover.foregroundColor
             font.pointSize: units.fs("small")
@@ -198,6 +167,89 @@ PopOver {
                 if (val <= 4.0)
                     return 2;
                 return 3;
+            }
+        }
+
+        Label {
+            text: qsTr("Style")
+            color: styleMap.popover.foregroundColor
+            font.pointSize: units.fs("small")
+        }
+        ComboBox {
+            id: mapStyleSheet
+            width: parent.width
+            height: units.gu(4)
+            flat: true
+            background: Rectangle {
+                color: styleMap.view.backgroundColor
+                anchors.fill: parent
+            }
+            textRole: "text"
+            onActivated: {
+                var stylesheet = mapStyle.file(currentIndex);
+                mapStyle.style = stylesheet;
+                mapSettings.styleSheetFile = stylesheet;
+                settings.styleFlags = "[]"; // clear settings
+                // reset flags after style is loaded
+                ToolBox.connectWhileFalse(map.onFinishedChanged, function(){
+                    if (!map.finished)
+                        return false;
+                    flags.resetData();
+                    return true;
+                });
+            }
+            MapStyleModel { id: mapStyle }
+            Component.onCompleted: {
+                var tab = []
+                for (var i = 0; i < mapStyle.rowCount(); ++i) {
+                    tab.push({ "text": mapStyle.data(mapStyle.index(i, 0), MapStyleModel.NameRole), "value": i });
+                }
+                model = tab.slice();
+                var stylesheet = mapStyle.style;
+                currentIndex = mapStyle.indexOf(stylesheet);
+            }
+        }
+
+        ListModel { // list of flags available for the style
+            id: flags
+            Component.onCompleted: {
+                resetData();
+            }
+            function resetData() {
+                clear();
+                var v = MapExtras.getStyleFlags();
+                for (var i = 0; i < v.length; ++i) {
+                    if (v[i].name !== "daylight")
+                        append({ "name": v[i].name, "value": v[i].value });
+                }
+            }
+        }
+
+        ListView { // view of available flags for the style
+            width: parent.width
+            height: contentHeight
+            model: flags
+            interactive: false
+            delegate: MapCheckBox {
+                width: parent ? parent.width : 0
+                color: styleMap.popover.foregroundColor
+                text: model.name
+                checked: model.value
+                onClicked: {
+                    model.value = checked;
+                    MapExtras.setStyleFlag(model.name, checked);
+                    saveStyleFlags();
+                }
+
+                function saveStyleFlags() {
+                    var flags = [];
+                    var v = MapExtras.getStyleFlags();
+                    for (var i = 0; i < v.length; ++i) {
+                        if (v[i].name !== "daylight")
+                            flags.push({"name": v[i].name, "value": v[i].value});
+                    }
+                    settings.styleFlags = JSON.stringify(flags);
+                }
             }
         }
     }

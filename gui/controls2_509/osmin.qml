@@ -60,6 +60,9 @@ ApplicationWindow {
 
         // Tracker settings
         property string trackerRecording: ""
+
+        // Extra settings
+        property string styleFlags: "[]"
     }
 
     Material.accent: Material.Grey

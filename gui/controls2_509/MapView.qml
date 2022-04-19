@@ -60,6 +60,23 @@ MapPage {
         }
     }
 
+    function setStyleFlags(flags) {
+        // flags: [{name,value}, ...]
+        if (flags.length > 0) {
+            var styleFlags = MapExtras.getStyleFlags();
+            for (var i = 0; i < flags.length; ++i) {
+                for (var j = 0; j < styleFlags.length; ++j) {
+                    if (styleFlags[j].name === flags[i].name) {
+                        console.log("set style flag '" + flags[i].name + "' to " + flags[i].value);
+                        styleFlags[j].value = flags[i].value;
+                    }
+                }
+            }
+            console.log("reload customized style");
+            MapExtras.reloadStyle(styleFlags);
+        }
+    }
+
     Component.onCompleted: {
         // Syncing all data from the tracker
         Service.ping("ALL");
@@ -78,6 +95,11 @@ MapPage {
         }
         // on azimuth changed
         compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
+
+        // configure style from setting
+        var flags = JSON.parse(settings.styleFlags);
+        if (Array.isArray(flags))
+            setStyleFlags(flags);
     }
 
     property QtObject mark: QtObject {
