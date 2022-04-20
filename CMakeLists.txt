@@ -6,8 +6,8 @@ project(osmin C CXX)
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
-set(APP_VERSION       "1.8.4")
-set(APP_VERSION_CODE  45)
+set(APP_VERSION       "1.9.0")
+set(APP_VERSION_CODE  47)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -139,6 +139,7 @@ set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/remotecompass.cpp
     src/remotepositionsource.cpp
     src/remotetracker.cpp
+    src/mapextras.cpp
 )
 set(osmin_HEADERS src/converter.h src/platformextras.h
     src/locked.h
@@ -160,6 +161,7 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/remotecompass.h
     src/remotepositionsource.h
     src/remotetracker.h
+    src/mapextras.h
 )
 
 if(UNIX)

@@ -166,7 +166,7 @@ CONST
     COLOR waterColor               = darken(#9acffd, 0.5);
     COLOR waterLabelColor          = darken(@waterColor, 0.5);
     COLOR landColor                = #333333;
-    COLOR unknownColor             = #000000;
+    COLOR unknownColor             = @landColor;
   }
   COLOR coastColor                 = lighten(@waterColor,0.5);
 
@@ -675,8 +675,8 @@ STYLE
     ICON { name: target;} */
 
   [MAG world-] {
-    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; priority: 100;}
-    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; priority: 100;}
+    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; width: 6m; priority: 100;}
+    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
     [TYPE _waypoint] {
       NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
       NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
@@ -907,7 +907,7 @@ STYLE
    }
  }
 
- [MAG county-] {
+ [MAG state-] {
    [TYPE highway_trunk,
          highway_motorway_trunk] {
      [SIZE @trunkWidth 0.4mm:3px<] {
@@ -916,7 +916,9 @@ STYLE
      }
      [SIZE @trunkWidth <0.4mm:3px] WAY { color: lighten(@trunkColor,0.3); displayWidth: 0.4mm;}
    }
+ }
 
+ [MAG county-] {
    [TYPE highway_primary,
          highway_motorway_primary] {
      [SIZE @primaryWidth 0.4mm:3px<] {
@@ -960,15 +962,7 @@ STYLE
      WAY#outline { color: #ffffff50; displayWidth: 0.8mm; priority: -1; joinCap: butt; endCap: butt; }
      WAY {color: #0000ff; dash: 1,1; joinCap: butt; endCap: butt; displayWidth: 0.4mm;}
    }
- }
- [TYPE highway_mini_roundabout] {
-   [MAG closer-] NODE.ICON { symbol: mini_roundabout; name: mini_roundabout; }
- }
- [TYPE amenity_ferry_terminal] {
-   [MAG detail-] NODE.ICON { symbol: ferry_terminal;}
-   [MAG close-] NODE.TEXT { label: Name.name; color: #303070;}
- }
- [MAG suburb-] {
+
    [TYPE highway_trunk_link] {
      [SIZE @trunkWidth 0.4mm:3px<] {
        WAY#outline { color: darken(@trunkColor,0.4); width: @trunkWidth; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
@@ -976,7 +970,7 @@ STYLE
      }
      [SIZE @trunkWidth <0.4mm:3px] WAY { color: lighten(@trunkColor,0.3); displayWidth: 0.4mm;}
    }
-
+ 
    [TYPE highway_primary_link] {
      [SIZE @primaryWidth 0.4mm:3px<] {
        WAY#outline { color: darken(@primaryColor,0.4); width: @primaryWidth; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
@@ -1000,7 +994,9 @@ STYLE
      }
      [SIZE @tertiaryWidth <0.25mm:3px] WAY { color: #fdd654; displayWidth: 0.25mm; }
    }
+ }
 
+ [MAG detail-] {
    [TYPE highway_road] {
      [SIZE @roadWidth 0.1mm:3px<] {
        WAY#outline { color: @roadBColor; width: @roadWidth; displayWidth: 0.5mm; priority: -1; joinCap: butt; }
@@ -1022,6 +1018,15 @@ STYLE
    }
  }
 
+ [TYPE highway_mini_roundabout] {
+   [MAG closer-] NODE.ICON { symbol: mini_roundabout; name: mini_roundabout; }
+ }
+
+ [TYPE amenity_ferry_terminal] {
+   [MAG detail-] NODE.ICON { symbol: ferry_terminal;}
+   [MAG close-] NODE.TEXT { label: Name.name; color: #303070;}
+ }
+
  [MAG closer-] {
    [TYPE highway_service] {
      [SIZE @wayWidth 0.1mm:3px<] {
@@ -1041,7 +1046,6 @@ STYLE
      }
      [SIZE @wayWidth <0.1mm:3px] WAY { color: @livingStreetColor; displayWidth: 0.1mm;}
    }
-
 
    [TYPE highway_construction] WAY {color: #99cccc; displayWidth: 0.1mm; width: 2m;}
 
@@ -1065,7 +1069,6 @@ STYLE
  }
 
  [MAG closer-] {
-
    [TYPE highway_pedestrian] {
      [SIZE @wayWidth 0.1mm:3px<] {
        WAY {color: @pedestrianColor; width: @wayWidth; }

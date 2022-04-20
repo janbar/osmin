@@ -60,6 +60,23 @@ MapPage {
         }
     }
 
+    function setStyleFlags(flags) {
+        // flags: [{name,value}, ...]
+        if (flags.length > 0) {
+            var styleFlags = MapExtras.getStyleFlags();
+            for (var i = 0; i < flags.length; ++i) {
+                for (var j = 0; j < styleFlags.length; ++j) {
+                    if (styleFlags[j].name === flags[i].name) {
+                        console.log("set style flag '" + flags[i].name + "' to " + flags[i].value);
+                        styleFlags[j].value = flags[i].value;
+                    }
+                }
+            }
+            console.log("reload customized style");
+            MapExtras.reloadStyle(styleFlags);
+        }
+    }
+
     Component.onCompleted: {
         // Syncing all data from the tracker
         Service.ping("ALL");
@@ -78,9 +95,15 @@ MapPage {
         }
         // on azimuth changed
         compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
+
+        // configure style from setting
+        var flags = JSON.parse(settings.styleFlags);
+        if (Array.isArray(flags))
+            setStyleFlags(flags);
     }
 
     property QtObject mark: QtObject {
+        property bool showOverlay: true
         property real screenX: 0.0
         property real screenY: 0.0
         property double lat: 0.0
@@ -115,6 +138,7 @@ MapPage {
         vehiclePosition: mapView.navigation && navigator.ready ? navigator.vehiclePosition : Tracker.trackerPosition
         vehicleIconSize: 10
         showCurrentPosition: true
+        interactiveIcons: true
 
         TiledMapOverlay {
             id: mapOverlay
@@ -136,7 +160,11 @@ MapPage {
                     mapView.showToolbar = true;
                 break;
             case "locationInfo":
-                popLocationInfo.show();
+                // check icon tapped previously
+                if (popLocationInfo.visible && !mark.showOverlay)
+                    popLocationInfo.close();
+                else
+                    popLocationInfo.show();
                 break;
             case "routing":
                 popRouting.placePicked(true, lat, lon);
@@ -147,8 +175,24 @@ MapPage {
         }
 
         onLongTap: {
+            mark.showOverlay = true;
             mark.screenX = screenX;
             mark.screenY = screenY;
+            mark.lat = lat;
+            mark.lon = lon;
+            switch (mapView.state) {
+            case "view":
+                popLocationInfo.show();
+                break;
+            default:
+                break;
+            }
+        }
+
+        onIconTapped: {
+            mark.showOverlay = false;
+            mark.screenX = screenCoord.x;
+            mark.screenY = screenCoord.y;
             mark.lat = lat;
             mark.lon = lon;
             switch (mapView.state) {
@@ -634,6 +678,7 @@ MapPage {
                             ToolBox.connectOnce(page.showPosition, function(lat, lon){
                                  if (lat !== NaN && lon !== NaN) {
                                      map.showCoordinatesInstantly(lat, lon);
+                                     mark.showOverlay = true;
                                      mark.lat = lat;
                                      mark.lon = lon;
                                      mark.screenX = map.width / 2;
@@ -670,6 +715,7 @@ MapPage {
                             ToolBox.connectOnce(page.showPosition, function(lat, lon){
                                  if (lat !== NaN && lon !== NaN) {
                                      map.showCoordinatesInstantly(lat, lon);
+                                     mark.showOverlay = true;
                                      mark.lat = lat;
                                      mark.lon = lon;
                                      mark.screenX = map.width / 2;
@@ -776,6 +822,7 @@ MapPage {
                             ToolBox.connectOnce(page.showPosition, function(lat, lon){
                                  if (lat !== NaN && lon !== NaN) {
                                      map.showCoordinatesInstantly(lat, lon);
+                                     mark.showOverlay = true;
                                      mark.lat = lat;
                                      mark.lon = lon;
                                      mark.screenX = map.width / 2;
@@ -812,6 +859,7 @@ MapPage {
                             ToolBox.connectOnce(page.showPosition, function(lat, lon){
                                  if (lat !== NaN && lon !== NaN) {
                                      map.showCoordinatesInstantly(lat, lon);
+                                     mark.showOverlay = true;
                                      mark.lat = lat;
                                      mark.lon = lon;
                                      mark.screenX = map.width / 2;
@@ -904,17 +952,22 @@ MapPage {
             overlayManager.removeMark(0);
         }
         onShow: {
-            overlayManager.addMark(0, mark.lat, mark.lon);
+            if (mark.showOverlay) {
+                map.interactiveIcons = false;
+                overlayManager.addMark(0, mark.lat, mark.lon);
+            }
             if (mark.screenY < widgetBottomY / 2)
-                    map.up();
+                map.up();
             popLocationInfo.searchLocation(mark.lat, mark.lon);
             visible = true;
         }
         onVisibleChanged: {
             if (visible)
                 mapView.pushState("locationInfo");
-            else
+            else {
+                map.interactiveIcons = true;
                 mapView.popState("locationInfo");
+            }
         }
     }
 
