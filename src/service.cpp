@@ -91,7 +91,7 @@ void Service::ping(const QString &message)
   onCompassDataRateChanged();
   onCompassReadingChanged();
   emit position_activeChanged(m_positionActive);
-  m_position->requestUpdate(POSITION_UPDATE_INTERVAL);
+  onPositionPositionUpdated(m_position->lastKnownPosition());
   if (message == "ALL")
     m_tracker->dumpRecording();
   emit pong(message);
