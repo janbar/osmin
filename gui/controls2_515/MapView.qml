@@ -717,7 +717,7 @@ MapPage {
                         height: units.gu(6)
                         onClicked: {
                             nightView = !nightView;
-                            map.toggleDaylight();
+                            MapExtras.setDaylight(!nightView);
                         }
                     }
                 }

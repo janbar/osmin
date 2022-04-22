@@ -195,6 +195,7 @@ PopOver {
                     if (!map.finished)
                         return false;
                     flags.resetData();
+                    MapExtras.setDaylight(!mapView.nightView);
                     return true;
                 });
             }
