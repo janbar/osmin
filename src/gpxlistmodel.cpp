@@ -297,10 +297,10 @@ bool GPXListModel::removeItem(const QModelIndex& index)
   {
     if (it.value()->name() == item->name())
     {
-      emit beginRemoveRows(index.parent(), index.row(), index.row());
+      beginRemoveRows(index.parent(), index.row(), index.row());
       removeRow(index.row(), index.parent());
       m_items.erase(it);
-      emit endRemoveRows();
+      endRemoveRows();
       break;
     }
     ++it;
