@@ -98,8 +98,10 @@ MapPage {
 
         // configure style from setting
         var flags = JSON.parse(settings.styleFlags);
-        if (Array.isArray(flags))
+        if (Array.isArray(flags)) {
+            flags.push({ "name": "daylight", "value": !nightView });
             setStyleFlags(flags);
+        }
     }
 
     property QtObject mark: QtObject {
@@ -739,7 +741,7 @@ MapPage {
                         height: units.gu(6)
                         onClicked: {
                             nightView = !nightView;
-                            map.toggleDaylight();
+                            MapExtras.setDaylight(!nightView);
                         }
                     }
                 }

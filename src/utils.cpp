@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2020
+ *      Jean-Luc Barriere <jlbarriere68@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "utils.h"
 #include <cmath>
@@ -16,7 +32,7 @@ QString Utils::normalizedInputString(const QString& str)
   QString tmp = str.normalized(QString::NormalizationForm_D);
   ret.reserve(tmp.size());
   int pcat = QChar::Separator_Space;
-  for (QString::const_iterator it = tmp.begin(); it != tmp.end(); ++it)
+  for (QString::const_iterator it = tmp.cbegin(); it != tmp.cend(); ++it)
   {
     int cat = it->category();
     if (cat != QChar::Mark_NonSpacing && cat != QChar::Mark_SpacingCombining)

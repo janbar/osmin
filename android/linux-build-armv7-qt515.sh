@@ -5,7 +5,7 @@ mkdir -p $BUILD_DIR
 export PLATFORM_LEVEL=29
 export JAVA_HOME=/home/shared/java/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
-export ANDROID_NDK=/home/shared/Android/Sdk/ndk/21.4.7075529
+export ANDROID_NDK=/home/shared/Android/Sdk/ndk/22.1.7171670
 export ANDROID_NATIVE_API_LEVEL=24
 export ANDROID_SDK_MINVER=24
 export ANDROID_SDK_TARGET=26
