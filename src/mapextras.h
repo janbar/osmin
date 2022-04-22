@@ -22,10 +22,29 @@ public:
     return new MapExtras;
   }
 
+  /**
+   * @brief Return the array of flags with properties { name: string, value: bool }
+   * @return array of object
+   */
   Q_INVOKABLE QVariantList getStyleFlags();
+
+  /**
+   * @brief Reload the style with the given flags
+   * @param flags the array of flags { name: string, value: bool }
+   */
   Q_INVOKABLE void reloadStyle(QVariantList flags);
 
+  /**
+   * @brief Set the given flag to the desired value
+   * @param name the flag name
+   * @param value the flag value
+   */
   Q_INVOKABLE void setStyleFlag(const QString& name, bool value);
+
+  /**
+   * @brief Enable/Disable the flag 'daylight'
+   * @param enable true to enable, else false
+   */
   Q_INVOKABLE void setDaylight(bool enable);
 
 };
