@@ -249,7 +249,6 @@ bool FavoritesModel::storeData()
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
   if (!m_io)
     return succeeded;
-  QList<FavoriteItem*> data;
   if (m_io->open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text))
   {
     succeeded = true;
