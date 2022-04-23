@@ -1,12 +1,14 @@
-name: build android_x86 ndk22
+name: build android_x64 ndk22
 
 on:
   pull_request:
     branches:
       - debug
+      - master
   push:
     branches:
       - debug
+      - master
 
 jobs:
   build:
@@ -51,14 +53,14 @@ jobs:
                     -DCMAKE_PREFIX_PATH=${Qt5_DIR}
                     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
                     -DCMAKE_MAKE_PROGRAM=${ANDROID_HOME}/ndk/22.1.7171670/prebuilt/linux-x86_64/bin/make
-                    -DANDROID_ABI=x86
+                    -DANDROID_ABI=x86_64
                     -DANDROID_STL_PREFIX=llvm-libc++
                     -DANDROID_STL_SHARED_LIBRARIES=c++_shared
                     -DANDROID_SDK_MINVER=24
                     -DANDROID_SDK_TARGET=26
                     -DANDROID_NATIVE_API_LEVEL=24
                     -DQT_ANDROID_PLATFORM_LEVEL=29
-                    -DQT_ANDROID_TOOL_PREFIX=i686-linux-android
+                    -DQT_ANDROID_TOOL_PREFIX=x86_64-linux-android
                     -DQT_ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}
                     -DQT_ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/22.1.7171670
                     -DQT_ANDROID_QT_ROOT=${Qt5_DIR}
@@ -86,7 +88,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: osmin-x86-debug
-          path: ${{ github.workspace }}/build/osmin-x86/build/outputs/apk/debug/osmin-*-debug.apk
+          name: osmin-x86_64-debug
+          path: ${{ github.workspace }}/build/osmin-x86_64/build/outputs/apk/debug/osmin-*-debug.apk
           retention-days: 5
 

@@ -3,10 +3,10 @@ name: build android_arm64 ndk22
 on:
   pull_request:
     branches:
-      - master
+      - debug
   push:
     branches:
-      - master
+      - debug
 
 jobs:
   build:
@@ -82,4 +82,11 @@ jobs:
                     -Wno-dev"
       - name: Build
         run:  cmake --build build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: osmin-arm64-v8a-debug
+          path: ${{ github.workspace }}/build/osmin-arm64-v8a/build/outputs/apk/debug/osmin-*-debug.apk
+          retention-days: 5
 
