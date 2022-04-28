@@ -50,6 +50,7 @@
         <file alias="controls2/components/DialogMarkPosition.qml">controls2_509/components/DialogMarkPosition.qml</file>
         <file alias="controls2/components/DialogAction.qml">controls2_509/components/DialogAction.qml</file>
         <file alias="controls2/components/DialogAlert.qml">controls2_509/components/DialogAlert.qml</file>
+        <file alias="controls2/components/DialogEnter.qml">controls2_509/components/DialogEnter.qml</file>
         <file>images/poi/aerialway.svg</file>
         <file>images/poi/airfield.svg</file>
         <file>images/poi/airport.svg</file>
