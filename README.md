@@ -15,7 +15,12 @@ Supported Android OS is Nougat (Android 7.0) or newer, LineageOS 14.1 or newer.
 ## Develop/debug osmin
 You can build and test osmin on Unix (Linux, BSD, MacOS 10.14) supported by Qt 5.12. Before build from source you have to install the following dependencies.
 
-git, cmake, clang/clang++ (**>=10.0**), Qt5Core (**>=5.12**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning.
+git, cmake, clang/clang++ (**>=10.0**), OpenMP, Qt5Core (**>=5.12**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning.
+
+As example type the following on Ubuntu (>=20.04) to install all requirements.
+```
+sudo apt install git cmake clang curl wget libomp-dev liblzma-dev libqt5remoteobjects5-bin libqt5quickwidgets5 libqt5quickcontrols2-5 libqt5qmlmodels5 libqt5qml5 libqt5positioning5 libqt5remoteobjects5-dev libqt5svg5-dev libqt5sensors5-dev qtquickcontrols2-5-dev qtmultimedia5-dev qtpositioning5-dev qml-module-qtgraphicaleffects qml-module-qtquick2 qml-module-qtquick-layouts qml-module-qtquick-controls2 qml-module-qt-labs-settings
+```
 
 ## Build on Unix from source
 
@@ -51,20 +56,4 @@ Downloading big map could failed in background because android stop the activity
 ## About osmin on Unix desktop
 
 On startup, the application creates storage folders in the user's home directory: `osmin` and `Maps`. The first contains user data, configuration files and resources. The last contains downloaded maps.
-
-## Configure hillshade tile server
-
-To enable the hill shading feature, you need to configure the file `hillshade-tile-server.json` from the folder *resources*, i.e. *~/osmin/resources* or *Android/data/io.github.janbar.osmin/files/resources*. Previously the service was provided by wmflabs.org. Unfortunately it is no longer available today. So you can use your own server or any other providing the tile service. An example file looks like the following.
-```
-{
-  "id": "wmflabs",
-  "name": "wmflabs",
-  "servers": [
-    "http://tiles.wmflabs.org/hillshading/%1/%2/%3.png"
-  ],
-  "maximumZoomLevel": 18, 
-  "copyright": "© wmflabs Hillshading"
-}
-```
-The arguments 1-3 are respectively the zoom (Z), and coordinates (X , Y).
 
