@@ -104,38 +104,6 @@ PopOver {
             width: parent.width
             spacing: units.gu(1)
 
-            // vehicle
-
-            Row {
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: units.gu(3)
-
-                MapIcon {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "qrc:/images/trip/walk.svg"
-                    height: units.gu(7)
-                    width: height
-                    color: vehicle === "foot" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
-                    onClicked: vehicle = "foot"
-                }
-                MapIcon {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "qrc:/images/trip/bike.svg"
-                    height: units.gu(7)
-                    width: height
-                    color: vehicle === "bicycle" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
-                    onClicked: vehicle = "bicycle"
-                }
-                MapIcon {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "qrc:/images/trip/car.svg"
-                    height: units.gu(7)
-                    width: height
-                    color: vehicle === "car" ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
-                    onClicked: vehicle = "car"
-                }
-            }
-
             // Route from
 
             Label {
@@ -329,23 +297,86 @@ PopOver {
                 value: routeProgress
             }
 
-            MapIcon {
-                id: routeButton
-                source: "qrc:/images/trip/route.svg"
-                height: units.gu(5)
-                width: parent.width
-                color: styleMap.popover.foregroundColor
-                onClicked: {
-                    if (computeRunning) {
-                        breakCompute();
-                    } else {
-                        computeRoute();
+            // vehicle
+
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: units.gu(3)
+
+                MapIcon {
+                    readonly property string transport: "foot"
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/images/trip/walk.svg"
+                    height: units.gu(7)
+                    width: height
+                    color: vehicle === transport ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
+                    animationInterval: 500
+                    animationRunning: (vehicle === transport && computeRunning)
+                    enabled: (!computeRunning && placeFrom.valid && placeTo.valid) || computeRunning
+                    onClicked: {
+                        if (vehicle === transport) {
+                            if (computeRunning)
+                                breakCompute();
+                            else
+                                computeRoute();
+                        } else {
+                            if (computeRunning)
+                                breakCompute();
+                            vehicle = transport;
+                            computeRoute();
+                        }
                     }
                 }
-                label.text: computeRunning ? qsTr("Cancel") : qsTr("Compute route")
-                enabled: (!computeRunning && placeFrom.valid && placeTo.valid) || computeRunning
-                opacity: enabled ? 1.0 : 0.5
+                MapIcon {
+                    readonly property string transport: "bicycle"
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/images/trip/bike.svg"
+                    height: units.gu(7)
+                    width: height
+                    color: vehicle === transport ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
+                    animationInterval: 500
+                    animationRunning: (vehicle === transport && computeRunning)
+                    enabled: (!computeRunning && placeFrom.valid && placeTo.valid) || computeRunning
+                    onClicked: {
+                        if (vehicle === transport) {
+                            if (computeRunning)
+                                breakCompute();
+                            else
+                                computeRoute();
+                        } else {
+                            if (computeRunning)
+                                breakCompute();
+                            vehicle = transport;
+                            computeRoute();
+                        }
+                    }
+                }
+                MapIcon {
+                    readonly property string transport: "car"
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/images/trip/car.svg"
+                    height: units.gu(7)
+                    width: height
+                    color: vehicle === transport ? styleMap.popover.highlightedColor : styleMap.popover.foregroundColor
+                    animationInterval: 500
+                    animationRunning: (vehicle === transport && computeRunning)
+                    enabled: (!computeRunning && placeFrom.valid && placeTo.valid) || computeRunning
+                    onClicked: {
+                        if (vehicle === transport) {
+                            if (computeRunning)
+                                breakCompute();
+                            else
+                                computeRoute();
+                        } else {
+                            if (computeRunning)
+                                breakCompute();
+                            vehicle = transport;
+                            computeRoute();
+                        }
+                    }
+                }
             }
+
             Label {
                 width: parent.width
                 color: styleMap.popover.foregroundColor
@@ -367,8 +398,13 @@ PopOver {
                 spacing: units.gu(2)
                 MapIcon {
                     id: navigateButton
-                    source: "qrc:/images/trip/navigation.svg"
-                    height: units.gu(5)
+                    source: {
+                        if (vehicle === "car") return "qrc:/images/trip/car.svg";
+                        if (vehicle === "bicycle") return "qrc:/images/trip/bike.svg";
+                        if (vehicle === "foot") return "qrc:/images/trip/walk.svg";
+                        return "qrc:/images/trip/navigation.svg";
+                    }
+                    height: units.gu(6)
                     width: parent.width / 2 - units.gu(1)
                     color: styleMap.popover.foregroundColor
                     onClicked: {
@@ -396,7 +432,7 @@ PopOver {
                 MapIcon {
                     id: clearButton
                     source: "qrc:/images/delete.svg"
-                    height: units.gu(5)
+                    height: units.gu(6)
                     width: parent.width / 2 - units.gu(1)
                     color: styleMap.popover.foregroundColor
                     onClicked: {
