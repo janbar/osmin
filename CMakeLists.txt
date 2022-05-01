@@ -6,8 +6,8 @@ project(osmin C CXX)
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
-set(APP_VERSION       "1.9.1")
-set(APP_VERSION_CODE  48)
+set(APP_VERSION       "1.9.2")
+set(APP_VERSION_CODE  49)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
