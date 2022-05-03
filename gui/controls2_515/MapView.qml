@@ -562,10 +562,18 @@ MapPage {
         height: units.gu(6)
         onClicked: {
             if (popLocationInfo.isFavorite === 0) {
-                popLocationInfo.isFavorite = createFavorite(popLocationInfo.placeLat,
-                                                popLocationInfo.placeLon,
-                                                popLocationInfo.placeLabel,
-                                                popLocationInfo.placeType);
+                dialogEnter.title = qsTr("Add favorite");
+                dialogEnter.userEntry = popLocationInfo.placeLabel;
+                dialogEnter.open();
+                ToolBox.connectOnce(dialogEnter.reply, function(accepted, entry){
+                    if (accepted) {
+                        var label = entry.trim();
+                        popLocationInfo.isFavorite = createFavorite(popLocationInfo.placeLat,
+                                                        popLocationInfo.placeLon,
+                                                        (label.length > 0 ? label : popLocationInfo.placeLabel),
+                                                        popLocationInfo.placeType);
+                    }
+                });
             } else {
                 var favorite = FavoritesModel.getById(popLocationInfo.isFavorite);
                 dialogAction.title = qsTr("Delete favorite ?");
@@ -899,6 +907,10 @@ MapPage {
 
     DialogAction {
         id: dialogAction
+    }
+
+    DialogEnter {
+        id: dialogEnter
     }
 
     PopInfo {

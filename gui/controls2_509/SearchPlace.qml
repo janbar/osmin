@@ -1,9 +1,9 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQml 2.2
-import QtPositioning 5.2
 import Osmin 1.0
 import "./components"
+import "../toolbox.js" as ToolBox
 
 MapPage {
     id: searchPage
@@ -599,12 +599,27 @@ MapPage {
                 height: units.gu(6)
                 onClicked: {
                     if (preview.isFavoriteMark === 0) {
-                        preview.isFavoriteMark = createFavorite(preview.mark.lat,
-                                                                preview.mark.lon,
-                                                                preview.mark.label,
-                                                                preview.mark.type);
-                    } else if (removeFavorite(preview.isFavoriteMark)) {
-                        preview.isFavoriteMark = 0;
+                        dialogEnter.title = qsTr("Add favorite");
+                        dialogEnter.userEntry = preview.mark.label;
+                        dialogEnter.open();
+                        ToolBox.connectOnce(dialogEnter.reply, function(accepted, entry){
+                            if (accepted) {
+                                var label = entry.trim();
+                                preview.isFavoriteMark = createFavorite(preview.mark.lat,
+                                                                        preview.mark.lon,
+                                                                        (label.length > 0 ? label : preview.mark.label),
+                                                                        preview.mark.type);
+                            }
+                        });
+                    } else {
+                        var favorite = FavoritesModel.getById(preview.isFavoriteMark);
+                        dialogAction.title = qsTr("Delete favorite ?");
+                        dialogAction.text = favorite.label;
+                        dialogAction.open();
+                        ToolBox.connectOnce(dialogAction.reply, function(accepted){
+                            if (accepted && removeFavorite(preview.isFavoriteMark))
+                                preview.isFavoriteMark = 0;
+                        });
                     }
                 }
             }
@@ -667,5 +682,18 @@ MapPage {
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: units.gu(8)
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////
+    //// Dialog
+    ////
+
+    DialogAction {
+        id: dialogAction
+    }
+
+    DialogEnter {
+        id: dialogEnter
     }
 }

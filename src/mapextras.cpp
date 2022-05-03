@@ -36,6 +36,9 @@ QVariantList MapExtras::getStyleFlags()
     QMap<QString, bool> map = dbThread->GetStyleFlags();
     for (auto it = map.constKeyValueBegin(); it != map.constKeyValueEnd(); ++it)
     {
+      // do not return internal flags
+      if ((*it).first.startsWith('_'))
+        continue;
       QVariantMap flag;
       flag.insert("name", QVariant::fromValue((*it).first));
       flag.insert("value", QVariant::fromValue((*it).second));
