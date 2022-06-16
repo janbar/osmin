@@ -90,6 +90,8 @@ if(NOT APPLE)
 else()
     # force build all backend dependencies on apple
     option(BUILD_DEPENDENCIES "" ON)
+    # ignore macports
+    set(CMAKE_IGNORE_PATH "/opt/local/bin;/opt/local/include;/opt/local/lib")
 endif()
 
 # Workaround for QTBUG-87863 before calling add_subirectory
