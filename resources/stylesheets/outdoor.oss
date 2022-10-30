@@ -76,9 +76,7 @@ CONST
   COLOR red                         = #ff0000;
 
   // Pseudo types
-  COLOR routeColor                  = #ae00ff88;
   COLOR highlightedColor            = #ff000088;
-  COLOR trackColor                  = #10a000a0;
 
   // Default label color
   IF daylight {
@@ -177,14 +175,8 @@ CONST
   COLOR natureReserveBorderColor    = #82a77180;
 
   // Symbols
-  COLOR railwaySymbolColor          = #7885b0;
-  COLOR busSymbolColor              = #4bb2da;
   COLOR fuelSymbolColor             = #4bb2da;
   COLOR onewayArrowColor            = #00000050;
-  COLOR peakSymbolColor             = #9c5e29;
-  COLOR mountainPassSymbolColor     = #9c5e29;
-  COLOR hospitalSymbolColor         = #da0092;
-  COLOR pharmacySymbolColor         = #da0092;
 
   COLOR railwayColor                = #bb75d9;
   COLOR railwayLabelColor           = darken(@railwayColor, 0.5);
@@ -256,165 +248,7 @@ CONST
     COLOR aerodromeApron           = darken(#e8d1fe, 0.6);
   }
 
-SYMBOL debug_oneway_arrow
-  POLYGON 0,1.2 2.4,0 0,-1.2 0,-0.4 -1.5,-0.4 -1.5,0.4 0,0.4 {
-    AREA { color:  @onewayArrowColor; }
-  }
-  RECTANGLE -6.5,0 12.5 x 0.2 {
-    AREA { color:  @onewayArrowColor; }
-  }
-
-SYMBOL oneway_arrow
-  POLYGON 0,0.6 1.2,0 0,-0.6 0,-0.2 -0.75,-0.2 -0.75,0.2 0,0.2 {
-    AREA { color:  @onewayArrowColor; }
-  }
-
-SYMBOL natural_peak
-   POLYGON -0.75,0 0.75,0 0.0,-1.5 {
-     AREA { color: @peakSymbolColor; }
-  }
-
-SYMBOL mountain_pass
-  POLYGON 0,0 0,-1.2 0.6,-0.3 1.2,-1.2 1.2,0  {
-    AREA { color: @mountainPassSymbolColor; }
-  }
-
-SYMBOL cliff_small
-  POLYGON 0,0 0.5,0 0.25,0.75 {
-    AREA { color: lighten(@cliffColor, 0.5);}
-  }
-
-SYMBOL cliff
-  POLYGON 0,0 1,0 0.5,1.5 {
-    AREA { color: @cliffColor;}
-  }
-
-SYMBOL natural_tree
-  CIRCLE GROUND 0,0 5 {
-    AREA {color: #9acd3250; }
-  }
-CIRCLE GROUND 0,0 0.3 {
-    AREA {color: #8b4513; }
-  }
-
-SYMBOL natural_spring
-  CIRCLE 0,0 1.0 {
-    AREA.BORDER {color: @waterLabelColor; width: 0.2mm; }
-  }
-  CIRCLE 0,0 0.3 {
-    AREA {color: @waterLabelColor; }
-  }
-
-SYMBOL amenity_drinking_water
-  CIRCLE 0,0 0.4 {
-    AREA {color: @waterLabelColor; }
-  }
-
-SYMBOL waterway_waterfall
-  RECTANGLE 0,0 1.75 x 0.5 {
-    AREA { color: darken(@waterColor, 0.4); }
-  }
-  POLYGON 1.75,0.5 2.0,1 {
-    AREA.BORDER { width: 0.25mm; color: darken(@waterColor, 0.2);  }
-  }
-  POLYGON 1.25,0.5 1.5,1 {
-    AREA.BORDER { width: 0.25mm; color: darken(@waterColor, 0.2);  }
-  }
-  POLYGON 0.75,0.5 1,1 {
-    AREA.BORDER { width: 0.25mm; color: darken(@waterColor, 0.2);  }
-  }
-
-SYMBOL waterway_weir
-  RECTANGLE 0,0 2 x 0.5 {
-    AREA { color: darken(@waterColor, 0.4); }
-  }
-  CIRCLE 0.25,0.8 0.25 {
-    AREA {color: darken(@waterColor, 0.2); }
-  }
-  CIRCLE 1,0.8 0.25 {
-    AREA {color: darken(@waterColor, 0.2); }
-  }
-  CIRCLE 1.75,0.8 0.25 {
-    AREA {color: darken(@waterColor, 0.2); }
-  }
-
-SYMBOL border
-  RECTANGLE 0,0.45 0.1 x 1 {
-    AREA { color: #000000; }
-  }
-  RECTANGLE -0.45,0 1 x 0.1 {
-    AREA { color: #000000; }
-  }
-
-SYMBOL railway_station
-  RECTANGLE 0,0 1.5 x 1.5 {
-    AREA { color: @railwaySymbolColor; }
-  }
-
-SYMBOL railway_halt
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: @railwaySymbolColor; }
-  }
-
-SYMBOL railway_tram_stop
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: @railwaySymbolColor; }
-  }
-
-SYMBOL highway_bus_stop
-  CIRCLE 0,0 0.75 {
-    AREA { color: @busSymbolColor; }
-  }
-
-SYMBOL amenity
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: #b89c9c; }
-  }
-
-SYMBOL amenity_hospital
-  CIRCLE 0,0 1.0 {
-    AREA.BORDER { color: @hospitalSymbolColor; width: 0.2mm; }
-  }
-  RECTANGLE -0.75,-0.25 1.5 x 0.5 {
-    AREA { color: @hospitalSymbolColor; }
-  }
-  RECTANGLE -0.25,-0.75 0.5 x 1.5 {
-    AREA { color: @hospitalSymbolColor; }
-  }
-
-SYMBOL amenity_pharmacy
-  RECTANGLE -1,-1 2 x 2 {
-    AREA.BORDER { color: @pharmacySymbolColor; width: 0.2mm; }
-  }
-  RECTANGLE -0.75,-0.25 1.5 x 0.5 {
-    AREA { color: @pharmacySymbolColor; }
-  }
-  RECTANGLE -0.25,-0.75 0.5 x 1.5 {
-    AREA { color: @pharmacySymbolColor; }
-  }
-
-SYMBOL amenity_parking
-  CIRCLE 0,0 0.75 {
-    AREA { color: #4bb2da; }
-  }
-
-SYMBOL amenity_post_box
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: @postColor; }
-  }
-
-SYMBOL amenity_post_office
-  RECTANGLE 0,0 2 x 2 {
-    AREA { color: @postColor; }
-  }
-
-SYMBOL christian_church_cross
-  RECTANGLE 0.5,-2 0.5 x 2 {
-    AREA { color: #000000; }   // vertical bar
-  }
-  RECTANGLE 0,-1.5 1.5 x 0.5 {
-    AREA { color: #000000; } // horizontal bar
-  }
+MODULE "include/symbols"
 
 SYMBOL embankment
   RECTANGLE 0,2.5 0.1 x 5 {
@@ -432,56 +266,26 @@ SYMBOL small_embankment
     AREA { color: #000000; }
   }
 
-SYMBOL marker
-  CIRCLE 0,0 1.5 {
-    AREA {color: #ff0000; }
+SYMBOL border
+  RECTANGLE 0,0.45 0.1 x 1 {
+    AREA { color: #000000; }
+  }
+  RECTANGLE -0.45,0 1 x 0.1 {
+    AREA { color: #000000; }
   }
 
-SYMBOL viaFerrataEasyCross
-  POLYGON -0.5,-0.5 0.5,0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataEasyColor;  }
-  }
-  POLYGON -0.5,0.5 0.5,-0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataEasyColor;  }
+SYMBOL cliff_small
+  POLYGON 0,0 0.5,0 0.25,0.75 {
+    AREA { color: lighten(@cliffColor, 0.5);}
   }
 
-SYMBOL viaFerrataModerateCross
-  POLYGON -0.5,-0.5 0.5,0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataModerateColor;  }
-  }
-  POLYGON -0.5,0.5 0.5,-0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataModerateColor; }
+SYMBOL cliff
+  POLYGON 0,0 1,0 0.5,1.5 {
+    AREA { color: @cliffColor;}
   }
 
-SYMBOL viaFerrataDifficultCross
-  POLYGON -0.5,-0.5 0.5,0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataDifficultColor;  }
-  }
-  POLYGON -0.5,0.5 0.5,-0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataDifficultColor;  }
-  }
-
-SYMBOL viaFerrataExtremeCross
-  POLYGON -0.5,-0.5 0.5,0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataExtremeColor;  }
-  }
-  POLYGON -0.5,0.5 0.5,-0.5 {
-    AREA.BORDER { width: 0.1mm; color:  @viaFerrataExtremeColor;  }
-  }
-
-SYMBOL subway_entrance
-  POLYGON -0.4,0 -0.4,-0.8 0,-0.4 0.4,-0.8 0.4,0 1,0 0,1 -1,0 {
-    AREA { color: #60005070; }
-  }
-
-SYMBOL amenity_charging_station
-  RECTANGLE -1,-1 2 x 2 {
-    AREA { color: #0000ff; }
-  }
-  CIRCLE 0,0 0.8 {
-    AREA {color: #ffffff; }
-  }
-
+MODULE "include/route"
+MODULE "include/track"
 
 STYLE
  // -------------------------------------------------------
@@ -496,44 +300,16 @@ STYLE
  NODE "internal_target"
   ICON { name: target;} */
 
-  [TYPE _track] {
-    [MAG world-] {
-      WAY {preferColorFeature: true; color: alpha(@trackColor, 1.0); displayWidth: 0.8mm; priority: 100;}
-    }
-    [MAG city-] {
-      WAY {preferColorFeature: true; color: alpha(@trackColor, 0.9); displayWidth: 0.8mm; width: 2.2m; priority: 100;}
-    }
-    [MAG veryClose-] {
-      WAY {preferColorFeature: true; color: alpha(@trackColor, 0.4); displayWidth: 0.8mm; width: 2.2m; priority: 100;}
-    }
-  }
-  [TYPE _route] {
-    [MAG world-] {
-      WAY {color: alpha(@routeColor, 1.00); displayWidth: 0.8mm; priority: 100; }
-    }
-    [MAG city-] {
-      WAY {color: alpha(@routeColor, 0.80); displayWidth: 1.8mm; width: 6m; priority: 100; }
-    }
-    [MAG veryClose-] {
-      WAY {color: alpha(@routeColor, 0.70); displayWidth: 1.8mm; width: 6m; priority: 100; }
-    }
-  }
-
  [MAG world-] {
     [TYPE _highlighted] WAY {color: @highlightedColor; displayWidth: 1.5mm; priority: 100; }
     [TYPE _highlighted] AREA.BORDER {color: @highlightedColor; width: 1.0mm; }
     [TYPE _highlighted] NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
 
-    [TYPE _waypoint] {
-        NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
-        NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
-    }
-
-   [TYPE _tile_sea] AREA {color: @waterColor;}
-   //[TYPE _tile_coast] AREA {color: @waterColor;}
-   //[TYPE _tile_coast] AREA {color: @waterColor;  borderColor: #000000; borderWidth: 0.1mm;}
-   [TYPE _tile_land] AREA {color: @landColor;}
-   [TYPE _tile_unknown] AREA {color: @unknownColor;}
+    [TYPE _tile_sea] AREA {color: @waterColor;}
+    //[TYPE _tile_coast] AREA {color: @waterColor;}
+    //[TYPE _tile_coast] AREA {color: @waterColor;  borderColor: #000000; borderWidth: 0.1mm;}
+    [TYPE _tile_land] AREA {color: @landColor;}
+    [TYPE _tile_unknown] AREA {color: @unknownColor;}
 
  }
 

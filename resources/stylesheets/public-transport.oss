@@ -2,6 +2,7 @@ OSS
 
 ORDER WAYS
   GROUP _route
+  GROUP _track
   GROUP railway_rail, railway_tram, railway_light_rail, 
       railway_narrow_gauge, railway_preserved, 
       railway_funicular,
@@ -20,64 +21,19 @@ CONST
   COLOR seaColor                   = #9acffd;
   COLOR landColor                  = #f1eee9;
   COLOR unknownColor               = @waterColor;
-  COLOR routeColor                 = #ae00ff88;
-  COLOR trackColor                 = #10a000a0;
 
   // Label priorities
   UINT labelPrioWaypoint           = 0;
 
-SYMBOL place_city
-  CIRCLE 0,0 2.5 {
-    AREA {color: #ff000050; }
-  }
-
-SYMBOL place_town
-  CIRCLE 0,0 1.32 {
-    AREA {color: #ff000040; }
-  }
- 
-SYMBOL railway_station
-  CIRCLE 0,0 1.0 {
-    AREA {color: #60005070; }
-  }
-
-SYMBOL railway_halt
-  CIRCLE 0,0 0.5 {
-    AREA {color: #00800080; }
-  }
-SYMBOL railway_tram_stop
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: #90307080; }
-  }
-SYMBOL ferry_terminal
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: #30307080; }
-  }
-SYMBOL highway_bus_stop
-  RECTANGLE 0,0 1 x 1 {
-    AREA { color: #10107080; }
-  }
-SYMBOL subway_entrance
-  POLYGON -0.4,0 -0.4,-0.8 0,-0.4 0.4,-0.8 0.4,0 1,0 0,1 -1,0 {
-    AREA { color: #60005070; }
-  }
-SYMBOL marker
-  CIRCLE 0,0 0.8 {
-    AREA {color: #ff0000; }
-  }
+MODULE "include/symbols"
+MODULE "include/route"
+MODULE "include/track"
 
 STYLE
   [TYPE _tile_sea] AREA {color: @seaColor;}
   // [TYPE _tile_coast] AREA {color: @seaColor;}
   [TYPE _tile_land] AREA {color: @landColor;}
   // [TYPE _tile_unknown] AREA {color: @unknownColor;}
-
-  [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; width: 6m; priority: 100;}
-  [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
-  [TYPE _waypoint] {
-    NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
-    NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
-  }
 
   // -------------------------------------------------------
   //

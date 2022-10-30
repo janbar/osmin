@@ -1,0 +1,15 @@
+OSS
+
+CONST
+  COLOR trackColor = #10a000a0;
+
+STYLE
+  [MAG world-] {
+    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
+    [TYPE _waypoint] {
+      NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
+      NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
+    }
+  }
+
+END

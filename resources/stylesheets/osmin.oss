@@ -130,10 +130,6 @@ CONST
   // For debugging :-)
   COLOR red                        = #ff0000;
 
-  // Pseudo types
-  COLOR routeColor                 = #ae00ff88;
-  COLOR trackColor                 = #10a000a0;
-
   // Ground tiles
 
   IF daylight {
@@ -224,7 +220,6 @@ CONST
   COLOR vineyardColor              = #b3e2a8;
   COLOR wetlandColor               = #bdd8d8;
 
-  COLOR peakSymbolColor            = #9c5e29;
   COLOR peakLabelColor             = #9c5329;
 
   // Ways
@@ -283,10 +278,7 @@ CONST
   // Travel
   COLOR onewayArrowColor           = #00000028;
 
-  COLOR busSymbolColor             = #7885b0;
-
   COLOR railwayColor               = #bb75d9;
-  COLOR railwaySymbolColor         = @railwayColor;
   COLOR railwayLabelColor          = darken(@railwayColor, 0.5);
   COLOR railwayStationColor        = @railwayColor;
 
@@ -343,158 +335,21 @@ CONST
   COLOR parkingBorderColor         = darken(@parkingColor, 0.3);
   COLOR parkingBuildingBorderColor = darken(@parkingBuildingColor, 0.3);
   
-  COLOR hospitalSymbolColor        = #da0092;
   COLOR hospitalColor              = darken(@amenityColor, 0.1);
   COLOR hospitalBorderColor        = darken(@hospitalColor, 0.3);
   COLOR hospitalBuildingColor      = darken(@amenityBuildingColor, 0.1);
   COLOR hospitalBuildingBorderColor = darken(@hospitalBuildingColor, 0.3);
 
-  COLOR pharmacySymbolColor        = #da0092;
-
   COLOR postColor                  = #e8f000;
-  COLOR postSymbolColor            = #e8f000;
   COLOR postBuildingColor          = #d2d900;
   COLOR postBuildingBorderColor    = darken(@postBuildingColor, 0.3);
   COLOR postLabelColor             = darken(@postColor, 0.5);
 
   COLOR wallColor                  = #663e1b;
 
-  SYMBOL viaFerrataEasyCross
-    POLYGON -0.5,-0.5 0.5,0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataEasyColor;  }
-    }
-    POLYGON -0.5,0.5 0.5,-0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataEasyColor;  }
-    }
-
-  SYMBOL viaFerrataModerateCross
-    POLYGON -0.5,-0.5 0.5,0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataModerateColor;  }
-    }
-    POLYGON -0.5,0.5 0.5,-0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataModerateColor; }
-    }
-
-  SYMBOL viaFerrataDifficultCross
-    POLYGON -0.5,-0.5 0.5,0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataDifficultColor;  }
-    }
-    POLYGON -0.5,0.5 0.5,-0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataDifficultColor;  }
-    }
-
-  SYMBOL viaFerrataExtremeCross
-    POLYGON -0.5,-0.5 0.5,0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataExtremeColor;  }
-    }
-    POLYGON -0.5,0.5 0.5,-0.5 {
-      AREA.BORDER { width: 0.1mm; color:  @viaFerrataExtremeColor;  }
-    }
-
-  SYMBOL oneway_arrow
-    POLYGON 0,0.5 1,0 0,-0.5 {
-      AREA { color:  @onewayArrowColor; }
-    }
-
-  SYMBOL stream_arrow
-    POLYGON 0,0.5 1,0 0,-0.5 {
-      AREA { color: @waterLabelColor; }
-    }
-
-  SYMBOL natural_peak
-    POLYGON -0.75,0 0.75,0 0.0,-1.5 {
-      AREA { color: @peakSymbolColor; }
-    }
-
-  SYMBOL railway_station
-    RECTANGLE 0,0 2 x 2 {
-      AREA { color: @railwaySymbolColor; }
-    }
-
-  SYMBOL railway_halt
-    RECTANGLE 0,0 1 x 1 {
-      AREA { color: @railwaySymbolColor; }
-    }
-
-  SYMBOL railway_tram_stop
-    RECTANGLE 0,0 1 x 1 {
-      AREA { color: @railwaySymbolColor; }
-    }
-
-  SYMBOL highway_bus_stop
-    CIRCLE 0,0 1.5 {
-      AREA {color: @busSymbolColor; }
-    }
-
-  SYMBOL amenity
-    RECTANGLE 0,0 1 x 1 {
-      AREA {color: #b89c9c; }
-    }
-
-  SYMBOL amenity_hospital
-    CIRCLE 0,0 2 {
-      AREA.BORDER {color: @hospitalSymbolColor; width: 0.2mm; }
-    }
-    // Horizontal bar
-    RECTANGLE -0.75,-0.25 1.5 x 0.5 {
-      AREA { color: @hospitalSymbolColor; }
-    }
-    // Vertical bar
-    RECTANGLE -0.25,-0.75 0.5 x 1.5 {
-      AREA { color: @hospitalSymbolColor; }
-    }
-
-  SYMBOL amenity_pharmacy
-    // Box
-    RECTANGLE -1,1 2 x 2 {
-      AREA.BORDER {color: @pharmacySymbolColor; width: 0.2mm; }
-    }
-    // Horizontal bar
-    RECTANGLE -0.75,-0.25 1.5 x 0.5 {
-      AREA { color: @pharmacySymbolColor; }
-    }
-    // Vertical bar
-    RECTANGLE -0.25,-0.75 0.5 x 1.5 {
-      AREA {color: @pharmacySymbolColor; }
-    }
-
-  SYMBOL amenity_parking
-    CIRCLE 0,0 1.5 {
-      AREA {color: #4bb2da; }
-    }
-
-  SYMBOL amenity_post_box
-    RECTANGLE 0,0 1 x 1 {
-      AREA { color: @postSymbolColor; }
-    }
-
-  SYMBOL amenity_post_office
-    RECTANGLE 0,0 2 x 2 {
-      AREA { color: @postSymbolColor; }
-    }
-
-  SYMBOL christian_church_cross
-    RECTANGLE 0.5,-2 0.5 x 2 {
-      AREA { color: #000000; }   // vertical bar
-    }
-    RECTANGLE 0,-1.5 1.5 x 0.5 {
-      AREA { color: #000000; } // horizontal bar
-    }
-
-  SYMBOL speed_camera
-    CIRCLE 0,0 1.5 {
-      AREA {color: @red; }
-    }
-
-  SYMBOL highway_street_lamp
-    CIRCLE 0,0 2 {
-      AREA {color: #f5fb5b; }
-    }
-
-  SYMBOL marker
-    CIRCLE 0,0 1.5 {
-      AREA {color: #ff0000; }
-    }
+MODULE "include/symbols"
+MODULE "include/route"
+MODULE "include/track"
 
 STYLE
   // -------------------------------------------------------
@@ -510,13 +365,6 @@ STYLE
     ICON { name: target;} */
 
   [MAG world-] {
-    [TYPE _route] WAY {color: @routeColor; displayWidth: 1.5mm; width: 6m; priority: 100;}
-    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
-    [TYPE _waypoint] {
-      NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
-      NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
-    }
-
     [TYPE _tile_sea] AREA {color: @waterColor;}
     //[TYPE _tile_coast] AREA {color: @waterColor;}
     //[TYPE _tile_coast] AREA {color: @waterColor;  borderColor: #000000; borderWidth: 0.1mm;}
