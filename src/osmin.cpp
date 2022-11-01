@@ -281,31 +281,38 @@ int startGUI(int argc, char* argv[])
   if (!resVersion.exists())
   {
     QStringList folders;
-    folders.push_back("");
-    folders.push_back("icons");
-    folders.push_back("stylesheets");
-    folders.push_back("world");
-    for (QString& folder : folders)
+    folders.push_back(".");
+    while (!folders.empty())
     {
-      if (folder.length() == 0 || g_resDir.exists(folder) || g_resDir.mkpath(folder))
+      QString folder = folders.front();
+      folders.pop_front();
+      if (folder == "." || g_resDir.exists(folder) || g_resDir.mkpath(folder))
       {
         QDir assets(g_dataDir.absoluteFilePath(folder));
         for (QFileInfo& asset : assets.entryInfoList())
         {
-          if (asset.isFile())
+          if (asset.isSymLink() || asset.isHidden())
+            continue;
+          else if (asset.isFile())
           {
-            QString filename = g_resDir.absoluteFilePath(folder).append('/').append(asset.fileName());
+            QString filename = g_resDir.absolutePath().append('/').append(folder).append('/').append(asset.fileName());
             if ((!QFile::exists(filename) || QFile::remove(filename)) &&
                 QFile::copy(asset.absoluteFilePath(), filename))
               continue;
-            qWarning("Failed to install file %s", asset.fileName().toUtf8().constData());
+            qWarning("Failed to create file %s", filename.toUtf8().constData());
             return EXIT_FAILURE;
+          }
+          else if (asset.isDir())
+          {
+            QString dirname(folder);
+            folders.push_back(dirname.append('/').append(asset.fileName()));
+            continue;
           }
         }
       }
       else
       {
-        qWarning("Failed to create path %s", g_resDir.absoluteFilePath(folder).toUtf8().constData());
+        qWarning("Failed to create directory %s/%s", g_resDir.absolutePath().toUtf8().constData(), folder.toUtf8().constData());
         return EXIT_FAILURE;
       }
     }
