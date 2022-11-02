@@ -404,10 +404,10 @@ int startGUI(int argc, char* argv[])
          .WithStyleSheetDirectory(g_resDir.absoluteFilePath("stylesheets"))
          .WithIconDirectory(g_resDir.absoluteFilePath("icons"))
          .WithMapLookupDirectories(mapDirs)
-         .AddOnlineTileProviders(g_resDir.absoluteFilePath("online-tile-providers.json"))
-         .AddMapProviders(g_resDir.absoluteFilePath("map-providers.json"))
+         .WithOnlineTileProviders(g_resDir.absoluteFilePath("online-tile-providers.json"))
+         .WithMapProviders(g_resDir.absoluteFilePath("map-providers.json"))
          .WithVoiceLookupDirectory(g_homeDir.absoluteFilePath(DIR_VOICES))
-         .AddVoiceProviders(g_resDir.absoluteFilePath("voice-providers.json"))
+         .WithVoiceProviders(g_resDir.absoluteFilePath("voice-providers.json"))
          .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
          .WithTileCacheSizes(60, 200);
 
