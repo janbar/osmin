@@ -207,7 +207,7 @@ MapPage {
         }
 
         Component.onCompleted: {
-            map.setVehicleScaleFactor(0.0); // hide vehicle
+            map.setVehicleScaleFactor(0.1); // hide vehicle
             positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
                 locationChanged(valid, lat, lon, accValid, acc);
             });
@@ -279,7 +279,7 @@ MapPage {
             map.setVehicleScaleFactor(1.0);
         } else {
             // hide vehicle icon
-            map.setVehicleScaleFactor(0.0);
+            map.setVehicleScaleFactor(0.1);
             // deactivate azimuth
             compass.active = false;
             // lock rotation
