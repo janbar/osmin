@@ -281,21 +281,29 @@ int startGUI(int argc, char* argv[])
   if (!resVersion.exists())
   {
     QStringList folders;
-    folders.push_back(".");
+    folders.push_back("");
     while (!folders.empty())
     {
       QString folder = folders.front();
       folders.pop_front();
-      if (folder == "." || g_resDir.exists(folder) || g_resDir.mkpath(folder))
+      if (folder.isEmpty() || g_resDir.exists(folder) || g_resDir.mkpath(folder))
       {
-        QDir assets(g_dataDir.absoluteFilePath(folder));
+        QDir assets;
+        if (folder.isEmpty())
+          assets.setPath(g_dataDir.absolutePath());
+        else
+          assets.setPath(g_dataDir.absoluteFilePath(folder));
         for (QFileInfo& asset : assets.entryInfoList())
         {
           if (asset.isSymLink() || asset.isHidden())
             continue;
           else if (asset.isFile())
           {
-            QString filename = g_resDir.absolutePath().append('/').append(folder).append('/').append(asset.fileName());
+            QString filename;
+            if (folder.isEmpty())
+              filename = g_resDir.absolutePath().append('/').append(asset.fileName());
+            else
+              filename = g_resDir.absolutePath().append('/').append(folder).append('/').append(asset.fileName());
             if ((!QFile::exists(filename) || QFile::remove(filename)) &&
                 QFile::copy(asset.absoluteFilePath(), filename))
               continue;
@@ -304,8 +312,11 @@ int startGUI(int argc, char* argv[])
           }
           else if (asset.isDir())
           {
-            QString dirname(folder);
-            folders.push_back(dirname.append('/').append(asset.fileName()));
+            QString dirname;
+            if (folder.isEmpty())
+              folders.push_back(dirname.append(asset.fileName()));
+            else
+              folders.push_back(dirname.append(folder).append('/').append(asset.fileName()));
             continue;
           }
         }
