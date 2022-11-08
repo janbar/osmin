@@ -15,7 +15,7 @@ Supported Android OS is Nougat (Android 7.0) or newer, LineageOS 14.1 or newer.
 ## Develop/debug osmin
 You can build and test osmin on Unix (Linux, BSD, MacOS 10.14) supported by Qt 5.12. Before build from source you have to install the following dependencies.
 
-git, cmake, clang/clang++ (**>=10.0**), OpenMP, Qt5Core (**>=5.12**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning.
+git, cmake, clang/clang++ (**>=12.0**), OpenMP, Qt5Core (**>=5.12**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning.
 
 As example type the following on Ubuntu (>=20.04) to install all requirements.
 ```
