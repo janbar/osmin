@@ -139,7 +139,7 @@ endif()
 if(NOT LIBXML2_FOUND)
     download_project(PROJ xml2
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
-        URL_HASH MD5=c6af3593f30f6208ed484cdb336c7c65
+        URL_HASH MD5=c69f678e02b9fea14fb03485e0f8fdcd
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
