@@ -188,7 +188,7 @@ MapPage {
                         Label{
                             font.pointSize: units.fs("x-small")
                             color: styleMap.view.secondaryColor
-                            text: Qt.formatDate(time)
+                            text: time.toLocaleDateString(Locale.ShortFormat)
                             visible: time != null
                         }
                     }
@@ -341,8 +341,8 @@ MapPage {
                     Label {
                         font.pointSize: units.fs("x-small")
                         color: styleMap.view.secondaryColor
-                        text: size
-                        visible: size !== ""
+                        text: { dir ? null : time.toLocaleDateString(Locale.ShortFormat) + ", " + size }
+                        visible: !dir
                     }
                 }
 
