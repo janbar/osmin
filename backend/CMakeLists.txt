@@ -89,14 +89,11 @@ if(NOT OPENSSL_FOUND)
     message(STATUS "Build OpenSSL: ${openssl_BINARY_DIR}")
 endif()
 
-# Provides dependency iconv
-if(NOT BUILD_DEPENDENCIES)
-    find_package(Iconv QUIET)
-endif()
+# Provides internal iconv
 if(NOT ICONV_FOUND)
     download_project(PROJ iconv
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libiconv-1.16.tar.gz"
-        URL_HASH MD5=988dea3347947084606c00cb1eaf9b6f
+        URL_HASH MD5=739c5e8f9e29fb95c0a1ad67becb80a7
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -112,7 +109,7 @@ if(NOT ICONV_FOUND)
     message(STATUS "Build iconv: ${iconv_BINARY_DIR}")
 endif()
 
-# Provides dependency marisa-trie
+# Provides internal marisa-trie
 if(NOT MARISA_FOUND)
     download_project(PROJ marisa
         URL "${CMAKE_CURRENT_SOURCE_DIR}/marisa-0.2.5.tar.gz"
@@ -132,10 +129,7 @@ if(NOT MARISA_FOUND)
     message(STATUS "Build MARISA: ${marisa_BINARY_DIR}")
 endif()
 
-# Provides dependency xml2
-if(NOT BUILD_DEPENDENCIES)
-    find_package(LibXml2 QUIET)
-endif()
+# Provides internal xml2
 if(NOT LIBXML2_FOUND)
     download_project(PROJ xml2
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
