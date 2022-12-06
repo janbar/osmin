@@ -67,7 +67,7 @@ if(NOT OPENSSL_FOUND)
         set(OPENSSL_DL_ABI "1.1")
         download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
             GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.1.1n-20220327
+            GIT_TAG 1.1.1s-20221201
             GIT_SHALLOW 1
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}
             UPDATE_DISCONNECTED ON)
@@ -129,8 +129,11 @@ if(NOT MARISA_FOUND)
     message(STATUS "Build MARISA: ${marisa_BINARY_DIR}")
 endif()
 
-# Provides internal xml2
-if(NOT LIBXML2_FOUND)
+# Provides dependency xml2
+if(NOT BUILD_DEPENDENCIES)
+    find_package(LibXml2 QUIET)
+endif()
+if(NOT LibXml2_FOUND)
     download_project(PROJ xml2
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
         URL_HASH MD5=c69f678e02b9fea14fb03485e0f8fdcd
@@ -142,6 +145,7 @@ if(NOT LIBXML2_FOUND)
     set(LIBXML2_WITH_LZMA OFF)
     set(LIBXML2_WITH_ICONV ON)
     set(LIBXML2_WITH_ICU OFF)
+    set(LIBXML2_WITH_THREADS OFF)
     add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-src
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-build
@@ -149,7 +153,7 @@ if(NOT LIBXML2_FOUND)
     )
     set(LIBXML2_LIBRARY xml2)
     set(LIBXML2_INCLUDE_DIR "${xml2_BINARY_DIR}")
-    set(LIBXML2_FOUND ON)
+    set(LibXml2_FOUND ON)
     set(PC_LIBXML_STATIC_LIBRARIES ${ZLIB_LIRARIES} ${ICONV_LIBRARIES})
     message(STATUS "Build xml2: ${xml2_BINARY_DIR}")
 endif()
