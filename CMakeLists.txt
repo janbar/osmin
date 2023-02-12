@@ -6,8 +6,8 @@ project(osmin C CXX)
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
-set(APP_VERSION       "1.9.3")
-set(APP_VERSION_CODE  50)
+set(APP_VERSION       "1.9.4")
+set(APP_VERSION_CODE  51)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -89,7 +89,7 @@ if(NOT APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 else()
     # force build all backend dependencies on apple
-    option(BUILD_DEPENDENCIES "" ON)
+    set(BUILD_DEPENDENCIES ON CACHE BOOL "Build dependencies" FORCE)
     # ignore macports
     set(CMAKE_IGNORE_PATH "/opt/local/bin;/opt/local/include;/opt/local/lib")
 endif()
