@@ -112,8 +112,8 @@ endif()
 # Provides internal marisa-trie
 if(NOT MARISA_FOUND)
     download_project(PROJ marisa
-        URL "${CMAKE_CURRENT_SOURCE_DIR}/marisa-0.2.5.tar.gz"
-        URL_HASH MD5=036ab06e7edf0059d602264cb6b26aca
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/marisa-0.2.6.tar.gz"
+        URL_HASH MD5=07f4bf0f014133e4940103ec5ca886cd
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
