@@ -1438,142 +1438,142 @@
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="365"/>
         <source>Enter roundabout</source>
-        <translation>Entrer dans le rond-point</translation>
+        <translation>Entre en la rotonda</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="378"/>
         <source>Take the first exit</source>
-        <translation>Prendre la première sortie</translation>
+        <translation>Tome la primera salida</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="381"/>
         <source>Take the second exit</source>
-        <translation>Prendre la seconde sortie</translation>
+        <translation>Tome la segunda salida</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="384"/>
         <source>Take the third exit</source>
-        <translation>Prendre la troisième sortie</translation>
+        <translation>Tome la tercera salida</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="387"/>
         <source>Take the %1th exit</source>
-        <translation>Prendre la sortie %1</translation>
+        <translation>Tome la salida %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="394"/>
         <source>&lt;strong&gt;Leave roundabout&lt;/strong&gt; on %1. exit into street %2</source>
-        <translation>&lt;strong&gt;Quitter le rond-point&lt;/strong&gt; à la %1.e sortie sur rue %2</translation>
+        <translation>&lt;strong&gt;Salga de la rotonda&lt;/strong&gt; en la %1.e salida a la calle %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="398"/>
         <source>&lt;strong&gt;Leave roundabout&lt;/strong&gt; on %1. exit</source>
-        <translation>&lt;strong&gt;Quitter le rond-point&lt;/strong&gt; à la %1.e sortie</translation>
+        <translation>&lt;strong&gt;Salga de la rotonda&lt;/strong&gt; en la %1.e salida</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="410"/>
         <source>Enter motorway</source>
-        <translation>Entrer sur l&apos;autoroute</translation>
+        <translation>Entre en la autopista</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="422"/>
         <source>At crossing %1&lt;strong&gt;Enter motorway&lt;/strong&gt; %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt; %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Entre en la autopista&lt;/strong&gt; %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="426"/>
         <source>&lt;strong&gt;Enter motorway&lt;/strong&gt; %1</source>
-        <translation>&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt; %1</translation>
+        <translation>&lt;strong&gt;Entre en la autopista&lt;/strong&gt; %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="431"/>
         <source>At crossing %1&lt;strong&gt;Enter motorway&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Entre en la autopista&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="434"/>
         <source>&lt;strong&gt;Enter motorway&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Entrer sur l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Entre en la autopista&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="460"/>
         <source>Change motorway</source>
-        <translation>Changer d&apos;autoroute</translation>
+        <translation>Cambie de autopista</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="475"/>
         <source>&lt;strong&gt;Change motorway&lt;/strong&gt; from %1 to %2</source>
-        <translation>&lt;strong&gt;Changer d&apos;autoroute&lt;/strong&gt; de %1 vers %2</translation>
+        <translation>&lt;strong&gt;Cambie de autopista&lt;/strong&gt; de %1 a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="480"/>
         <source>%1 &lt;strong&gt;Change motorway&lt;/strong&gt; from %2 to %3</source>
         <extracomment>%1 is motorway exit description</extracomment>
-        <translation>%1 &lt;strong&gt;Changer d&apos;autoroute&lt;/strong&gt; de %2 vers %3</translation>
+        <translation>%1 &lt;strong&gt;Cambie de autopista&lt;/strong&gt; de %2 a %3</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="487"/>
         <source>&lt;strong&gt;Change motorway&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Changer d&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Cambie de autopista&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="490"/>
         <source>%1 &lt;strong&gt;Change motorway&lt;/strong&gt;</source>
         <extracomment>%1 is motorway exit description</extracomment>
-        <translation>%1 &lt;strong&gt;Changer d&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>%1 &lt;strong&gt;Cambie de autopista&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="522"/>
         <source>Leave motorway</source>
-        <translation>Quitter l&apos;autoroute</translation>
+        <translation>Salga de la autopista</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="538"/>
         <source>&lt;strong&gt;Leave motorway&lt;/strong&gt; %1 into %2</source>
-        <translation>&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %1 à %2</translation>
+        <translation>&lt;strong&gt;Salga de la autopista&lt;/strong&gt; %1 à %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="543"/>
         <source>%1 &lt;strong&gt;Leave motorway&lt;/strong&gt; %2 into %3</source>
         <extracomment>%1 is motorway exit description</extracomment>
-        <translation>%1 &lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %2 vers %3</translation>
+        <translation>%1 &lt;strong&gt;Salga de la autopista&lt;/strong&gt; %2 a %3</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="550"/>
         <source>&lt;strong&gt;Leave motorway&lt;/strong&gt; %1</source>
-        <translation>&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %1</translation>
+        <translation>&lt;strong&gt;Salga de la autopista&lt;/strong&gt; %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="554"/>
         <source>%1 &lt;strong&gt;Leave motorway&lt;/strong&gt; %2</source>
         <extracomment>%1 is motorway exit description</extracomment>
-        <translation>%1 &lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt; %2</translation>
+        <translation>%1 &lt;strong&gt;Salga de la autopista&lt;/strong&gt; %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="561"/>
         <source>&lt;strong&gt;Leave motorway&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Salga de la autopista&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="564"/>
         <source>%1 &lt;strong&gt;Leave motorway&lt;/strong&gt;</source>
         <extracomment>%1 is motorway exit description</extracomment>
-        <translation>%1 &lt;strong&gt;Quitter l&apos;autoroute&lt;/strong&gt;</translation>
+        <translation>%1 &lt;strong&gt;Salga de la autopista&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="598"/>
         <source>Way changes name</source>
-        <translation>Le chemin change de nom</translation>
+        <translation>El camino cambia de nombre</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="601"/>
         <source>&lt;strong&gt;Way changes name&lt;/strong&gt; from %1 to %2</source>
-        <translation>&lt;strong&gt;Le chemin change de nom&lt;/strong&gt; de %1 à %2</translation>
+        <translation>&lt;strong&gt;El camino cambia de nombre&lt;/strong&gt; de %1 à %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="605"/>
         <source>&lt;strong&gt;Way changes name&lt;/strong&gt; to %1</source>
-        <translation>&lt;strong&gt;Le chemin change de nom&lt;/strong&gt; à %1</translation>
+        <translation>&lt;strong&gt;El camino cambia de nombre&lt;/strong&gt; a %1</translation>
     </message>
 </context>
 </TS>
