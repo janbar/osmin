@@ -1251,88 +1251,88 @@
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="102"/>
         <source>At crossing %1&lt;strong&gt;Turn&lt;/strong&gt; into %2</source>
-        <translation>En el cruce %1&lt;fuerte&gt;Girar&lt;/fuerte&gt; en %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Girar&lt;/strong&gt; en %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="106"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp left&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner franchement&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Girar bruscamente&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="108"/>
         <source>At crossing %1&lt;strong&gt;Turn left&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner à gauche&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire a la izquierda&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="110"/>
         <source>At crossing %1&lt;strong&gt;Turn slightly left&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à gauche&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire ligeramente a la izquierda&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="112"/>
         <source>At crossing %1&lt;strong&gt;Straight on&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Aller tout droit&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Siga recto&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="114"/>
         <source>At crossing %1&lt;strong&gt;Turn slightly right&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à droite&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire ligeramente a la derecha&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="116"/>
         <source>At crossing %1&lt;strong&gt;Turn right&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner à droite&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire a la derecha&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="118"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp right&lt;/strong&gt; into %2</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner franchement à droite&lt;/strong&gt; vers %2</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire bruscamente a la derecha&lt;/strong&gt; a %2</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="128"/>
         <source>At crossing %1&lt;strong&gt;Turn&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="132"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp left&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner franchement à gauche&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire bruscamente a la izquierda&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="134"/>
         <source>At crossing %1&lt;strong&gt;Turn left&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner à gauche&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire a la izquierda&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="136"/>
         <source>At crossing %1&lt;strong&gt;Turn slightly left&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à gauche&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire ligeramente a la izquierda&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="138"/>
         <source>At crossing %1&lt;strong&gt;Straight on&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Aller tout droit&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Siga todo recto&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="140"/>
         <source>At crossing %1&lt;strong&gt;Turn slightly right&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner légèrement à droite&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire ligeramente a la derecha&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="142"/>
         <source>At crossing %1&lt;strong&gt;Turn right&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner à droite&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire a la derecha&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="144"/>
         <source>At crossing %1&lt;strong&gt;Turn sharp right&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Tourner franchement à droite&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Gire bruscamente a la derech&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="158"/>
         <source>unnamed road</source>
         <extracomment>unknown road name</extracomment>
-        <translation>route sans nom</translation>
+        <translation>carretera sin nombre</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="162"/>
@@ -1358,82 +1358,82 @@
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="181"/>
         <source>On unnamed exit</source>
         <extracomment>unnamed motorway exit</extracomment>
-        <translation>À la sortie sans nom</translation>
+        <translation>En la salida sin nombre</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="185"/>
         <source>On exit %1</source>
         <extracomment>motorway exit just with ref</extracomment>
-        <translation>À la sortie %1</translation>
+        <translation>En la salida %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="189"/>
         <source>On exit &quot;%1&quot;</source>
         <extracomment>motorway exit with name, without ref</extracomment>
-        <translation>À la sortie &quot;%1&quot;</translation>
+        <translation>En la salida &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="192"/>
         <source>On exit %1 &quot;%2&quot;</source>
         <extracomment>motorway exit with ref (%1) and name (%2)</extracomment>
-        <translation>À la sortie %1 &quot;%2&quot;</translation>
+        <translation>En la salida %1 &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="268"/>
         <source>&lt;strong&gt;Start&lt;/strong&gt; at %1</source>
-        <translation>&lt;strong&gt;Démarrer&lt;/strong&gt; à %1</translation>
+        <translation>&lt;strong&gt;Inicio&lt;/strong&gt; à %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="269"/>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="281"/>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="286"/>
         <source>Start</source>
-        <translation>Démarrer</translation>
+        <translation>Iniciar</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="274"/>
         <source>&lt;strong&gt;Continue&lt;/strong&gt; along %1</source>
-        <translation>&lt;strong&gt;Continuer&lt;/strong&gt; sur %1</translation>
+        <translation>&lt;strong&gt;Continuar&lt;/strong&gt; sur %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="275"/>
         <source>Continue</source>
-        <translation>Continuer</translation>
+        <translation>Continuar</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="280"/>
         <source>&lt;strong&gt;Start&lt;/strong&gt; along %1</source>
-        <translation>&lt;strong&gt;Démarrer&lt;/strong&gt; sur %1</translation>
+        <translation>&lt;strong&gt;Iniciar&lt;/strong&gt; en %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="285"/>
         <source>&lt;strong&gt;Start&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Démarrer&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Iniciar&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="301"/>
         <source>&lt;strong&gt;Target reached&lt;/strong&gt; at %1</source>
-        <translation>&lt;strong&gt;Arrivé à destination&lt;/strong&gt; à %1</translation>
+        <translation>&lt;strong&gt;Llegada al destino&lt;/strong&gt; à %1</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="303"/>
         <source>&lt;strong&gt;Target reached&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Arrivé à destination&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Llegada al destino&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="305"/>
         <source>Target reached</source>
-        <translation>Arrivé à destination</translation>
+        <translation>Llegada al destino</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="360"/>
         <source>At crossing %1&lt;strong&gt;Enter roundabout&lt;/strong&gt;</source>
-        <translation>Au croisement %1&lt;strong&gt;Entrer dans le rond-point&lt;/strong&gt;</translation>
+        <translation>En el cruce %1&lt;strong&gt;Entre en la rotonda&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="363"/>
         <source>&lt;strong&gt;Enter roundabout&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Entrer dans le rond-point&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Entre en la rotonda&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="../../backend/libosmscout/libosmscout-client-qt/src/osmscoutclientqt/RouteDescriptionBuilder.cpp" line="365"/>
