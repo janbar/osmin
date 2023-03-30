@@ -739,8 +739,8 @@
         <location filename="../controls2_509/SearchPlace.qml" line="283"/>
         <location filename="../controls2_515/SearchPlace.qml" line="123"/>
         <location filename="../controls2_515/SearchPlace.qml" line="283"/>
-        <source>Hasta la distancia %1</source>
-        <translation>Jusqu&apos;à une distance de %1</translation>
+        <source>To the distance %1</source>
+        <translation>Hasta una distancia de %1</translation>
     </message>
     <message>
         <location filename="../controls2_509/SearchPlace.qml" line="186"/>
