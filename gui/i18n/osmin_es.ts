@@ -1119,7 +1119,7 @@
     </message>
     <message>
         <source>Search Place</source>
-        <translation type="obsolete">Rechercher un emplacement</translation>
+        <translation type="obsolete">Buscar una ubicación</translation>
     </message>
     <message>
         <source>Favorite Places</source>
