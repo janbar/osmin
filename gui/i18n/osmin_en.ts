@@ -495,7 +495,7 @@
     <message>
         <location filename="../controls2_509/MapView.qml" line="949"/>
         <location filename="../controls2_515/MapView.qml" line="949"/>
-        <source>Voice-based GPS driving directions are not activated</source>
+        <source>The voice GPS driving directions is not activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
