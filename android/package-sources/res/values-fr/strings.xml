@@ -1,4 +1,4 @@
 <resources>
   <string name="svc_running">Le service de géolocalisation est en cours d\'exécution.</string>
-  <string name="svc_channel">Notification du service</string>
+  <string name="svc_channel">Notifications du service</string>
 </resources>
