@@ -127,7 +127,7 @@
         <location filename="../controls2_509/DialogAbout.qml" line="26"/>
         <location filename="../controls2_515/DialogAbout.qml" line="26"/>
         <source>About</source>
-        <translation>A cerca de</translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <location filename="../controls2_509/DialogAbout.qml" line="37"/>
