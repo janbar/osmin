@@ -495,7 +495,7 @@
     <message>
         <location filename="../controls2_509/MapView.qml" line="949"/>
         <location filename="../controls2_515/MapView.qml" line="949"/>
-        <source>The voice GPS driving directions is not activated</source>
+        <source>Voice-based GPS driving directions are not activated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -562,9 +562,9 @@
     </message>
     <message>
         <location filename="../controls2_509/Routing.qml" line="47"/>
-        <location filename="../controls2_509/Routing.qml" line="388"/>
+        <location filename="../controls2_509/Routing.qml" line="424"/>
         <location filename="../controls2_515/Routing.qml" line="47"/>
-        <location filename="../controls2_515/Routing.qml" line="388"/>
+        <location filename="../controls2_515/Routing.qml" line="424"/>
         <source>Navigate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -581,94 +581,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="142"/>
-        <location filename="../controls2_515/Routing.qml" line="142"/>
+        <location filename="../controls2_509/Routing.qml" line="110"/>
+        <location filename="../controls2_515/Routing.qml" line="110"/>
         <source>From</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="165"/>
-        <location filename="../controls2_515/Routing.qml" line="165"/>
+        <location filename="../controls2_509/Routing.qml" line="133"/>
+        <location filename="../controls2_515/Routing.qml" line="133"/>
         <source>My position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="166"/>
-        <location filename="../controls2_509/Routing.qml" line="262"/>
-        <location filename="../controls2_515/Routing.qml" line="166"/>
-        <location filename="../controls2_515/Routing.qml" line="262"/>
+        <location filename="../controls2_509/Routing.qml" line="134"/>
+        <location filename="../controls2_509/Routing.qml" line="230"/>
+        <location filename="../controls2_515/Routing.qml" line="134"/>
+        <location filename="../controls2_515/Routing.qml" line="230"/>
         <source>Search Place</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="167"/>
-        <location filename="../controls2_509/Routing.qml" line="263"/>
-        <location filename="../controls2_515/Routing.qml" line="167"/>
-        <location filename="../controls2_515/Routing.qml" line="263"/>
+        <location filename="../controls2_509/Routing.qml" line="135"/>
+        <location filename="../controls2_509/Routing.qml" line="231"/>
+        <location filename="../controls2_515/Routing.qml" line="135"/>
+        <location filename="../controls2_515/Routing.qml" line="231"/>
         <source>Select on Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="168"/>
-        <location filename="../controls2_509/Routing.qml" line="264"/>
-        <location filename="../controls2_515/Routing.qml" line="168"/>
-        <location filename="../controls2_515/Routing.qml" line="264"/>
+        <location filename="../controls2_509/Routing.qml" line="136"/>
+        <location filename="../controls2_509/Routing.qml" line="232"/>
+        <location filename="../controls2_515/Routing.qml" line="136"/>
+        <location filename="../controls2_515/Routing.qml" line="232"/>
         <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="179"/>
-        <location filename="../controls2_509/Routing.qml" line="273"/>
-        <location filename="../controls2_515/Routing.qml" line="179"/>
-        <location filename="../controls2_515/Routing.qml" line="273"/>
+        <location filename="../controls2_509/Routing.qml" line="147"/>
+        <location filename="../controls2_509/Routing.qml" line="241"/>
+        <location filename="../controls2_515/Routing.qml" line="147"/>
+        <location filename="../controls2_515/Routing.qml" line="241"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="245"/>
-        <location filename="../controls2_515/Routing.qml" line="245"/>
+        <location filename="../controls2_509/Routing.qml" line="213"/>
+        <location filename="../controls2_515/Routing.qml" line="213"/>
         <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="345"/>
-        <location filename="../controls2_515/Routing.qml" line="345"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../controls2_509/Routing.qml" line="345"/>
-        <location filename="../controls2_515/Routing.qml" line="345"/>
-        <source>Compute route</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../controls2_509/Routing.qml" line="406"/>
-        <location filename="../controls2_515/Routing.qml" line="406"/>
+        <location filename="../controls2_509/Routing.qml" line="442"/>
+        <location filename="../controls2_515/Routing.qml" line="442"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="422"/>
-        <location filename="../controls2_515/Routing.qml" line="422"/>
+        <location filename="../controls2_509/Routing.qml" line="458"/>
+        <location filename="../controls2_515/Routing.qml" line="458"/>
         <source>Route length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="433"/>
-        <location filename="../controls2_515/Routing.qml" line="433"/>
+        <location filename="../controls2_509/Routing.qml" line="469"/>
+        <location filename="../controls2_515/Routing.qml" line="469"/>
         <source>Duration:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="517"/>
-        <location filename="../controls2_515/Routing.qml" line="517"/>
+        <location filename="../controls2_509/Routing.qml" line="553"/>
+        <location filename="../controls2_515/Routing.qml" line="553"/>
         <source>The number of steps exceeds the limit. Please reduce the length of the route and restart the calculation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../controls2_509/Routing.qml" line="543"/>
-        <location filename="../controls2_515/Routing.qml" line="543"/>
+        <location filename="../controls2_509/Routing.qml" line="579"/>
+        <location filename="../controls2_515/Routing.qml" line="579"/>
         <source>Invalid entry</source>
         <translation type="unfinished"></translation>
     </message>
