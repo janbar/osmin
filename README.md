@@ -12,6 +12,9 @@ Strongly inspired by osmscout by Karry, it uses a fork of libosmscout as backend
 ## Routing with your Android device
 Supported Android OS is Nougat (Android 7.0) or newer, LineageOS 14.1 or newer.
 
+## Install osmin for Android
+You can install osmin through the [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/io.github.janbar.osmin) F-Droid repo, which should be available by enabling IzzyOnDroid from Settings > Repositories, otherwise, please refer to instructions at [IzzyOnDroid](https://apt.izzysoft.de/fdroid/) main page.
+
 ## Develop/debug osmin
 You can build and test osmin on Unix (Linux, BSD, MacOS 10.14) supported by Qt 5.12. Before build from source you have to install the following dependencies.
 
