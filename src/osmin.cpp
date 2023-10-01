@@ -130,12 +130,6 @@ void importStaticPlugins(QQmlEngine* engine)
 }
 #endif
 
-#ifdef Q_OS_ANDROID
-#include <QtAndroid>
-#include <QAndroidService>
-#include <QAndroidJniObject>
-#endif
-
 int main(int argc, char *argv[])
 {
   int ret = 0;
