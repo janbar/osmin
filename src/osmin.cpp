@@ -77,6 +77,9 @@
 #include <osmscoutclientqt/MapDownloadsModel.h>
 #include <osmscoutclientqt/QmlSettings.h>
 
+// Configure Logger
+#include <osmscout/log/Logger.h>
+
 #include "platformextras.h"
 #include "mapextras.h"
 #include "converter.h"
@@ -429,6 +432,9 @@ int startGUI(int argc, char* argv[])
         qWarning("Failed to initialize osmscout");
         return EXIT_FAILURE;
     }
+
+    osmscout::log.Info(false);
+    osmscout::log.Warn(false);
   }
 
   qmlRegisterType<osmscout::QmlSettings>(OSMIN_MODULE, 1, 0, "Settings");
