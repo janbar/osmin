@@ -493,7 +493,7 @@ void TrackerModule::onStopRecording()
     gpx.waypoints.insert(gpx.waypoints.end(), waypoints.begin(), waypoints.end());
     QDateTime fdate = QDateTime();
     fdate.setMSecsSinceEpoch(std::chrono::duration_cast<std::chrono::milliseconds>(beg.timestamp.value().time_since_epoch()).count());
-    gpx.name = std::optional<std::string>(fdate.toString(Qt::ISODate).toUtf8().toStdString());
+    gpx.name = std::optional<std::string>(fdate.toString("yyyy_MM_dd_hh_mm_ss").toUtf8().toStdString());
     QString fname = fdate.toString(Qt::ISODate).append(".gpx");
     if (!osmscout::gpx::ExportGpx(gpx, m_baseDir.absoluteFilePath(fname).toUtf8().toStdString()))
     {
