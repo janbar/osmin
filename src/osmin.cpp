@@ -75,8 +75,7 @@
 #include <osmscoutclientqt/RoutingModel.h>
 #include <osmscoutclientqt/AvailableMapsModel.h>
 #include <osmscoutclientqt/MapDownloadsModel.h>
-#include <osmscoutclientqt/Settings.h>
-#include <osmscout/util/Logger.h>
+#include <osmscoutclientqt/QmlSettings.h>
 
 #include "platformextras.h"
 #include "mapextras.h"
