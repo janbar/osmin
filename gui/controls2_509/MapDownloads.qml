@@ -92,6 +92,7 @@ MapPage {
                     height: units.gu(6)
                     color: "transparent"
                     paddingLeft: units.gu(2)
+                    highlighted: ((index & 1) === 0)
 
                     column: Column {
                         Row {
@@ -176,6 +177,7 @@ MapPage {
                     height: units.gu(6)
                     color: "transparent"
                     paddingLeft: units.gu(2)
+                    highlighted: ((index & 1) === 0)
 
                     column: Column {
                         Label {
@@ -328,6 +330,7 @@ MapPage {
                 height: units.gu(6)
                 color: "transparent"
                 paddingLeft: units.gu(2)
+                highlighted: ((index & 1) === 0)
 
                 column: Column {
                     Label {
