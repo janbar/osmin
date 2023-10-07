@@ -353,7 +353,7 @@ void TrackerModule::onStartRecording()
   if (m_recording)
     onStopRecording();
   // prepare the new file to record data
-  QString recordingName = QDateTime::currentDateTime().toString(Qt::ISODate);
+  QString recordingName = QDateTime::currentDateTime().toString("yyyy_MM_dd_hh_mm_ss");
   // log contains current state of the tracker, and this data will be restored upon recovery
   m_log.reset(new QFile(m_baseDir.absoluteFilePath(QString(recordingName).append(".log"))));
   // main file contains track data
@@ -493,8 +493,8 @@ void TrackerModule::onStopRecording()
     gpx.waypoints.insert(gpx.waypoints.end(), waypoints.begin(), waypoints.end());
     QDateTime fdate = QDateTime();
     fdate.setMSecsSinceEpoch(std::chrono::duration_cast<std::chrono::milliseconds>(beg.timestamp.value().time_since_epoch()).count());
-    gpx.name = std::optional<std::string>(fdate.toString("yyyy_MM_dd_hh_mm_ss").toUtf8().toStdString());
-    QString fname = fdate.toString(Qt::ISODate).append(".gpx");
+    gpx.name = std::optional<std::string>(fdate.toString(Qt::ISODate).toUtf8().toStdString());
+    QString fname = fdate.toString("yyyy_MM_dd_hh_mm_ss").append(".gpx");
     if (!osmscout::gpx::ExportGpx(gpx, m_baseDir.absoluteFilePath(fname).toUtf8().toStdString()))
     {
       emit processing(false);
