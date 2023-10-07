@@ -56,7 +56,7 @@ MouseArea {
             anchors.fill: parent
             visible: area.highlighted
             color: area.highlightedColor
-            opacity: 0.2
+            opacity: 0.1
         }
 
         SimpleRow {

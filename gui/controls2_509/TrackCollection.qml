@@ -279,7 +279,7 @@ MapPage {
                     anchors.fill: parent
                     visible: ((index & 1) === 0)
                     color: styleMap.view.highlightedColor
-                    opacity: 0.2
+                    opacity: 0.1
                 }
 
                 BusyIndicator {
