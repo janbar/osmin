@@ -277,7 +277,7 @@ MapPage {
 
                 Rectangle {
                     anchors.fill: parent
-                    visible: (index % 2 === 0)
+                    visible: ((index & 1) === 0)
                     color: styleMap.view.highlightedColor
                     opacity: 0.1
                 }
