@@ -71,6 +71,7 @@ MapPage {
             id: favoriteItem
             height: units.gu(8)
             color: "transparent"
+            alternate: ((index & 1) === 0)
 
             column: Column {
                 Row {

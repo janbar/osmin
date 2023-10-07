@@ -25,9 +25,10 @@ MouseArea {
     id: area
 
     property color color: styleMap.view.backgroundColor
+    property color colorAlt: styleMap.view.backgroundAltColor
     property color highlightedColor: styleMap.view.highlightedColor
-    property var currentColor: highlighted ? highlightedColor : color
     property bool highlighted: false
+    property bool alternate: false
 
     property double paddingLeft: 0
     property double paddingRight: 0
@@ -48,15 +49,14 @@ MouseArea {
         id: content
         anchors.fill: parent
 
-        color: area.color
-        Behavior on color { ColorAnimation { duration: 100 } }
+        color: (area.alternate ? area.colorAlt : area.color)
 
         // highlight the current position
         Rectangle {
             anchors.fill: parent
             visible: area.highlighted
             color: area.highlightedColor
-            opacity: 0.1
+            opacity: 0.2
         }
 
         SimpleRow {
