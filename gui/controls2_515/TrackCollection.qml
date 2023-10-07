@@ -277,9 +277,9 @@ MapPage {
 
                 Rectangle {
                     anchors.fill: parent
-                    visible: ((index & 1) === 0)
+                    visible: ((index & 1) === 1)
                     color: styleMap.view.highlightedColor
-                    opacity: 0.1
+                    opacity: 0.05
                 }
 
                 BusyIndicator {

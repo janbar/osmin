@@ -23,6 +23,7 @@ QtObject {
     property QtObject view: QtObject {
         property color foregroundColor: palette.text
         property color backgroundColor: palette.base
+        property color backgroundAltColor: Qt.darker(palette.base, 1.05)
         property color highlightedColor: palette.highlight
         property color labelColor: palette.text
         property color primaryColor: palette.text

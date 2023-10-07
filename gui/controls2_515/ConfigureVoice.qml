@@ -84,7 +84,7 @@ MapPage {
                 height: units.gu(8)
                 color: "transparent"
                 paddingLeft: units.gu(0)
-                highlighted: ((index & 1) === 0)
+                alternate: ((index & 1) === 0)
 
                 column: Column {
                     Row {
