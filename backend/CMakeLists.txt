@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.8.2)
 
+# Requires:
+# QT_VERSION_MAJOR        Qt used major version (5)
+# QT_VERSION              Qt version match (5.15)
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -10,18 +14,20 @@ endif()
 
 option(BUILD_DEPENDENCIES "Build dependencies from sources" OFF)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Qml REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(Qt5Network REQUIRED)
-
+# Variable QT_FOUND has been set previously, so I have to load all Qt
+# requirements for submodule libosmscout myself
+if(QT_VERSION_MAJOR EQUAL 5)
+    find_package(Qt5 ${QT_VERSION} COMPONENTS
+        Core Gui Qml Widgets Svg Network Quick Multimedia
+        REQUIRED)
+elseif(QT_VERSION_MAJOR EQUAL 6)
+    find_package(Qt6 ${QT_VERSION} COMPONENTS
+        Core Gui Qml Widgets Svg Network Quick Multimedia
+        Core5Compat REQUIRED)
+endif()
 
 set(QML_IMPORT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/qml)
 set(QML_IMPORT_PATH ${QML_IMPORT_DIRECTORY} CACHE STRING "QML Import path" FORCE)
-
-message(STATUS "Found Qt5 version ${Qt5Core_VERSION}")
 
 include(DownloadProject)
 
@@ -50,50 +56,6 @@ if(NOT ZLIB_FOUND)
     export(TARGETS zlib FILE ZLIBTargets.cmake)
     add_library(ZLIB::ZLIB ALIAS zlib)
     message(STATUS "Build ZLIB: ${zlib_BINARY_DIR}")
-endif()
-
-# Provides dependency openssl
-if(NOT BUILD_DEPENDENCIES)
-    find_package(OpenSSL QUIET)
-endif()
-if(NOT OPENSSL_FOUND)
-    if(Qt5Core_VERSION VERSION_LESS 5.12.4)
-        set(OPENSSL_DL_ABI "1.0")
-    endif()
-    if(OPENSSL_DL_ABI STREQUAL "1.0")
-        download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
-            GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.0.2p-20231130
-            GIT_SHALLOW 1
-            PREFIX ${CMAKE_CURRENT_BINARY_DIR}
-            UPDATE_DISCONNECTED ON)
-    else()
-        set(OPENSSL_DL_ABI "1.1")
-        download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
-            GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.1.1w-20231130
-            GIT_SHALLOW 1
-            PREFIX ${CMAKE_CURRENT_BINARY_DIR}
-            UPDATE_DISCONNECTED ON)
-    endif()
-    if(ANDROID OR MSVC)
-        set(BUILD_SHARED_LIBS ON)
-    else()
-        set(BUILD_SHARED_LIBS OFF)
-    endif()
-    add_subdirectory(
-        ${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_DL_ABI}-src
-        ${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_DL_ABI}-build
-        EXCLUDE_FROM_ALL
-    )
-    set(OPENSSL_SSL_LIBRARY ssl PARENT_SCOPE)
-    set(OPENSSL_CRYPTO_LIBRARY crypto PARENT_SCOPE)
-    set(OPENSSL_INCLUDE_DIR "${openssl_BINARY_DIR}/include" "${openssl_BINARY_DIR}" PARENT_SCOPE)
-    set(OPENSSL_FOUND ON PARENT_SCOPE)
-    export(TARGETS crypto ssl FILE OpenSSLTargets.cmake)
-    add_library(OpenSSL::Crypto ALIAS crypto)
-    add_library(OpenSSL::SSL ALIAS ssl)
-    message(STATUS "Build OpenSSL: ${openssl_BINARY_DIR}")
 endif()
 
 # Provides internal iconv
