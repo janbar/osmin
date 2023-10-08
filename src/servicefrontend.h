@@ -99,4 +99,6 @@ private:
   QSharedPointer<ServiceMessengerReplica> m_messenger;
 };
 
+Q_DECLARE_METATYPE(ServiceFrontendPtr)
+
 #endif // SERVICEFRONTEND_H
