@@ -26,7 +26,7 @@ RemoteService::RemoteService(QObject * parent)
 QVariant RemoteService::getServiceHandle()
 {
   QVariant var;
-  var.setValue<ServiceFrontendPtr>(m_service);
+  var.setValue(m_service);
   return var;
 }
 
