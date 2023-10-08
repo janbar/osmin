@@ -151,7 +151,7 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/qmlsortbehavior.h
     src/qmlsortfiltermodel.h
     src/favoritesmodel.h
-    src/gpxlistmodel.h
+    src/gpxfilemodel.h
     src/gpxlistmodel.h
     src/tracker.h
     src/compass/genericcompass.h
