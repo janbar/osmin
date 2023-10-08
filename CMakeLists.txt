@@ -179,7 +179,7 @@ if(QT_VERSION_MAJOR EQUAL 5)
     qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep SOURCE)
     qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep REPLICA)
 elseif(QT_VERSION_MAJOR EQUAL 6)
-    qt_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
+    qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
 endif()
 
 if(UNIX)
