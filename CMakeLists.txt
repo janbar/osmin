@@ -94,39 +94,39 @@ else()
     set(CMAKE_IGNORE_PATH "/opt/local/bin;/opt/local/include;/opt/local/lib")
 endif()
 
-# Workaround for QTBUG-87863 before calling add_subirectory
-find_package(Qt5 COMPONENTS Core REQUIRED)
+set(QT_VERSION_PREFERRED "6" CACHE STRING "preferred Qt version" FORCE)
+include(qtchooser)
 
 add_subdirectory(backend)
 
 set(CMAKE_AUTOMOC ON)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Qml REQUIRED)
-find_package(Qt5Quick REQUIRED)
-
-set(QT_MIN_VERSION 5.15.0)
-find_package(Qt5QuickControls2 ${QT_MIN_VERSION} REQUIRED)
-
-if(ANDROID)
-    find_package(Qt5AndroidExtras REQUIRED)
-elseif(UNIX AND NOT APPLE)
-    find_library(DBUS_LIBRARIES dbus-1)
-    if(DBUS_LIBRARIES)
-        find_package(Qt5DBus REQUIRED)
-        set(HAVE_DBUS 1)
-        message(STATUS "Enable DBus interfaces")
+if(QT_VERSION_MAJOR EQUAL 5)
+    find_package(Qt5 ${QT_VERSION} COMPONENTS
+        Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
+        Multimedia RemoteObjects Positioning REQUIRED)
+    if(ANDROID)
+        find_package(Qt5 ${QT_VERSION} COMPONENTS AndroidExtras REQUIRED)
+    elseif(UNIX AND NOT APPLE)
+        find_library(DBUS_LIBRARIES dbus-1)
+        if(DBUS_LIBRARIES)
+            find_package(Qt5 ${QT_VERSION} COMPONENTS DBus REQUIRED)
+            set(HAVE_DBUS 1)
+            message(STATUS "Enable DBus interfaces")
+        endif()
+    endif()
+elseif(QT_VERSION_MAJOR EQUAL 6)
+    find_package(Qt6 ${QT_VERSION} COMPONENTS
+        Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
+        Multimedia RemoteObjects Positioning Core5Compat REQUIRED)
+    if(UNIX AND NOT APPLE)
+        find_library(DBUS_LIBRARIES dbus-1)
+        if(DBUS_LIBRARIES)
+            find_package(Qt6 ${QT_VERSION} COMPONENTS DBus REQUIRED)
+            set(HAVE_DBUS 1)
+            message(STATUS "Enable DBus interfaces")
+        endif()
     endif()
 endif()
-
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Xml REQUIRED)
-find_package(Qt5Svg REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5Sensors REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5RemoteObjects REQUIRED)
-find_package(Qt5Positioning REQUIRED)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
@@ -174,21 +174,20 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/mapextras.h
 )
 
+if(QT_VERSION_MAJOR EQUAL 5)
+    qt5_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
+    qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep SOURCE)
+    qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep REPLICA)
+elseif(QT_VERSION_MAJOR EQUAL 6)
+    qt_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
+endif()
+
 if(UNIX)
     list(APPEND osmin_SOURCES src/signalhandler.cpp)
     list(APPEND osmin_HEADERS src/signalhandler.h)
 endif()
 
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
-
-if(Qt5Core_VERSION VERSION_LESS 5.15.2)
-    message(FATAL_ERROR "Qt version not supported")
-else()
-    qt5_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
-endif()
-
-qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep SOURCE)
-qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep REPLICA)
 
 include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
 
@@ -198,6 +197,11 @@ else()
     add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 endif()
 
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt6_add_repc_sources(osmin src/servicemessenger.rep)
+    qt6_add_repc_replicas(osmin src/servicemessenger.rep)
+endif()
+
 target_link_libraries(osmin ${LIBOSMSCOUT_LIBRARIES})
 
 add_definitions(-DQT_STATICPLUGIN)
@@ -205,17 +209,34 @@ add_definitions(-DQT_STATICPLUGIN)
 if(ANDROID)
     add_definitions(-DDEVICE_MOBILE)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
-    target_link_libraries(osmin Qt5::QuickControls2 Qt5::AndroidExtras android log Qt5::RemoteObjects Qt5::Positioning
-                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
+    target_link_libraries(osmin android log
+        Qt::RemoteObjects Qt::Positioning
+        Qt::QuickControls2 Qt::Qml Qt::Quick
+        Qt::Widgets Qt::Gui Qt::Xml
+        Qt::Svg Qt::Network Qt::Sensors
+        Qt::Multimedia Qt::Core)
+    if(QT_VERSION_MAJOR EQUAL 5)
+        target_link_libraries(osmin Qt::AndroidExtras)
+    endif()
+    if(QT_VERSION_MAJOR EQUAL 6)
+        target_link_libraries(osmin Qt6::Core5Compat)
+    endif()
 else()
     if(BUILD_DEVICE_MOBILE)
         add_definitions(-DDEVICE_MOBILE)
     endif()
-    target_link_libraries(osmin Qt5::QuickControls2 Qt5::RemoteObjects Qt5::Positioning
-                          Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
+    target_link_libraries(osmin
+        Qt::RemoteObjects Qt::Positioning
+        Qt::QuickControls2 Qt::Qml Qt::Quick
+        Qt::Widgets Qt::Gui Qt::Xml
+        Qt::Svg Qt::Network Qt::Sensors
+        Qt::Multimedia Qt::Core)
     if(HAVE_DBUS)
         add_definitions(-DHAVE_DBUS)
-        target_link_libraries(osmin Qt5::DBus)
+        target_link_libraries(osmin Qt::DBus)
+    endif()
+    if(QT_VERSION_MAJOR EQUAL 6)
+        target_link_libraries(osmin Qt6::Core5Compat)
     endif()
 endif()
 
