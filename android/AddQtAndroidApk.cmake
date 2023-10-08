@@ -7,13 +7,14 @@ cmake_minimum_required(VERSION 3.8.2)
 #  env ANDROID_SDK_ROOT             The SDK root path
 #  env ANDROID_NDK                  The NDK root path
 #  env JAVA_HOME                    Path Java JRE supported by SDK
+#  env QT_HOST_PATH                 Root path of host Qt tools
 #
 #  ANDROID_ABI                      "arm64-v8a"
-#  ANDROID_SDK_MINVER               "24"
-#  ANDROID_SDK_TARGET               "26"
+#  ANDROID_SDK_MINVER               "26"
+#  ANDROID_SDK_TARGET               "33"
 #  ANDROID_NATIVE_API_LEVEL         Qt5.15 >=23
-#  ANDROID_SDK_BUILD_TOOLS_REVISION "29.0.2"
-#  QT_ANDROID_PLATFORM_LEVEL        SDK platform (i.e 29)
+#  ANDROID_SDK_BUILD_TOOLS_REVISION "31.0.0"
+#  QT_ANDROID_PLATFORM_LEVEL        SDK platform (i.e 33)
 
 # store the current source directory for future use
 set(QT_ANDROID_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
@@ -31,10 +32,10 @@ if(NOT ANDROID)
 endif()
 
 # find the Qt directory
-if(NOT Qt5Core_DIR)
-    find_package(Qt5Core REQUIRED)
+if(NOT Qt6Core_DIR)
+    find_package(Qt6 COMPONENT Core REQUIRED)
 endif()
-get_filename_component(QT_ANDROID_QT_DIR "${Qt5Core_DIR}/../../.." ABSOLUTE)
+get_filename_component(QT_ANDROID_QT_DIR "${Qt6Core_DIR}/../../.." ABSOLUTE)
 message(STATUS "Found Qt for Android: ${QT_ANDROID_QT_DIR}")
 
 # find the Android SDK
@@ -43,7 +44,7 @@ if(NOT QT_ANDROID_SDK_ROOT)
     if(NOT QT_ANDROID_SDK_ROOT)
         set(QT_ANDROID_SDK_ROOT $ENV{ANDROID_SDK_ROOT})
         if(NOT QT_ANDROID_SDK_ROOT)
-            message(FATAL_ERROR "Could not find the Android SDK. Please set either the ANDROID_SDK environment or CMake variable to the root directory of the Android SDK")
+            message(FATAL_ERROR "Could not find the Android SDK. Please set either the ANDROID_SDK_ROOT environment or CMake variable to the root directory of the Android SDK")
         endif()
     endif()
 endif()
@@ -79,6 +80,14 @@ if(NOT QT_ANDROID_ARCHITECTURE)
     endif()
 endif()
 
+# find the Qt tool home
+if(NOT QT_HOST_PATH)
+    set(QT_HOST_PATH $ENV{QT_HOST_PATH})
+    if(NOT QT_HOST_PATH)
+        message(FATALERROR "Please set either the QT_HOST_PATH environment, or the QT_HOST_PATH CMake variable")
+    endif()
+endif()
+
 include(CMakeParseArguments)
 
 # define a macro to create an Android APK target
@@ -92,13 +101,17 @@ include(CMakeParseArguments)
 #     KEYSTORE ${CMAKE_CURRENT_LIST_DIR}/mykey.keystore myalias
 #     KEYSTORE_PASSWORD xxxx
 #     DEPENDS a_linked_target "path/to/a_linked_library.so" ...
-#     PLUGINS "path/to/lib_plugin.so" ...
+#     PLUGINS "plugin_name" ...
 #     ASSETS "path/to/resources" ...
 #     INSTALL
 #)
+# the common plugins are (Qt6.7)
+# platforms tls iconengines imageformats multimedia position sensors
+# networkinformation qmltooling styles sqldrivers qmllint
 #
 # the following bind variables could be used to configure the build from files
 # AndroidManifest.xml.in, qtdeploy.json.in, build.gradle.in
+#  QT_HOST_PATH                         Root path of the host Qt tools
 #  QT_ANDROID_QT_DIR                    Root path of the native Qt framework
 #  QT_ANDROID_SDK_ROOT
 #  QT_ANDROID_NDK_ROOT
@@ -230,20 +243,22 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
                 set(EXTRA_LIBS "${LIB}")
             endif()
         endforeach()
+        message(STATUS "Extra libs: ${EXTRA_LIBS}")
         set(QT_ANDROID_APP_EXTRA_LIBS "\"android-extra-libs\": \"${EXTRA_LIBS}\",")
     endif()
 
-    # set the list of dependant plugins (android-extra-plugins)
-    if(ARG_PLUGINS)
-        foreach(PLUGIN ${ARG_PLUGINS})
-            if(EXTRA_PLUGINS)
-                set(EXTRA_PLUGINS "${EXTRA_PLUGINS},${PLUGIN}")
-            else()
-                set(EXTRA_PLUGINS "${PLUGIN}")
-            endif()
-        endforeach()
-        set(QT_ANDROID_APP_EXTRA_PLUGINS "\"android-extra-plugins\": \"${EXTRA_PLUGINS}\",")
+    # set the list of dependant plugins (android-deploy-plugins)
+    if (NOT ARG_PLUGINS)
+        set(PLUGIN_LIST "platforms")
+    else()
+        set(PLUGIN_LIST ${ARG_PLUGINS})
     endif()
+    foreach(PLUGIN_NAME ${PLUGIN_LIST})
+        file(GLOB plugin_files "${QT_ANDROID_QT_DIR}/plugins/${PLUGIN_NAME}/*_${ANDROID_ABI}.so")
+        list(APPEND EXTRA_PLUGINS ${plugin_files})
+    endforeach()
+    message(STATUS "Deploy plugins: ${EXTRA_PLUGINS}")
+    set(QT_ANDROID_APP_DEPLOY_PLUGINS "\"android-deploy-plugins\": \"${EXTRA_PLUGINS}\",")
 
     # make sure that the output directory for the Android package exists
     set(QT_ANDROID_APP_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${SOURCE_TARGET}-${ANDROID_ABI})
@@ -298,7 +313,7 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
         COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
         COMMAND ${CMAKE_COMMAND} -E copy ${QT_ANDROID_APP_PATH} ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
-        COMMAND ${QT_ANDROID_QT_DIR}/bin/androiddeployqt
+        COMMAND ${QT_HOST_PATH}/bin/androiddeployqt
         --output ${QT_ANDROID_APP_BINARY_DIR}
         --input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json
         --gradle

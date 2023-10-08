@@ -94,35 +94,22 @@ else()
     set(CMAKE_IGNORE_PATH "/opt/local/bin;/opt/local/include;/opt/local/lib")
 endif()
 
-set(QT_VERSION_PREFERRED "5" CACHE STRING "preferred Qt version" FORCE)
+set(QT_VERSION_PREFERRED "6" CACHE STRING "preferred Qt version" FORCE)
 include(qtchooser)
 if(NOT QT_FOUND)
     message(FATAL_ERROR "Qt${QT_VERSION_PREFERRED} NOT found")
-elseif(Qt5Core_VERSION VERSION_LESS 5.15.2)
-    message(FATAL_ERROR "Qt version not supported")
 endif()
 
 add_subdirectory(backend)
 
 set(CMAKE_AUTOMOC ON)
-find_package(Qt5 ${QT_VERSION} COMPONENTS
+find_package(Qt6 ${QT_VERSION} COMPONENTS
     Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
-    Multimedia RemoteObjects Positioning REQUIRED)
+    Multimedia RemoteObjects Positioning Core5Compat REQUIRED)
 if(UNIX AND NOT APPLE)
     find_library(DBUS_LIBRARIES dbus-1)
     if(DBUS_LIBRARIES)
-        find_package(Qt5 ${QT_VERSION} COMPONENTS DBus REQUIRED)
-        set(HAVE_DBUS 1)
-        message(STATUS "Enable DBus interfaces")
-    endif()
-endif()
-
-if(ANDROID)
-    find_package(Qt5AndroidExtras REQUIRED)
-elseif(UNIX AND NOT APPLE)
-    find_library(DBUS_LIBRARIES dbus-1)
-    if(DBUS_LIBRARIES)
-        find_package(Qt5DBus REQUIRED)
+        find_package(Qt6 ${QT_VERSION} COMPONENTS DBus REQUIRED)
         set(HAVE_DBUS 1)
         message(STATUS "Enable DBus interfaces")
     endif()
@@ -184,50 +171,56 @@ add_definitions(-DQT_STATICPLUGIN)
 
 include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
 
-qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep SOURCE)
-qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep REPLICA)
-qt5_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
+qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
 
+#qt_add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources} MANUAL_FINALIZATION)
 if(ANDROID)
     add_library(osmin SHARED ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 else()
-    add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
+  add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 endif()
+qt6_add_repc_sources(osmin src/servicemessenger.rep)
+qt6_add_repc_replicas(osmin src/servicemessenger.rep)
 
 target_link_libraries(osmin PRIVATE ${LIBOSMSCOUT_LIBRARIES})
 target_link_libraries(osmin PRIVATE
-                      Qt5::QuickControls2 Qt5::RemoteObjects Qt5::Positioning
-                      Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg
-                      Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
+    Qt::RemoteObjects Qt::Positioning
+    Qt::QuickControls2 Qt::Qml Qt::Quick
+    Qt::Widgets Qt::Gui Qt::Xml
+    Qt::Svg Qt::Network Qt::Sensors
+    Qt::Multimedia Qt::Core
+    Qt6::Core5Compat)
 
 if(ANDROID)
     add_definitions(-DDEVICE_MOBILE)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
-    target_link_libraries(osmin PRIVATE Qt5::AndroidExtras android log)
+    set_property(TARGET osmin PROPERTY SUFFIX "_${ANDROID_ABI}.so")
+#set_property(TARGET osmin APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android/package-sources")
+    target_link_libraries(osmin PRIVATE android log Qt6::CorePrivate)
+
+    # Provides dependency openssl
+    if(NOT ANDROID_SDK_ROOT)
+        set(ANDROID_SDK_ROOT "$ENV{ANDROID_SDK_ROOT}")
+        if(NOT ANDROID_SDK_ROOT)
+            message(FATAL_ERROR "The ANDROID_SDK_ROOT environment variable is not set")
+        endif()
+    endif()
+    include(${ANDROID_SDK_ROOT}/android_openssl/android_openssl.cmake)
+    add_android_openssl_libraries(osmin)
+    get_target_property(ANDROID_EXTRA_LIBS osmin QT_ANDROID_EXTRA_LIBS)
+
     # Fix import of shared omp with android ndk rev 21
     if(OpenMP_CXX_LIBRARIES MATCHES libomp.so)
-       set(SHARED_LIBOMP ${OpenMP_CXX_LIBRARIES})
+        list(APPEND ANDROID_EXTRA_LIBS ${OpenMP_CXX_LIBRARIES})
     endif()
-    add_dependencies(osmin ssl crypto)
 
-    include(android/AddQtAndroidApk.cmake)
-    add_qt_android_apk(osmin-apk osmin
-        NAME ${APP_NAME}
-        VERSION_CODE ${APP_VERSION_CODE}
-        PACKAGE_NAME ${APP_ID}
-        PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
-        DEPENDS ssl crypto ${SHARED_LIBOMP}
-        ASSETS ${PROJECT_SOURCE_DIR}/resources
-        KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
-        KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
-    )
 else()
     if(BUILD_DEVICE_MOBILE)
         add_definitions(-DDEVICE_MOBILE)
     endif()
     if(HAVE_DBUS)
         add_definitions(-DHAVE_DBUS)
-        target_link_libraries(osmin PRIVATE Qt5::DBus)
+        target_link_libraries(osmin PRIVATE Qt::DBus)
     endif()
 
     set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")
@@ -252,3 +245,22 @@ else()
         ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
     )
 endif()
+
+#qt_finalize_executable(osmin)
+
+if(ANDROID)
+    include(android/AddQtAndroidApk.cmake)
+    add_qt_android_apk(osmin-apk osmin
+        NAME ${APP_NAME}
+        VERSION_CODE ${APP_VERSION_CODE}
+        PACKAGE_NAME ${APP_ID}
+        PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
+        DEPENDS ${ANDROID_EXTRA_LIBS}
+        PLUGINS platforms tls iconengines imageformats multimedia
+                position sensors networkinformation qmltooling styles
+        ASSETS ${PROJECT_SOURCE_DIR}/resources
+        KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
+        KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
+  )
+endif()
+
