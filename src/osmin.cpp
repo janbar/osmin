@@ -210,8 +210,11 @@ int startGUI(int argc, char* argv[])
 
   // check for the resource directory
   g_dataDir = QDir(PlatformExtras::getDataDir(APP_ID));
-  if (!g_dataDir.cd(DIR_RES))
+  if (!g_dataDir.cd(DIR_RES) || !g_dataDir.exists())
+  {
+    qWarning("FATAL: Asset directory cannot be found: %s", g_dataDir.absolutePath().toUtf8().constData());
     return EXIT_FAILURE;
+  }
   g_homeDir = QDir(PlatformExtras::getHomeDir());
 #ifdef Q_OS_ANDROID
   {
@@ -224,12 +227,18 @@ int startGUI(int argc, char* argv[])
 #else
   /* ~/osmin/resources */
   if (!g_homeDir.mkpath(QString(APP_NAME).append("/").append(DIR_RES)))
+  {
+    qWarning("FATAL: Failed to create resource directory in %s/%s", g_homeDir.absolutePath().toUtf8().constData(), APP_NAME);
     return EXIT_FAILURE;
+  }
   g_homeDir.cd(APP_NAME);
 #endif
   g_resDir = QDir(g_homeDir.absoluteFilePath(DIR_RES));
   if (!g_homeDir.mkpath(RES_GPX_DIR))
+  {
+    qWarning("FATAL: Failed to create directory %s/%s", g_homeDir.absolutePath().toUtf8().constData(), RES_GPX_DIR);
     return EXIT_FAILURE;
+  }
 
   // fork the service process
 #if defined(Q_OS_ANDROID)
