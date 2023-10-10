@@ -89,7 +89,6 @@
 #include "gpxfilemodel.h"
 #include "qmlsortfiltermodel.h"
 #include "utils.h"
-#include "compass/plugin.h"
 
 #include "service.h"
 #include "servicefrontend.h"
