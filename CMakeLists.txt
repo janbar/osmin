@@ -105,7 +105,7 @@ find_package(Qt5Gui REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5Quick REQUIRED)
 
-set(QT_MIN_VERSION 5.12.0)
+set(QT_MIN_VERSION 5.15.0)
 find_package(Qt5QuickControls2 ${QT_MIN_VERSION} REQUIRED)
 
 if(ANDROID)
@@ -173,8 +173,8 @@ endif()
 
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
 
-if(Qt5Core_VERSION VERSION_LESS 5.15.0)
-    qt5_add_resources(osmin-resources gui/osmin_controls2_509.qrc)
+if(Qt5Core_VERSION VERSION_LESS 5.15.2)
+    message(FATAL_ERROR "Qt version not supported")
 else()
     qt5_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
 endif()
