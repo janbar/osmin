@@ -166,12 +166,6 @@ endif()
 # Provides dependency libosmscout
 set(libosmscout_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libosmscout")
 set(libosmscout_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/libosmscout")
-execute_process(
-    COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/libosmscout.1.patch
-    WORKING_DIRECTORY ${libosmscout_SOURCE_DIR})
-execute_process(
-    COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/libosmscout.2.patch
-    WORKING_DIRECTORY ${libosmscout_SOURCE_DIR})
 
 set(BUILD_SHARED_LIBS               OFF CACHE BOOL "" FORCE)
 set(OSMSCOUT_HAVE_LIB_MARISA        ON  CACHE BOOL "" FORCE)

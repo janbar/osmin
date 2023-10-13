@@ -79,7 +79,7 @@
 #include <osmscout/util/Logger.h>
 
 // Configure Logger
-#include <osmscout/log/Logger.h>
+#include <osmscout/util/Logger.h>
 
 #include "platformextras.h"
 #include "mapextras.h"
