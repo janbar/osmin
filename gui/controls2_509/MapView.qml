@@ -227,6 +227,7 @@ MapPage {
         },
         State {
             name: "locationInfo"
+            PropertyChanges { target: searchAroundPlace; visible: true; }
             PropertyChanges { target: addFavorite; visible: true; }
             PropertyChanges { target: goThere; visible: true; }
         },
@@ -584,6 +585,48 @@ MapPage {
                         popLocationInfo.isFavorite = 0;
                 });
             }
+        }
+    }
+    // Search around place. The button is visible in state 'locationInfo'
+    MapIcon {
+        id: searchAroundPlace
+        visible: false
+        z: 1
+        anchors.bottom: parent.bottom
+        anchors.left: addFavorite.right
+        anchors.margins: units.gu(1)
+        source: "qrc:/images/trip/search.svg"
+        color: "black"
+        backgroundColor: "white"
+        borderPadding: units.gu(1.0)
+        opacity: 0.7
+        height: units.gu(6)
+        onClicked: {
+            var page = stackView.push("qrc:/controls2/SearchPlace.qml", {
+                               "searchCenterLat": popLocationInfo.placeLat,
+                               "searchCenterLon": popLocationInfo.placeLon,
+                               "acceptLabel": qsTr("Go"),
+                               "acceptIcon" : "qrc:/images/trip/navigator.svg",
+                               "showPositionEnabled": true
+                           });
+            ToolBox.connectOnce(page.selectLocation, function(location, lat, lon, label){
+                 if (lat !== NaN && lon !== NaN && label !== "") {
+                    popRouting.goTo(lat, lon, label);
+                 }
+            });
+            ToolBox.connectOnce(page.showPosition, function(lat, lon){
+                 if (lat !== NaN && lon !== NaN) {
+                     map.showCoordinatesInstantly(lat, lon);
+                     mark.showOverlay = true;
+                     mark.lat = lat;
+                     mark.lon = lon;
+                     mark.screenX = map.width / 2;
+                     mark.screenY = map.height / 2;
+                     if (navigation)
+                         navigation = false;
+                     popLocationInfo.show();
+                 }
+            });
         }
     }
 
