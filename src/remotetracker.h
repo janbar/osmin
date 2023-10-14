@@ -35,6 +35,7 @@ class RemoteTracker : public QObject, public Remote
   Q_PROPERTY(double ascent READ getAscent NOTIFY trackerDataChanged)
   Q_PROPERTY(double descent READ getDescent NOTIFY trackerDataChanged)
   Q_PROPERTY(double maxSpeed READ getMaxSpeed NOTIFY trackerDataChanged)
+  Q_PROPERTY(double bearing READ getBearing NOTIFY trackerPositionChanged)
   Q_PROPERTY(QString recording READ getRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   Q_PROPERTY(bool isRecording READ getIsRecording NOTIFY trackerIsRecordingChanged)
@@ -45,6 +46,7 @@ public:
   explicit RemoteTracker(QObject* parent = nullptr);
 
   osmscout::VehiclePosition* getTrackerPosition() const;
+  double getBearing() const;
   double getElevation() const { return m_elevation; }
   double getCurrentSpeed() const { return m_currentSpeed; }
   double getDistance() const { return m_distance; }
