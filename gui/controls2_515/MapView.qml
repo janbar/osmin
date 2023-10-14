@@ -93,8 +93,6 @@ MapPage {
                 settings.courseId = 0;
             }
         }
-        // on azimuth changed
-        compass.polled.connect(function(azimuth, rotation){ mapView.azimuth = azimuth; });
 
         // configure style from setting
         var flags = JSON.parse(settings.styleFlags);
@@ -116,7 +114,6 @@ MapPage {
     property bool rotateEnabled: false
     property real rotation: 0.0 // rotation of the map (radians)
     property bool lockRotation: true // lock or unlock rotation of the map
-    property real azimuth: 0.0 // the current azimuth (degrees)
 
     onRotationChanged: {
         if (lockRotation)
@@ -274,15 +271,11 @@ MapPage {
             // unlock rotation and disable rotate
             lockRotation = false;
             rotateEnabled = false;
-            // activate azimuth
-            compass.active = !applicationSuspended;
             // show vehicle icon
             map.setVehicleScaleFactor(1.0);
         } else {
             // hide vehicle icon
             map.setVehicleScaleFactor(0.1);
-            // deactivate azimuth
-            compass.active = false;
             // lock rotation
             mapView.rotation = 0.0;
             lockRotation = true;
@@ -469,7 +462,7 @@ MapPage {
         opacity: rotateEnabled || navigation ? 0.9 : 0.7
         height: units.gu(6)
         onClicked: rotateEnabled = !rotateEnabled
-        rotation: navigation ? (360 - mapView.azimuth) : (mapView.rotation * 180.0 / Math.PI)
+        rotation: navigation ? (-180.0 * Tracker.bearing / Math.PI) : (180.0 * mapView.rotation / Math.PI)
         visible: !popNavigatorInfo.visible
         enabled: !navigation
     }
@@ -1235,23 +1228,20 @@ MapPage {
 
     function configureRotation(enabled) {
         if (enabled) {
-            compass.active = !applicationSuspended;
-            compass.polled.connect(handleRotation);
+            Tracker.trackerPositionChanged.connect(handleRotation);
         } else {
-            compass.polled.disconnect(handleRotation);
-            compass.active = false;
+            Tracker.trackerPositionChanged.disconnect(handleRotation);
             mapView.rotation = 0.0;
         }
     }
 
-    function handleRotation(azimuth, rotation) {
-        var d = rotation - map.view.angle;
-        if (d > Math.PI)
-            d = d - Math.PI*2.0;
-        else if (d < -Math.PI)
-            d = d + Math.PI*2.0;
+    function handleRotation() {
+        var pi2 = Math.PI*2.0;
+        var d = pi2 - Tracker.bearing - map.view.angle;
+        d = (d > Math.PI ? d - pi2 : d < -Math.PI ? d + pi2 : d);
         if (d > 0.14 || d < -0.14) {
-            mapView.rotation = (map.view.angle + d);
+            let r = map.view.angle + d;
+            mapView.rotation = (r > pi2 ? r - pi2 : r < 0 ? r + pi2 : r);
         }
     }
 

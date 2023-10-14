@@ -49,6 +49,7 @@ class Tracker : public QObject
   Q_PROPERTY(double maxSpeed READ getMaxSpeed NOTIFY trackerDataChanged)
   Q_PROPERTY(double lat READ getLat NOTIFY trackerPositionChanged)
   Q_PROPERTY(double lon READ getLon NOTIFY trackerPositionChanged)
+  Q_PROPERTY(double bearing READ getBearing NOTIFY trackerPositionChanged)
   Q_PROPERTY(QString recording READ getRecording WRITE setRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   Q_PROPERTY(bool isRecording READ getIsRecording NOTIFY trackerRecordingChanged)
@@ -63,7 +64,7 @@ public:
   bool init(const QString& root);
 
   osmscout::VehiclePosition* getTrackerPosition() const;
-
+  double getBearing() const;
   double getElevation() const { return m_elevation; }
   double getCurrentSpeed() const { return m_currentSpeed; }
   double getDistance() const { return m_distance; }

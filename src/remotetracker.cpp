@@ -43,6 +43,13 @@ osmscout::VehiclePosition *RemoteTracker::getTrackerPosition() const
   return new osmscout::VehiclePosition(m_vehicle, m_vehicleState, m_vehicleCoord, m_vehicleBearing, nextPosition);
 }
 
+double RemoteTracker::getBearing() const
+{
+  if (m_vehicleBearing.has_value())
+    return m_vehicleBearing->AsRadians();
+  return 0.0;
+}
+
 void RemoteTracker::connectToService(QVariant service)
 {
   ServiceFrontendPtr _service = service.value<ServiceFrontendPtr>();
