@@ -28,7 +28,7 @@ Item {
 
     function rotateTo(angle, lockToPosition) {
         worker.stop();
-        worker.angle = Math.round(angle * 1000.0);
+        worker.angle = angle;
         worker.lockToPosition = (lockToPosition ? true : false);
         worker.start();
         begin();
@@ -44,11 +44,13 @@ Item {
         interval: 1000
         repeat: true
         triggeredOnStart: true
-        property int angle: 0 // milli rad
+        property double angle: 0.0 // radian
         property bool lockToPosition: false
         onTriggered: {
-            if (Math.round(map.view.angle * 1000.0) != angle) {
-                map.rotateTo(0.001 * angle);
+            var d = angle - map.view.angle;
+            if (d > 0.001 || d < -0.001) {
+                let a = (d > Math.PI ? angle - Math.PI*2.0 : d < -Math.PI ? angle + Math.PI*2.0 : angle);
+                map.rotateTo(a);
             } else {
                 stop();
                 finished();
