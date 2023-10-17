@@ -20,24 +20,29 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QStorageInfo>
-#ifdef Q_OS_ANDROID
+
+#if defined(SAILFISHOS)
+#define AUTO_MOUNT        "/run/media/"
+
+#elif defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #include <QAndroidJniEnvironment>
-#endif
-
-#ifdef SAILFISHOS
-#define AUTO_MOUNT        "/run/media/"
-#else
-#ifdef Q_OS_ANDROID
 #define AUTO_MOUNT        "/storage/"
+
+#elif defined(Q_OS_LINUX)
+#include <QtDBus>
+#define AUTO_MOUNT        "/media/"
+
 #else
 #define AUTO_MOUNT        "/media/"
-#endif
 #endif
 
 PlatformExtras::PlatformExtras(QObject* parent)
 : QObject(parent)
 , m_preventBlanking(false)
+#ifdef Q_OS_LINUX
+, m_cookie(0)
+#endif
 {
 }
 
@@ -96,9 +101,11 @@ QStringList PlatformExtras::getStorageDirs()
 
 void PlatformExtras::setPreventBlanking(bool on)
 {
+  if (m_preventBlanking == on)
+    return;
   m_preventBlanking = on;
 
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID)
   {
     QtAndroid::runOnAndroidThread([on]
     {
@@ -109,6 +116,32 @@ void PlatformExtras::setPreventBlanking(bool on)
       else
         window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
     });
+  }
+
+#elif defined(Q_OS_LINUX)
+  QDBusConnection bus = QDBusConnection::sessionBus();
+  if(bus.isConnected())
+  {
+    QDBusInterface interface("org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver",
+                             "org.freedesktop.ScreenSaver", bus);
+    if (interface.isValid())
+    {
+      if(on)
+      {
+        QDBusReply<uint> reply = interface.call("Inhibit", "osmin", "navigation enabled");
+        if (reply.isValid())
+          m_cookie = reply.value();
+        else
+        {
+          QDBusError error = reply.error();
+          qWarning("%s: %s", error.name().toUtf8().constData(), error.message().toUtf8().constData());
+        }
+      }
+      else
+      {
+        interface.call("UnInhibit", m_cookie);
+      }
+    }
   }
 #endif
 }

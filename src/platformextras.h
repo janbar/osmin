@@ -52,6 +52,10 @@ private:
   void setPreventBlanking(bool on);
 
   bool m_preventBlanking;
+
+#ifdef Q_OS_LINUX
+  uint m_cookie;
+#endif
 };
 
 #endif // PLATFORM_EXTRAS_H

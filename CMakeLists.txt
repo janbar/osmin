@@ -7,7 +7,7 @@ option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
 set(APP_VERSION       "1.10.4")
-set(APP_VERSION_CODE  59)
+set(APP_VERSION_CODE  60)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -110,7 +110,11 @@ find_package(Qt5QuickControls2 ${QT_MIN_VERSION} REQUIRED)
 
 if(ANDROID)
     find_package(Qt5AndroidExtras REQUIRED)
+elseif(UNIX AND NOT APPLE)
+    find_library(DBUS_LIBRARIES dbus-1 REQUIRED)
+    find_package(Qt5DBus REQUIRED)
 endif()
+
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Xml REQUIRED)
 find_package(Qt5Svg REQUIRED)
@@ -199,12 +203,18 @@ if(ANDROID)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
     target_link_libraries(osmin Qt5::QuickControls2 Qt5::AndroidExtras android log Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
-else()
+elseif(APPLE)
     if(BUILD_DEVICE_MOBILE)
         add_definitions(-DDEVICE_MOBILE)
     endif()
     target_link_libraries(osmin Qt5::QuickControls2 Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
+elseif(UNIX)
+  if(BUILD_DEVICE_MOBILE)
+      add_definitions(-DDEVICE_MOBILE)
+  endif()
+  target_link_libraries(osmin Qt5::QuickControls2 Qt5::DBus Qt5::RemoteObjects Qt5::Positioning
+                        Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 endif()
 
 if(ANDROID)
