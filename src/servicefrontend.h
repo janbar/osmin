@@ -47,6 +47,7 @@ signals:
   void trackerRecordingFailed();
   void trackerResumeRecording();
   void trackerIsRecordingChanged(bool recording);
+  void trackerMagneticDipChanged(double magneticDip);
   void trackerRecordingChanged(const QString& filename);
   void trackerProcessingChanged(bool processing);
   void trackerPositionRecorded(double lat, double lon);
@@ -75,6 +76,7 @@ signals:
 
 public slots:
   void ping(const QString& message);
+  void setMagneticDip(double magneticDip);
   void setRecording(const QString& filename);
   void resetTrackingData();
   void startRecording();

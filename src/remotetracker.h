@@ -39,6 +39,7 @@ class RemoteTracker : public QObject, public Remote
   Q_PROPERTY(QString recording READ getRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   Q_PROPERTY(bool isRecording READ getIsRecording NOTIFY trackerIsRecordingChanged)
+  Q_PROPERTY(double magneticDip READ getMagneticDip WRITE setMagneticDip NOTIFY trackerMagneticDipChanged)
   //Q_PROPERTY(double remainingDistance READ getRemainingDistance NOTIFY remainingDistanceChanged)
   //Q_PROPERTY(QObject* nextRouteStep READ getNextRoutStep NOTIFY nextStepChanged)
 
@@ -59,6 +60,7 @@ public:
   QString getRecording() const { return m_recording; }
   bool getProcessing() const { return m_busy; }
   bool getIsRecording() const { return m_isRecording; }
+  double getMagneticDip() const { return m_magneticDip; }
 
   Q_INVOKABLE void connectToService(QVariant service) override;
   void connectToService(ServiceFrontendPtr& service) override;
@@ -70,6 +72,7 @@ signals:
   void stopRecording();
   void pinPosition();
   void markPosition(const QString& symbol, const QString& name, const QString& description);
+  void setMagneticDip(double magneticDip);
   // callbacks
   void trackerPositionChanged();
   void trackerDataChanged();
@@ -78,11 +81,13 @@ signals:
   void trackerProcessingChanged();
   void trackerPositionRecorded(double lat, double lon);
   void trackerPositionMarked(double lat, double lon, const QString& symbol, const QString& name);
+  void trackerMagneticDipChanged();
   void recordingFailed();
   void resumeRecording();
 
 private slots:
   // internal events
+  void _trackerMagneticDipChanged(double magneticDip);
   void _trackerIsRecordingChanged(bool recording);
   void _trackerRecordingChanged(const QString& filename);
   void _trackerProcessingChanged(bool processing);
@@ -112,6 +117,7 @@ private:
   bool m_busy;
   QString m_recording;
   bool m_isRecording;
+  double m_magneticDip;
 };
 
 #endif // REMOTETRACKER_H

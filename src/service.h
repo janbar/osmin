@@ -73,6 +73,7 @@ public slots:
   void tracker_pinPosition() override;
   void tracker_markPosition(const QString& symbol, const QString& name, const QString& description) override;
   void tracker_resetData() override;
+  void tracker_setMagneticDip(double magneticDip) override;
 
 private slots:
   void onCompassReadingChanged();
@@ -90,6 +91,7 @@ private slots:
   void onTrackerPositionChanged();
   void onTrackerRecordingFailed();
   void onTrackerDataChanged();
+  void onTrackerMagneticDipChanged();
 
 private:
   QAtomicInt m_run;

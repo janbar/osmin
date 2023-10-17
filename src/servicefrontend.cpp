@@ -52,6 +52,13 @@ void ServiceFrontend::ping(const QString &message)
     m->ping(message);
 }
 
+void ServiceFrontend::setMagneticDip(double magneticDip)
+{
+  auto m = m_messenger;
+  if (!m.isNull())
+    m->tracker_setMagneticDip(magneticDip);
+}
+
 void ServiceFrontend::setRecording(const QString &filename)
 {
   auto m = m_messenger;
@@ -172,6 +179,7 @@ void ServiceFrontend::run()
   connect(m_messenger.data(), &ServiceMessengerReplica::tracker_recordingFailed, this, &ServiceFrontend::trackerRecordingFailed);
   connect(m_messenger.data(), &ServiceMessengerReplica::tracker_resumeRecording, this, &ServiceFrontend::trackerResumeRecording);
   connect(m_messenger.data(), &ServiceMessengerReplica::tracker_isRecordingChanged, this, &ServiceFrontend::trackerIsRecordingChanged);
+  connect(m_messenger.data(), &ServiceMessengerReplica::tracker_magneticDipChanged, this, &ServiceFrontend::trackerMagneticDipChanged);
   connect(m_messenger.data(), &ServiceMessengerReplica::tracker_recordingChanged, this, &ServiceFrontend::trackerRecordingChanged);
   connect(m_messenger.data(), &ServiceMessengerReplica::tracker_processingChanged, this, &ServiceFrontend::trackerProcessingChanged);
   connect(m_messenger.data(), &ServiceMessengerReplica::tracker_positionRecorded, this, &ServiceFrontend::trackerPositionRecorded);

@@ -58,6 +58,7 @@ void Service::run()
 
   m_tracker = new Tracker();
   m_tracker->init(m_rootDir);
+  connect(m_tracker, &Tracker::trackerMagneticDipChanged, this, &Service::onTrackerMagneticDipChanged);
   connect(m_tracker, &Tracker::trackerProcessingChanged, this, &Service::onTrackerProcessingChanged);
   connect(m_tracker, &Tracker::trackerRecordingChanged, this, &Service::onTrackerRecordingChanged);
   connect(m_tracker, &Tracker::trackerDataChanged, this, &Service::onTrackerDataChanged);
@@ -99,6 +100,7 @@ void Service::run()
 
 void Service::ping(const QString &message)
 {
+  onTrackerMagneticDipChanged();
   onTrackerRecordingChanged();
   onTrackerProcessingChanged();
   onTrackerDataChanged();
@@ -209,6 +211,11 @@ void Service::tracker_resetData()
   m_tracker->reset();
 }
 
+void Service::tracker_setMagneticDip(double magneticDip)
+{
+  m_tracker->setMagneticDip(magneticDip);
+}
+
 void Service::onCompassReadingChanged()
 {
   if (!m_pollTimeout.hasExpired(COMPASS_MIN_INTERVAL))
@@ -312,4 +319,9 @@ void Service::onTrackerDataChanged()
         m_tracker->getAscent(),
         m_tracker->getDescent(),
         m_tracker->getMaxSpeed());
+}
+
+void Service::onTrackerMagneticDipChanged()
+{
+  emit tracker_magneticDipChanged(m_tracker->getMagneticDip());
 }

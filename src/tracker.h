@@ -53,6 +53,7 @@ class Tracker : public QObject
   Q_PROPERTY(QString recording READ getRecording WRITE setRecording NOTIFY trackerRecordingChanged)
   Q_PROPERTY(bool processing READ getProcessing NOTIFY trackerProcessingChanged)
   Q_PROPERTY(bool isRecording READ getIsRecording NOTIFY trackerRecordingChanged)
+  Q_PROPERTY(double magneticDip READ getMagneticDip WRITE setMagneticDip NOTIFY trackerMagneticDipChanged)
   //Q_PROPERTY(double remainingDistance READ getRemainingDistance NOTIFY remainingDistanceChanged)
   //Q_PROPERTY(QObject* nextRouteStep READ getNextRoutStep NOTIFY nextStepChanged)
 
@@ -78,6 +79,8 @@ public:
   void setRecording(const QString& filename);
   bool getProcessing() const { return m_busy; }
   bool getIsRecording() const;
+  double getMagneticDip() const;
+  void setMagneticDip(double magneticDip);
 
   Q_INVOKABLE void locationChanged(bool positionValid, double lat, double lon,
                                    bool horizontalAccuracyValid, double horizontalAccuracy,
@@ -99,6 +102,7 @@ signals:
   void trackerPositionRecorded(double lat, double lon);
   void trackerPositionMarked(double lat, double lon, const QString& symbol, const QString& name);
   void recordingFailed();
+  void trackerMagneticDipChanged();
   //void remainingDistanceChanged();
   //void nextStepChanged();
 
@@ -149,6 +153,9 @@ public:
   TrackerModule(QThread* thread, const QString& root);
   virtual ~TrackerModule();
 
+  double magneticDip() const { return m_magneticDip; }
+  void setMagneticDip(double magneticDip);
+
   void record();
   bool isRecording() const { return m_recording; }
 
@@ -183,6 +190,7 @@ private:
   QDir m_baseDir;
   QTimer m_timer;
   osmscout::PositionAgent::PositionState m_state;
+  double m_magneticDip;
   double m_azimuth;
   double m_currentSpeed;
   double m_maxSpeed;

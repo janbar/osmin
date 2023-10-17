@@ -113,6 +113,18 @@ bool Tracker::getIsRecording() const
   return (m_p ? m_p->isRecording() : false);
 }
 
+double Tracker::getMagneticDip() const
+{
+  return (m_p ? m_p->magneticDip() : 0.0);
+}
+
+void Tracker::setMagneticDip(double magneticDip)
+{
+  if (m_p)
+    m_p->setMagneticDip(magneticDip);
+  emit trackerMagneticDipChanged();
+}
+
 void Tracker::locationChanged(bool positionValid, double lat, double lon,
                               bool horizontalAccuracyValid, double horizontalAccuracy,
                               double alt /*= 0.0*/)
@@ -215,7 +227,8 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_baseDir()
 , m_timer()
 , m_state(osmscout::PositionAgent::PositionState::NoGpsSignal)
-, m_azimuth(0)
+, m_magneticDip(0.0)
+, m_azimuth(0.0)
 , m_currentSpeed(0)
 , m_maxSpeed(0)
 , m_lastPosition()
@@ -249,6 +262,14 @@ TrackerModule::~TrackerModule()
   if (m_t)
     m_t->quit();
   qInfo("%s", __FUNCTION__);
+}
+
+void TrackerModule::setMagneticDip(double magneticDip)
+{
+  // rollback dip before signal
+  double degrees = ::remainder(m_azimuth - m_magneticDip, 360.0);
+  m_magneticDip = magneticDip;
+  onAzimuthChanged((degrees < 0 ? degrees + 360.0 : degrees));
 }
 
 void TrackerModule::onTimeout()
@@ -336,7 +357,8 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
 
 void TrackerModule::onAzimuthChanged(double degrees)
 {
-  m_azimuth = degrees;
+  double angle = ::remainder(degrees + m_magneticDip, 360.0);
+  m_azimuth = (angle < 0 ? angle + 360.0 : angle);
   if (m_currentSpeed < COURSE_SPEED)
   {
     m_lastPosition.bearing = osmscout::Bearing::Degrees(m_azimuth);

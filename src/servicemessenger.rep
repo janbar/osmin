@@ -30,6 +30,7 @@ class ServiceMessenger {
   SIGNAL(position_preferredPositioningMethodsChanged(int methods));
 
   // Tracker
+  SLOT(void tracker_setMagneticDip(double magneticDip));
   SLOT(void tracker_setRecording(const QString& filename));
   SLOT(void tracker_startRecording());
   SLOT(void tracker_stopRecording());
@@ -38,6 +39,7 @@ class ServiceMessenger {
   SLOT(void tracker_resetData());
   SIGNAL(tracker_resumeRecording());
   SIGNAL(tracker_isRecordingChanged(bool recording));
+  SIGNAL(tracker_magneticDipChanged(double magneticDip));
   SIGNAL(tracker_recordingChanged(const QString& filename));
   SIGNAL(tracker_processingChanged(bool processing));
   SIGNAL(tracker_positionRecorded(double lat, double lon));
