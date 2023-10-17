@@ -1256,6 +1256,7 @@ MapPage {
             if (Service.status === Service.ServiceConnected) {
                 popInfo.open(qsTr("Tracker service is connected"), "limegreen", "black");
                 // clear all data before ping ALL
+                Tracker.magneticDip = settings.magneticDip;
                 overlayManager.removeRecording();
                 overlayManager.removeMark(1);
                 overlayRecording.clear();

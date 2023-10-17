@@ -323,6 +323,7 @@ ApplicationWindow {
         Osmin.Converter.southwest = qsTr("southwest");
         Osmin.Converter.southeast = qsTr("southeast");
         Osmin.Converter.system = settings.systemOfUnits;
+        Osmin.Tracker.magneticDip = settings.magneticDip;
         positionSource.active = true;
         launcher.start();
     }

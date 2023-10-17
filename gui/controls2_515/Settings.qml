@@ -228,7 +228,10 @@ MapPage {
                     }
 
                     onValueModified: {
-                        settings.magneticDip = realValue
+                        // save settings
+                        settings.magneticDip = realValue;
+                        // setup tracker
+                        Tracker.magneticDip = realValue;
                     }
                 }
             }
