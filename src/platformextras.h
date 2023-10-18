@@ -21,7 +21,10 @@
 
 #include <QObject>
 #include <QQmlEngine>
-
+#ifdef HAVE_DBUS
+#include <QtDBus>
+#include <QMap>
+#endif
 class PlatformExtras : public QObject
 {
   Q_OBJECT
@@ -53,8 +56,14 @@ private:
 
   bool m_preventBlanking;
 
-#ifdef Q_OS_LINUX
-  uint m_cookie;
+#ifdef HAVE_DBUS
+  struct RemoteService {
+    RemoteService(const QString& svc, const QString& path, const QString& iface)
+    : interface(svc, path, iface), cookie(0) { }
+    QDBusInterface interface;
+    uint cookie;
+  };
+  QMap<QString, RemoteService*> m_remoteServices;
 #endif
 };
 

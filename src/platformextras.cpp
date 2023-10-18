@@ -29,10 +29,6 @@
 #include <QAndroidJniEnvironment>
 #define AUTO_MOUNT        "/storage/"
 
-#elif defined(Q_OS_LINUX)
-#include <QtDBus>
-#define AUTO_MOUNT        "/media/"
-
 #else
 #define AUTO_MOUNT        "/media/"
 #endif
@@ -40,14 +36,32 @@
 PlatformExtras::PlatformExtras(QObject* parent)
 : QObject(parent)
 , m_preventBlanking(false)
-#ifdef Q_OS_LINUX
-, m_cookie(0)
-#endif
 {
+#ifdef HAVE_DBUS
+  // register dbus service for inhibitor
+  RemoteService* inhibitor = new RemoteService("org.freedesktop.ScreenSaver",
+                                               "/org/freedesktop/ScreenSaver",
+                                               "org.freedesktop.ScreenSaver");
+  if (inhibitor->interface.isValid())
+    m_remoteServices.insert("inhibitor", inhibitor);
+  else
+  {
+    qWarning("Failed to register DBus interface for inhibitor");
+    delete inhibitor;
+  }
+#endif
 }
 
 PlatformExtras::~PlatformExtras()
 {
+  // clear inhibitor lock
+  setPreventBlanking(false);
+#ifdef HAVE_DBUS
+  // free registered DBus services
+  for (RemoteService* svc : qAsConst(m_remoteServices))
+    delete svc;
+  m_remoteServices.clear();
+#endif
 }
 
 QString PlatformExtras::getHomeDir()
@@ -104,7 +118,6 @@ void PlatformExtras::setPreventBlanking(bool on)
   if (m_preventBlanking == on)
     return;
   m_preventBlanking = on;
-
 #if defined(Q_OS_ANDROID)
   {
     QtAndroid::runOnAndroidThread([on]
@@ -117,31 +130,33 @@ void PlatformExtras::setPreventBlanking(bool on)
         window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
     });
   }
-
-#elif defined(Q_OS_LINUX)
-  QDBusConnection bus = QDBusConnection::sessionBus();
-  if(bus.isConnected())
+#elif defined(HAVE_DBUS)
   {
-    QDBusInterface interface("org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver",
-                             "org.freedesktop.ScreenSaver", bus);
-    if (interface.isValid())
+    auto inhibitor = m_remoteServices.find("inhibitor");
+    if (inhibitor == m_remoteServices.end())
     {
-      if(on)
-      {
-        QDBusReply<uint> reply = interface.call("Inhibit", "osmin", "navigation enabled");
-        if (reply.isValid())
-          m_cookie = reply.value();
-        else
-        {
-          QDBusError error = reply.error();
-          qWarning("%s: %s", error.name().toUtf8().constData(), error.message().toUtf8().constData());
-        }
-      }
+      // rollback
+      m_preventBlanking = !on;
+      return;
+    }
+    else if(on)
+    {
+      QDBusReply<uint> reply = inhibitor.value()->interface.call("Inhibit", "osmin", "navigation enabled");
+      if (reply.isValid())
+        inhibitor.value()->cookie = reply.value();
       else
       {
-        interface.call("UnInhibit", m_cookie);
+        qWarning("Inhibitor failed: %s", reply.error().message().toUtf8().constData());
+        // rollback
+        m_preventBlanking = !on;
+        return;
       }
     }
+    else
+      inhibitor.value()->interface.call("UnInhibit", inhibitor.value()->cookie);
   }
+#else
+  qWarning("Inhibitor isn't implemented for this platform");
 #endif
+  emit preventBlanking();
 }
