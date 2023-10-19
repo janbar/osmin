@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2020-2023
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,10 +25,17 @@
 
 void BuiltInSensorPlugin::registerSensors()
 {
+#if QT_VERSION < 0x060000 //QT_VERSION_CHECK(6, 0, 0)
   if (!QSensorManager::isBackendRegistered(QCompass::type, GenericCompass::id)) {
     qInfo("Register sensor backend: %s", GenericCompass::id);
     QSensorManager::registerBackend(QCompass::type, GenericCompass::id, this);
   }
+#else
+  if (!QSensorManager::isBackendRegistered(QCompass::sensorType, GenericCompass::id)) {
+    qInfo("Register sensor backend: %s", GenericCompass::id);
+    QSensorManager::registerBackend(QCompass::sensorType, GenericCompass::id, this);
+  }
+#endif
 }
 
 QSensorBackend *BuiltInSensorPlugin::createBackend(QSensor *sensor)
