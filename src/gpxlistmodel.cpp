@@ -16,7 +16,6 @@
  */
 
 #include "gpxlistmodel.h"
-#include "utils.h"
 
 #include <cstdint>
 #include <QDir>
@@ -25,17 +24,17 @@
 
 #define TREE_DEPTH    2
 
-inline uint_fast32_t __hashvalue(uint_fast32_t maxsize, const char *value)
+inline uint_fast32_t __hashvalue(uint_fast32_t maxsize, const QString& str)
 {
-  uint_fast32_t h = 0, g;
-  while (*value)
+  /*
+   * DJB Hash Function
+   */
+  uint_fast32_t h = 5381;
+  auto it = str.constBegin();
+  while (it != str.constEnd())
   {
-    h = (h << 4) + *value++;
-    if ((g = h & 0xF0000000L))
-    {
-      h ^= g >> 24;
-    }
-    h &= ~g;
+    h = ((h << 5) + h) + it->unicode();
+    ++it;
   }
   return h % maxsize;
 }
@@ -73,7 +72,7 @@ void GPXItem::setName(const QString& name)
 
 int GPXItem::bigId() const
 {
-  return static_cast<int>(__hashvalue(0x7ffffe, m_relativeFilePath.toUtf8().constData()) * 0x100 + 1);
+  return static_cast<int>(__hashvalue(0x7ffffe, m_relativeFilePath) * 0x100 + 1);
 }
 
 GPXListModel::GPXListModel(QObject* parent)
