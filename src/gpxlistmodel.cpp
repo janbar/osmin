@@ -72,7 +72,7 @@ void GPXItem::setName(const QString& name)
 
 int GPXItem::bigId() const
 {
-  return static_cast<int>(__hashvalue(0x7ffffe, m_relativeFilePath) * 0x100 + 1);
+  return static_cast<int>(__hashvalue(0x7fffffff, m_relativeFilePath));
 }
 
 GPXListModel::GPXListModel(QObject* parent)
