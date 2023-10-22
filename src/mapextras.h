@@ -21,6 +21,9 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <QMutex>
+#include <QMap>
+#include <QList>
 
 class MapExtras : public QObject
 {
@@ -63,6 +66,53 @@ public:
    */
   Q_INVOKABLE void setDaylight(bool enable);
 
+  /**
+   * @brief Add overlay for type and key
+   * @param type
+   * @param key
+   * @return new id
+   */
+  Q_INVOKABLE int addOverlay(const QString& type, int key);
+
+  /**
+   * @brief Find overlays by type and key
+   * @param type
+   * @param key
+   * @return list of registered ids
+   */
+  Q_INVOKABLE QList<int> findOverlays(const QString& type, int key);
+
+  /**
+   * @brief Find overlay keys by type
+   * @param type
+   * @return list of keys
+   */
+  Q_INVOKABLE QList<int> findOverlayKeys(const QString& type);
+
+  /**
+   * @brief Clear an overlay. The returned list of ids should be released
+   * once cleanup is complete.
+   * @see releaseOverlayIds()
+   * @param type
+   * @param key
+   * @return list of cleared ids
+   */
+  Q_INVOKABLE QList<int> clearOverlays(const QString& type, int key);
+
+  /**
+   * @brief Release ids of a previously cleared overlay
+   * @param ids list of id to be released
+   */
+  Q_INVOKABLE void releaseOverlayIds(const QList<int>& ids);
+
+private:
+  QMutex m_overlayLock;
+  typedef QMap<int, QList<int> > Overlay;
+  QMap<QString, Overlay> m_overlays;
+  QList<int> m_freedIds;
+  int m_newId = 0;
+
+  int getOverlayId();
 };
 
 #endif // MAP_EXTRAS_H

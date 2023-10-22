@@ -20,6 +20,7 @@
 
 MapExtras::MapExtras(QObject *parent)
 : QObject(parent)
+, m_overlayLock(QMutex::NonRecursive)
 {
 }
 
@@ -75,4 +76,74 @@ void MapExtras::setDaylight(bool enable)
   osmscout::DBThreadRef dbThread = osmscout::OSMScoutQt::GetInstance().GetDBThread();
   if (dbThread->isInitialized())
     dbThread->SetStyleFlag("daylight", enable);
+}
+
+int MapExtras::addOverlay(const QString& type, int key)
+{
+  QMutexLocker guard(&m_overlayLock);
+  auto im = m_overlays.find(type);
+  if (im == m_overlays.end())
+    im = m_overlays.insert(type, Overlay());
+  auto ik = im.value().find(key);
+  if (ik == im.value().end())
+    ik = im.value().insert(key, QList<int>());
+  int id = getOverlayId();
+  ik.value().push_back(id);
+  return id;
+}
+
+QList<int> MapExtras::findOverlays(const QString& type, int key)
+{
+  QMutexLocker guard(&m_overlayLock);
+  auto im = m_overlays.find(type);
+  if (im == m_overlays.end())
+    return QList<int>();
+  auto ik = im.value().find(key);
+  if (ik == im.value().end())
+    return QList<int>();
+  return ik.value();
+}
+
+QList<int> MapExtras::findOverlayKeys(const QString &type)
+{
+  QMutexLocker guard(&m_overlayLock);
+  auto im = m_overlays.find(type);
+  if (im == m_overlays.end())
+    return QList<int>();
+  return im.value().keys();
+}
+
+QList<int> MapExtras::clearOverlays(const QString& type, int key)
+{
+  QMutexLocker guard(&m_overlayLock);
+  QList<int> ids;
+  auto im = m_overlays.find(type);
+  if (im == m_overlays.end())
+    return ids;
+  auto ik = im.value().find(key);
+  if (ik == im.value().end())
+    return ids;
+  ids.swap(ik.value());
+  im->remove(key);
+  return ids;
+}
+
+void MapExtras::releaseOverlayIds(const QList<int>& ids)
+{
+  QMutexLocker guard(&m_overlayLock);
+  // fill list of reusable ids
+  for (int id : ids)
+  {
+    if (id >= 0 && id < m_newId)
+      m_freedIds.push_back(id);
+  }
+}
+
+int MapExtras::getOverlayId()
+{
+  if (m_freedIds.empty())
+    return m_newId++;
+  int id = m_freedIds.back();
+  m_freedIds.pop_back();
+  return id;
 }
