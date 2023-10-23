@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022
+ * Copyright (C) 2022-2023
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,9 +19,10 @@
 
 #include <osmscoutclientqt/DBThread.h>
 
+#include "locked.h" // for qt compat
+
 #include <QObject>
 #include <QQmlEngine>
-#include <QMutex>
 #include <QMap>
 #include <QList>
 
@@ -106,7 +107,7 @@ public:
   Q_INVOKABLE void releaseOverlayIds(const QList<int>& ids);
 
 private:
-  QMutex m_overlayLock;
+  QMutex* m_overlayLock;
   typedef QMap<int, QList<int> > Overlay;
   QMap<QString, Overlay> m_overlays;
   QList<int> m_freedIds;

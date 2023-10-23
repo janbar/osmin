@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022
+ * Copyright (C) 2022-2023
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,12 +20,13 @@
 
 MapExtras::MapExtras(QObject *parent)
 : QObject(parent)
-, m_overlayLock(QMutex::NonRecursive)
+, m_overlayLock(new QMutex())
 {
 }
 
 MapExtras::~MapExtras()
 {
+  delete m_overlayLock;
 }
 
 QVariantList MapExtras::getStyleFlags()
@@ -80,7 +81,7 @@ void MapExtras::setDaylight(bool enable)
 
 int MapExtras::addOverlay(const QString& type, int key)
 {
-  QMutexLocker guard(&m_overlayLock);
+  osmin::LockGuard guard(m_overlayLock);
   auto im = m_overlays.find(type);
   if (im == m_overlays.end())
     im = m_overlays.insert(type, Overlay());
@@ -94,7 +95,7 @@ int MapExtras::addOverlay(const QString& type, int key)
 
 QList<int> MapExtras::findOverlays(const QString& type, int key)
 {
-  QMutexLocker guard(&m_overlayLock);
+  osmin::LockGuard guard(m_overlayLock);
   auto im = m_overlays.find(type);
   if (im == m_overlays.end())
     return QList<int>();
@@ -106,7 +107,7 @@ QList<int> MapExtras::findOverlays(const QString& type, int key)
 
 QList<int> MapExtras::findOverlayKeys(const QString &type)
 {
-  QMutexLocker guard(&m_overlayLock);
+  osmin::LockGuard guard(m_overlayLock);
   auto im = m_overlays.find(type);
   if (im == m_overlays.end())
     return QList<int>();
@@ -115,7 +116,7 @@ QList<int> MapExtras::findOverlayKeys(const QString &type)
 
 QList<int> MapExtras::clearOverlays(const QString& type, int key)
 {
-  QMutexLocker guard(&m_overlayLock);
+  osmin::LockGuard guard(m_overlayLock);
   QList<int> ids;
   auto im = m_overlays.find(type);
   if (im == m_overlays.end())
@@ -130,7 +131,7 @@ QList<int> MapExtras::clearOverlays(const QString& type, int key)
 
 void MapExtras::releaseOverlayIds(const QList<int>& ids)
 {
-  QMutexLocker guard(&m_overlayLock);
+  osmin::LockGuard guard(m_overlayLock);
   // fill list of reusable ids
   for (int id : ids)
   {
