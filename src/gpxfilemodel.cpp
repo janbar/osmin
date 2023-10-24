@@ -88,18 +88,18 @@ QString GPXObjectTrack::displayColor() const
   return "";
 }
 
-const QSet<QString>& GPXFileModel::customTypeSet()
+const QStringList GPXFileModel::customTypeSet()
 {
-  static QSet<QString> _type;
+  static QStringList _types;
   static bool _init = false;
   if (!_init)
   {
-    _type.insert(OVERLAY_WAY_TRACK_TYPE);
-    _type.insert(OVERLAY_WAY_HIGHLIGHTED_TYPE);
-    _type.insert(OVERLAY_NODE_WAYPOINT_TYPE);
+    _types.push_back(OVERLAY_WAY_TRACK_TYPE);
+    _types.push_back(OVERLAY_WAY_HIGHLIGHTED_TYPE);
+    _types.push_back(OVERLAY_NODE_WAYPOINT_TYPE);
     _init = true;
   }
-  return _type;
+  return _types;
 }
 
 class GPXFileModel::Loader : public QThread

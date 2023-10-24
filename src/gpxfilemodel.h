@@ -8,7 +8,7 @@
 #include <QAbstractListModel>
 #include <QDateTime>
 #include <QString>
-#include <QSet>
+#include <QStringList>
 
 #define OVERLAY_WAY_TRACK_TYPE            "_track"
 #define OVERLAY_WAY_HIGHLIGHTED_TYPE      "_highlighted"
@@ -127,7 +127,7 @@ public:
     DataLoaded    = 2,
   } DataStatus;
 
-  static const QSet<QString>& customTypeSet();
+  static const QStringList customTypeSet();
 
   GPXFileModel(QObject* parent = nullptr);
   virtual ~GPXFileModel();

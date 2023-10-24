@@ -414,20 +414,23 @@ int startGUI(int argc, char* argv[])
 
   {
     osmscout::OSMScoutQtBuilder builder = osmscout::OSMScoutQt::NewInstance()
-         .WithUserAgent(OSMIN_MODULE, APP_VERSION)
-         .WithBasemapLookupDirectory(g_resDir.absoluteFilePath("world"))
-         .WithStyleSheetDirectory(g_resDir.absoluteFilePath("stylesheets"))
-         .WithIconDirectory(g_resDir.absoluteFilePath("icons"))
-         .WithMapLookupDirectories(mapDirs)
-         .AddOnlineTileProviders(g_resDir.absoluteFilePath("online-tile-providers.json"))
-         .AddMapProviders(g_resDir.absoluteFilePath("map-providers.json"))
-         .WithVoiceLookupDirectory(g_homeDir.absoluteFilePath(DIR_VOICES))
-         .AddVoiceProviders(g_resDir.absoluteFilePath("voice-providers.json"))
-         .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
-         .WithTileCacheSizes(60, 200);
+        .WithUserAgent(OSMIN_MODULE, APP_VERSION)
+        .WithBasemapLookupDirectory(g_resDir.absoluteFilePath("world"))
+        .WithStyleSheetDirectory(g_resDir.absoluteFilePath("stylesheets"))
+        .WithIconDirectory(g_resDir.absoluteFilePath("icons"))
+        .WithMapLookupDirectories(mapDirs)
+        .AddOnlineTileProviders(g_resDir.absoluteFilePath("online-tile-providers.json"))
+        .AddMapProviders(g_resDir.absoluteFilePath("map-providers.json"))
+        .WithVoiceLookupDirectory(g_homeDir.absoluteFilePath(DIR_VOICES))
+        .AddVoiceProviders(g_resDir.absoluteFilePath("voice-providers.json"))
+        .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
+        .WithTileCacheSizes(60, 200);
 
+    // declare required types for tracks
     for (const QString& customType : GPXFileModel::customTypeSet())
       builder.AddCustomPoiType(customType);
+    // declare required type for favorite poi
+    builder.AddCustomPoiType("_waypoint_favorite");
 
     if (!builder.Init())
     {
