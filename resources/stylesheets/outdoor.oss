@@ -75,9 +75,6 @@ CONST
   // For debugging :-)
   COLOR red                         = #ff0000;
 
-  // Pseudo types
-  COLOR highlightedColor            = #ff000088;
-
   // Default label color
   IF daylight {
     COLOR labelColor               = #000000;
@@ -286,6 +283,7 @@ SYMBOL cliff
 
 MODULE "include/route"
 MODULE "include/track"
+MODULE "include/waypoint"
 
 STYLE
  // -------------------------------------------------------
@@ -301,10 +299,6 @@ STYLE
   ICON { name: target;} */
 
  [MAG world-] {
-    [TYPE _highlighted] WAY {color: @highlightedColor; displayWidth: 1.5mm; priority: 100; }
-    [TYPE _highlighted] AREA.BORDER {color: @highlightedColor; width: 1.0mm; }
-    [TYPE _highlighted] NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
-
     [TYPE _tile_sea] AREA {color: @waterColor;}
     //[TYPE _tile_coast] AREA {color: @waterColor;}
     //[TYPE _tile_coast] AREA {color: @waterColor;  borderColor: #000000; borderWidth: 0.1mm;}

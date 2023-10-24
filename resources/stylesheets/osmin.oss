@@ -36,7 +36,7 @@ FLAG
 
 ORDER WAYS
   GROUP _route
-  GROUP _track
+  GROUP _track, _highlighted
   GROUP highway_motorway
   GROUP highway_motorway_trunk
   GROUP highway_motorway_primary
@@ -350,6 +350,7 @@ CONST
 MODULE "include/symbols"
 MODULE "include/route"
 MODULE "include/track"
+MODULE "include/waypoint"
 
 STYLE
   // -------------------------------------------------------

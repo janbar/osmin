@@ -2,13 +2,19 @@ OSS
 
 CONST
   COLOR trackColor = #10a000a0;
+  COLOR highlightedColor = #ff000088;
 
 STYLE
   [MAG world-] {
-    [TYPE _track] WAY {preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100;}
+    [TYPE _track] WAY { preferColorFeature: true; color: @trackColor; displayWidth: 0.8mm; width: 2.2m; priority: 100; }
     [TYPE _waypoint] {
       NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
       NODE.TEXT { label: Name.name; color: #ff0000; size: 1.0; priority: @labelPrioWaypoint; }
+    }
+    [TYPE _highlighted] {
+      WAY { color: @highlightedColor; displayWidth: 1.5mm; priority: 100; }
+      AREA.BORDER { color: @highlightedColor; width: 1.0mm; }
+      NODE.ICON { symbol: marker; priority: @labelPrioWaypoint; }
     }
   }
 

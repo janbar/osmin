@@ -1,8 +1,11 @@
 OSS
 
+FLAG
+  daylight          = true;
+
 ORDER WAYS
   GROUP _route
-  GROUP _track
+  GROUP _track, _highlighted
   GROUP railway_rail, railway_tram, railway_light_rail, 
       railway_narrow_gauge, railway_preserved, 
       railway_funicular,
@@ -28,6 +31,7 @@ CONST
 MODULE "include/symbols"
 MODULE "include/route"
 MODULE "include/track"
+MODULE "include/waypoint"
 
 STYLE
   [TYPE _tile_sea] AREA {color: @seaColor;}

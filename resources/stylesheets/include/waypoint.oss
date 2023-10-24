@@ -1,0 +1,32 @@
+OSS
+
+CONST
+  IF daylight {
+    COLOR waypointFavoriteColor      = #00bfff;
+    COLOR waypointFavoriteTextColor  = #000000;
+  }
+  ELSE {
+    COLOR waypointFavoriteColor      = #00bfff;
+    COLOR waypointFavoriteTextColor  = #00bfff;
+  }
+
+SYMBOL favorite_pin
+  CIRCLE 0.0,-3.0 1.5 {
+    AREA {color: @waypointFavoriteColor; }
+  }
+  POLYGON -1.5,-3.0 1.5,-3.0 0.0,0.0 {
+    AREA { color: @waypointFavoriteColor; }
+  }
+  CIRCLE 0.0,-3.0 0.5 {
+    AREA {color: #ffffff; }
+  }
+
+STYLE
+  [MAG world-] {
+    [TYPE _waypoint_favorite] {
+      NODE.ICON { symbol: favorite_pin; priority: @labelPrioWaypoint; }
+      NODE.TEXT { label: Name.name; color: @waypointFavoriteTextColor; size: 1.0; priority: @labelPrioWaypoint; }
+    }
+  }
+
+END
