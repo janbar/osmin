@@ -96,7 +96,7 @@ PopOver {
             id: favorites
             width: parent.width
             color: styleMap.popover.foregroundColor
-            text: qsTr("Favorites")
+            text: qsTr("Favorite Places")
             checked: settings.showFavorites
             onClicked: {
                 settings.showFavorites = !settings.showFavorites;
