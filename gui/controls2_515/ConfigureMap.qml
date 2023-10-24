@@ -93,6 +93,18 @@ PopOver {
         }
 
         MapCheckBox {
+            id: favorites
+            width: parent.width
+            color: styleMap.popover.foregroundColor
+            text: qsTr("Favorites")
+            checked: settings.showFavorites
+            onClicked: {
+                settings.showFavorites = !settings.showFavorites;
+                mainView.showFavorites = settings.showFavorites;
+            }
+        }
+
+        MapCheckBox {
             id: showAltLanguage
             width: parent.width
             color: styleMap.popover.foregroundColor

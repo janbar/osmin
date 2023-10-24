@@ -23,6 +23,10 @@ QtObject {
     // the map to handle
     property Map map
 
+    property QtObject internal: QtObject {
+        property bool showFavorites: false
+    }
+
     // add the route on the map
     function addRoute(routeWay) {
         var ovs = MapExtras.findOverlays("ROUTE", 0);
@@ -95,22 +99,22 @@ QtObject {
         return true;
     }
 
-    // add a way point on the map
-    function addWayPoint(id, lat, lon) {
-        var wpt = map.createOverlayNode("_waypoint");
-        wpt.addPoint(lat, lon);
-        wpt.name = "Pos: " + lat.toFixed(4) + " " + lon.toFixed(4);
-        var ovs = MapExtras.findOverlays("WAYPOINT", id);
+    // add a POI on the map
+    function addPOI(group, id, lat, lon, label, type) {
+        var poi = map.createOverlayNode(type);
+        poi.addPoint(lat, lon);
+        poi.name = label;
+        var ovs = MapExtras.findOverlays(group, id);
         if (ovs.length > 0)
-             map.addOverlayObject(ovs[0], wpt);
+             map.addOverlayObject(ovs[0], poi);
         else
-            map.addOverlayObject(MapExtras.addOverlay("WAYPOINT", id), wpt);
+            map.addOverlayObject(MapExtras.addOverlay(group, id), poi);
         return true;
     }
 
-    // remove a way point on the map
-    function removeWayPoint(id) {
-        var ovs = MapExtras.clearOverlays("WAYPOINT", id);
+    // remove a POI on the map
+    function removePOI(group, id) {
+        var ovs = MapExtras.clearOverlays(group, id);
         ovs.forEach(function(e){ map.removeOverlayObject(e); });
         MapExtras.releaseOverlayIds(ovs);
         return true;
@@ -165,4 +169,37 @@ QtObject {
         });
         return true;
     }
+
+    function addFavoritePOI(id) {
+        var poi = FavoritesModel.getById(id);
+        addPOI("FAVORITE", id, poi.lat, poi.lon, poi.label, "_waypoint_favorite");
+    }
+
+    function removeFavoritePOI(id) {
+        var ovs = MapExtras.clearOverlays("FAVORITE", id);
+        ovs.forEach(function(e){ map.removeOverlayObject(e); });
+        MapExtras.releaseOverlayIds(ovs);
+    }
+
+    function showFavorites() {
+        if (!internal.showFavorites) {
+            internal.showFavorites = true;
+            for (var i = 0; i < FavoritesModel.rowCount(); ++i) {
+                addFavoritePOI(FavoritesModel.get(i).id)
+            }
+            FavoritesModel.appended.connect(addFavoritePOI);
+            FavoritesModel.removed.connect(removeFavoritePOI);
+        }
+    }
+
+    function hideFavorites() {
+        if (internal.showFavorites) {
+            var keys = MapExtras.findOverlayKeys("FAVORITE");
+            keys.forEach(function(k){ removeFavoritePOI(k); });
+            FavoritesModel.appended.disconnect(addFavoritePOI);
+            FavoritesModel.removed.disconnect(removeFavoritePOI);
+            internal.showFavorites = false;
+        }
+    }
+
 }

@@ -63,6 +63,7 @@ ApplicationWindow {
 
         // Extra settings
         property string styleFlags: "[]"
+        property bool showFavorites: true
     }
 
     Material.accent: Material.Grey
@@ -124,6 +125,9 @@ ApplicationWindow {
     // Constants
     readonly property int queueBatchSize: 100
     readonly property real minSizeGU: 44
+
+    // show/hide favorite POIs
+    property bool showFavorites: false
 
     minimumHeight: units.gu(minSizeGU)
     minimumWidth: units.gu(minSizeGU)
@@ -324,6 +328,8 @@ ApplicationWindow {
         Osmin.Converter.southeast = qsTr("southeast");
         Osmin.Converter.system = settings.systemOfUnits;
         Osmin.Tracker.magneticDip = settings.magneticDip;
+
+        showFavorites = settings.showFavorites;
         positionSource.active = true;
         launcher.start();
     }
@@ -397,21 +403,17 @@ ApplicationWindow {
     //// Global requests
     ////
 
-    // Add a new favorite
+    // Add a new favorite and return its id
     function createFavorite(lat, lon, label, type) {
-        var index = Osmin.FavoritesModel.append();
-        var id = Osmin.FavoritesModel.data(index, Osmin.FavoritesModel.IdRole)
-        Osmin.FavoritesModel.setData(index, lat, Osmin.FavoritesModel.LatRole);
-        Osmin.FavoritesModel.setData(index, lon, Osmin.FavoritesModel.LonRole);
-        Osmin.FavoritesModel.setData(index, 0.0, Osmin.FavoritesModel.AltRole);
-        Osmin.FavoritesModel.setData(index, new Date(), Osmin.FavoritesModel.TimestampRole);
-        Osmin.FavoritesModel.setData(index, label, Osmin.FavoritesModel.LabelRole);
-        if (type) // optional
-             Osmin.FavoritesModel.setData(index, type, Osmin.FavoritesModel.TypeRole);
-        if (Osmin.FavoritesModel.storeData())
-            return id;
+        var id = Osmin.FavoritesModel.append(lat, lon, label, type);
+        if (id > 0) {
+            if (Osmin.FavoritesModel.storeData())
+                return id;
+            Osmin.FavoritesModel.remove(id); // rollback
+        } else {
+            console.log("Failed to append new favorite: count " + Osmin.FavoritesModel.count + " item(s)");
+        }
         mainInfo.open(qsTr("Saving change failed"));
-        Osmin.FavoritesModel.remove(id);
         return 0;
     }
 

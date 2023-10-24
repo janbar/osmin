@@ -100,6 +100,10 @@ MapPage {
             flags.push({ "name": "daylight", "value": !nightView });
             setStyleFlags(flags);
         }
+
+        // show/hide favorite POIs
+        if (mainView.showFavorites)
+            overlayManager.showFavorites();
     }
 
     property QtObject mark: QtObject {
@@ -1163,12 +1167,18 @@ MapPage {
         }
     }
 
-    // On android disable navigation when the app is suspended
     Connections {
         target: mainView
         function onApplicationSuspendedChanged() {
+            // On android disable navigation when the app is suspended
             if ((Android || DeviceMobile) && applicationSuspended && navigation)
                 navigation = false;
+        }
+        function onShowFavoritesChanged() {
+            if (showFavorites)
+                overlayManager.showFavorites();
+            else
+                overlayManager.hideFavorites();
         }
     }
 
