@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2020-2023
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 #ifndef FAVORITESMODEL_H
 #define FAVORITESMODEL_H
 
-#include "locked.h"
+#include "locked.h" // for qt compat
 
 #include <QAbstractListModel>
 #include <QDateTime>
@@ -108,7 +108,15 @@ public:
   bool insertRow(int row, const QModelIndex& parent = QModelIndex());
   bool removeRow(int row, const QModelIndex& parent = QModelIndex());
 
-  Q_INVOKABLE QModelIndex append();
+  /**
+   * @brief Append a new item to the list
+   * @param lat
+   * @param lon
+   * @param label
+   * @param type
+   * @return 0 or less on failure, else the new id of the item
+   */
+  Q_INVOKABLE int append(double lat, double lon, const QString& label, const QString& type);
 
   Q_INVOKABLE bool remove(int id);
 
@@ -131,6 +139,8 @@ signals:
   void loaded(bool succeeded);
   void stored(bool succeeded);
   void countChanged();
+  void removed(int id);
+  void appended(int id);
 
 protected:
   QHash<int, QByteArray> roleNames() const;

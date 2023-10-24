@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2020-2023
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -180,12 +180,32 @@ bool FavoritesModel::removeRow(int row, const QModelIndex& parent)
   return true;
 }
 
-QModelIndex FavoritesModel::append()
+int FavoritesModel::append(double lat, double lon, const QString& label, const QString& type)
 {
-  int row = m_items.count();
-  if (insertRow(row))
-    return index(row);
-  return QModelIndex();
+  int id = 0;
+  // start critical section
+  {
+    osmin::LockGuard<QRecursiveMutex> g(m_lock);
+    int row = m_items.count();
+    if (row >= MAX_ROWCOUNT)
+      return 0;
+    id = ++m_seq;
+    FavoriteItem* item = new FavoriteItem();
+    item->setId(id);
+    item->setLat(lat);
+    item->setLon(lon);
+    item->setAlt(0.0);
+    item->setTimestamp(QDateTime::currentDateTime());
+    item->setLabel(label);
+    item->setType(type);
+    beginInsertRows(QModelIndex(), row, row);
+    m_items.insert(row, item);
+    endInsertRows();
+  }
+  // end critical section
+  emit countChanged();
+  emit appended(id);
+  return id;
 }
 
 bool FavoritesModel::remove(int id)
@@ -194,7 +214,12 @@ bool FavoritesModel::remove(int id)
   for (FavoriteItem* item : m_items)
   {
     if (item->id() == id)
-      return removeRow(row);
+    {
+      if (!removeRow(row))
+        return false;
+      emit removed(id);
+      return true;
+    }
     ++row;
   }
   return false;
@@ -229,6 +254,7 @@ QVariantMap FavoritesModel::get(int row) const
   model[roles[LonRole]] = item->lon();
   model[roles[AltRole]] = item->alt();
   model[roles[TypeRole]] = item->type();
+  model[roles[IdRole]] = item->id();
   return model;
 }
 
