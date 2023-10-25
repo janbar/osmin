@@ -330,7 +330,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
 {
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
   QVariantList list;
-  for (const GPXObject* item : m_items)
+  for (const GPXObject* item : qAsConst(m_items))
   {
     if (id >= 0 && item->id() != id)
       continue;
