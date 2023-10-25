@@ -147,7 +147,7 @@ void GenericCompass::checkValues()
         if (_compassReading.azimuth() != newAzimuth) { // TODO: run thru collection of QCompassFilter
             _compassReading.setAzimuth(newAzimuth);
             _compassReading.setTimestamp(produceTimestamp());
-            emit newReadingAvailable();
+            newReadingAvailable();
         }
     }
 }
