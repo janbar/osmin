@@ -30,7 +30,7 @@ namespace osmin
     virtual ~CSVParser() { }
 
     QList<QByteArray*> deserialize(const QByteArray& line);
-    QByteArray serialize(const QList<QByteArray*> row);
+    QByteArray serialize(const QList<QByteArray*>& row);
 
   private:
     char m_separator;

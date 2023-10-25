@@ -95,7 +95,7 @@ QList<QByteArray*> CSVParser::deserialize(const QByteArray& line)
   return data;
 }
 
-QByteArray CSVParser::serialize(const QList<QByteArray*> row)
+QByteArray CSVParser::serialize(const QList<QByteArray*>& row)
 {
   QByteArray line;
   for (const QByteArray* data : row)
