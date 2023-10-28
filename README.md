@@ -47,10 +47,15 @@ To build for mobile devices, use the following command to enable behaviors for m
 ```
 cmake -B build -DBUILD_DEVICE_MOBILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
 ```
-Finally build it to make the target binary `osmin`
+Finally build it to make the target binary `osmin`.
 ```
 cmake --build build/ -j8
 ```
+Running Osmin outside the build tree, you have to install the required assets. 
+```
+sudo cmake --build build/ --target install
+```
+Uninstall can be done by the following `sudo cmake --build build/ --target uninstall`.
 
 ## About osmin on Android
 
