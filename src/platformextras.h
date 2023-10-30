@@ -42,8 +42,34 @@ public:
     return new PlatformExtras;
   }
 
-  static QString getHomeDir();
-  static QString getDataDir(const char* appId);
+  /**
+   * @brief Returns base path of user data.
+   * The path is readable and writable by the user and the instance.
+   * @return path
+   */
+  static QString getDataDir();
+
+  /**
+   * @brief Returns base path of application data
+   * The path is readable and writable by the instance.
+   * @return path
+   */
+  static QString getAppDir();
+
+  /**
+   * @brief Returns base path of installed asset.
+   * The path is readable by the instance and should contain all resources
+   * required by the initial run.
+   * @param appId
+   * @return path
+   */
+  static QString getAssetDir(const char* appId);
+
+  /**
+   * @brief Returns the list of storage volumes.
+   * All are candidates for storing map databases.
+   * @return list of path
+   */
   static QStringList getStorageDirs();
 
 signals:
@@ -54,7 +80,7 @@ private:
 
   void setPreventBlanking(bool on);
 
-  bool m_preventBlanking;
+  volatile bool m_preventBlanking;
 
 #ifdef HAVE_DBUS
   struct RemoteService {

@@ -64,7 +64,7 @@ PlatformExtras::~PlatformExtras()
 #endif
 }
 
-QString PlatformExtras::getHomeDir()
+QString PlatformExtras::getDataDir()
 {
 #ifdef Q_OS_ANDROID
   QAndroidJniObject activity = QtAndroid::androidActivity();
@@ -77,7 +77,21 @@ QString PlatformExtras::getHomeDir()
 #endif
 }
 
-QString PlatformExtras::getDataDir(const char* appId)
+QString PlatformExtras::getAppDir()
+{
+#ifdef Q_OS_ANDROID
+  // from Android 14, only internal storage can be used for resources
+  // file descriptors can be hold during the life of the instance
+  QAndroidJniObject activity = QtAndroid::androidActivity();
+  QAndroidJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
+  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  return path.toString();
+#else
+  return getDataDir();
+#endif
+}
+
+QString PlatformExtras::getAssetDir(const char* appId)
 {
 #ifdef Q_OS_ANDROID
   return "assets:";
@@ -90,16 +104,11 @@ QStringList PlatformExtras::getStorageDirs()
 {
   QStringList dirs;
 #ifdef Q_OS_ANDROID
-  /*
-   * WARNING: SDCARD storage cannot be properly managed since Android 10. Therefore I return only the internal storage.
-   */
-  QAndroidJniObject activity = QtAndroid::androidActivity();
-  QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
-  QAndroidJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
-  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-  dirs.push_back(path.toString());
+  // from Android 14, only internal storage can be used for databases
+  // file descriptors can be hold during the life of the instance
+  dirs.push_back(getAppDir());
 #else
-  // search for a mounted sdcard
+  // search for mounted volumes
   for (const QStorageInfo& storage : QStorageInfo::mountedVolumes())
   {
     QString path = storage.rootPath();
