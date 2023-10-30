@@ -139,7 +139,7 @@ private:
   double m_ascent;
   double m_descent;
   double m_maxSpeed;
-  bool m_busy;
+  volatile bool m_busy;
   QString m_recording;
   //std::vector<osmscout::RouteStep> m_routeSteps;
   //osmscout::RouteStep m_nextRouteStep;
@@ -216,7 +216,7 @@ private:
   double m_ascent;
   double m_descent;
 
-  bool m_recording;
+  volatile bool m_recording;
   QList<osmscout::gpx::TrackPoint> m_segment;
   QMutex m_lock;
   QSharedPointer<QFile> m_file;
