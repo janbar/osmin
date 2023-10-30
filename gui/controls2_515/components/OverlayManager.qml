@@ -132,7 +132,7 @@ QtObject {
 
     // remove the recording track on the map
     function removeRecording() {
-        var ovs = MapExtras.clearOverlays("WAYPOINT", id);
+        var ovs = MapExtras.clearOverlays("RECORDING", 0);
         ovs.forEach(function(e){ map.removeOverlayObject(e); });
         MapExtras.releaseOverlayIds(ovs);
         return true;
