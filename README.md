@@ -59,10 +59,9 @@ Uninstall can be done by the following `sudo cmake --build build/ --target unins
 
 ## About osmin on Android
 
-Installation of the APK can be achieved without issue. From release 1.7.0, **the storage for maps is no longer supported in the external SD card** of the device, due to security limitations with Android 10 and up. Therefore all data are saved in the internal storage of the device, i.e `Android/data/io.github.janbar.osmin/files/`. This folder is accessible when the device is plugged to an USB port, or directly using the android file manager. So you could manually manage the content yourself. New maps could be manually uploaded, or removed to make free space.
-Downloading big map could failed in background because android stop the activity as soon as possible when the app isn't on front or the device change to sleeping state. If you are unable to keep the device active, you should prefer to manually upload the map using the USB port.
+Installation of the APK can be achieved without issue. From release 1.11.0, **the storage for maps is no longer permitted in the external storage** of the device, due to limitations with Android 14 and up. Therefore map databases are stored in the internal storage of the device, and user has no access to them. GPX files, Favorites file, and some configuration files are stored in user area, i.e `Android/data/io.github.janbar.osmin/files/`. This folder is accessible when the device is plugged to an USB port, or directly using the android file manager. So you could manage these contents yourself.
 
 ## About osmin on Unix desktop
 
-On startup, the application creates storage folders in the user's home directory: `osmin` and `Maps`. The first contains user data, configuration files and resources. The last contains downloaded maps.
+On startup, the application creates storage folders in the user's home directory: `osmin`. It contains user data, configuration files, downloaded maps or voices, and resources.
 
