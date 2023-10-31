@@ -20,6 +20,7 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QStorageInfo>
+#include <QDebug>
 
 #if defined(SAILFISHOS)
 #define AUTO_MOUNT        "/run/media/"
@@ -36,6 +37,7 @@
 PlatformExtras::PlatformExtras(QObject* parent)
 : QObject(parent)
 , m_preventBlanking(false)
+, m_preventBlankingMask(0)
 {
 #ifdef HAVE_DBUS
   // register dbus service for inhibitor
@@ -55,7 +57,7 @@ PlatformExtras::PlatformExtras(QObject* parent)
 PlatformExtras::~PlatformExtras()
 {
   // clear inhibitor lock
-  setPreventBlanking(false);
+  doPreventBlanking(false);
 #ifdef HAVE_DBUS
   // free registered DBus services
   for (RemoteService* svc : qAsConst(m_remoteServices))
@@ -122,7 +124,23 @@ QStringList PlatformExtras::getStorageDirs()
   return dirs;
 }
 
-void PlatformExtras::setPreventBlanking(bool on)
+void PlatformExtras::setPreventBlanking(bool on, int mask)
+{
+  if (on)
+  {
+    if (!m_preventBlanking)
+      doPreventBlanking(true);
+    m_preventBlankingMask |= mask;
+  }
+  else
+  {
+    m_preventBlankingMask &= (~ mask);
+    if (m_preventBlankingMask == 0 && m_preventBlanking)
+      doPreventBlanking(false);
+  }
+}
+
+void PlatformExtras::doPreventBlanking(bool on)
 {
   if (m_preventBlanking == on)
     return;
@@ -167,5 +185,6 @@ void PlatformExtras::setPreventBlanking(bool on)
 #else
   qWarning("Inhibitor isn't implemented for this platform");
 #endif
+  qInfo("PreventBlanking: %s", (m_preventBlanking ? "true" : "false"));
   emit preventBlanking();
 }

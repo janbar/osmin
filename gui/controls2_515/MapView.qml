@@ -46,10 +46,7 @@ MapPage {
 
     property bool preventBlanking: navigation && !applicationSuspended
     onPreventBlankingChanged: {
-        if (PlatformExtras.preventBlanking !== preventBlanking) {
-            PlatformExtras.preventBlanking = preventBlanking;
-            console.log("PreventBlanking: " + preventBlanking);
-        }
+        PlatformExtras.setPreventBlanking(preventBlanking, 1); // lock bit 1
     }
 
     function showPositionInfo() {

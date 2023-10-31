@@ -138,13 +138,18 @@ MapPage {
                 }
 
                 function onModelReset() {
-                    console.log("mapDownloadsModel rows: " + mapDownloadsModel.rowCount());
-                    downloadSection.visible = mapDownloadsModel.rowCount() > 0;
+                    var n = mapDownloadsModel.rowCount();
+                    console.log("mapDownloadsModel rows: " + n);
+                    downloadSection.visible = (n > 0);
+                    PlatformExtras.setPreventBlanking((n > 0), 2); // lock bit 2
                 }
 
                 Component.onCompleted: {
                     mapDownloadsModel.modelReset.connect(onModelReset);
                     onModelReset();
+                }
+                Component.onDestruction: {
+                    PlatformExtras.setPreventBlanking(false, 2); // lock bit 2
                 }
             }
 

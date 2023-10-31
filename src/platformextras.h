@@ -28,7 +28,7 @@
 class PlatformExtras : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(bool preventBlanking READ getPreventBlanking WRITE setPreventBlanking NOTIFY preventBlanking)
+  Q_PROPERTY(bool preventBlanking READ getPreventBlanking NOTIFY preventBlanking)
 
 public:
   explicit PlatformExtras(QObject *parent = nullptr);
@@ -72,15 +72,18 @@ public:
    */
   static QStringList getStorageDirs();
 
+  Q_INVOKABLE void setPreventBlanking(bool on, int mask);
+
 signals:
   void preventBlanking();
 
 private:
   bool getPreventBlanking() const { return m_preventBlanking; };
 
-  void setPreventBlanking(bool on);
+  void doPreventBlanking(bool on);
 
   volatile bool m_preventBlanking;
+  volatile int m_preventBlankingMask;
 
 #ifdef HAVE_DBUS
   struct RemoteService {
