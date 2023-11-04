@@ -61,7 +61,7 @@ MapPage {
 
                 GPXFileModel {
                     id: fileModel
-                    onParseFinished: {
+                    onParseFinished: function(succeeded) {
                         // caller wait for signal loaded(bool)
                         loadData();
                         // on failure show alert
