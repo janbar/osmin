@@ -22,7 +22,7 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls.Universal 2.2
 import QtQml 2.2
 import Qt.labs.settings 1.0
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects 6.0
 import Osmin 1.0 as Osmin
 import "../toolbox.js" as ToolBox
 import "./components"
@@ -211,7 +211,7 @@ ApplicationWindow {
                         }
                     }
 
-                    visible: !mainView.noZone
+                    visible: true
                     enabled: !mainView.jobRunning
                 }
             }
@@ -305,6 +305,12 @@ ApplicationWindow {
             mainView.width = (settings.widthGU >= minSizeGU ? units.gu(settings.widthGU) : units.gu(minSizeGU));
             mainView.height = (settings.heightGU >= minSizeGU ? units.gu(settings.heightGU) : units.gu(minSizeGU));
         }
+        // dump map settings
+        console.log("Settings: devDPI=" + mapSettings.physicalDPI.toFixed(0))
+        console.log("Settings: mapDPI=" + mapSettings.mapDPI.toFixed(0))
+        console.log("Settings: fontName=" + mapSettings.fontName)
+        console.log("Settings: fontSize=" + mapSettings.fontSize.toFixed(1))
+        console.log("Settings: units=" + mapSettings.units)
         // setup hillshade provider
         try {
             var hsprovider = JSON.parse(HillshadeProvider);
