@@ -22,7 +22,7 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls.Universal 2.2
 import QtQml 2.2
 import Qt.labs.settings 1.0
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects 6.0
 import Osmin 1.0 as Osmin
 import "../toolbox.js" as ToolBox
 import "./components"
