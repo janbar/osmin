@@ -74,19 +74,6 @@ PopOver {
         id: locationInfoBody
         spacing: units.gu(1)
 
-        Label {
-            id: locationDistanceLabel
-            text: locationInfoModel.distance(sourceLat, sourceLon, placeLat, placeLon) < 5 ?
-                      qsTr("You are here") :
-                      qsTr("%1 %2 from you")
-                          .arg(Converter.readableDistance(locationInfoModel.distance(sourceLat, sourceLon, placeLat, placeLon)))
-                          .arg(Converter.readableBearing(locationInfoModel.bearing(sourceLat, sourceLon, placeLat, placeLon)))
-
-            color: styleMap.popover.highlightedColor
-            font.pointSize: units.fs("small")
-            visible: sourceValid
-        }
-
         ListView {
             id: locationInfoView
             width: parent.width
@@ -96,13 +83,26 @@ PopOver {
             model: locationInfoModel
 
             onCountChanged: {
-                var h = (locationDistanceLabel.visible ? locationDistanceLabel.implicitHeight : 0) + locationInfoBody.spacing +
-                        locationInfoView.contentHeight + locationInfoView.spacing * locationInfoView.count;
+                var h = locationInfoView.contentHeight + locationInfoView.spacing;
                 resizeBox(h);
             }
 
             opacity: locationInfoModel.ready ? 1.0 : 0.0
             Behavior on opacity { NumberAnimation {} }
+
+            header: Label {
+                id: locationDistanceLabel
+                text: locationInfoModel.distance(sourceLat, sourceLon, placeLat, placeLon) < 5 ?
+                          qsTr("You are here") :
+                          qsTr("%1 %2 from you")
+                              .arg(Converter.readableDistance(locationInfoModel.distance(sourceLat, sourceLon, placeLat, placeLon)))
+                              .arg(Converter.readableBearing(locationInfoModel.bearing(sourceLat, sourceLon, placeLat, placeLon)))
+
+                color: styleMap.popover.highlightedColor
+                font.pointSize: units.fs("small")
+                bottomPadding: locationInfoView.spacing
+                visible: sourceValid
+            }
 
             delegate: Column {
                 spacing: 0
