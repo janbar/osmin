@@ -56,7 +56,7 @@ PopOver {
 
     LocationInfoModel{
         id: locationInfoModel
-        onReadyChange: {
+        onReadyChange: function(ready) {
             // expose the place info
             if (ready && rowCount() > 0) {
                 var mi = index(0, 0);
