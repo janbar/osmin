@@ -249,12 +249,12 @@
         <translation>Informatie</translation>
     </message>
     <message>
-        <location filename="../controls2_515/LocationInfo.qml" line="80"/>
+        <location filename="../controls2_515/LocationInfo.qml" line="96"/>
         <source>You are here</source>
         <translation>Je bent hier</translation>
     </message>
     <message>
-        <location filename="../controls2_515/LocationInfo.qml" line="81"/>
+        <location filename="../controls2_515/LocationInfo.qml" line="97"/>
         <source>%1 %2 from you</source>
         <translation>%1 %2 van je vandaan</translation>
     </message>
@@ -365,17 +365,17 @@
         <translation>Downloads</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapDownloads.qml" line="162"/>
+        <location filename="../controls2_515/MapDownloads.qml" line="167"/>
         <source>Installed Maps</source>
         <translation>Geïnstalleerde kaarten</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapDownloads.qml" line="292"/>
+        <location filename="../controls2_515/MapDownloads.qml" line="297"/>
         <source>Available Maps</source>
         <translation>Beschikbare kaarten</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapDownloads.qml" line="300"/>
+        <location filename="../controls2_515/MapDownloads.qml" line="305"/>
         <source>Back</source>
         <translation>Terug</translation>
     </message>
@@ -388,70 +388,70 @@
         <translation>Kaartweergave</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="57"/>
+        <location filename="../controls2_515/MapView.qml" line="54"/>
         <source>Current position is %1</source>
         <translation>Huidige positie: %1</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="59"/>
+        <location filename="../controls2_515/MapView.qml" line="56"/>
         <source>Current position cannot be gathered</source>
         <translation>De huidige positie kan niet worden opgevraagd</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="397"/>
+        <location filename="../controls2_515/MapView.qml" line="394"/>
         <source>Mark</source>
         <translation>Markeren</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="537"/>
-        <location filename="../controls2_515/MapView.qml" line="605"/>
-        <location filename="../controls2_515/MapView.qml" line="756"/>
-        <location filename="../controls2_515/MapView.qml" line="900"/>
+        <location filename="../controls2_515/MapView.qml" line="534"/>
+        <location filename="../controls2_515/MapView.qml" line="602"/>
+        <location filename="../controls2_515/MapView.qml" line="753"/>
+        <location filename="../controls2_515/MapView.qml" line="897"/>
         <source>Go</source>
         <translation>Gaan</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="563"/>
+        <location filename="../controls2_515/MapView.qml" line="560"/>
         <source>Add favorite</source>
         <translation>Favoriet toevoegen</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="577"/>
+        <location filename="../controls2_515/MapView.qml" line="574"/>
         <source>Delete favorite ?</source>
         <translation>Wil je deze favoriet verwijderen?</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="989"/>
+        <location filename="../controls2_515/MapView.qml" line="986"/>
         <source>The voice GPS driving directions is not activated</source>
         <translation>Stemnavigatie is niet ingeschakeld</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="1056"/>
+        <location filename="../controls2_515/MapView.qml" line="1053"/>
         <source>My Position</source>
         <translation>Mijn positie</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="1135"/>
+        <location filename="../controls2_515/MapView.qml" line="1132"/>
         <source>Target reached at %1 %2.</source>
         <translation>Bestemming bereikt: %1 %2.</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="1150"/>
+        <location filename="../controls2_515/MapView.qml" line="1147"/>
         <source>Track recording failed</source>
         <translation>De route kan niet worden vastgelegd</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="1211"/>
+        <location filename="../controls2_515/MapView.qml" line="1208"/>
         <source>Loading</source>
         <translation>Bezig met laden…</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="1267"/>
+        <location filename="../controls2_515/MapView.qml" line="1264"/>
         <source>Tracker service is connected</source>
         <translation>Volgen is ingeschakeld</translation>
     </message>
     <message>
-        <location filename="../controls2_515/MapView.qml" line="1275"/>
+        <location filename="../controls2_515/MapView.qml" line="1272"/>
         <source>Tracker service has been disconnected</source>
         <translation>Volgen is uitgeschakeld</translation>
     </message>
@@ -813,49 +813,64 @@
         <translation>Gemiddelde snelheid</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="55"/>
+        <location filename="../controls2_515/Tracking.qml" line="79"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="71"/>
+        <location filename="../controls2_515/Tracking.qml" line="73"/>
         <source>Distance</source>
         <translation>Afstand</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="87"/>
+        <location filename="../controls2_515/Tracking.qml" line="107"/>
         <source>Ascent</source>
         <translation>Stijging</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="103"/>
+        <location filename="../controls2_515/Tracking.qml" line="113"/>
         <source>Descent</source>
         <translation>Afdaling</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="119"/>
+        <location filename="../controls2_515/Tracking.qml" line="45"/>
         <source>Maximum Speed</source>
         <translation>Maximumsnelheid</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="138"/>
+        <location filename="../controls2_515/Tracking.qml" line="144"/>
         <source>Cut track recording</source>
         <translation>Route knippen</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="138"/>
+        <location filename="../controls2_515/Tracking.qml" line="144"/>
         <source>Start track recording</source>
         <translation>Route vastleggen</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="158"/>
+        <location filename="../controls2_515/Tracking.qml" line="164"/>
         <source>Close track recording</source>
         <translation>Vastleggen afbreken</translation>
     </message>
     <message>
-        <location filename="../controls2_515/Tracking.qml" line="177"/>
+        <location filename="../controls2_515/Tracking.qml" line="183"/>
         <source>Reset statistics</source>
         <translation>Statistieken herstellen</translation>
+    </message>
+    <message>
+        <location filename="../controls2_515/Tracking.qml" line="198"/>
+        <source>Coordinates</source>
+        <translation>Coördinaten</translation>
+    </message>
+    <message>
+        <location filename="../controls2_515/Tracking.qml" line="210"/>
+        <source>Elevation</source>
+        <translation>Hoogte</translation>
+    </message>
+    <message>
+        <location filename="../controls2_515/Tracking.qml" line="222"/>
+        <source>Bearing</source>
+        <translation>Oriëntatie</translation>
     </message>
 </context>
 <context>
