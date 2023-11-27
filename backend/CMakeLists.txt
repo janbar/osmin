@@ -67,7 +67,7 @@ if(NOT OPENSSL_FOUND)
         set(OPENSSL_DL_ABI "1.1")
         download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
             GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.1.1t-20230216
+            GIT_TAG 1.1.1w-20231112
             GIT_SHALLOW 1
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}
             UPDATE_DISCONNECTED ON)
@@ -139,8 +139,8 @@ if(NOT BUILD_DEPENDENCIES)
 endif()
 if(NOT LibXml2_FOUND)
     download_project(PROJ xml2
-        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
-        URL_HASH MD5=df97dd45b18cfd6cc75633172d507f5e
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.12.1.tar.gz"
+        URL_HASH MD5=62494b6d2f89ac4ce41288042ffcba51
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -150,6 +150,9 @@ if(NOT LibXml2_FOUND)
     set(LIBXML2_WITH_ICONV ON)
     set(LIBXML2_WITH_ICU OFF)
     set(LIBXML2_WITH_THREADS OFF)
+    set(LIBXML2_WITH_PYTHON OFF)
+    set(LIBXML2_WITH_HTTP OFF)
+    set(LIBXML2_WITH_FTP OFF)
     add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-src
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-build
