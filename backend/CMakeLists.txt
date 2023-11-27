@@ -45,6 +45,8 @@ if(NOT ZLIB_FOUND)
     set(ZLIB_LIBRARIES zlib)
     set(ZLIB_INCLUDE_DIRS "${zlib_SOURCE_DIR}" "${zlib_BINARY_DIR}")
     set(ZLIB_FOUND ON)
+    export(TARGETS zlib FILE ZLIBTargets.cmake)
+    add_library(ZLIB::ZLIB ALIAS zlib)
     message(STATUS "Build ZLIB: ${zlib_BINARY_DIR}")
 endif()
 
@@ -106,9 +108,11 @@ if(NOT ICONV_FOUND)
         ${CMAKE_CURRENT_BINARY_DIR}/iconv-build
         EXCLUDE_FROM_ALL
     )
-    set(ICONV_LIBRARIES iconv charset)
-    set(ICONV_INCLUDE_DIR "${iconv_BINARY_DIR}/include")
-    set(ICONV_FOUND ON)
+    set(Iconv_LIBRARY iconv)
+    set(Iconv_LIBRARIES ${Iconv_LIBRARY} charset)
+    set(Iconv_INCLUDE_DIR "${iconv_BINARY_DIR}/include")
+    set(Iconv_FOUND ON)
+    export(TARGETS iconv charset FILE IconvTargets.cmake)
     add_library(Iconv::Iconv ALIAS iconv)
     message(STATUS "Build iconv: ${iconv_BINARY_DIR}")
 endif()
@@ -130,6 +134,8 @@ if(NOT MARISA_FOUND)
     set(MARISA_LIBRARIES marisa)
     set(MARISA_INCLUDE_DIRS "${marisa_BINARY_DIR}")
     set(MARISA_FOUND ON)
+    export(TARGETS marisa FILE MarisaTargets.cmake)
+    add_library(Marisa::Marisa ALIAS marisa)
     message(STATUS "Build MARISA: ${marisa_BINARY_DIR}")
 endif()
 
@@ -139,12 +145,11 @@ if(NOT BUILD_DEPENDENCIES)
 endif()
 if(NOT LibXml2_FOUND)
     download_project(PROJ xml2
-        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.12.1.tar.gz"
-        URL_HASH MD5=62494b6d2f89ac4ce41288042ffcba51
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.12.1-noinstall.tar.gz"
+        URL_HASH MD5=9f57432ec3a142a7931f9ae08f91da6b
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
-    set(SKIP_INSTALL_ALL ON)
     set(LIBXML2_WITH_ZLIB ON)
     set(LIBXML2_WITH_LZMA OFF)
     set(LIBXML2_WITH_ICONV ON)
@@ -153,6 +158,9 @@ if(NOT LibXml2_FOUND)
     set(LIBXML2_WITH_PYTHON OFF)
     set(LIBXML2_WITH_HTTP OFF)
     set(LIBXML2_WITH_FTP OFF)
+    set(LIBXML2_WITH_DEBUG OFF)
+    set(LIBXML2_WITH_PROGRAMS OFF)
+    set(LIBXML2_WITH_TESTS OFF)
     add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-src
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-build
@@ -161,8 +169,9 @@ if(NOT LibXml2_FOUND)
     set(LIBXML2_LIBRARY xml2)
     set(LIBXML2_INCLUDE_DIR "${xml2_BINARY_DIR}")
     set(LibXml2_FOUND ON)
-    set(PC_LIBXML_STATIC_LIBRARIES ${ZLIB_LIRARIES} ${ICONV_LIBRARIES})
-    add_library(LibXml2::LibXml2 ALIAS xml2)
+    set(PC_LIBXML_STATIC_LIBRARIES ${ZLIB_LIRARIES} ${Iconv_LIBRARIES})
+    export(TARGETS LibXml2 FILE LibXml2Targets.cmake)
+    add_library(LibXml2::LibXml2 ALIAS LibXml2)
     message(STATUS "Build xml2: ${xml2_BINARY_DIR}")
 endif()
 
