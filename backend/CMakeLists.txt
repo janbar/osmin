@@ -32,7 +32,7 @@ endif()
 if(NOT ZLIB_FOUND)
     download_project(PROJ zlib
         URL "${CMAKE_CURRENT_SOURCE_DIR}/zlib-1.2.13.tar.gz"
-        URL_HASH MD5=201979193acddd53849e7e0a7f035564
+        URL_HASH MD5=9c7d356c5acaa563555490676ca14d23
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -61,7 +61,7 @@ if(NOT OPENSSL_FOUND)
     if(OPENSSL_DL_ABI STREQUAL "1.0")
         download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
             GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.0.2p-20220130
+            GIT_TAG 1.0.2p-20231130
             GIT_SHALLOW 1
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}
             UPDATE_DISCONNECTED ON)
@@ -69,7 +69,7 @@ if(NOT OPENSSL_FOUND)
         set(OPENSSL_DL_ABI "1.1")
         download_project(PROJ "openssl-${OPENSSL_DL_ABI}"
             GIT_REPOSITORY https://github.com/janbar/openssl-cmake.git
-            GIT_TAG 1.1.1w-20231112
+            GIT_TAG 1.1.1w-20231130
             GIT_SHALLOW 1
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}
             UPDATE_DISCONNECTED ON)
@@ -98,7 +98,7 @@ endif()
 if(NOT ICONV_FOUND)
     download_project(PROJ iconv
         URL "${CMAKE_CURRENT_SOURCE_DIR}/libiconv-1.16.tar.gz"
-        URL_HASH MD5=739c5e8f9e29fb95c0a1ad67becb80a7
+        URL_HASH MD5=0a195df3b15f9cfddf29a51e67dcfb83
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -109,10 +109,10 @@ if(NOT ICONV_FOUND)
         EXCLUDE_FROM_ALL
     )
     set(Iconv_LIBRARY iconv)
-    set(Iconv_LIBRARIES ${Iconv_LIBRARY} charset)
+    set(Iconv_LIBRARIES ${Iconv_LIBRARY})
     set(Iconv_INCLUDE_DIR "${iconv_BINARY_DIR}/include")
     set(Iconv_FOUND ON)
-    export(TARGETS iconv charset FILE IconvTargets.cmake)
+    export(TARGETS iconv FILE IconvTargets.cmake)
     add_library(Iconv::Iconv ALIAS iconv)
     message(STATUS "Build iconv: ${iconv_BINARY_DIR}")
 endif()
@@ -121,7 +121,7 @@ endif()
 if(NOT MARISA_FOUND)
     download_project(PROJ marisa
         URL "${CMAKE_CURRENT_SOURCE_DIR}/marisa-0.2.6.tar.gz"
-        URL_HASH MD5=07f4bf0f014133e4940103ec5ca886cd
+        URL_HASH MD5=caffa344057def4e5e81b6cff178e76f
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
