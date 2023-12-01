@@ -145,8 +145,8 @@ if(NOT BUILD_DEPENDENCIES)
 endif()
 if(NOT LibXml2_FOUND)
     download_project(PROJ xml2
-        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.12.1-noinstall.tar.gz"
-        URL_HASH MD5=9f57432ec3a142a7931f9ae08f91da6b
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
+        URL_HASH MD5=0ec4f9897a391fc774f8816efa77847c
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -170,8 +170,7 @@ if(NOT LibXml2_FOUND)
     set(LIBXML2_INCLUDE_DIR "${xml2_BINARY_DIR}")
     set(LibXml2_FOUND ON)
     set(PC_LIBXML_STATIC_LIBRARIES ${ZLIB_LIRARIES} ${Iconv_LIBRARIES})
-    export(TARGETS LibXml2 FILE LibXml2Targets.cmake)
-    add_library(LibXml2::LibXml2 ALIAS LibXml2)
+    add_library(LibXml2::LibXml2 ALIAS xml2)
     message(STATUS "Build xml2: ${xml2_BINARY_DIR}")
 endif()
 
