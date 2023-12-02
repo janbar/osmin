@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8.2)
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 project(osmin C CXX)
 
@@ -230,10 +230,10 @@ if(ANDROID)
         NAME ${APP_NAME}
         VERSION_CODE ${APP_VERSION_CODE}
         PACKAGE_NAME ${APP_ID}
-        PACKAGE_SOURCES ${CMAKE_SOURCE_DIR}/android/package-sources
+        PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
         BUILDTOOLS_REVISION ${QT_ANDROID_SDK_BUILDTOOLS_REVISION}
         DEPENDS ssl crypto ${SHARED_LIBOMP}
-        PLUGINS ${CMAKE_SOURCE_DIR}/resources
+        PLUGINS ${PROJECT_SOURCE_DIR}/resources
         KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
         KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
     )
