@@ -262,9 +262,6 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
     file(MAKE_DIRECTORY ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI})
 
     # create the configuration file that will feed androiddeployqt
-    configure_file(${QT_ANDROID_SOURCE_DIR}/qtdeploy.json.in ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json @ONLY)
-
-    # create the configuration file that will feed androiddeployqt
     # 1. replace placeholder variables at generation time
     configure_file(${QT_ANDROID_SOURCE_DIR}/qtdeploy.json.in ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json.in @ONLY)
     # 2. evaluate generator expressions at build time
