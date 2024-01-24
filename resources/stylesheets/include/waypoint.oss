@@ -24,8 +24,8 @@ SYMBOL favorite_pin
 STYLE
   [MAG world-] {
     [TYPE _waypoint_favorite] {
-      NODE.ICON { symbol: favorite_pin; priority: @labelPrioWaypoint; }
-      NODE.TEXT { label: Name.name; color: @waypointFavoriteTextColor; size: 1.0; priority: @labelPrioWaypoint; }
+      NODE.ICON { symbol: favorite_pin; priority: 0; }
+      NODE.TEXT { label: Name.name; color: @waypointFavoriteTextColor; size: 1.0; priority: 0; }
     }
   }
 

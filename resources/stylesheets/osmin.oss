@@ -73,7 +73,6 @@ CONST
   MAG minorBuildingMag             = block;
 
   // Label priorities
-  UINT labelPrioWaypoint            = 0;
   UINT labelPrioContinent           = 1;
   UINT labelPrioIsland              = 1;
   UINT labelPrioCountry             = 2;
@@ -346,6 +345,15 @@ CONST
   COLOR postLabelColor             = darken(@postColor, 0.5);
 
   COLOR wallColor                  = #663e1b;
+
+  // Symbols
+  COLOR amenitySymbolColor         = darken(@amenityColor, 0.4);
+  COLOR busSymbolColor             = #7885b0;
+  COLOR hospitalSymbolColor        = #da0092;
+  COLOR peakSymbolColor            = #9c5e29;
+  COLOR pharmacySymbolColor        = #da0092;
+  COLOR postSymbolColor            = #e8f000;
+  COLOR railwaySymbolColor         = @railwayColor;
 
 MODULE "include/symbols"
 MODULE "include/route"

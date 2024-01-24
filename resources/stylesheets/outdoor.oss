@@ -1,8 +1,9 @@
 OSS
+
 FLAG
-  daylight     = true;
-  cycloRoutes  = true;
-  hikingRoutes = true;
+  daylight          = true;
+  cycloRoutes       = true;
+  hikingRoutes      = true;
 
 ORDER WAYS
   GROUP _route
@@ -31,7 +32,6 @@ ORDER WAYS
 
 CONST
   // Label priorities
-  UINT labelPrioWaypoint            = 0;
   UINT labelPrioContinent           = 1;
   UINT labelPrioIsland              = 1;
   UINT labelPrioCountry             = 2;
@@ -171,7 +171,6 @@ CONST
   COLOR natureReserveLabelColor     = #566f4bb0;
   COLOR natureReserveBorderColor    = #82a77180;
 
-  // Symbols
   COLOR fuelSymbolColor             = #4bb2da;
   COLOR onewayArrowColor            = #00000050;
 
@@ -213,9 +212,16 @@ CONST
   COLOR cyclewayColor               = #ec47c7;
 
   // Amenity
-  COLOR postColor                   = #ffcc00;
-  COLOR buildingColor               = #bcbcbc;
+  IF daylight {
+    COLOR amenityColor             = #f0f0d8;
+    COLOR amenityBuildingColor     = #d9b8b8;
+  }
+  ELSE {
+    COLOR amenityColor             = darken(#f0f0d8, 0.5);
+    COLOR amenityBuildingColor     = darken(#d9b8b8, 0.5);
+  }
   COLOR amenityLabelColor           = #1f1e1b;
+  COLOR postColor                   = #ffcc00;
 
   // Man made
   COLOR historicCityWallsColor      = #994444;
@@ -245,7 +251,14 @@ CONST
     COLOR aerodromeApron           = darken(#e8d1fe, 0.6);
   }
 
-MODULE "include/symbols"
+  // Symbols
+  COLOR amenitySymbolColor         = darken(@amenityColor, 0.4);
+  COLOR busSymbolColor             = #7885b0;
+  COLOR hospitalSymbolColor        = #da0092;
+  COLOR peakSymbolColor            = #9c5e29;
+  COLOR pharmacySymbolColor        = #da0092;
+  COLOR postSymbolColor            = #e8f000;
+  COLOR railwaySymbolColor         = @railwayColor;
 
 SYMBOL embankment
   RECTANGLE 0,2.5 0.1 x 5 {
@@ -281,6 +294,7 @@ SYMBOL cliff
     AREA { color: @cliffColor;}
   }
 
+MODULE "include/symbols"
 MODULE "include/route"
 MODULE "include/track"
 MODULE "include/waypoint"
@@ -1047,7 +1061,7 @@ STYLE
    }
 
    [TYPE railway_subway_entrance] {
-     NODE.ICON { symbol: subway_entrance; }
+     NODE.ICON { symbol: railway_subway_entrance; }
      NODE.TEXT { label: Name.name; style: emphasize; color: #708bb0; size: 1.2;}
    }
  }
@@ -1442,7 +1456,7 @@ STYLE
    [TYPE leisure_playground] AREA { color: #ccffff; }
    [TYPE leisure_garden] AREA { color: #ceeca8; }
    [TYPE building] {
-     AREA { color: @buildingColor; }
+     AREA { color: @amenityBuildingColor; }
      AREA.BORDER { color: #887b7b; width: 0.1mm; }
      AREA.TEXT { label: Name.name; }
    }
@@ -1466,10 +1480,10 @@ STYLE
 
    [TYPE amenity_taxi] AREA { color: #d2d2d2; }
    [TYPE amenity_building] {
-      AREA { color: @buildingColor; }
+      AREA { color: @amenityBuildingColor; }
       AREA.BORDER { color: #887b7b; width: 0.1mm; }
    }
-   [TYPE amenity] AREA { color: @buildingColor; }
+   [TYPE amenity] AREA { color: @amenityBuildingColor; }
    [TYPE power_generator] AREA { color: #bca9a9; }
  }
 
@@ -1488,7 +1502,7 @@ STYLE
          amenity_pub_building,
          amenity_bar_building]
    {
-     AREA { color: @buildingColor; }
+     AREA { color: @amenityBuildingColor; }
      AREA.BORDER { color: #887b7b; width: 0.1mm; }
      AREA.TEXT { label: Name.name; color: @amenityLabelColor; size: 0.9; priority: @labelPrioAmenity; }
    }
