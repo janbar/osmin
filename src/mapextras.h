@@ -17,7 +17,7 @@
 #ifndef MAP_EXTRAS_H
 #define MAP_EXTRAS_H
 
-#include <osmscoutclientqt/DBThread.h>
+#include <osmscoutclient/DBThread.h>
 
 #include "locked.h" // for qt compat
 

@@ -35,15 +35,15 @@ QVariantList MapExtras::getStyleFlags()
   osmscout::DBThreadRef dbThread = osmscout::OSMScoutQt::GetInstance().GetDBThread();
   if (dbThread->isInitialized())
   {
-    QMap<QString, bool> map = dbThread->GetStyleFlags();
-    for (auto it = map.constKeyValueBegin(); it != map.constKeyValueEnd(); ++it)
+    std::map<std::string, bool> map = dbThread->GetStyleFlags();
+    for (auto it = map.begin(); it != map.end(); ++it)
     {
       // do not return internal flags
-      if ((*it).first.startsWith('_'))
+      if (it->first.find('_', 0) == 0)
         continue;
       QVariantMap flag;
-      flag.insert("name", QVariant::fromValue((*it).first));
-      flag.insert("value", QVariant::fromValue((*it).second));
+      flag.insert("name", QVariant::fromValue(QString::fromStdString(it->first)));
+      flag.insert("value", QVariant::fromValue(it->second));
       list.append(flag);
     }
   }
@@ -69,7 +69,7 @@ void MapExtras::setStyleFlag(const QString& name, bool value)
 {
   osmscout::DBThreadRef dbThread = osmscout::OSMScoutQt::GetInstance().GetDBThread();
   if (dbThread->isInitialized())
-    dbThread->SetStyleFlag(name, value);
+    dbThread->SetStyleFlag(name.toStdString(), value);
 }
 
 void MapExtras::setDaylight(bool enable)
