@@ -14,23 +14,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: set up JDK 17
+
+      - name: Install Java JDK for Android SDK tools
         uses: actions/setup-java@v3
         with:
           distribution: zulu
           java-version: 17
-      - name: Setup Android SDK
+      - name: Setup Android SDK tools
         uses: android-actions/setup-android@v3
         with:
           packages: "platform-tools platforms;android-29 build-tools;29.0.2 ndk;22.1.7171670"
       - name: Dump Android NDK
         run: "ls ${ANDROID_HOME}/ndk"
+
+      - name: Install Java JDK for Android Qt build
+        uses: actions/setup-java@v1
+        with:
+          distribution: zulu
+          java-version: 1.8
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
         with:
           path: ../Qt/5.15.2/android
-          key: ${{ runner.os }}-QtCache-5152-android
+          key: ${{ runner.os }}-QtCache-5152-android-1
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
@@ -42,7 +49,8 @@ jobs:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
       - name: Dump Qt DIR
         run:  echo ${Qt5_DIR}
-      - name: Init submodules
+
+      - name: Fetch submodules
         run: git submodule init && git submodule update
       - name: Configure build
         run: "cmake -B build
