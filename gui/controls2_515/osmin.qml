@@ -472,23 +472,6 @@ ApplicationWindow {
       id: positionSource
     }
 
-    CompassSensor {
-        id: compass
-        active: false
-        magneticDip: settings.magneticDip
-        signal polled(real azimuth, real rotation)
-        onAzimuthChanged: {
-            if (!poll.running) poll.start();
-        }
-        Timer {
-            id: poll
-            interval: 500
-            onTriggered: {
-                compass.polled(compass.azimuth, (360 - compass.azimuth) * Math.PI / 180.0);
-            }
-        }
-    }
-
     MapVoice {
         id: mapVoice
         Component.onCompleted: {
