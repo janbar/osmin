@@ -50,7 +50,7 @@ ApplicationWindow {
         // Navigation settings
         property string systemOfUnits: "SI"
         property bool hillShadesEnabled: false
-        property bool renderingTypeTiled: true
+        property bool renderingTypeTiled: false
         property string lastVehicle: "car"
         property int maximumRouteStep: 255
         property int courseId: 0
