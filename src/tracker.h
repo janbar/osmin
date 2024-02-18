@@ -27,7 +27,6 @@
 #include <QObject>
 #include <QDateTime>
 #include <QThread>
-#include <QTimer>
 #include <QSharedPointer>
 #include <QDir>
 #include <QFile>
@@ -174,7 +173,6 @@ signals:
   void positionMarked(const osmscout::GeoCoord coord, const QString& symbol, const QString& name);
 
 public slots:
-  void onTimeout();
   void onLocationChanged(bool positionValid, double lat, double lon, double alt);
   void onAzimuthChanged(double degrees);
   void onReset();
@@ -188,7 +186,6 @@ public slots:
 private:
   QThread* m_t;
   QDir m_baseDir;
-  QTimer m_timer;
   osmscout::PositionAgent::PositionState m_state;
   double m_magneticDip;
   double m_azimuth;

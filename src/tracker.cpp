@@ -225,7 +225,6 @@ void Tracker::onPositionMarked(const osmscout::GeoCoord coord, const QString& sy
 TrackerModule::TrackerModule(QThread* thread, const QString& root)
 : m_t(thread)
 , m_baseDir()
-, m_timer()
 , m_state(osmscout::PositionAgent::PositionState::NoGpsSignal)
 , m_magneticDip(0.0)
 , m_azimuth(0.0)
@@ -252,8 +251,6 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
   m_baseDir.setPath(rootDir.absoluteFilePath(BASE_DIRECTORY));
   m_segment.reserve(SEGMENT_SIZE);
   m_formater = new osmin::CSVParser(',', '"');
-  m_timer.moveToThread(thread);
-  connect(&m_timer, &QTimer::timeout, this, &TrackerModule::onTimeout);
 }
 
 TrackerModule::~TrackerModule()
@@ -270,10 +267,6 @@ void TrackerModule::setMagneticDip(double magneticDip)
   double degrees = ::remainder(m_azimuth - m_magneticDip, 360.0);
   m_magneticDip = magneticDip;
   onAzimuthChanged((degrees < 0 ? degrees + 360.0 : degrees));
-}
-
-void TrackerModule::onTimeout()
-{
 }
 
 void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon, double alt)
