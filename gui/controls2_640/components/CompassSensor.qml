@@ -20,6 +20,25 @@ import QtQml 2.2
 //import QtSensors 5.2 as Legacy
 import Osmin 1.0 as Osmin
 
+// Sample usage:
+//
+//    CompassSensor {
+//        id: compass
+//        active: false
+//        signal polled(real azimuth, real rotation)
+//        onAzimuthChanged: {
+//            if (!poll.running) poll.start();
+//        }
+//        Timer {
+//            id: poll
+//            interval: 500
+//            onTriggered: {
+//                compass.polled(compass.azimuth, (360 - compass.azimuth) * Math.PI / 180.0);
+//            }
+//        }
+//    }
+//
+
 Item {
     id: compass
 
@@ -28,7 +47,6 @@ Item {
     property real azimuth: 0.0     // current azimuth in degrees
     property real direction: 0.0   // the orienteering direction set by user, 0-359.99 degrees
     property bool rightDirection: false // (diff < 4.0)
-    property real magneticDip: 0.0
 
     property real __normalDirection: normalize360(direction)  // 0-359.99 degrees for sure
     property real scaledDirection: scaleAngle(direction)
@@ -47,7 +65,7 @@ Item {
         id: compassBuiltin
         active: compass.active
         onReadingChanged: {
-            var n = normalize360(reading.azimuth + magneticDip);
+            var n = normalize360(reading.azimuth);
             compass.azimuth = n;
             var d = Math.abs(n - compass.__normalDirection);
             compass.rightDirection = d < 4.0 || d > 356.0;
