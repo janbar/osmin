@@ -27,10 +27,10 @@
 #include <QObject>
 #include <QDateTime>
 #include <QThread>
-#include <QSharedPointer>
 #include <QDir>
 #include <QFile>
 #include <QMutex>
+#include <memory>
 
 class TrackerModule;
 
@@ -202,7 +202,7 @@ private:
     inline operator bool() const { return time.time_since_epoch() != osmscout::Timestamp::duration::zero(); }
   };
   position_t m_lastPosition;
-  QScopedPointer<position_t> m_pinnedPosition;
+  std::unique_ptr<position_t> m_pinnedPosition;
   struct {
     osmscout::Timestamp time;
     osmscout::GeoCoord coord;
@@ -219,10 +219,10 @@ private:
   volatile bool m_recording;
   QList<osmscout::gpx::TrackPoint> m_segment;
   QMutex m_lock;
-  QSharedPointer<QFile> m_file;
-  QSharedPointer<QFile> m_log;
+  std::shared_ptr<QFile> m_file;
+  std::shared_ptr<QFile> m_log;
   osmin::CSVParser* m_formater;
-  QScopedPointer<osmscout::gpx::Waypoint> m_mark;
+  std::unique_ptr<osmscout::gpx::Waypoint> m_mark;
 };
 
 #endif // TRACKER_H
