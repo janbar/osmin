@@ -211,7 +211,7 @@ int FavoritesModel::append(double lat, double lon, const QString& label, const Q
 bool FavoritesModel::remove(int id)
 {
   int row = 0;
-  for (FavoriteItem* item : qAsConst(m_items))
+  for (FavoriteItem* item : std::as_const(m_items))
   {
     if (item->id() == id)
     {
@@ -279,7 +279,7 @@ bool FavoritesModel::storeData()
   {
     succeeded = true;
     osmin::CSVParser csv(',', '"');
-    for (FavoriteItem* item : qAsConst(m_items))
+    for (FavoriteItem* item : std::as_const(m_items))
     {
       osmin::CSVParser::container row;
       QString num;
@@ -362,7 +362,7 @@ bool FavoritesModel::loadData()
     if (data.count() > 0)
     {
       beginInsertRows(QModelIndex(), 0, data.count()-1);
-      for (FavoriteItem* item : qAsConst(data))
+      for (FavoriteItem* item : std::as_const(data))
       {
         item->setId(++m_seq);
         m_items << item;
@@ -398,7 +398,7 @@ void FavoritesModel::clearData()
 int FavoritesModel::isFavorite(double lat, double lon)
 {
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
-  for (FavoriteItem* item : qAsConst(m_items))
+  for (FavoriteItem* item : std::as_const(m_items))
   {
     double r = osmin::Utils::sphericalDistance(item->lat(), item->lon(), lat, lon);
     if (r < AREA_RADIUS)
