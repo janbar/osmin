@@ -501,10 +501,10 @@ void TrackerModule::onStopRecording()
 {
   qDebug("%s", __FUNCTION__);
   onFlushRecording();
-  QSharedPointer<QFile> file = m_file;
+  std::shared_ptr<QFile> file = m_file;
   m_recording = false;
   emit recordingChanged(QString());
-  if (file.isNull() || !file->open(QIODevice::ReadOnly | QIODevice::Text))
+  if (!file || !file->open(QIODevice::ReadOnly | QIODevice::Text))
     return;
   emit processing(true);
   // fill gpx data
@@ -599,7 +599,7 @@ void TrackerModule::onStopRecording()
     }
   }
   file->remove();
-  if (!m_log.isNull())
+  if (m_log)
     m_log->remove();
   emit processing(false);
 }
@@ -607,16 +607,16 @@ void TrackerModule::onStopRecording()
 void TrackerModule::onMarkPosition(const QString& symbol, const QString& name, const QString& description)
 {
   qDebug("%s", __FUNCTION__);
-  if (m_pinnedPosition.isNull())
+  if (!m_pinnedPosition)
     pinPosition();
-  QScopedPointer<position_t> pos;
+  std::unique_ptr<position_t> pos;
   pos.swap(m_pinnedPosition);
   // default an empty name
   QString _name(name);
   if (_name.isEmpty())
     _name.append('[').append(QString::fromStdString(pos->coord.GetDisplayText())).append(']');
   // save the mark
-  if (!m_mark.isNull())
+  if (m_mark)
     onFlushRecording();
   osmscout::gpx::Waypoint* waypoint = new osmscout::gpx::Waypoint(pos->coord);
   waypoint->timestamp = std::optional<osmscout::Timestamp>(pos->time);
@@ -633,8 +633,8 @@ void TrackerModule::onMarkPosition(const QString& symbol, const QString& name, c
 void TrackerModule::onFlushRecording()
 {
   qDebug("%s", __FUNCTION__);
-  QSharedPointer<QFile> file = m_file;
-  if (!m_recording || file.isNull())
+  std::shared_ptr<QFile> file = m_file;
+  if (!m_recording || !file)
   {
     m_segment.clear();
     return;
@@ -664,9 +664,9 @@ void TrackerModule::onFlushRecording()
       m_segment.pop_front();
     }
     // flush mark
-    QScopedPointer<osmscout::gpx::Waypoint> mark(nullptr);
+    std::unique_ptr<osmscout::gpx::Waypoint> mark(nullptr);
     mark.swap(m_mark);
-    if (!mark.isNull())
+    if (mark)
     {
       osmin::CSVParser::container row;
       QString num;
@@ -714,8 +714,8 @@ void TrackerModule::onFlushRecording()
 void TrackerModule::onDumpRecording()
 {
   qDebug("%s", __FUNCTION__);
-  QSharedPointer<QFile> file = m_file;
-  if (file.isNull())
+  std::shared_ptr<QFile> file = m_file;
+  if (!file)
     return;
   // start critical section
   m_lock.lock();
@@ -756,7 +756,7 @@ void TrackerModule::onDumpRecording()
   // dump in memory data
   for (auto& p : m_segment)
     emit positionRecorded(p.coord);
-  if (!m_mark.isNull())
+  if (m_mark)
     emit positionMarked(m_mark->coord, QString::fromUtf8(m_mark->symbol.value_or(MARK_SYMBOL).data()), QString::fromUtf8(m_mark->name.value_or("").data()));
   m_lock.unlock();
   // end critical section
