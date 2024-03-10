@@ -60,7 +60,7 @@ PlatformExtras::~PlatformExtras()
   doPreventBlanking(false);
 #ifdef HAVE_DBUS
   // free registered DBus services
-  for (RemoteService* svc : qAsConst(m_remoteServices))
+  for (RemoteService* svc : std::as_const(m_remoteServices))
     delete svc;
   m_remoteServices.clear();
 #endif
