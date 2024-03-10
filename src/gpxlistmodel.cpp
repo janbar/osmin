@@ -310,7 +310,7 @@ bool GPXListModel::removeItem(const QModelIndex& index)
 QString GPXListModel::findFileById(int bid)
 {
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
-  for (GPXItem* item : qAsConst(m_items))
+  for (GPXItem* item : std::as_const(m_items))
   {
     if (item->bigId() == bid)
       return QDir(m_root).absolutePath().append(QDir::separator())
