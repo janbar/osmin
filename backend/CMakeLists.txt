@@ -221,17 +221,20 @@ set(LIBOSMSCOUT_LIBRARIES
     PARENT_SCOPE
 )
 
+#"${libosmscout_BINARY_DIR}/libosmscout/privateinclude"
 set(LIBOSMSCOUT_INCLUDE_DIRS
-    "${libosmscout_BINARY_DIR}/libosmscout/privateinclude"
+    "${libosmscout_BINARY_DIR}/libosmscout/include"
     "${libosmscout_BINARY_DIR}/libosmscout-client-qt/include"
     "${libosmscout_BINARY_DIR}/libosmscout-gpx/include"
-    "${libosmscout_BINARY_DIR}/libosmscout/include"
+    "${libosmscout_BINARY_DIR}/libosmscout-import/include"
     "${libosmscout_BINARY_DIR}/libosmscout-map/include"
     "${libosmscout_BINARY_DIR}/libosmscout-map-qt/include"
+    "${libosmscout_SOURCE_DIR}/libosmscout/include"
     "${libosmscout_SOURCE_DIR}/libosmscout-client-qt/include"
+    "${libosmscout_SOURCE_DIR}/libosmscout-gpx/include"
+    "${libosmscout_SOURCE_DIR}/libosmscout-import/include"
     "${libosmscout_SOURCE_DIR}/libosmscout-map-qt/include"
     "${libosmscout_SOURCE_DIR}/libosmscout-map/include"
-    "${libosmscout_SOURCE_DIR}/libosmscout/include"
     "${MARISA_INCLUDE_DIRS}"
     PARENT_SCOPE
 )
