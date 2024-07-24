@@ -413,18 +413,18 @@ void TrackerModule::onResumeRecording(const QString& filename)
     // restoring state from log
     for (;;)
     {
-      QList<QByteArray*> row = m_formater->deserialize(m_log->readLine(0x3ff));
-      if (row.length() == 0)
+      osmin::CSVParser::container row;
+      m_formater->deserialize(row, m_log->readLine(0x3ff).toStdString());
+      if (row.size() == 0)
         break;
-      else if (row.length() >= 5)
+      else if (row.size() >= 5)
       {
-        m_distance = QString::fromUtf8(row[0]->constData()).toDouble();
-        m_duration = QString::fromUtf8(row[1]->constData()).toDouble();
-        m_ascent = QString::fromUtf8(row[2]->constData()).toDouble();
-        m_descent = QString::fromUtf8(row[3]->constData()).toDouble();
-        m_maxSpeed = QString::fromUtf8(row[4]->constData()).toDouble();
+        m_distance = QString::fromUtf8(row[0].c_str()).toDouble();
+        m_duration = QString::fromUtf8(row[1].c_str()).toDouble();
+        m_ascent = QString::fromUtf8(row[2].c_str()).toDouble();
+        m_descent = QString::fromUtf8(row[3].c_str()).toDouble();
+        m_maxSpeed = QString::fromUtf8(row[4].c_str()).toDouble();
       }
-      qDeleteAll(row);
     }
     m_log->close();
     m_file->close();
@@ -451,43 +451,49 @@ void TrackerModule::onStopRecording()
   size_t cp = 0, cwp = 0;
   for (;;)
   {
-    QList<QByteArray*> row = m_formater->deserialize(file->readLine(0x3ff));
-    if (row.length() == 0)
+    osmin::CSVParser::container row;
+    bool next = m_formater->deserialize(row, file->readLine(0x3ff).toStdString());
+    // paranoia: on corruption the last field could overflow
+    while (next && !file->atEnd() && row.back().size() < 0x3ff)
+    {
+      // the row continue with next line
+      next = m_formater->deserialize_next(row, file->readLine(0x3ff).toStdString());
+    }
+    if (row.size() == 0)
       break;
-    else if (row.length() >= 6 && *row[0] == TAG_WAYPT)
+    else if (row.size() >= 6 && row[0] == TAG_WAYPT)
     {
       if (++cwp > waypoints.size())
         waypoints.reserve(waypoints.size() + 20);
-      osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
-      double lat = QString::fromUtf8(row[2]->constData()).toDouble();
-      double lon = QString::fromUtf8(row[3]->constData()).toDouble();
-      double cse = QString::fromUtf8(row[4]->constData()).toDouble();
-      double alt = QString::fromUtf8(row[5]->constData()).toDouble();
+      osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1].c_str()).toDouble() * 1000))));
+      double lat = QString::fromUtf8(row[2].c_str()).toDouble();
+      double lon = QString::fromUtf8(row[3].c_str()).toDouble();
+      double cse = QString::fromUtf8(row[4].c_str()).toDouble();
+      double alt = QString::fromUtf8(row[5].c_str()).toDouble();
       osmscout::gpx::Waypoint waypoint(osmscout::GeoCoord(lat, lon));
       waypoint.timestamp = std::optional<osmscout::Timestamp>(ts);
       waypoint.course = std::optional<double>(cse);
       waypoint.elevation = std::optional<double>(alt);
-      waypoint.symbol = std::optional<std::string>(row[6]->constData());
-      waypoint.name = std::optional<std::string>(row[7]->constData());
-      waypoint.description = std::optional<std::string>(row[8]->constData());
+      waypoint.symbol = std::optional<std::string>(row[6].c_str());
+      waypoint.name = std::optional<std::string>(row[7].c_str());
+      waypoint.description = std::optional<std::string>(row[8].c_str());
       waypoints.push_back(waypoint);
     }
-    else if (row.length() >= 6 && *row[0] == TAG_TRKPT)
+    else if (row.size() >= 6 && row[0] == TAG_TRKPT)
     {
       if (++cp > segment.points.size())
         segment.points.reserve(segment.points.size() + 1000);
-      osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
-      double lat = QString::fromUtf8(row[2]->constData()).toDouble();
-      double lon = QString::fromUtf8(row[3]->constData()).toDouble();
-      double cse = QString::fromUtf8(row[4]->constData()).toDouble();
-      double alt = QString::fromUtf8(row[5]->constData()).toDouble();
+      osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1].c_str()).toDouble() * 1000))));
+      double lat = QString::fromUtf8(row[2].c_str()).toDouble();
+      double lon = QString::fromUtf8(row[3].c_str()).toDouble();
+      double cse = QString::fromUtf8(row[4].c_str()).toDouble();
+      double alt = QString::fromUtf8(row[5].c_str()).toDouble();
       osmscout::gpx::TrackPoint point(osmscout::GeoCoord(lat, lon));
       point.timestamp = std::optional<osmscout::Timestamp>(ts);
       point.course = std::optional<double>(cse);
       point.elevation = std::optional<double>(alt);
       segment.points.emplace_back(point);
     }
-    qDeleteAll(row);
   }
   file->close();
   // generate a simple GPX file
@@ -573,20 +579,20 @@ void TrackerModule::onFlushRecording()
     while (!m_segment.empty())
     {
       const auto p = m_segment.front();
-      QList<QByteArray*> row;
+      osmin::CSVParser::container row;
       QString num;
       auto sec = std::chrono::duration_cast<std::chrono::duration<double> >(p.timestamp.value().time_since_epoch());
-      row << new QByteArray(TAG_TRKPT);
-      row << new QByteArray(num.setNum(sec.count(), 'f', 3).toUtf8());
-      row << new QByteArray(num.setNum(p.coord.GetLat(), 'f', 6).toUtf8());
-      row << new QByteArray(num.setNum(p.coord.GetLon(), 'f', 6).toUtf8());
-      row << new QByteArray(num.setNum(p.course.value(), 'f', 1).toUtf8());
-      row << new QByteArray(num.setNum(p.elevation.value(), 'f', 1).toUtf8());
-      row << new QByteArray("");
-      QByteArray data = m_formater->serialize(row);
-      qDeleteAll(row);
+      row.push_back(std::string(TAG_TRKPT));
+      row.push_back(num.setNum(sec.count(), 'f', 3).toStdString());
+      row.push_back(num.setNum(p.coord.GetLat(), 'f', 6).toStdString());
+      row.push_back(num.setNum(p.coord.GetLon(), 'f', 6).toStdString());
+      row.push_back(num.setNum(p.course.value(), 'f', 1).toStdString());
+      row.push_back(num.setNum(p.elevation.value(), 'f', 1).toStdString());
+      row.push_back(std::string(""));
+      std::string data;
+      m_formater->serialize(data, row);
       data.append("\r\n");
-      m_file->write(data);
+      m_file->write(data.c_str());
       m_segment.pop_front();
     }
     // flush mark
@@ -594,23 +600,23 @@ void TrackerModule::onFlushRecording()
     mark.swap(m_mark);
     if (!mark.isNull())
     {
-      QList<QByteArray*> row;
+      osmin::CSVParser::container row;
       QString num;
       auto sec = std::chrono::duration_cast<std::chrono::duration<double> >(mark->timestamp.value().time_since_epoch());
-      row << new QByteArray(TAG_WAYPT);
-      row << new QByteArray(num.setNum(sec.count(), 'f', 3).toUtf8());
-      row << new QByteArray(num.setNum(mark->coord.GetLat(), 'f', 6).toUtf8());
-      row << new QByteArray(num.setNum(mark->coord.GetLon(), 'f', 6).toUtf8());
-      row << new QByteArray(num.setNum(mark->course.value(), 'f', 1).toUtf8());
-      row << new QByteArray(num.setNum(mark->elevation.value(), 'f', 1).toUtf8());
-      row << new QByteArray(mark->symbol.value_or(MARK_SYMBOL).data());
-      row << new QByteArray(mark->name.value_or("").data());
-      row << new QByteArray(mark->description.value_or("").data());
-      row << new QByteArray("");
-      QByteArray data = m_formater->serialize(row);
-      qDeleteAll(row);
+      row.push_back(std::string(TAG_WAYPT));
+      row.push_back(num.setNum(sec.count(), 'f', 3).toStdString());
+      row.push_back(num.setNum(mark->coord.GetLat(), 'f', 6).toStdString());
+      row.push_back(num.setNum(mark->coord.GetLon(), 'f', 6).toStdString());
+      row.push_back(num.setNum(mark->course.value(), 'f', 1).toStdString());
+      row.push_back(num.setNum(mark->elevation.value(), 'f', 1).toStdString());
+      row.push_back(mark->symbol.value_or(MARK_SYMBOL).data());
+      row.push_back(mark->name.value_or("").data());
+      row.push_back(mark->description.value_or("").data());
+      row.push_back(std::string(""));
+      std::string data;
+      m_formater->serialize(data, row);
       data.append("\r\n");
-      m_file->write(data);
+      m_file->write(data.c_str());
     }
     // all data are flushed
     m_file->close();
@@ -618,18 +624,18 @@ void TrackerModule::onFlushRecording()
   // flush log
   if (m_log->open(QIODevice::Truncate| QIODevice::WriteOnly | QIODevice::Text))
   {
-    QList<QByteArray*> row;
+    osmin::CSVParser::container row;
     QString num;
-    row << new QByteArray(num.setNum(m_distance, 'f', 3).toUtf8());
-    row << new QByteArray(num.setNum(m_duration, 'f', 3).toUtf8());
-    row << new QByteArray(num.setNum(m_ascent, 'f', 3).toUtf8());
-    row << new QByteArray(num.setNum(m_descent, 'f', 3).toUtf8());
-    row << new QByteArray(num.setNum(m_maxSpeed, 'f', 3).toUtf8());
-    row << new QByteArray("");
-    QByteArray data = m_formater->serialize(row);
-    qDeleteAll(row);
+    row.push_back(num.setNum(m_distance, 'f', 3).toStdString());
+    row.push_back(num.setNum(m_duration, 'f', 3).toStdString());
+    row.push_back(num.setNum(m_ascent, 'f', 3).toStdString());
+    row.push_back(num.setNum(m_descent, 'f', 3).toStdString());
+    row.push_back(num.setNum(m_maxSpeed, 'f', 3).toStdString());
+    row.push_back("");
+    std::string data;
+    m_formater->serialize(data, row);
     data.append("\r\n");
-    m_log->write(data);
+    m_log->write(data.c_str());
     // log is flushed
     m_log->close();
   }
@@ -650,26 +656,32 @@ void TrackerModule::onDumpRecording()
     // dump stored data
     for (;;)
     {
-      QList<QByteArray*> row = m_formater->deserialize(file->readLine(0x3ff));
-      if (row.length() == 0)
-        break;
-      else if (row.length() >= 6 && *row[0] == TAG_WAYPT)
+      osmin::CSVParser::container row;
+      bool next = m_formater->deserialize(row, file->readLine(0x3ff).toStdString());
+      // paranoia: on corruption the last field could overflow
+      while (next && !file->atEnd() && row.back().size() < 0x3ff)
       {
-        osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
-        double lat = QString::fromUtf8(row[2]->constData()).toDouble();
-        double lon = QString::fromUtf8(row[3]->constData()).toDouble();
-        QString symbol(row[6]->constData());
-        QString name(row[7]->constData());
+        // the row continue with next line
+        next = m_formater->deserialize_next(row, file->readLine(0x3ff).toStdString());
+      }
+      if (row.size() == 0)
+        break;
+      else if (row.size() >= 6 && row[0] == TAG_WAYPT)
+      {
+        osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1].c_str()).toDouble() * 1000))));
+        double lat = QString::fromUtf8(row[2].c_str()).toDouble();
+        double lon = QString::fromUtf8(row[3].c_str()).toDouble();
+        QString symbol(row[6].c_str());
+        QString name(row[7].c_str());
         emit positionMarked(osmscout::GeoCoord(lat, lon), symbol, name);
       }
-      else if (row.length() >= 6 && *row[0] == TAG_TRKPT)
+      else if (row.size() >= 6 && row[0] == TAG_TRKPT)
       {
-        osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1]->constData()).toDouble() * 1000))));
-        double lat = QString::fromUtf8(row[2]->constData()).toDouble();
-        double lon = QString::fromUtf8(row[3]->constData()).toDouble();
+        osmscout::Timestamp ts(std::chrono::milliseconds(static_cast<qint64>(std::round(QString::fromUtf8(row[1].c_str()).toDouble() * 1000))));
+        double lat = QString::fromUtf8(row[2].c_str()).toDouble();
+        double lon = QString::fromUtf8(row[3].c_str()).toDouble();
         emit positionRecorded(osmscout::GeoCoord(lat, lon));
       }
-      qDeleteAll(row);
     }
     file->close();
   }

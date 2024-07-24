@@ -281,20 +281,20 @@ bool FavoritesModel::storeData()
     osmin::CSVParser csv(',', '"');
     for (FavoriteItem* item : qAsConst(m_items))
     {
-      QList<QByteArray*> row;
+      osmin::CSVParser::container row;
       QString num;
-      row << new QByteArray(num.setNum(item->lat(), 'f', 6).toUtf8());
-      row << new QByteArray(num.setNum(item->lon(), 'f', 6).toUtf8());
-      row << new QByteArray(num.setNum(item->alt(), 'f', 1).toUtf8());
-      row << new QByteArray(item->timestamp().toString(Qt::ISODate).toUtf8());
-      row << new QByteArray(item->label().toUtf8());
-      row << new QByteArray(item->type().toUtf8());
-      row << new QByteArray("");
-      QByteArray line = csv.serialize(row);
-      qDeleteAll(row);
-      //qDebug("Saving favorite item: %s", line.constData());
+      row.push_back(num.setNum(item->lat(), 'f', 6).toStdString());
+      row.push_back(num.setNum(item->lon(), 'f', 6).toStdString());
+      row.push_back(num.setNum(item->alt(), 'f', 1).toStdString());
+      row.push_back(item->timestamp().toString(Qt::ISODate).toStdString());
+      row.push_back(item->label().toStdString());
+      row.push_back(item->type().toStdString());
+      row.push_back(std::string(""));
+      std::string line;
+      csv.serialize(line, row);
+      //qDebug("Saving favorite item: %s", line.c_str());
       line.append("\r\n");
-      if (m_io->write(line) != line.length())
+      if (m_io->write(line.c_str()) != (qint64) line.length())
       {
         succeeded = false;
         break;
@@ -329,24 +329,31 @@ bool FavoritesModel::loadData()
       osmin::CSVParser csv(',', '"');
       for (;;)
       {
-        QList<QByteArray*> row = csv.deserialize(m_io->readLine(0x3ff));
-        if (row.length() == 0 || c == MAX_ROWCOUNT)
+        osmin::CSVParser::container row;
+        bool next = csv.deserialize(row, m_io->readLine(0x3ff).toStdString());
+        // paranoia: on corruption the last field could overflow
+        while (next && !m_io->atEnd() && row.back().size() < 0x3ff)
+        {
+          // the row continue with next line
+          next = csv.deserialize_next(row, m_io->readLine(0x3ff).toStdString());
+        }
+        if (row.size() == 0 || c == MAX_ROWCOUNT)
           break;
-        else if (row.length() >= 5)
+        else if (row.size() >= 5)
         {
           ++c;
           FavoriteItem* item = new FavoriteItem();
-          item->setLat(QString::fromUtf8(row[0]->constData()).toDouble());
-          item->setLon(QString::fromUtf8(row[1]->constData()).toDouble());
-          item->setAlt(QString::fromUtf8(row[2]->constData()).toDouble());
-          item->setTimestamp(QDateTime::fromString(QString::fromUtf8(row[3]->constData()), Qt::ISODate));
-          item->setLabel(QString::fromUtf8(row[4]->constData()));
-          if (row.length() > 5)
-            item->setType(QString::fromUtf8(row[5]->constData()));
+          item->setLat(QString::fromUtf8(row[0].c_str()).toDouble());
+          item->setLon(QString::fromUtf8(row[1].c_str()).toDouble());
+          item->setAlt(QString::fromUtf8(row[2].c_str()).toDouble());
+          item->setTimestamp(QDateTime::fromString(QString::fromUtf8(row[3].c_str()), Qt::ISODate));
+          item->setLabel(QString::fromUtf8(row[4].c_str()));
+          if (row.size() > 5)
+            item->setType(QString::fromUtf8(row[5].c_str()));
           data << item;
-          //qDebug("Loading favorite item: %3.5f , %3.5f : %s", item->lat(), item->lon(), item->label().toUtf8().constData());
+          //qDebug("Loading favorite item: %3.5f , %3.5f : %s [%s]", item->lat(), item->lon(),
+          //       item->label().toUtf8().constData(), item->type().toUtf8().constData());
         }
-        qDeleteAll(row);
       }
       m_io->close();
     }

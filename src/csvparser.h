@@ -18,24 +18,37 @@
 #ifndef CSVPARSER_H
 #define CSVPARSER_H
 
-#include <QList>
-#include <QByteArray>
+#include <vector>
+#include <string>
 
 namespace osmin
 {
-  class CSVParser
-  {
-  public:
-    CSVParser(const char separator, const char encapsulator);
-    virtual ~CSVParser() { }
 
-    QList<QByteArray*> deserialize(const QByteArray& line);
-    QByteArray serialize(const QList<QByteArray*>& row);
+class CSVParser
+{
+public:
+  typedef std::string field;
+  typedef std::vector<field> container;
 
-  private:
-    char m_separator;
-    char m_encapsulator;
-  };
+  CSVParser(const char separator, const char encapsulator);
+  virtual ~CSVParser() { }
+
+  bool deserialize(container& out, const std::string& line);
+  bool deserialize_next(container& out, const std::string& line);
+  bool in_error() { return m_error; }
+  unsigned error_position() { return m_error_pos; }
+
+  void serialize(std::string& out, const container& row);
+
+private:
+  char m_separator;
+  char m_encapsulator;
+  bool m_error;
+  unsigned m_error_pos;
+
+  bool deserialize_chunk(bool next, container& out, const std::string& line);
+};
+
 }
 
 #endif /* CSVPARSER_H */

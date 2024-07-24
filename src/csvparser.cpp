@@ -1,41 +1,51 @@
 /*
- * Copyright (C) 2020
- *      Jean-Luc Barriere <jlbarriere68@gmail.com>
+ *      Copyright (C) 2020 Jean-Luc Barriere
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 #include "csvparser.h"
-#include <QList>
-#include <QByteArray>
 
 using namespace osmin;
 
 CSVParser::CSVParser(const char separator, const char encapsulator)
-: m_separator(separator)
-, m_encapsulator(encapsulator)
+    : m_separator(separator)
+    , m_encapsulator(encapsulator)
+    , m_error(false)
+    , m_error_pos(0)
 { }
 
-QList<QByteArray*> CSVParser::deserialize(const QByteArray& line)
+bool CSVParser::deserialize_chunk(bool next, container& out, const std::string& line)
 {
-  QList<QByteArray*> data;
-  QByteArray::const_iterator pos = line.begin();
+  std::string::const_iterator pos = line.begin();
   if (pos == line.end())
-    return data; // no data
-  QByteArray* value = new QByteArray();
+  {
+    // push blank value and avoid fault
+    if (next && out.empty())
+      out.push_back("");
+    return next; // end of stream
+  }
+  field value;
   bool first =  true;
-  bool encap = false;
   bool error = false;
+  bool encap = next;
+  if (encap)
+  {
+    value.assign(out.back());
+    out.pop_back();
+  }
   while (pos != line.end())
   {
     if (*pos == m_encapsulator)
@@ -50,7 +60,7 @@ QList<QByteArray*> CSVParser::deserialize(const QByteArray& line)
         }
         else
         {
-          value->append(*pos);
+          value.push_back(*pos);
           ++pos;
         }
       }
@@ -67,68 +77,75 @@ QList<QByteArray*> CSVParser::deserialize(const QByteArray& line)
     }
     else if (*pos == m_separator && !encap)
     {
-      data.push_back(value);
-      value = new QByteArray();
+      out.push_back(std::move(value));
+      value.clear();
       first = true;
-      ++pos;
-    }
-    else if (*pos == '\r' || *pos == '\n')
-    {
       ++pos;
     }
     else
     {
       first = false;
-      value->append(*pos);
+      if (encap || (*pos != '\n' && *pos != '\r'))
+        value.push_back(*pos);
       ++pos;
     }
   }
   // encap: Unexpected end of stream
-  if (error || encap)
+  if (error)
   {
-    delete value;
-    qDeleteAll(data);
-    data.clear();
+    out.clear();
+    m_error = true;
+    m_error_pos = (unsigned) std::distance(line.begin(), pos);
+    return false;
   }
-  else
-    data.push_back(value);
-  return data;
+  out.push_back(std::move(value));
+  return encap;
 }
 
-QByteArray CSVParser::serialize(const QList<QByteArray*>& row)
+bool CSVParser::deserialize(container& out, const std::string& line)
 {
-  QByteArray line;
-  for (const QByteArray* data : row)
+  m_error = false;
+  out.clear();
+  return deserialize_chunk(false, out, line);
+}
+
+bool CSVParser::deserialize_next(container& out, const std::string& line)
+{
+  return deserialize_chunk(true, out, line);
+}
+
+void CSVParser::serialize(std::string& out, const container& row)
+{
+  out.clear();
+  for (const field& data : row)
   {
     bool encap = false;
-    QByteArray field;
-    for (QByteArray::const_iterator it = data->begin(); it != data->end(); ++it)
+    field tmp;
+    for (field::const_iterator it = data.begin(); it != data.end(); ++it)
     {
       if (*it == m_encapsulator)
       {
         encap = true;
-        field.append(m_encapsulator).append(m_encapsulator);
+        tmp.push_back(m_encapsulator);
+        tmp.push_back(m_encapsulator);
       }
-      else if (*it == m_separator)
+      else if (*it == m_separator || *it == '\r' || *it == '\n')
       {
         encap = true;
-        field.append(*it);
+        tmp.push_back(*it);
       }
-      else if (*it == '\r')
-        field.append("");
-      else if (*it == '\n')
-        field.append(" ");
-      else if (*it == '\t')
-        field.append(" ");
       else
-        field.append(*it);
+        tmp.push_back(*it);
     }
-    if (line.end() != line.begin())
-      line.append(m_separator);
+    if (out.end() != out.begin())
+      out.push_back(m_separator);
     if (encap)
-      line.append(m_encapsulator).append(field).append(m_encapsulator);
+    {
+      out.push_back(m_encapsulator);
+      out.append(tmp);
+      out.push_back(m_encapsulator);
+    }
     else
-      line.append(field);
+      out.append(tmp);
   }
-  return line;
 }
