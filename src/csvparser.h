@@ -35,8 +35,8 @@ public:
 
   bool deserialize(container& out, const std::string& line);
   bool deserialize_next(container& out, const std::string& line);
-  bool in_error() { return m_error; }
-  unsigned error_position() { return m_error_pos; }
+  bool in_error() const { return m_error; }
+  unsigned error_position() const { return m_error_pos; }
 
   void serialize(std::string& out, const container& row);
 
