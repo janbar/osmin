@@ -21,10 +21,10 @@
 using namespace osmin;
 
 CSVParser::CSVParser(const char separator, const char encapsulator)
-    : m_separator(separator)
-    , m_encapsulator(encapsulator)
-    , m_error(false)
-    , m_error_pos(0)
+: m_separator(separator)
+, m_encapsulator(encapsulator)
+, m_error(false)
+, m_error_pos(0)
 { }
 
 bool CSVParser::deserialize_chunk(bool next, container& out, const std::string& line)
@@ -116,6 +116,7 @@ bool CSVParser::deserialize_next(container& out, const std::string& line)
 
 void CSVParser::serialize(std::string& out, const container& row)
 {
+  bool first = true;
   out.clear();
   for (const field& data : row)
   {
@@ -137,7 +138,7 @@ void CSVParser::serialize(std::string& out, const container& row)
       else
         tmp.push_back(*it);
     }
-    if (out.end() != out.begin())
+    if (!first)
       out.push_back(m_separator);
     if (encap)
     {
@@ -147,5 +148,6 @@ void CSVParser::serialize(std::string& out, const container& row)
     }
     else
       out.append(tmp);
+    first = false;
   }
 }
