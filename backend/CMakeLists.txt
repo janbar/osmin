@@ -99,8 +99,8 @@ endif()
 # Provides internal iconv
 if(NOT ICONV_FOUND)
     download_project(PROJ iconv
-        URL "${CMAKE_CURRENT_SOURCE_DIR}/libiconv-1.16.tar.gz"
-        URL_HASH MD5=0a195df3b15f9cfddf29a51e67dcfb83
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/libiconv-1.17.tar.gz"
+        URL_HASH MD5=afc24d7f498b1ad19e10780a98467dc5
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
