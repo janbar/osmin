@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8.2)
 
 # Provides:
 #  macro add_qt_android_apk
@@ -103,7 +103,7 @@ include(CMakeParseArguments)
 #  QT_ANDROID_APP_EXTRA_LIBS
 #  QT_ANDROID_APP_EXTRA_PLUGINS
 #  QT_ANDROID_APP_BINARY_DIR
-# 
+#
 macro(add_qt_android_apk TARGET SOURCE_TARGET)
 
     # parse the macro arguments
