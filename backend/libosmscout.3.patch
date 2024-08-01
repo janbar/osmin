@@ -1,0 +1,826 @@
+diff --git a/libosmscout-client-qt/CMakeLists.txt b/libosmscout-client-qt/CMakeLists.txt
+index 20e090813..4ac364a40 100644
+--- a/libosmscout-client-qt/CMakeLists.txt
++++ b/libosmscout-client-qt/CMakeLists.txt
+@@ -54,6 +54,8 @@ set(HEADER_FILES
+     include/osmscoutclientqt/InstalledMapsModel.h
+     include/osmscoutclientqt/Voice.h
+     include/osmscoutclientqt/VoiceManager.h
++    include/osmscoutclientqt/VoicePlayer.h
++    include/osmscoutclientqt/VoiceCorePlayerImpl.h
+     include/osmscoutclientqt/AvailableVoicesModel.h
+     include/osmscoutclientqt/InstalledVoicesModel.h
+ )
+@@ -109,32 +111,33 @@ set(SOURCE_FILES
+     src/osmscoutclientqt/InstalledMapsModel.cpp
+     src/osmscoutclientqt/Voice.cpp
+     src/osmscoutclientqt/VoiceManager.cpp
++    src/osmscoutclientqt/VoicePlayer.cpp
+     src/osmscoutclientqt/AvailableVoicesModel.cpp
+     src/osmscoutclientqt/InstalledVoicesModel.cpp
+ )
+ 
+ if (QT_VERSION_MAJOR EQUAL 6)
+-	osmscout_library_project(
+-			NAME OSMScoutClientQt
+-			ALIAS ClientQt
+-			OUTPUT_NAME "osmscout_client_qt"
+-			SOURCE ${SOURCE_FILES}
+-			HEADER ${HEADER_FILES}
+-			INCLUDEDIR osmscoutclientqt
+-			TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/include/osmscoutclientqt/ClientQtFeatures.h.cmake
+-			TARGET OSMScout::OSMScout OSMScout::Map OSMScout::MapQt Qt::Core Qt6::Core5Compat Qt::Gui Qt::Quick Qt::Multimedia OSMScout::Client
+-	)
++          osmscout_library_project(
++                              NAME OSMScoutClientQt
++                              ALIAS ClientQt
++                              OUTPUT_NAME "osmscout_client_qt"
++                              SOURCE ${SOURCE_FILES}
++                              HEADER ${HEADER_FILES}
++                              INCLUDEDIR osmscoutclientqt
++                              TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/include/osmscoutclientqt/ClientQtFeatures.h.cmake
++                              TARGET OSMScout::OSMScout OSMScout::Map OSMScout::MapQt Qt::Core Qt6::Core5Compat Qt::Gui Qt::Quick Qt::Multimedia OSMScout::Client
++          )
+ else ()
+-	osmscout_library_project(
+-			NAME OSMScoutClientQt
+-			ALIAS ClientQt
+-			OUTPUT_NAME "osmscout_client_qt"
+-			SOURCE ${SOURCE_FILES}
+-			HEADER ${HEADER_FILES}
+-			INCLUDEDIR osmscoutclientqt
+-			TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/include/osmscoutclientqt/ClientQtFeatures.h.cmake
+-			TARGET OSMScout::OSMScout OSMScout::Map OSMScout::MapQt Qt::Core Qt::Gui Qt::Quick Qt::Multimedia OSMScout::Client
+-	)
++          osmscout_library_project(
++                              NAME OSMScoutClientQt
++                              ALIAS ClientQt
++                              OUTPUT_NAME "osmscout_client_qt"
++                              SOURCE ${SOURCE_FILES}
++                              HEADER ${HEADER_FILES}
++                              INCLUDEDIR osmscoutclientqt
++                              TEMPLATE ${CMAKE_CURRENT_SOURCE_DIR}/include/osmscoutclientqt/ClientQtFeatures.h.cmake
++                              TARGET OSMScout::OSMScout OSMScout::Map OSMScout::MapQt Qt::Core Qt::Gui Qt::Quick Qt::Multimedia OSMScout::Client
++          )
+ endif ()
+ 
+ if(MARISA_FOUND)
+@@ -143,12 +146,12 @@ if(MARISA_FOUND)
+ endif()
+ 
+ if(APPLE AND OSMSCOUT_BUILD_FRAMEWORKS)
+-	set_target_properties(OSMScoutClientQt PROPERTIES
+-		FRAMEWORK TRUE
+-		FRAMEWORK_VERSION C
+-		MACOSX_FRAMEWORK_IDENTIFIER com.cmake.dynamicFramework
+-		#MACOSX_FRAMEWORK_INFO_PLIST Info.plist
+-		PUBLIC_HEADER     "${HEADER_FILES}"
+-		CODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+-		OUTPUT_NAME "OSMScoutClientQt")
++          set_target_properties(OSMScoutClientQt PROPERTIES
++                    FRAMEWORK TRUE
++                    FRAMEWORK_VERSION C
++                    MACOSX_FRAMEWORK_IDENTIFIER com.cmake.dynamicFramework
++                    #MACOSX_FRAMEWORK_INFO_PLIST Info.plist
++                    PUBLIC_HEADER     "${HEADER_FILES}"
++                    CODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
++                    OUTPUT_NAME "OSMScoutClientQt")
+ endif()
+diff --git a/libosmscout-client-qt/include/meson.build b/libosmscout-client-qt/include/meson.build
+index dd0072fa6..25a5cc0ef 100644
+--- a/libosmscout-client-qt/include/meson.build
++++ b/libosmscout-client-qt/include/meson.build
+@@ -52,6 +52,8 @@ osmscoutclientqtHeader = [
+             'osmscoutclientqt/InstalledMapsModel.h',
+             'osmscoutclientqt/Voice.h',
+             'osmscoutclientqt/VoiceManager.h',
++            'osmscoutclientqt/VoicePlayer.h',
++            'osmscoutclientqt/VoiceCorePlayerImpl.h',
+             'osmscoutclientqt/AvailableVoicesModel.h',
+             'osmscoutclientqt/InstalledVoicesModel.h',
+           ]
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/InstalledVoicesModel.h b/libosmscout-client-qt/include/osmscoutclientqt/InstalledVoicesModel.h
+index 19bc0a48d..eab80ff3d 100644
+--- a/libosmscout-client-qt/include/osmscoutclientqt/InstalledVoicesModel.h
++++ b/libosmscout-client-qt/include/osmscoutclientqt/InstalledVoicesModel.h
+@@ -28,13 +28,11 @@
+ 
+ #include <QAbstractListModel>
+ #include <QList>
+-#include <QMediaPlayer>
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-#include <QMediaPlaylist>
+-#endif
+ 
+ namespace osmscout {
+ 
++class VoiceCorePlayer;
++
+ /**
+  * Model providing access to currently installed voices on device
+  * + entry for configuration without voice commands.
+@@ -89,10 +87,7 @@ private:
+   SettingsRef settings;
+ 
+   // we setup QObject parents, objects are cleaned after Module destruction
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-  QMediaPlaylist *currentPlaylist{nullptr};
+-#endif
+-  QMediaPlayer *mediaPlayer{nullptr};
++  VoiceCorePlayer *mediaPlayer{nullptr};
+ };
+ }
+ #endif //OSMSCOUT_CLIENT_QT_INSTALLEDVOICESMODEL_H
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/NavigationModule.h b/libosmscout-client-qt/include/osmscoutclientqt/NavigationModule.h
+index e098a8187..a35886356 100644
+--- a/libosmscout-client-qt/include/osmscoutclientqt/NavigationModule.h
++++ b/libosmscout-client-qt/include/osmscoutclientqt/NavigationModule.h
+@@ -24,6 +24,7 @@
+ #include <osmscoutclient/DBThread.h>
+ 
+ #include <osmscoutclientqt/Router.h>
++#include <osmscoutclientqt/VoicePlayer.h>
+ 
+ #include <osmscout/navigation/Navigation.h>
+ #include <osmscout/navigation/Engine.h>
+@@ -43,24 +44,12 @@
+ #include <QtGlobal>
+ #include <QObject>
+ #include <QTimer>
+-#include <QMediaPlayer>
+ #include <QDateTime>
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-  #include <QMediaPlaylist>
+-#endif
+-
+ #include <optional>
+ 
+ namespace osmscout {
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-  using QtMediaPlayerState = QMediaPlayer::State;
+-#else
+-  using QtMediaPlayerState = QMediaPlayer::PlaybackState;
+-#endif
+-
+-
+ /**
+  * \ingroup QtAPI
+  */
+@@ -112,7 +101,7 @@ public slots:
+ 
+   void onVoiceChanged(const QString);
+ 
+-  void playerStateChanged(QtMediaPlayerState state);
++  void playerStateChanged(VoicePlayer::PlaybackState state);
+ 
+ public:
+   NavigationModule(QThread *thread,
+@@ -141,12 +130,9 @@ private:
+ 
+   // voice route instructions
+   QString voiceDir;
+-  // player and playlist should be created in module thread, not in UI thread (constructor)
++  // player should be created in module thread, not in UI thread (constructor)
+   // we setup QObject parents, objects are cleaned after Module destruction
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-  QMediaPlaylist *currentPlaylist{nullptr};
+-#endif
+-  QMediaPlayer *mediaPlayer{nullptr};
++  VoiceCorePlayer *mediaPlayer{nullptr};
+   std::vector<osmscout::VoiceInstructionMessage::VoiceSample> nextMessage;
+ 
+   osmscout::RouteDescriptionRef routeDescription;
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/VoiceCorePlayerImpl.h b/libosmscout-client-qt/include/osmscoutclientqt/VoiceCorePlayerImpl.h
+new file mode 100644
+index 000000000..cbcdbd225
+--- /dev/null
++++ b/libosmscout-client-qt/include/osmscoutclientqt/VoiceCorePlayerImpl.h
+@@ -0,0 +1,226 @@
++/*
++  OSMScout - a Qt backend for libosmscout and libosmscout-map
++  Copyright (C) 2024 Jean-Luc Barriere
++
++  This library is free software; you can redistribute it and/or
++  modify it under the terms of the GNU Lesser General Public
++  License as published by the Free Software Foundation; either
++  version 2.1 of the License, or (at your option) any later version.
++
++  This library is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++  Lesser General Public License for more details.
++
++  You should have received a copy of the GNU Lesser General Public
++  License along with this library; if not, write to the Free Software
++  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
++*/
++
++#include <osmscoutclientqt/VoicePlayer.h>
++
++#include <QtGlobal>
++#if QT_VERSION_MAJOR == 6
++
++#include <mutex>
++#include <QObject>
++#include <QAudioOutput>
++#include <QMediaPlayer>
++#include <QList>
++
++namespace osmscout {
++
++class OSMSCOUT_LOCAL VoiceCorePlayerImpl : public VoicePlayer {
++  Q_OBJECT
++
++public:
++  VoiceCorePlayerImpl& operator=(const VoiceCorePlayerImpl&) = delete;
++  VoiceCorePlayerImpl& operator=(VoiceCorePlayerImpl&&) = delete;
++
++  VoiceCorePlayerImpl(const VoiceCorePlayerImpl&) = delete;
++  VoiceCorePlayerImpl(VoiceCorePlayerImpl&&) = delete;
++  explicit VoiceCorePlayerImpl(QObject *parent) : VoicePlayer(parent) {
++    output = new QAudioOutput();
++    instance = new QMediaPlayer();
++    instance->setAudioOutput(output);
++    connect(instance, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
++            this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
++  }
++
++  ~VoiceCorePlayerImpl() override {
++    if (instance)
++      delete instance;
++    if (output)
++      delete output;
++  }
++
++  void clearQueue() override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    if (playing) {
++      stop();
++    }
++    currentIndex = 0;
++    queue.clear();
++  }
++
++  void addToQueue(const QUrl &source) override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    queue << source;
++  }
++
++  void setCurrentIndex(int index) override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    if (index != currentIndex && index >= 0 && index < queue.size()) {
++      currentIndex = index;
++      if (playing) {
++        instance->setSource(queue[index]);
++        instance->play();
++      }
++    }
++  }
++
++  void play() override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    if (!playing && currentIndex < queue.size()) {
++      playing = true;
++      emit playbackStateChanged(VoicePlayer::PlayingState);
++      instance->setSource(queue[currentIndex]);
++      instance->play();
++    }
++  }
++
++  void stop() override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    playing = false;
++    instance->stop();
++    emit playbackStateChanged(VoicePlayer::StoppedState);
++  }
++
++  int index() const override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    return currentIndex;
++  }
++  int queueCount() const override {
++    std::lock_guard<std::recursive_mutex> g(mutex);
++    return queue.size();
++  }
++
++private slots:
++  void onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
++    bool stopped = false;
++
++    // start critical section
++    {
++      std::lock_guard<std::recursive_mutex> g(mutex);
++      if (!playing) {
++        return;
++      }
++
++      switch (status) {
++      // on the end of media, play the next queued track or
++      // set the playback state to stopped
++      case QMediaPlayer::MediaStatus::EndOfMedia:
++      {
++        currentIndex += 1;
++        if (currentIndex < queue.size()) {
++          instance->setSource(queue[currentIndex]);
++          instance->play();
++        } else {
++          stopped = true;
++        }
++        break;
++      }
++      // on failure, set the playback state to stopped
++      case QMediaPlayer::MediaStatus::InvalidMedia:
++      case QMediaPlayer::MediaStatus::NoMedia:
++        stopped = true;
++        break;
++      default:
++        break;
++      }
++
++      playing = !stopped;
++    }
++    // end critical section
++
++    if (stopped) {
++      emit playbackStateChanged(VoicePlayer::StoppedState);
++    }
++  }
++
++private:
++  mutable std::recursive_mutex mutex;
++  QAudioOutput *output = nullptr;
++  QMediaPlayer *instance = nullptr;
++  QList<QUrl> queue;
++  int currentIndex = 0;
++  bool playing = false;
++};
++
++}
++
++#elif QT_VERSION_MAJOR == 5
++
++#include <QObject>
++#include <QMediaPlayer>
++#include <QMediaPlaylist>
++
++namespace osmscout {
++
++class OSMSCOUT_LOCAL VoiceCorePlayerImpl : public VoicePlayer {
++  Q_OBJECT
++
++public:
++  VoiceCorePlayerImpl& operator=(const VoiceCorePlayerImpl&) = delete;
++  VoiceCorePlayerImpl& operator=(VoiceCorePlayerImpl&&) = delete;
++
++  VoiceCorePlayerImpl(const VoiceCorePlayerImpl&) = delete;
++  VoiceCorePlayerImpl(VoiceCorePlayerImpl&&) = delete;
++  explicit VoiceCorePlayerImpl(QObject *parent) : VoicePlayer(parent) {
++    playlist = new QMediaPlaylist();
++    instance = new QMediaPlayer();
++    instance->setPlaylist(playlist);
++    connect(instance, SIGNAL(stateChanged(QMediaPlayer::State)),
++            this, SLOT(onStateChanged(QMediaPlayer::State)));
++  }
++
++  ~VoiceCorePlayerImpl() override {
++    if (instance)
++      delete instance;
++    if (playlist)
++      delete playlist;
++  }
++
++  void clearQueue() override { playlist->clear(); }
++  void addToQueue(const QUrl &source) override { playlist->addMedia(source); }
++  void setCurrentIndex(int index) override { playlist->setCurrentIndex(index); }
++
++  void play() override { instance->play(); }
++  void stop() override { instance->stop(); }
++
++  int index() const override { return playlist->currentIndex(); }
++  int queueCount() const override { return playlist->mediaCount(); }
++
++private slots:
++  void onStateChanged(QMediaPlayer::State newState) {
++    switch (newState) {
++    case QMediaPlayer::State::PlayingState:
++      emit playbackStateChanged(VoicePlayer::PlayingState);
++      break;
++    case QMediaPlayer::State::StoppedState:
++    case QMediaPlayer::State::PausedState:
++      emit playbackStateChanged(VoicePlayer::StoppedState);
++      break;
++    default:
++      break;
++    }
++  }
++
++private:
++  QMediaPlaylist *playlist = nullptr;
++  QMediaPlayer *instance = nullptr;
++};
++
++}
++
++#endif
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/VoicePlayer.h b/libosmscout-client-qt/include/osmscoutclientqt/VoicePlayer.h
+new file mode 100644
+index 000000000..5aaad7aa9
+--- /dev/null
++++ b/libosmscout-client-qt/include/osmscoutclientqt/VoicePlayer.h
+@@ -0,0 +1,125 @@
++#ifndef OSMSCOUT_CLIENT_QT_VOICE_PLAYER_H
++#define OSMSCOUT_CLIENT_QT_VOICE_PLAYER_H
++
++/*
++  OSMScout - a Qt backend for libosmscout and libosmscout-map
++  Copyright (C) 2024 Jean-Luc Barriere
++
++  This library is free software; you can redistribute it and/or
++  modify it under the terms of the GNU Lesser General Public
++  License as published by the Free Software Foundation; either
++  version 2.1 of the License, or (at your option) any later version.
++
++  This library is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++  Lesser General Public License for more details.
++
++  You should have received a copy of the GNU Lesser General Public
++  License along with this library; if not, write to the Free Software
++  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
++*/
++
++#include <osmscoutclientqt/ClientQtImportExport.h>
++
++#include <QObject>
++#include <QUrl>
++
++namespace osmscout {
++
++/**
++ * \ingroup QtAPI
++ *
++ * Defines the abstract interface for the voice player
++ */
++class OSMSCOUT_CLIENT_QT_API VoicePlayer : public QObject {
++  Q_OBJECT
++
++public:
++  enum PlaybackState {
++    StoppedState = 0,
++    PlayingState,
++  };
++
++  explicit VoicePlayer(QObject *parent);
++  /**
++   * @brief clear the playlist
++   */
++  virtual void clearQueue() = 0;
++  /**
++   * @brief add a track to the playlist
++   * @param source url of the audio track
++   */
++  virtual void addToQueue(const QUrl &source) = 0;
++  /**
++   * @brief set the track index to play
++   * @param index position in playlist
++   */
++  virtual void setCurrentIndex(int index) = 0;
++  /**
++   * @brief start playing from current index
++   */
++  virtual void play() = 0;
++  /**
++   * @brief stop playing
++   */
++  virtual void stop() = 0;
++  /**
++   * @brief returns the current index
++   * @return position in playlist
++   */
++  virtual int index() const = 0;
++  /**
++   * @brief returns the track count in the playlist
++   * @return count
++   */
++  virtual int queueCount() const = 0;
++
++signals:
++  void playbackStateChanged(VoicePlayer::PlaybackState state);
++};
++
++/**
++ * \ingroup QtAPI
++ *
++ * Provides the default voice player
++ */
++class OSMSCOUT_CLIENT_QT_API VoiceCorePlayer : public VoicePlayer {
++  Q_OBJECT
++
++public:
++  VoiceCorePlayer& operator=(const VoiceCorePlayer&) = delete;
++  VoiceCorePlayer& operator=(VoiceCorePlayer&&) = delete;
++
++  VoiceCorePlayer(const VoiceCorePlayer&) = delete;
++  VoiceCorePlayer(VoiceCorePlayer&&) = delete;
++  explicit VoiceCorePlayer(QObject *parent);
++  ~VoiceCorePlayer() override = default;
++
++  void clearQueue() override;
++  void addToQueue(const QUrl &source) override;
++  void setCurrentIndex(int index) override;
++
++  void play() override;
++  void stop() override;
++
++  int index() const override;
++  int queueCount() const override;
++
++  /**
++   * @brief returns the current state of playback
++   * @return playback state
++   */
++  PlaybackState playbackState() const;
++
++private slots:
++  void onStateChanged(VoicePlayer::PlaybackState newState);
++
++private:
++  VoicePlayer *player;
++  PlaybackState state{StoppedState};
++};
++
++}
++
++#endif /* OSMSCOUT_CLIENT_QT_VOICE_PLAYER_H */
+diff --git a/libosmscout-client-qt/meson.build b/libosmscout-client-qt/meson.build
+index 8ed74242e..3a1468b9e 100644
+--- a/libosmscout-client-qt/meson.build
++++ b/libosmscout-client-qt/meson.build
+@@ -20,8 +20,16 @@ foreach hdr : osmscoutclientqtHeader
+   mocHeaders += headerTemplate.format('include/',hdr)
+ endforeach
+ 
+-  mocFiles = qt.preprocess(moc_headers : mocHeaders,
+-                            include_directories: include_directories('include'))
++  qtvers = qtClientDep.version().split('.')
++  moc_defines = [
++    '-DQT_VERSION_MAJOR=' + qtvers[0],
++    '-DQT_VERSION_MINOR=' + qtvers[1],
++    '-DQT_VERSION_PATCH=' + qtvers[2]
++    ]
++
++  mocFiles = qt.preprocess(moc_extra_arguments : moc_defines,
++                           moc_headers : mocHeaders,
++                           include_directories: include_directories('include'))
+ 
+   osmscoutclientqt = library('osmscout_client_qt',
+                              mocFiles,
+diff --git a/libosmscout-client-qt/src/meson.build b/libosmscout-client-qt/src/meson.build
+index 52d18ca57..ca546994a 100644
+--- a/libosmscout-client-qt/src/meson.build
++++ b/libosmscout-client-qt/src/meson.build
+@@ -49,6 +49,7 @@ osmscoutclientqtSrc = [
+             'src/osmscoutclientqt/InstalledMapsModel.cpp',
+             'src/osmscoutclientqt/Voice.cpp',
+             'src/osmscoutclientqt/VoiceManager.cpp',
++            'src/osmscoutclientqt/VoicePlayer.cpp',
+             'src/osmscoutclientqt/AvailableVoicesModel.cpp',
+             'src/osmscoutclientqt/InstalledVoicesModel.cpp',
+           ]
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/InstalledVoicesModel.cpp b/libosmscout-client-qt/src/osmscoutclientqt/InstalledVoicesModel.cpp
+index dd67326a3..d523e4073 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/InstalledVoicesModel.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/InstalledVoicesModel.cpp
+@@ -19,6 +19,7 @@
+ 
+ #include <osmscoutclientqt/InstalledVoicesModel.h>
+ #include <osmscoutclientqt/OSMScoutQt.h>
++#include <osmscoutclientqt/VoicePlayer.h>
+ 
+ #include <algorithm>
+ 
+@@ -136,30 +137,21 @@ void InstalledVoicesModel::playSample(const QModelIndex &index, const QStringLis
+     return;
+   }
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+   if (mediaPlayer==nullptr){
+-    assert(currentPlaylist==nullptr);
+-    mediaPlayer = new QMediaPlayer(this);
+-    currentPlaylist = new QMediaPlaylist(mediaPlayer);
+-    mediaPlayer->setPlaylist(currentPlaylist);
++    mediaPlayer = new VoiceCorePlayer(this);
+   }
+ 
+-  currentPlaylist->clear();
++  mediaPlayer->clearQueue();
+ 
+   for (const auto& file : sample){
+     auto sampleUrl = QUrl::fromLocalFile(voice.getDir().path() + QDir::separator() + file);
+     qDebug() << "Adding to playlist:" << sampleUrl;
+-    currentPlaylist->addMedia(sampleUrl);
++    mediaPlayer->addToQueue(sampleUrl);
+   }
+ 
+-  currentPlaylist->setCurrentIndex(0);
+-#else
+-  // TODO: add support for Qt6
+-  qWarning() << "Audio playback is not supported with Qt6 yet";
+-#endif
++  mediaPlayer->setCurrentIndex(0);
+   mediaPlayer->play();
+ }
+-
+ QHash<int, QByteArray> InstalledVoicesModel::roleNames() const
+ {
+   QHash<int, QByteArray> roles=QAbstractListModel::roleNames();
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/NavigationModule.cpp b/libosmscout-client-qt/src/osmscoutclientqt/NavigationModule.cpp
+index ba1903f6e..bb51e0f83 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/NavigationModule.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/NavigationModule.cpp
+@@ -24,6 +24,7 @@
+ #include <QThread>
+ #include <QDateTime>
+ #include <QDir>
++#include <QDebug>
+ 
+ namespace osmscout {
+ 
+@@ -60,21 +61,8 @@ void NavigationModule::InitPlayer()
+   }
+ 
+   if (mediaPlayer==nullptr){
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-    assert(currentPlaylist==nullptr);
+-#endif
+-    mediaPlayer = new QMediaPlayer(this);
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-    currentPlaylist = new QMediaPlaylist(mediaPlayer);
+-#endif
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-    connect(mediaPlayer, &QMediaPlayer::stateChanged, this, &NavigationModule::playerStateChanged);
+-#else
+-    connect(mediaPlayer, &QMediaPlayer::playbackStateChanged, this, &NavigationModule::playerStateChanged);
+-#endif
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-    mediaPlayer->setPlaylist(currentPlaylist);
+-#endif
++    mediaPlayer = new VoiceCorePlayer(this);
++    connect(mediaPlayer, SIGNAL(playbackStateChanged(VoicePlayer::PlaybackState)), this, SLOT(playerStateChanged(VoicePlayer::PlaybackState)));
+   }
+ }
+ 
+@@ -142,11 +130,7 @@ void NavigationModule::ProcessMessages(const std::list<osmscout::NavigationMessa
+         nextMessage = voiceInstructionMessage->message;
+         InitPlayer();
+         assert(mediaPlayer);
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-        playerStateChanged(mediaPlayer->state());
+-#else
+         playerStateChanged(mediaPlayer->playbackState());
+-#endif
+       }
+     } else if (auto* laneMessage = dynamic_cast<osmscout::LaneAgent::LaneMessage*>(message.get());
+                laneMessage != nullptr) {
+@@ -333,38 +317,26 @@ QString NavigationModule::sampleFile(osmscout::VoiceInstructionMessage::VoiceSam
+   }
+ }
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-  void NavigationModule::playerStateChanged(QMediaPlayer::State state)
+-#else
+-  void NavigationModule::playerStateChanged(QMediaPlayer::PlaybackState state)
+-#endif
+-{
+-  if (thread!=QThread::currentThread()){
+-    qWarning() << "Player state changed from incorrect thread;" << thread << "!=" << QThread::currentThread();
+-  }
++  void NavigationModule::playerStateChanged(VoicePlayer::PlaybackState state)
++  {
++    if (thread!=QThread::currentThread()){
++      qWarning() << "Player state changed from incorrect thread;" << thread << "!=" << QThread::currentThread();
++    }
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-  qDebug() << "Voice player state:" << mediaPlayer->state() << "(" << currentPlaylist->currentIndex() << "/" << currentPlaylist->mediaCount() << ")";
+-#endif
++  qDebug() << "Voice player state:" << mediaPlayer->playbackState() << "(" << mediaPlayer->index() << "/" << mediaPlayer->queueCount() << ")";
+   if (!voiceDir.isEmpty() &&
+       !nextMessage.empty() &&
+-      state == QMediaPlayer::StoppedState) {
++      state == VoicePlayer::StoppedState) {
+ 
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-    currentPlaylist->clear();
+-#endif
++    mediaPlayer->clearQueue();
+ 
+     for (const auto& sample : nextMessage){
+       auto sampleUrl = QUrl::fromLocalFile(voiceDir + QDir::separator() + sampleFile(sample));
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+       qDebug() << "Adding to playlist:" << sampleUrl;
+-      currentPlaylist->addMedia(sampleUrl);
+-#endif
++      mediaPlayer->addToQueue(sampleUrl);
+     }
+     nextMessage.clear();
+-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+-    currentPlaylist->setCurrentIndex(0);
+-#endif
++    mediaPlayer->setCurrentIndex(0);
+     mediaPlayer->play();
+   }
+ }
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/OSMScoutQt.cpp b/libosmscout-client-qt/src/osmscoutclientqt/OSMScoutQt.cpp
+index 472feeb76..e0d710945 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/OSMScoutQt.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/OSMScoutQt.cpp
+@@ -232,6 +232,7 @@ void OSMScoutQt::RegisterQmlTypes(const char *uri,
+   qRegisterMetaType<VoiceProvider>("VoiceProvider");
+   qRegisterMetaType<MapProvider>("MapProvider");
+   qRegisterMetaType<QmlRoutingProfileRef>("QmlRoutingProfileRef");
++  qRegisterMetaType<VoicePlayer::PlaybackState>("VoicePlayer::PlaybackState");
+ 
+   // register osmscout types for usage in QML
+   qmlRegisterType<AvailableMapsModel>(uri, versionMajor, versionMinor, "AvailableMapsModel");
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/VoicePlayer.cpp b/libosmscout-client-qt/src/osmscoutclientqt/VoicePlayer.cpp
+new file mode 100644
+index 000000000..6f4ffd243
+--- /dev/null
++++ b/libosmscout-client-qt/src/osmscoutclientqt/VoicePlayer.cpp
+@@ -0,0 +1,72 @@
++/*
++  OSMScout - a Qt backend for libosmscout and libosmscout-map
++  Copyright (C) 2024 Jean-Luc Barriere
++
++  This library is free software; you can redistribute it and/or
++  modify it under the terms of the GNU Lesser General Public
++  License as published by the Free Software Foundation; either
++  version 2.1 of the License, or (at your option) any later version.
++
++  This library is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++  Lesser General Public License for more details.
++
++  You should have received a copy of the GNU Lesser General Public
++  License along with this library; if not, write to the Free Software
++  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
++*/
++
++#include <osmscoutclientqt/VoicePlayer.h>
++#include <osmscoutclientqt/VoiceCorePlayerImpl.h>
++
++namespace osmscout {
++
++VoicePlayer::VoicePlayer(QObject *parent) : QObject(parent) { }
++
++VoiceCorePlayer::VoiceCorePlayer(QObject *parent) : VoicePlayer(parent) {
++  player = new VoiceCorePlayerImpl(this);
++  connect(player, SIGNAL(playbackStateChanged(VoicePlayer::PlaybackState)),
++          this, SLOT(onStateChanged(VoicePlayer::PlaybackState)));
++}
++
++void VoiceCorePlayer::clearQueue() {
++  player->clearQueue();
++}
++
++void VoiceCorePlayer::addToQueue(const QUrl &source) {
++  player->addToQueue(source);
++}
++
++int VoiceCorePlayer::queueCount() const {
++  return player->queueCount();
++}
++
++void VoiceCorePlayer::setCurrentIndex(int index) {
++  player->setCurrentIndex(index);
++}
++
++void VoiceCorePlayer::play() {
++  player->play();
++}
++
++void VoiceCorePlayer::stop() {
++  player->stop();
++}
++
++int VoiceCorePlayer::index() const {
++  return player->index();
++}
++
++VoicePlayer::PlaybackState VoiceCorePlayer::playbackState() const {
++  return state;
++}
++
++void VoiceCorePlayer::onStateChanged(VoicePlayer::PlaybackState newState) {
++  if (state != newState) {
++    state = newState;
++    emit playbackStateChanged(state);
++  }
++}
++
++}
