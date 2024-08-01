@@ -181,13 +181,13 @@ set(libosmscout_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libosmscout")
 set(libosmscout_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/libosmscout")
 
 # First apply our patches in the source of lib
-#list(APPEND libosmscout_patches
-#    libosmscout.3.patch)
-#foreach(patch IN LISTS libosmscout_patches)
-#    execute_process(
-#        COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/${patch}
-#        WORKING_DIRECTORY ${libosmscout_SOURCE_DIR})
-#endforeach()
+list(APPEND libosmscout_patches
+    libosmscout.1.patch)
+foreach(patch IN LISTS libosmscout_patches)
+    execute_process(
+        COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/${patch}
+        WORKING_DIRECTORY ${libosmscout_SOURCE_DIR})
+endforeach()
 
 set(BUILD_SHARED_LIBS               OFF CACHE BOOL "" FORCE)
 set(OSMSCOUT_HAVE_LIB_MARISA        ON  CACHE BOOL "" FORCE)
