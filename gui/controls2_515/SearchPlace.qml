@@ -216,6 +216,9 @@ MapPage {
             label: QT_TR_NOOP("Fuel"); distanceId: 3; iconType: "amenity_fuel";
             types: "amenity_fuel amenity_fuel_building"; }
         ListElement {
+            label: QT_TR_NOOP("Charging Station"); distanceId: 3; iconType: "amenity_charging_station";
+            types: "amenity_charging_station"; }
+        ListElement {
             label: QT_TR_NOOP("Pharmacy"); distanceId: 3; iconType: "amenity_pharmacy";
             types: "amenity_pharmacy"; }
         ListElement {

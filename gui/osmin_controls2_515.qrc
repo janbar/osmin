@@ -277,5 +277,6 @@
         <file>images/voice.svg</file>
         <file>images/zoomin.svg</file>
         <file>images/zoomout.svg</file>
+        <file>images/poi/charging_station.svg</file>
     </qresource>
 </RCC>
