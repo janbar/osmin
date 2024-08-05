@@ -534,11 +534,11 @@ PopOver {
 
     RoutingListModel {
         id: routingModel
-        onRouteFailed: {
+        onRouteFailed: function(reason) {
             routeMessage = qsTranslate("message", reason);
             computeRunning = false;
         }
-        onRoutingProgress: {
+        onRoutingProgress: function(percent) {
             routeProgress = percent;
         }
         onComputingChanged: {
