@@ -368,7 +368,7 @@ ApplicationWindow {
     }
 
     // On android catch the signal 'closing'
-    onClosing: {
+    onClosing: function(close) {
         if (Android) {
             close.accepted = false;
             if (stackView.depth > 1) {

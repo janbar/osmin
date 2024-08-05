@@ -5,7 +5,8 @@ mkdir -p $BUILD_DIR
 export JAVA_HOME=/home/shared/java/jdk1.8.0
 export ANDROID_SDK=/home/shared/Android/Sdk
 export ANDROID_NDK=/home/shared/Android/Sdk/ndk/22.1.7171670
-export QT_DIR=/home/shared/Qt/5.15.2/android
+export QT_ROOT=/home/shared/Qt/6.7.2
+export QT_DIR=$QT_ROOT/android_x86_64
 
 cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_PREFIX_PATH=$QT_DIR \
@@ -13,29 +14,39 @@ cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_MAKE_PROGRAM=$ANDROID_NDK/prebuilt/linux-x86_64/bin/make \
 -DCMAKE_BUILD_TYPE=Debug \
 -DANDROID_ABI="x86_64" \
+-DANDROID_STL_PREFIX="llvm-libc++" \
+-DANDROID_STL_SHARED_LIBRARIES="c++_shared" \
 -DANDROID_SDK_MINVER=24 \
 -DANDROID_SDK_TARGET=26 \
 -DANDROID_NATIVE_API_LEVEL=24 \
--DQT_ANDROID_SDK_BUILDTOOLS_REVISION="29.0.2" \
 -DQT_ANDROID_PLATFORM_LEVEL=29 \
+-DQT_ANDROID_SDK_BUILDTOOLS_REVISION="29.0.2" \
+-DQT_ANDROID_TOOL_PREFIX="x86_64-linux-android" \
 -DQT_ANDROID_SDK_ROOT=$ANDROID_SDK \
 -DQT_ANDROID_NDK_ROOT=$ANDROID_NDK \
--DQt5_DIR=$QT_DIR/lib/cmake/Qt5 \
--DQt5Core_DIR=$QT_DIR/lib/cmake/Qt5Core \
--DQt5Gui_DIR=$QT_DIR/lib/cmake/Qt5Gui \
--DQt5Qml_DIR=$QT_DIR/lib/cmake/Qt5Qml \
--DQt5Network_DIR=$QT_DIR/lib/cmake/Qt5Network \
--DQt5Quick_DIR=$QT_DIR/lib/cmake/Qt5Quick \
--DQt5QuickControls2_DIR=$QT_DIR/lib/cmake/Qt5QuickControls2 \
--DQt5Xml_DIR=$QT_DIR/lib/cmake/Qt5Xml \
--DQt5Svg_DIR=$QT_DIR/lib/cmake/Qt5Svg \
--DQt5Widgets_DIR=$QT_DIR/lib/cmake/Qt5Widgets \
--DQt5Sensors_DIR=$QT_DIR/lib/cmake/Qt5Sensors \
--DQt5Positioning_DIR=$QT_DIR/lib/cmake/Qt5Positioning \
--DQt5Multimedia_DIR=$QT_DIR/lib/cmake/Qt5Multimedia \
--DQt5AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt5AndroidExtras \
--DQt5QmlModels_DIR=$QT_DIR/lib/cmake/Qt5QmlModels \
--DQt5RemoteObjects_DIR=$QT_DIR/lib/cmake/Qt5RemoteObjects \
+-DQT_ANDROID_QT_ROOT=$QT_ROOT \
+-DQt6_DIR=$QT_DIR/lib/cmake/Qt6 \
+-DQt6Core_DIR=$QT_DIR/lib/cmake/Qt6Core \
+-DQt6Gui_DIR=$QT_DIR/lib/cmake/Qt6Gui \
+-DQt6Qml_DIR=$QT_DIR/lib/cmake/Qt6Qml \
+-DQt6QmlIntegration_DIR=$QT_DIR/lib/cmake/Qt6QmlIntegration \
+-DQt6QmlBuiltins_DIR=$QT_DIR/lib/cmake/Qt6QmlBuiltins \
+-DQt6Network_DIR=$QT_DIR/lib/cmake/Qt6Network \
+-DQt6OpenGL_DIR=$QT_DIR/lib/cmake/Qt6OpenGL \
+-DQt6Core5Compat_DIR=$QT_DIR/lib/cmake/Qt6Core5Compat \
+-DQt6QuickTemplates2_DIR=$QT_DIR/lib/cmake/Qt6QuickTemplates2 \
+-DQt6Quick_DIR=$QT_DIR/lib/cmake/Qt6Quick \
+-DQt6QuickControls2_DIR=$QT_DIR/lib/cmake/Qt6QuickControls2 \
+-DQt6Xml_DIR=$QT_DIR/lib/cmake/Qt6Xml \
+-DQt6Svg_DIR=$QT_DIR/lib/cmake/Qt6Svg \
+-DQt6Widgets_DIR=$QT_DIR/lib/cmake/Qt6Widgets \
+-DQt6Sensors_DIR=$QT_DIR/lib/cmake/Qt6Sensors \
+-DQt6Positioning_DIR=$QT_DIR/lib/cmake/Qt6Positioning \
+-DQt6Multimedia_DIR=$QT_DIR/lib/cmake/Qt6Multimedia \
+-DQt6AndroidExtras_DIR=$QT_DIR/lib/cmake/Qt6AndroidExtras \
+-DQt6QmlModels_DIR=$QT_DIR/lib/cmake/Qt6QmlModels \
+-DQt6RemoteObjects_DIR=$QT_DIR/lib/cmake/Qt6RemoteObjects \
 $@
 
-[ $? -eq 0 ] && cmake --build $BUILD_DIR --parallel 8
+#[ $? -eq 0 ] && cmake --build $BUILD_DIR --parallel 8
+

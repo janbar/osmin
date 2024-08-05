@@ -26,8 +26,9 @@
 #define AUTO_MOUNT        "/run/media/"
 
 #elif defined(Q_OS_ANDROID)
-#include <QtAndroid>
-#include <QAndroidJniEnvironment>
+#include <QtCore/private/qandroidextras_p.h>
+#include <QJniObject>
+#include <QCoreApplication>
 #define AUTO_MOUNT        "/storage/"
 
 #else
@@ -69,11 +70,11 @@ PlatformExtras::~PlatformExtras()
 QString PlatformExtras::getDataDir()
 {
 #ifdef Q_OS_ANDROID
-  QAndroidJniObject activity = QtAndroid::androidActivity();
-  QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
-  QAndroidJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
-  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-  return path.toString();
+  //auto activity = QNativeInterface::QAndroidApplication::context();
+  return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+  //QJniObject file = QJniObject::callStaticObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", "");
+  //QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  //return path.toString();
 #else
   return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 #endif
@@ -84,10 +85,11 @@ QString PlatformExtras::getAppDir()
 #ifdef Q_OS_ANDROID
   // from Android 14, only internal storage can be used for resources
   // file descriptors can be hold during the life of the instance
-  QAndroidJniObject activity = QtAndroid::androidActivity();
-  QAndroidJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
-  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-  return path.toString();
+  //auto activity = QNativeInterface::QAndroidApplication::context();
+  return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  //QJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
+  //QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  //return path.toString();
 #else
   return getDataDir();
 #endif
@@ -147,10 +149,12 @@ void PlatformExtras::doPreventBlanking(bool on)
   m_preventBlanking = on;
 #if defined(Q_OS_ANDROID)
   {
-    QtAndroid::runOnAndroidThread([on]
+    //QtAndroid::runOnAndroidThread([on]
+    QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]
     {
-      static const int FLAG_KEEP_SCREEN_ON = QAndroidJniObject::getStaticField<jint>("android/view/WindowManager$LayoutParams", "FLAG_KEEP_SCREEN_ON");
-      auto window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+      static const int FLAG_KEEP_SCREEN_ON = QJniObject::getStaticField<jint>("android/view/WindowManager$LayoutParams", "FLAG_KEEP_SCREEN_ON");
+      //auto window = QtAndroid::androidActivity().callMethod("getWindow", "()Landroid/view/Window;");
+      QJniObject window = QNativeInterface::QAndroidApplication::context().callMethod<jobject>("getWindow");
       if (on)
         window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
       else

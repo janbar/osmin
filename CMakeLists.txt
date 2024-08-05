@@ -7,7 +7,7 @@ option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
 set(APP_VERSION       "1.13.0")
-set(APP_VERSION_CODE  69)
+set(APP_VERSION_CODE  70)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -96,35 +96,22 @@ endif()
 
 set(QT_VERSION_PREFERRED "6" CACHE STRING "preferred Qt version" FORCE)
 include(qtchooser)
+if(NOT QT_FOUND)
+    message(FATAL_ERROR "Qt${QT_VERSION_PREFERRED} NOT found")
+endif()
 
 add_subdirectory(backend)
 
 set(CMAKE_AUTOMOC ON)
-if(QT_VERSION_MAJOR EQUAL 5)
-    find_package(Qt5 ${QT_VERSION} COMPONENTS
-        Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
-        Multimedia RemoteObjects Positioning REQUIRED)
-    if(ANDROID)
-        find_package(Qt5 ${QT_VERSION} COMPONENTS AndroidExtras REQUIRED)
-    elseif(UNIX AND NOT APPLE)
-        find_library(DBUS_LIBRARIES dbus-1)
-        if(DBUS_LIBRARIES)
-            find_package(Qt5 ${QT_VERSION} COMPONENTS DBus REQUIRED)
-            set(HAVE_DBUS 1)
-            message(STATUS "Enable DBus interfaces")
-        endif()
-    endif()
-elseif(QT_VERSION_MAJOR EQUAL 6)
-    find_package(Qt6 ${QT_VERSION} COMPONENTS
-        Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
-        Multimedia RemoteObjects Positioning Core5Compat REQUIRED)
-    if(UNIX AND NOT APPLE)
-        find_library(DBUS_LIBRARIES dbus-1)
-        if(DBUS_LIBRARIES)
-            find_package(Qt6 ${QT_VERSION} COMPONENTS DBus REQUIRED)
-            set(HAVE_DBUS 1)
-            message(STATUS "Enable DBus interfaces")
-        endif()
+find_package(Qt6 ${QT_VERSION} COMPONENTS
+    Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
+    Multimedia RemoteObjects Positioning Core5Compat REQUIRED)
+if(UNIX AND NOT APPLE)
+    find_library(DBUS_LIBRARIES dbus-1)
+    if(DBUS_LIBRARIES)
+        find_package(Qt6 ${QT_VERSION} COMPONENTS DBus REQUIRED)
+        set(HAVE_DBUS 1)
+        message(STATUS "Enable DBus interfaces")
     endif()
 endif()
 
@@ -174,91 +161,66 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/mapextras.h
 )
 
-if(QT_VERSION_MAJOR EQUAL 5)
-    qt5_add_resources(osmin-resources gui/osmin_controls2_515.qrc)
-    qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep SOURCE)
-    qt5_generate_repc(osmin_SOURCES src/servicemessenger.rep REPLICA)
-elseif(QT_VERSION_MAJOR EQUAL 6)
-    qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
-endif()
-
 if(UNIX)
     list(APPEND osmin_SOURCES src/signalhandler.cpp)
     list(APPEND osmin_HEADERS src/signalhandler.h)
 endif()
 
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
+add_definitions(-DQT_STATICPLUGIN)
 
 include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
 
-if(ANDROID)
-    add_library(osmin SHARED ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
-else()
-    add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
-endif()
+qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt6_add_repc_sources(osmin src/servicemessenger.rep)
-    qt6_add_repc_replicas(osmin src/servicemessenger.rep)
-endif()
+#qt_add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources} MANUAL_FINALIZATION)
+add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
+qt6_add_repc_sources(osmin src/servicemessenger.rep)
+qt6_add_repc_replicas(osmin src/servicemessenger.rep)
 
-target_link_libraries(osmin ${LIBOSMSCOUT_LIBRARIES})
-
-add_definitions(-DQT_STATICPLUGIN)
+target_link_libraries(osmin PRIVATE ${LIBOSMSCOUT_LIBRARIES})
+target_link_libraries(osmin PRIVATE
+    Qt::RemoteObjects Qt::Positioning
+    Qt::QuickControls2 Qt::Qml Qt::Quick
+    Qt::Widgets Qt::Gui Qt::Xml
+    Qt::Svg Qt::Network Qt::Sensors
+    Qt::Multimedia Qt::Core
+    Qt6::Core5Compat)
 
 if(ANDROID)
     add_definitions(-DDEVICE_MOBILE)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
-    target_link_libraries(osmin android log
-        Qt::RemoteObjects Qt::Positioning
-        Qt::QuickControls2 Qt::Qml Qt::Quick
-        Qt::Widgets Qt::Gui Qt::Xml
-        Qt::Svg Qt::Network Qt::Sensors
-        Qt::Multimedia Qt::Core)
-    if(QT_VERSION_MAJOR EQUAL 5)
-        target_link_libraries(osmin Qt::AndroidExtras)
+    set_property(TARGET osmin PROPERTY SUFFIX "_${ANDROID_ABI}.so")
+#set_property(TARGET osmin APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android/package-sources")
+    target_link_libraries(osmin PRIVATE android log Qt6::CorePrivate)
+
+    # Provides dependency openssl
+    if(NOT ANDROID_SDK_ROOT)
+        set(ANDROID_SDK_ROOT "$ENV{ANDROID_SDK}")
+        if(NOT ANDROID_SDK_ROOT)
+            message(FATAL_ERROR "The ANDROID_SDK environment variable is not set")
+        endif()
     endif()
-    if(QT_VERSION_MAJOR EQUAL 6)
-        target_link_libraries(osmin Qt6::Core5Compat)
+    include(${ANDROID_SDK_ROOT}/android_openssl/android_openssl.cmake)
+    add_android_openssl_libraries(osmin)
+    get_target_property(ANDROID_EXTRA_LIBS osmin QT_ANDROID_EXTRA_LIBS)
+
+    # Fix import of shared omp with android ndk rev 21
+    if(OpenMP_CXX_LIBRARIES MATCHES libomp.so)
+        list(APPEND ANDROID_EXTRA_LIBS ${OpenMP_CXX_LIBRARIES})
     endif()
+
+    message(STATUS "Extra libraries: ${ANDROID_EXTRA_LIBS}")
+
 else()
     if(BUILD_DEVICE_MOBILE)
         add_definitions(-DDEVICE_MOBILE)
     endif()
-    target_link_libraries(osmin
-        Qt::RemoteObjects Qt::Positioning
-        Qt::QuickControls2 Qt::Qml Qt::Quick
-        Qt::Widgets Qt::Gui Qt::Xml
-        Qt::Svg Qt::Network Qt::Sensors
-        Qt::Multimedia Qt::Core)
     if(HAVE_DBUS)
         add_definitions(-DHAVE_DBUS)
-        target_link_libraries(osmin Qt::DBus)
+        target_link_libraries(osmin PRIVATE Qt::DBus)
     endif()
-    if(QT_VERSION_MAJOR EQUAL 6)
-        target_link_libraries(osmin Qt6::Core5Compat)
-    endif()
-endif()
 
-if(ANDROID)
-    # Fix import of shared omp with android ndk rev 21
-    if(OpenMP_CXX_LIBRARIES MATCHES libomp.so)
-       set(SHARED_LIBOMP ${OpenMP_CXX_LIBRARIES})
-    endif()
-    add_dependencies(osmin ssl crypto)
-    include(android/AddQtAndroidApk.cmake)
-    add_qt_android_apk(osmin-apk osmin
-        NAME ${APP_NAME}
-        VERSION_CODE ${APP_VERSION_CODE}
-        PACKAGE_NAME ${APP_ID}
-        PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
-        BUILDTOOLS_REVISION ${QT_ANDROID_SDK_BUILDTOOLS_REVISION}
-        DEPENDS ssl crypto ${SHARED_LIBOMP}
-        PLUGINS ${PROJECT_SOURCE_DIR}/resources
-        KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
-        KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
-    )
-else()
     set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")
     install(TARGETS osmin RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
     file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -266,21 +228,36 @@ else()
         DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXEC}
     )
+    add_custom_target(
+        "run"
+        QML2_IMPORT_PATH=${CMAKE_BINARY_DIR}/backend/qml ${CMAKE_BINARY_DIR}/${EXEC} --debug
+        DEPENDS osmin
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY
+    )
+    add_custom_target(
+        "uninstall"
+        ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+    )
 endif()
 
-add_custom_target(
-    "run"
-    QML2_IMPORT_PATH=${CMAKE_BINARY_DIR}/backend/qml ${CMAKE_BINARY_DIR}/${EXEC} --debug
-    DEPENDS osmin
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
+#qt_finalize_executable(osmin)
 
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY
-)
+if(ANDROID)
+  include(android/AddQtAndroidApk.cmake)
+  add_qt_android_apk(osmin-apk osmin
+      NAME ${APP_NAME}
+      VERSION_CODE ${APP_VERSION_CODE}
+      PACKAGE_NAME ${APP_ID}
+      PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
+      BUILDTOOLS_REVISION ${QT_ANDROID_SDK_BUILDTOOLS_REVISION}
+      DEPENDS ${ANDROID_EXTRA_LIBS}
+      ASSETS ${PROJECT_SOURCE_DIR}/resources
+      KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
+      KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
+  )
+endif()
 
-add_custom_target(
-    "uninstall"
-    ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-)

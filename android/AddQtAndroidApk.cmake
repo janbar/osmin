@@ -6,11 +6,11 @@ cmake_minimum_required(VERSION 3.8.2)
 # Requires:
 #  env ANDROID_SDK                The SDK root path
 #  env ANDROID_NDK                The NDK root path
-#  env JAVA_HOME                  Path Java JRE supported by SDK
+#  env JAVA_HOME                  The Java home path for JRE supported by SDK
+#  env QT_TOOL_HOME               The Qt home path for deployment tools
 #
 #  ANDROID_ABI                    "arm64-v8a"
 #  ANDROID_NATIVE_API_LEVEL       SDK API (i.e 24)
-#  ANDROID_STL_PREFIX             "llvm-libc++"
 #  QT_ANDROID_PLATFORM_LEVEL      SDK platform (i.e 29)
 #  QT_ANDROID_ARCHITECTURE        Architecture (i.e "aarch64-linux-android")
 #  ANDROID_SDK_MINVER             Default ANDROID_NATIVE_API_LEVEL
@@ -32,17 +32,20 @@ if(NOT ANDROID)
 endif()
 
 # find the Qt directory
-if(NOT Qt5Core_DIR)
-    find_package(Qt5Core REQUIRED)
+if(NOT Qt6Core_DIR)
+    find_package(Qt6 COMPONENT Core REQUIRED)
 endif()
-get_filename_component(QT_ANDROID_QT_DIR "${Qt5Core_DIR}/../../.." ABSOLUTE)
+get_filename_component(QT_ANDROID_QT_DIR "${Qt6Core_DIR}/../../.." ABSOLUTE)
 message(STATUS "Found Qt for Android: ${QT_ANDROID_QT_DIR}")
 
 # find the Android SDK
 if(NOT QT_ANDROID_SDK_ROOT)
     set(QT_ANDROID_SDK_ROOT $ENV{ANDROID_SDK})
     if(NOT QT_ANDROID_SDK_ROOT)
-        message(FATAL_ERROR "Could not find the Android SDK. Please set either the ANDROID_SDK environment variable, or the QT_ANDROID_SDK_ROOT CMake variable to the root directory of the Android SDK")
+        set(QT_ANDROID_SDK_ROOT $ENV{ANDROID_SDK_ROOT})
+        if(NOT QT_ANDROID_SDK_ROOT)
+            message(FATAL_ERROR "Could not find the Android SDK. Please set either the ANDROID_SDK environment variable, or the QT_ANDROID_SDK_ROOT CMake variable to the root directory of the Android SDK")
+        endif()
     endif()
 endif()
 string(REPLACE "\\" "/" QT_ANDROID_SDK_ROOT ${QT_ANDROID_SDK_ROOT}) # androiddeployqt doesn't like backslashes in paths
@@ -52,9 +55,9 @@ message(STATUS "Found Android SDK: ${QT_ANDROID_SDK_ROOT}")
 if(NOT QT_ANDROID_NDK_ROOT)
     set(QT_ANDROID_NDK_ROOT $ENV{ANDROID_NDK})
     if(NOT QT_ANDROID_NDK_ROOT)
-        set(QT_ANDROID_NDK_ROOT ${ANDROID_NDK})
+        set(QT_ANDROID_NDK_ROOT $ENV{ANDROID_NDK_ROOT})
         if(NOT QT_ANDROID_NDK_ROOT)
-        message(FATAL_ERROR "Could not find the Android NDK. Please set either the ANDROID_NDK environment or CMake variable, or the QT_ANDROID_NDK_ROOT CMake variable to the root directory of the Android NDK")
+            message(FATAL_ERROR "Could not find the Android NDK. Please set either the ANDROID_NDK environment, or the QT_ANDROID_NDK_ROOT CMake variable to the root directory of the Android NDK")
         endif()
     endif()
 endif()
@@ -74,6 +77,15 @@ if(NOT QT_ANDROID_ARCHITECTURE)
     endif()
     if(NOT QT_ANDROID_ARCHITECTURE)
         message(FATAL_ERROR "Please set the QT_ANDROID_ARCHITECTURE CMake variable")
+    endif()
+endif()
+
+# find the Qt tool home
+if(NOT QT_ANDROID_TOOL_ROOT)
+    set(QT_ANDROID_TOOL_ROOT $ENV{QT_TOOL_HOME})
+    if(NOT QT_ANDROID_TOOL_ROOT)
+        set(QT_ANDROID_TOOL_ROOT ${QT_ANDROID_QT_DIR})
+        message(WARNING "Please set either the QT_TOOL_HOME environment, or the QT_ANDROID_TOOL_ROOT CMake variable to the root directory of deployment tools")
     endif()
 endif()
 
@@ -99,11 +111,13 @@ include(CMakeParseArguments)
 # list of bind variables for target qtdeploy.json
 #  QT_ANDROID_SDK_ROOT
 #  QT_ANDROID_NDK_ROOT
+#  QT_ANDROID_TOOL_ROOT
 #  QT_ANDROID_QT_DIR
 #  QT_ANDROID_SDK_BUILDTOOLS_REVISION
 #  QT_ANDROID_ARCHITECTURE
 #  QT_ANDROID_MANIFEST_TEMPLATE
 #  QT_ANDROID_STL_PATH
+#  QT_ANDROID_ARCHITECTURE
 #  QT_ANDROID_PRE_COMMANDS
 
 #  ANDROID_SDK_MINVER
@@ -122,13 +136,13 @@ include(CMakeParseArguments)
 macro(add_qt_android_apk TARGET SOURCE_TARGET)
 
     # parse the macro arguments
-    cmake_parse_arguments(ARG "INSTALL" "NAME;VERSION_CODE;PACKAGE_NAME;PACKAGE_SOURCES;KEYSTORE_PASSWORD;BUILDTOOLS_REVISION" "DEPENDS;PLUGINS;ASSETS;KEYSTORE" ${ARGN})
+    cmake_parse_arguments(ARG "INSTALL" "NAME;VERSION_CODE;PACKAGE_NAME;PACKAGE_SOURCES;KEYSTORE_PASSWORD;BUILDTOOLS_REVISION" "DEPENDS;PLUGINS;KEYSTORE;ASSETS" ${ARGN})
 
     # target name
     set(QT_ANDROID_APP_TARGET "$<TARGET_NAME:${SOURCE_TARGET}>")
 
     # full file path to the app's main shared library
-    set(QT_ANDROID_APP_PATH "$<TARGET_FILE:${SOURCE_TARGET}>")
+    set(QT_ANDROID_APP_BINARY "$<TARGET_FILE:${SOURCE_TARGET}>")
 
     # define the application name
     if(ARG_NAME)
@@ -187,8 +201,8 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
 
         # define commands that will be added before the APK target build commands, to refresh the source package directory
         set(QT_ANDROID_PRE_COMMANDS ${QT_ANDROID_PRE_COMMANDS}
-            COMMAND ${CMAKE_COMMAND} -E remove_directory "${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}") # clean the destination directory
-        set(QT_ANDROID_PRE_COMMANDS ${QT_ANDROID_PRE_COMMANDS} COMMAND ${CMAKE_COMMAND} -E make_directory "${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}") # re-create it
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}) # clean the destination directory
+        set(QT_ANDROID_PRE_COMMANDS ${QT_ANDROID_PRE_COMMANDS} COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}) # re-create it
         # deploy Qt translations
         set(QT_ANDROID_PRE_COMMANDS ${QT_ANDROID_PRE_COMMANDS} COMMAND ${CMAKE_COMMAND} -E make_directory "${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}/assets/translations")
         set(QT_ANDROID_PRE_COMMANDS ${QT_ANDROID_PRE_COMMANDS} COMMAND ${CMAKE_COMMAND} -E copy_directory "${QT_ANDROID_QT_DIR}/translations" "${QT_ANDROID_APP_PACKAGE_SOURCE_ROOT}/assets/translations")
@@ -289,8 +303,8 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
         # it seems that recompiled libraries are not copied if we don't remove them first
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
         COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_ANDROID_APP_PATH} ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
-        COMMAND ${QT_ANDROID_QT_DIR}/bin/androiddeployqt
+        COMMAND ${CMAKE_COMMAND} -E copy ${QT_ANDROID_APP_BINARY} ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+        COMMAND ${QT_ANDROID_TOOL_ROOT}/bin/androiddeployqt
         --output ${QT_ANDROID_APP_BINARY_DIR}
         --input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json
         --gradle
