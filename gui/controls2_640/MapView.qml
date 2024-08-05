@@ -1200,7 +1200,7 @@ MapPage {
 
     GPXFileModel {
         id: courseFile
-        onParseFinished: {
+        onParseFinished: function(succeeded) {
             if (succeeded)
                 loadData();
         }
