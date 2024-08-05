@@ -624,7 +624,7 @@
     </message>
     <message>
         <location filename="../controls2_515/SearchPlace.qml" line="123"/>
-        <location filename="../controls2_515/SearchPlace.qml" line="286"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="289"/>
         <source>Up to distance %1</source>
         <translation>Jusqu&apos;à une distance de %1</translation>
     </message>
@@ -680,56 +680,61 @@
     </message>
     <message>
         <location filename="../controls2_515/SearchPlace.qml" line="219"/>
+        <source>Charging Station</source>
+        <translation>Bornes de recharges</translation>
+    </message>
+    <message>
+        <location filename="../controls2_515/SearchPlace.qml" line="222"/>
         <source>Pharmacy</source>
         <translation>Pharmacie</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="222"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="225"/>
         <source>Accomodation</source>
         <translation>Hébergement</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="225"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="228"/>
         <source>Camp</source>
         <translation>Camping</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="228"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="231"/>
         <source>Castle, Manor</source>
         <translation>Château, Manoir</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="231"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="234"/>
         <source>Spring</source>
         <translation>Source</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="234"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="237"/>
         <source>Shelter</source>
         <translation>Refuge</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="239"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="242"/>
         <source>Via ferrata route</source>
         <translation>Parcours via ferrata</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="344"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="347"/>
         <source>Unnamed</source>
         <translation>Sans nom</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="605"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="608"/>
         <source>Add favorite</source>
         <translation>Ajouter un favori</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="619"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="622"/>
         <source>Delete favorite ?</source>
         <translation>Supprimer le favori ?</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="677"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="680"/>
         <source>No data</source>
         <translation>Aucune données</translation>
     </message>
