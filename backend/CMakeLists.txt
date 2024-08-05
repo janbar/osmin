@@ -150,8 +150,8 @@ if(NOT BUILD_DEPENDENCIES)
 endif()
 if(NOT LibXml2_FOUND)
     download_project(PROJ xml2
-        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.9.tar.gz"
-        URL_HASH MD5=0ec4f9897a391fc774f8816efa77847c
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/libxml2-2.9.14.tar.gz"
+        URL_HASH MD5=7eba7ae2403717d7d611b957b528eff7
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
     set(BUILD_SHARED_LIBS OFF)
@@ -166,6 +166,7 @@ if(NOT LibXml2_FOUND)
     set(LIBXML2_WITH_DEBUG OFF)
     set(LIBXML2_WITH_PROGRAMS OFF)
     set(LIBXML2_WITH_TESTS OFF)
+    set(SKIP_INSTALL_ALL ON)
     add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-src
         ${CMAKE_CURRENT_BINARY_DIR}/xml2-build
