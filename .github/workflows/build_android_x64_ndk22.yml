@@ -3,11 +3,11 @@ name: build android_x64 ndk22
 on:
   pull_request:
     branches:
-      - debug
+      - dev/1.13
       - master
   push:
     branches:
-      - debug
+      - dev/1.13
       - master
 
 jobs:
