@@ -198,24 +198,24 @@ else()
     add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 endif()
 
-target_link_libraries(osmin ${LIBOSMSCOUT_LIBRARIES})
+target_link_libraries(osmin PRIVATE ${LIBOSMSCOUT_LIBRARIES})
 
 add_definitions(-DQT_STATICPLUGIN)
 
 if(ANDROID)
     add_definitions(-DDEVICE_MOBILE)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
-    target_link_libraries(osmin Qt5::QuickControls2 Qt5::AndroidExtras android log Qt5::RemoteObjects Qt5::Positioning
+    target_link_libraries(osmin PRIVATE Qt5::QuickControls2 Qt5::AndroidExtras android log Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
 else()
     if(BUILD_DEVICE_MOBILE)
         add_definitions(-DDEVICE_MOBILE)
     endif()
-    target_link_libraries(osmin Qt5::QuickControls2 Qt5::RemoteObjects Qt5::Positioning
+    target_link_libraries(osmin PRIVATE Qt5::QuickControls2 Qt5::RemoteObjects Qt5::Positioning
                           Qt5::Qml Qt5::Quick Qt5::Widgets Qt5::Gui Qt5::Xml Qt5::Svg Qt5::Network Qt5::Sensors Qt5::Multimedia Qt5::Core)
     if(HAVE_DBUS)
         add_definitions(-DHAVE_DBUS)
-        target_link_libraries(osmin Qt5::DBus)
+        target_link_libraries(osmin PRIVATE Qt5::DBus)
     endif()
 endif()
 
