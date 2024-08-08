@@ -6,8 +6,8 @@ project(osmin C CXX)
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 
-set(APP_VERSION       "1.13.0")
-set(APP_VERSION_CODE  70)
+set(APP_VERSION       "2.0.0")
+set(APP_VERSION_CODE  71)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
@@ -174,7 +174,11 @@ include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
 qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
 
 #qt_add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources} MANUAL_FINALIZATION)
-add_library(osmin SHARED ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
+if(ANDROID)
+    add_library(osmin SHARED ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
+else()
+  add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
+endif()
 qt6_add_repc_sources(osmin src/servicemessenger.rep)
 qt6_add_repc_replicas(osmin src/servicemessenger.rep)
 
