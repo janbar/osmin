@@ -174,7 +174,7 @@ include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
 qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
 
 #qt_add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources} MANUAL_FINALIZATION)
-add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
+add_library(osmin SHARED ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources})
 qt6_add_repc_sources(osmin src/servicemessenger.rep)
 qt6_add_repc_replicas(osmin src/servicemessenger.rep)
 
@@ -247,17 +247,19 @@ endif()
 #qt_finalize_executable(osmin)
 
 if(ANDROID)
-  include(android/AddQtAndroidApk.cmake)
-  add_qt_android_apk(osmin-apk osmin
-      NAME ${APP_NAME}
-      VERSION_CODE ${APP_VERSION_CODE}
-      PACKAGE_NAME ${APP_ID}
-      PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
-      BUILDTOOLS_REVISION ${QT_ANDROID_SDK_BUILDTOOLS_REVISION}
-      DEPENDS ${ANDROID_EXTRA_LIBS}
-      ASSETS ${PROJECT_SOURCE_DIR}/resources
-      KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
-      KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
+    include(android/AddQtAndroidApk.cmake)
+    add_qt_android_apk(osmin-apk osmin
+        NAME ${APP_NAME}
+        VERSION_CODE ${APP_VERSION_CODE}
+        PACKAGE_NAME ${APP_ID}
+        PACKAGE_SOURCES ${PROJECT_SOURCE_DIR}/android/package-sources
+        BUILDTOOLS_REVISION ${QT_ANDROID_SDK_BUILDTOOLS_REVISION}
+        DEPENDS ${ANDROID_EXTRA_LIBS}
+        PLUGINS platforms tls iconengines imageformats multimedia
+                position sensors networkinformation qmltooling styles
+        ASSETS ${PROJECT_SOURCE_DIR}/resources
+        KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
+        KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
   )
 endif()
 
