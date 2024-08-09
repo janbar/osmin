@@ -70,11 +70,11 @@ PlatformExtras::~PlatformExtras()
 QString PlatformExtras::getDataDir()
 {
 #ifdef Q_OS_ANDROID
-  //auto activity = QNativeInterface::QAndroidApplication::context();
-  return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-  //QJniObject file = QJniObject::callStaticObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", "");
-  //QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-  //return path.toString();
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject nullstr = QJniObject::fromString("");
+  QJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
+  QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  return path.toString();
 #else
   return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 #endif
@@ -85,11 +85,10 @@ QString PlatformExtras::getAppDir()
 #ifdef Q_OS_ANDROID
   // from Android 14, only internal storage can be used for resources
   // file descriptors can be hold during the life of the instance
-  //auto activity = QNativeInterface::QAndroidApplication::context();
-  return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-  //QJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
-  //QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-  //return path.toString();
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
+  QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  return path.toString();
 #else
   return getDataDir();
 #endif
