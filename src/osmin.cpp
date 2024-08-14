@@ -227,6 +227,7 @@ int startGUI(int argc, char* argv[])
   // request permissions for fine location
   {
     QStringList androidPermissions;
+    androidPermissions.append("android.permission.ACCESS_COARSE_LOCATION");
     androidPermissions.append("android.permission.ACCESS_FINE_LOCATION");
     QtAndroid::requestPermissionsSync(androidPermissions);
   }
