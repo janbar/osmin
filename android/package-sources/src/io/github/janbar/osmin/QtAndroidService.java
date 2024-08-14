@@ -3,7 +3,7 @@ package io.github.janbar.osmin;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import org.qtproject.qt5.android.bindings.QtService;
+import org.qtproject.qt.android.bindings.QtService;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
