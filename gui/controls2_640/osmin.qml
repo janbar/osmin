@@ -374,19 +374,19 @@ ApplicationWindow {
     }
 
     // On android catch the signal 'closing'
-    onClosing: {
-        if (Android) {
-            close.accepted = false;
-            if (stackView.depth > 1) {
-                if (stackView.currentItem.isRoot)
-                    stackView.pop();
-                else
-                    stackView.currentItem.goUpClicked();
-            } else {
-                // don't trigger any op synchronously
-                postponeKeyBackPressed.start();
-            }
-        }
+    onClosing: function(close) {
+        // if (Android) {
+        //     close.accepted = false;
+        //     if (stackView.depth > 1) {
+        //         if (stackView.currentItem.isRoot)
+        //             stackView.pop();
+        //         else
+        //             stackView.currentItem.goUpClicked();
+        //     } else {
+        //         // don't trigger any op synchronously
+        //         postponeKeyBackPressed.start();
+        //     }
+        // }
     }
 
     // On desktop catch the key 'ESC'
