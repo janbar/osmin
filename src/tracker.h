@@ -189,6 +189,7 @@ private:
   osmscout::PositionAgent::PositionState m_state;
   double m_magneticDip;
   double m_azimuth;
+  double m_currentAlt;
   double m_currentSpeed;
   double m_maxSpeed;
   struct position_t
