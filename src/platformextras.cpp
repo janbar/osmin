@@ -149,12 +149,11 @@ void PlatformExtras::doPreventBlanking(bool on)
   {
     QtAndroid::runOnAndroidThread([on]
     {
-      static const int FLAG_KEEP_SCREEN_ON = QAndroidJniObject::getStaticField<jint>("android/view/WindowManager$LayoutParams", "FLAG_KEEP_SCREEN_ON");
-      auto window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
-      if (on)
-        window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
-      else
-        window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+      QAndroidJniObject activity = QtAndroid::androidActivity();
+      QAndroidJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidHelper",
+                                                "preventBlanking",
+                                                "(Landroid/content/Context;Z)V",
+                                                activity.object(), (on ? JNI_TRUE : JNI_FALSE));
     });
   }
 #elif defined(HAVE_DBUS)
