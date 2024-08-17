@@ -46,25 +46,25 @@ DialogBase {
         width: dialog.availableWidth
         text: qsTr("OSMin is a GPS Navigator based on a fork of OSMScout. It allows on-road routing and off-road navigation with OpenStreetMap® data.")
         wrapMode: Label.Wrap
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
     }
     Text {
         color: styleMap.dialog.foregroundColor
         width: dialog.availableWidth
         text: qsTr("Author: %1").arg("Jean-Luc Barriere")
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
     }
     Text {
         color: styleMap.dialog.foregroundColor
         width: dialog.availableWidth
         text: qsTr("Version: %1").arg(VersionString)
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
     }
     Text {
         id: donate
         color: styleMap.dialog.foregroundColor
         width: dialog.availableWidth
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
         text: "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jlbarriere68%40gmail%2ecom&lc=US&item_name=OSMin&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted'>Donate with Paypal</a>"
         onLinkHovered: {
             if (hoveredLink)

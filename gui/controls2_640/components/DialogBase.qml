@@ -95,7 +95,7 @@ Dialog {
             Text {
                 horizontalAlignment: Text.AlignHCenter
                 text: dialog.text
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
                 color: styleMap.dialog.foregroundColor
                 wrapMode: Text.Wrap
                 visible: (text !== "")

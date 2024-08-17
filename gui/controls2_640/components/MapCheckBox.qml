@@ -43,7 +43,7 @@ Item {
         anchors.left: parent.left
         width: parent.width - indicator.width - units.gu(2.0 * zoom)
         text: ""
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
         opacity: enabled ? 1.0 : 0.3
         color: control.down ? control.controlDownColor : control.color
         elide: Text.ElideRight
