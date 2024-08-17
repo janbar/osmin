@@ -219,7 +219,7 @@ ApplicationWindow {
             Label {
                 id: titleLabel
                 text: stackView.currentItem != null ? stackView.currentItem.pageTitle : ""
-                font.pointSize: units.fs("large")
+                font.pixelSize: units.fs("large")
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -262,7 +262,7 @@ ApplicationWindow {
 
                         MenuItem {
                             text: qsTr("About")
-                            font.pointSize: units.fs("medium")
+                            font.pixelSize: units.fs("medium")
                             onTriggered: dialogAbout.open()
                         }
                     }
@@ -275,7 +275,7 @@ ApplicationWindow {
             anchors.fill: parent
             backgroundRadius: 0
             edgeMargins: 0
-            font.pointSize: units.fs("medium");
+            font.pixelSize: units.fs("medium");
             backgroundColor: styleMap.view.backgroundColor
             foregroundColor: styleMap.view.foregroundColor
         }
