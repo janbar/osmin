@@ -64,7 +64,7 @@ MapPage {
                 Label {
                     anchors.verticalCenter: parent.verticalCenter
                     color: "red"
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     text: availableVoicesModel.msg
                 }
 
@@ -123,18 +123,18 @@ MapPage {
                             anchors.verticalCenter: parent.verticalCenter
                             Label {
                                 color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
+                                font.pixelSize: units.fs("medium")
                                 font.bold: true
                                 text: name
                                 elide: Text.ElideRight
                             }
                             Label {
                                 color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
+                                font.pixelSize: units.fs("medium")
                                 text: qsTranslate("resource", lang) + " , " + qsTranslate("resource", gender)
                             }
                             Label {
-                                font.pointSize: units.fs("x-small")
+                                font.pixelSize: units.fs("x-small")
                                 color: styleMap.view.secondaryColor
                                 text: qsTr("Author: %1").arg(author)
                             }

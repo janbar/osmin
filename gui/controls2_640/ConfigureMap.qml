@@ -49,7 +49,7 @@ PopOver {
                 maximumLineCount: 4
                 wrapMode: Text.Wrap
                 color: foregroundColor
-                font.pointSize: units.fs("x-small")
+                font.pixelSize: units.fs("x-small")
                 font.weight: Font.Normal
             }
         }
@@ -76,7 +76,7 @@ PopOver {
                 maximumLineCount: 4
                 wrapMode: Text.Wrap
                 color: foregroundColor
-                font.pointSize: units.fs("x-small")
+                font.pixelSize: units.fs("x-small")
                 font.weight: Font.Normal
             }
         }
@@ -118,7 +118,7 @@ PopOver {
         Label {
             text: qsTr("Font name")
             color: styleMap.popover.foregroundColor
-            font.pointSize: units.fs("small")
+            font.pixelSize: units.fs("small")
         }
         ComboBox {
             id: fontName
@@ -151,7 +151,7 @@ PopOver {
         Label {
             text: qsTr("Font size")
             color: styleMap.popover.foregroundColor
-            font.pointSize: units.fs("small")
+            font.pixelSize: units.fs("small")
         }
         ComboBox {
             id: fontSize
@@ -185,7 +185,7 @@ PopOver {
         Label {
             text: qsTr("Style")
             color: styleMap.popover.foregroundColor
-            font.pointSize: units.fs("small")
+            font.pixelSize: units.fs("small")
         }
         ComboBox {
             id: mapStyleSheet

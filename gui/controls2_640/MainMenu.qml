@@ -163,7 +163,7 @@ PopOver {
                             Label {
                                 width: parent.width - units.gu(1)
                                 color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("large")
+                                font.pixelSize: units.fs("large")
                                 font.bold: false
                                 text: name
                                 elide: Text.ElideRight
@@ -171,7 +171,7 @@ PopOver {
 //                            Label {
 //                                width: parent.width - units.gu(1)
 //                                color: styleMap.view.secondaryColor
-//                                font.pointSize: units.fs("small")
+//                                font.pixelSize: units.fs("small")
 //                                verticalAlignment: Text.AlignVCenter
 //                                horizontalAlignment: Text.AlignLeft
 //                                maximumLineCount: 2

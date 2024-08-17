@@ -109,7 +109,7 @@ PopOver {
             Label {
                 text: qsTr("From")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             ComboBox {
                 id: from
@@ -198,7 +198,7 @@ PopOver {
                 width: parent.width
                 text: placeFrom.valid ? Converter.readableCoordinatesGeocaching(placeFrom.lat, placeFrom.lon) : ""
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
             }
 
             // Separator
@@ -212,7 +212,7 @@ PopOver {
             Label {
                 text: qsTr("Destination")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             ComboBox {
                 id: to
@@ -285,7 +285,7 @@ PopOver {
                 width: parent.width
                 text: placeTo.valid ? Converter.readableCoordinatesGeocaching(placeTo.lat, placeTo.lon) : ""
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
             }
 
             ProgressBar {
@@ -380,7 +380,7 @@ PopOver {
             Label {
                 width: parent.width
                 color: styleMap.popover.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
                 text: routeMessage
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.Wrap
@@ -457,24 +457,24 @@ PopOver {
                     Label {
                         text: qsTr("Route length:")
                         color: styleMap.popover.foregroundColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                     }
                     Label {
                         id: distanceLabel
                         text: Converter.readableDistance(routingModel.length)
                         color: styleMap.popover.highlightedColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                     }
                     Label {
                         text: ", " + qsTr("Duration:")
                         color: styleMap.popover.foregroundColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                     }
                     Label {
                         id: durationLabel
                         text: Converter.panelDurationHM(routingModel.duration)
                         color: styleMap.popover.highlightedColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                     }
                 }
                 delegate: Row {
@@ -505,7 +505,7 @@ PopOver {
                                         ? Converter.panelDistance(model.distanceDelta) + " ~ " + Converter.panelDurationHM(model.timeDelta) + " Δ"
                                         : Converter.panelDistance(model.distance) + " ~ " + Converter.panelDurationHM(model.time)
                             }
-                            font.pointSize: units.fs("small")
+                            font.pixelSize: units.fs("small")
                             horizontalAlignment: Label.AlignRight
                             MouseArea {
                                 anchors.fill: parent
@@ -519,7 +519,7 @@ PopOver {
                             color: styleMap.popover.foregroundColor
                             width: parent.width
                             text: model.description
-                            font.pointSize: units.fs("small")
+                            font.pixelSize: units.fs("small")
                             wrapMode: Text.Wrap
                         }
                     }
