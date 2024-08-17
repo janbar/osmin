@@ -149,7 +149,7 @@ MapPage {
             provider: hillshadeProvider
         }
 
-        onTap: {
+        onTap: function(screenX, screenY, lat, lon) {
             mark.screenX = screenX;
             mark.screenY = screenY;
             mark.lat = lat;
@@ -174,7 +174,7 @@ MapPage {
             }
         }
 
-        onLongTap: {
+        onLongTap: function(screenX, screenY, lat, lon) {
             mark.showOverlay = true;
             mark.screenX = screenX;
             mark.screenY = screenY;
@@ -189,7 +189,8 @@ MapPage {
             }
         }
 
-        onIconTapped: {
+        onIconTapped: function(screenCoord, lat, lon, databasePath, objectType, objectId, poiId, type,
+                               name, altName, ref, operatorName, phone, website, openingHours) {
             mark.showOverlay = false;
             mark.screenX = screenCoord.x;
             mark.screenY = screenCoord.y;
