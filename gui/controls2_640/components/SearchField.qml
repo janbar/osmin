@@ -52,7 +52,7 @@ Rectangle {
         TextField {
             id: field
             Layout.fillWidth: true
-            font.pointSize: units.fs("large")
+            font.pixelSize: units.fs("large")
             inputMethodHints: Qt.ImhNoPredictiveText
             placeholderText: qsTr("Search")
             EnterKey.type: Qt.EnterKeySearch

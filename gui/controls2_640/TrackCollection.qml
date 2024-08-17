@@ -138,7 +138,7 @@ MapPage {
                             Label {
                                 width: parent.width
                                 color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
+                                font.pixelSize: units.fs("medium")
                                 font.bold: dir
                                 text: name
                                 elide: Text.ElideRight
@@ -148,7 +148,8 @@ MapPage {
                                 width: parent.width
                                 height: visible ? implicitHeight : 0
                                 color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("x-small")
+                                font.pixelSize: units.fs("x-small")
+                                clip: true
                                 text: fileModel.parsing ? (Math.round(fileModel.progress * 1000) / 10).toFixed(1) + " %"
                                                         : timestamp.toLocaleDateString() + " " + timestamp.toLocaleTimeString()
                             }
@@ -156,7 +157,7 @@ MapPage {
                                 visible: text !== ""
                                 height: visible ? implicitHeight : 0
                                 color: styleMap.view.secondaryColor
-                                font.pointSize: units.fs("x-small")
+                                font.pixelSize: units.fs("x-small")
                                 text: fileModel.description
                                 wrapMode: Text.WordWrap
                             }
@@ -178,7 +179,7 @@ MapPage {
                                 transformOrigin: Menu.TopRight
                                 MenuItem {
                                     text: qsTr("Rename")
-                                    font.pointSize: units.fs("medium")
+                                    font.pixelSize: units.fs("medium")
                                     onTriggered: {
                                         if (display.checked)
                                             mapView.removeCourse();
@@ -199,7 +200,7 @@ MapPage {
                                 }
                                 MenuItem {
                                     text: qsTr("Delete")
-                                    font.pointSize: units.fs("medium")
+                                    font.pixelSize: units.fs("medium")
                                     onTriggered: {
                                         dialogAction.title = model.dir ? qsTr("Delete folder ?") : qsTr("Delete file ?");
                                         dialogAction.text = model.name;
@@ -253,14 +254,14 @@ MapPage {
                                 Label {
                                     text: name
                                     color: styleMap.view.primaryColor
-                                    font.pointSize: units.fs("medium")
+                                    font.pixelSize: units.fs("medium")
                                 }
                                 Label {
                                     visible: text !== ""
                                     height: visible ? implicitHeight : 0
                                     text: type === 0 ? Converter.readableDistance(length) : "" /*symbol*/
                                     color: styleMap.view.secondaryColor
-                                    font.pointSize: units.fs("medium")
+                                    font.pixelSize: units.fs("medium")
                                 }
                             }
                         }
@@ -349,7 +350,7 @@ MapPage {
                     padding: units.gu(1)
                     Label {
                         width: parent.width
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                         font.bold: true
                         color: "black"
                         elide: Text.ElideRight
@@ -357,7 +358,7 @@ MapPage {
                     }
                     Label {
                         width: parent.width
-                        font.pointSize: units.fs("small")
+                        font.pixelSize: units.fs("small")
                         color: "black"
                         elide: Text.ElideRight
                         text: Converter.readableCoordinatesNumeric(selectedPOI.lat, selectedPOI.lon) +
@@ -463,7 +464,7 @@ MapPage {
 
         TextField {
             id: inputLabel
-            font.pointSize: units.fs("medium")
+            font.pixelSize: units.fs("medium")
             placeholderText: qsTr("Enter the name")
             inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly
             EnterKey.type: Qt.EnterKeyDone

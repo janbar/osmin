@@ -83,7 +83,7 @@ Item {
     Label{
         id: caption
         text: scaleIndicator.label
-        font.pointSize: units.fs("small")
+        font.pixelSize: units.fs("small")
         color: parent.color
         anchors.horizontalCenter: parent.horizontalCenter
     }

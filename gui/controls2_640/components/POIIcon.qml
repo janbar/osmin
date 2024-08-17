@@ -45,6 +45,7 @@ MapIcon {
         'amenity_fast_food': 'fast-food',
         'amenity_fuel_building': 'fuel',
         'amenity_fuel': 'fuel',
+        'amenity_charging_station': 'charging_station',
         'amenity_grave_yard': 'religious-christian',
         'amenity_hospital_building': 'hospital',
         'amenity_hospital': 'hospital',
@@ -63,6 +64,7 @@ MapIcon {
         'amenity_ferry_terminal': 'ferry',
         'amenity_toilets': 'toilet',
         'amenity_drinking_water': 'drinking-water',
+        'amenity_shelter': 'shelter',
 
         'railway_station': 'rail',
         'railway_subway': 'rail',
