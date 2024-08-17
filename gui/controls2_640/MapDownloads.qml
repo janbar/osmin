@@ -75,7 +75,7 @@ MapPage {
                     anchors.verticalCenter: parent.verticalCenter
                     color: styleMap.view.highlightedColor
                     text: qsTr("Downloads")
-                    font.pointSize: units.fs("x-large")
+                    font.pixelSize: units.fs("x-large")
                 }
             }
 
@@ -99,18 +99,18 @@ MapPage {
                             spacing: units.gu(2)
                             Label {
                                 color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
+                                font.pixelSize: units.fs("medium")
                                 text: mapName
                             }
                             Label {
                                 color: styleMap.view.primaryColor
-                                font.pointSize: units.fs("medium")
+                                font.pixelSize: units.fs("medium")
                                 text: (Math.round(progressRole * 1000) / 10).toFixed(1) + " %";
                             }
                         }
                         Label {
                             color: styleMap.view.secondaryColor
-                            font.pointSize: units.fs("x-small")
+                            font.pixelSize: units.fs("x-small")
                             text: errorString.length > 0 ? qsTranslate("message", errorString) : progressDescription
                             elide: Text.ElideRight
                         }
@@ -165,7 +165,7 @@ MapPage {
                     anchors.verticalCenter: parent.verticalCenter
                     color: styleMap.view.highlightedColor
                     text: qsTr("Installed Maps")
-                    font.pointSize: units.fs("x-large")
+                    font.pixelSize: units.fs("x-large")
                 }
             }
 
@@ -188,12 +188,12 @@ MapPage {
                         Label {
                             width: parent.width - (updateAvailable ? units.gu(12) : units.gu(6))
                             color: styleMap.view.primaryColor
-                            font.pointSize: units.fs("medium")
+                            font.pixelSize: units.fs("medium")
                             text: name
                             elide: Text.ElideRight
                         }
                         Label{
-                            font.pointSize: units.fs("x-small")
+                            font.pixelSize: units.fs("x-small")
                             color: styleMap.view.secondaryColor
                             text: time.toLocaleDateString(Locale.ShortFormat)
                             visible: time != null
@@ -295,7 +295,7 @@ MapPage {
                     anchors.verticalCenter: parent.verticalCenter
                     color: styleMap.view.highlightedColor
                     text: availableList.tree.length > 0 ? availableList.tree[0].name : qsTr("Available Maps")
-                    font.pointSize: units.fs("x-large")
+                    font.pixelSize: units.fs("x-large")
                 }
 
                 MapIcon {
@@ -303,7 +303,7 @@ MapPage {
                     height: units.gu(5)
                     source: "qrc:/images/go-previous.svg"
                     label.text: qsTr("Back")
-                    label.font.pointSize: units.fs("small")
+                    label.font.pixelSize: units.fs("small")
                     visible: availableList.tree.length > 0
                     onClicked: {
                         availableList.tree = availableList.tree.slice(1, availableList.tree.length);
@@ -341,13 +341,13 @@ MapPage {
                     Label {
                         width: parent.width - units.gu(6)
                         color: styleMap.view.primaryColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                         font.bold: dir
                         text: name
                         elide: Text.ElideRight
                     }
                     Label {
-                        font.pointSize: units.fs("x-small")
+                        font.pixelSize: units.fs("x-small")
                         color: styleMap.view.secondaryColor
                         text: { dir ? null : time.toLocaleDateString(Locale.ShortFormat) + ", " + size }
                         visible: !dir

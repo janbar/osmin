@@ -37,13 +37,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Average Speed")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: styleMap.popover.highlightedColor
                 }
                 Label {
                     width: parent.width / 2
                     text: qsTr("Maximum Speed")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: styleMap.popover.highlightedColor
                 }
             }
@@ -54,14 +54,14 @@ PopOver {
                     id: avgSpeed
                     width: parent.width / 2
                     text: Converter.readableSpeed(Tracker.duration < 1 ? 0 : 3.6 * Tracker.distance/Tracker.duration)
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     color: foregroundColor
                 }
                 Label {
                     id: maxSpeed
                     width: parent.width / 2
                     text: Converter.readableSpeed(Tracker.maxSpeed)
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -71,13 +71,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Distance")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: styleMap.popover.highlightedColor
                 }
                 Label {
                     width: parent.width / 2
                     text: qsTr("Duration")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: styleMap.popover.highlightedColor
                 }
             }
@@ -88,14 +88,14 @@ PopOver {
                     id: distance
                     width: parent.width / 2
                     text: Converter.readableDistance(Tracker.distance)
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     color: foregroundColor
                 }
                 Label {
                     id: duration
                     width: parent.width / 2
                     text: Converter.panelDurationHMS(Tracker.duration)
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -105,13 +105,13 @@ PopOver {
                 Label {
                     width: parent.width / 2
                     text: qsTr("Ascent")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: styleMap.popover.highlightedColor
                 }
                 Label {
                     width: parent.width / 2
                     text: qsTr("Descent")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: styleMap.popover.highlightedColor
                 }
             }
@@ -122,14 +122,14 @@ PopOver {
                     id: ascent
                     width: parent.width / 2
                     text: Converter.readableDistance(Tracker.ascent)
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     color: foregroundColor
                 }
                 Label {
                     id: descent
                     width: parent.width / 2
                     text: Converter.readableDistance(Tracker.descent)
-                    font.pointSize: units.fs("large")
+                    font.pixelSize: units.fs("large")
                     color: foregroundColor
                 }
             }
@@ -143,7 +143,7 @@ PopOver {
                 height: units.gu(6)
                 label.text: "  " + (Tracker.recording !== "" ? qsTr("Cut track recording") : qsTr("Start track recording"))
                 label.color: foregroundColor
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 label.elide: Text.ElideRight
                 label.width: parent.width - units.gu(7)
                 onClicked: {
@@ -163,7 +163,7 @@ PopOver {
                 height: units.gu(6)
                 label.text: "  " + qsTr("Close track recording")
                 label.color: foregroundColor
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 label.elide: Text.ElideRight
                 label.width: parent.width - units.gu(7)
                 onClicked: {
@@ -182,7 +182,7 @@ PopOver {
                 height: units.gu(6)
                 label.text: "  " + qsTr("Reset statistics")
                 label.color: foregroundColor
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 label.elide: Text.ElideRight
                 label.width: parent.width - units.gu(7)
                 onClicked: {
@@ -197,11 +197,11 @@ PopOver {
             Label {
                 text: qsTr("Coordinates")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             Label {
                 text: Converter.readableCoordinatesGeocaching(positionSource._lat, positionSource._lon)
-                font.pointSize: units.fs("large")
+                font.pixelSize: units.fs("large")
                 color: foregroundColor
             }
         }
@@ -209,11 +209,11 @@ PopOver {
             Label {
                 text: qsTr("Elevation")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             Label {
                 text: Converter.readableElevation(positionSource._alt)
-                font.pointSize: units.fs("large")
+                font.pixelSize: units.fs("large")
                 color: foregroundColor
             }
         }
@@ -221,11 +221,11 @@ PopOver {
             Label {
                 text: qsTr("Bearing")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             Label {
                 text: Converter.readableDegreeGeocaching(180.0 * Tracker.bearing / Math.PI)
-                font.pointSize: units.fs("large")
+                font.pixelSize: units.fs("large")
                 color: foregroundColor
             }
         }

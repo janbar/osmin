@@ -64,7 +64,7 @@ DialogBase {
             right: parent.right
         }
         inputMethodHints: Qt.ImhNoPredictiveText
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
         Keys.onReturnPressed: dialog.accept()
     }
 }

@@ -44,7 +44,7 @@ Item {
             text: phone
             color: highlightedColor
             elide: Text.ElideRight
-            font.pointSize: units.fs("medium")
+            font.pixelSize: units.fs("medium")
         }
     }
 
