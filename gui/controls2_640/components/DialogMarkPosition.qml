@@ -60,7 +60,7 @@ DialogBase {
 
     TextField {
         id: inputName
-        font.pointSize: units.fs("medium")
+        font.pixelSize: units.fs("medium")
         placeholderText: qsTr("Enter the name")
         inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly
         EnterKey.type: Qt.EnterKeyDone

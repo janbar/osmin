@@ -70,7 +70,7 @@ MapPage {
                     value: settings.fontScaleFactor * 100
                     to: 150
                     stepSize: 10
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                     Layout.fillWidth: true
 
                     property int decimals: 2
@@ -110,7 +110,7 @@ MapPage {
                     value: settings.scaleFactor * 100
                     to: 400
                     stepSize: 10
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                     Layout.fillWidth: true
 
                     property int decimals: 2
@@ -143,7 +143,7 @@ MapPage {
                 Layout.fillWidth: true
                 Label {
                     text: qsTr("Theme")
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                 }
                 ComboBox {
                     id: themeBox
@@ -160,9 +160,9 @@ MapPage {
                     }
 
                     Layout.fillWidth: true
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                     Component.onCompleted: {
-                        popup.font.pointSize = units.fs("medium");
+                        popup.font.pixelSize = units.fs("medium");
                     }
                 }
             }
@@ -172,7 +172,7 @@ MapPage {
                 Layout.fillWidth: true
                 Label {
                     text: qsTr("System of Units")
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                 }
                 ComboBox {
                     id: unitsBox
@@ -184,12 +184,12 @@ MapPage {
                     property string selected: Converter.system
                     currentIndex: (settings.systemOfUnits === "Imperial" ? 1 : 0)
                     Layout.fillWidth: true
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                     onActivated: {
                         settings.systemOfUnits = Converter.systems()[index]
                     }
                     Component.onCompleted: {
-                        popup.font.pointSize = units.fs("medium");
+                        popup.font.pixelSize = units.fs("medium");
                     }
                 }
             }
@@ -208,7 +208,7 @@ MapPage {
                     value: settings.magneticDip * 10
                     to: 300
                     stepSize: 10
-                    font.pointSize: units.fs("medium");
+                    font.pixelSize: units.fs("medium");
                     Layout.fillWidth: true
 
                     property int decimals: 1
@@ -238,7 +238,7 @@ MapPage {
 
             Label {
                 text: qsTr("The change will be effective after restart.")
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
                 color: "red"
                 visible: settings.systemOfUnits !== Converter.system
                 maximumLineCount: 2
@@ -249,17 +249,17 @@ MapPage {
             Label {
                 text: qsTr("Data directory")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             Label {
                 text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(DataDirectory)))
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
             }
             Label {
                 text: DataDirectory
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
                 maximumLineCount: 3
                 width: parent.width
                 wrapMode: Text.WrapAnywhere
@@ -267,17 +267,17 @@ MapPage {
             Label {
                 text: qsTr("Maps directory")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             Label {
                 text: qsTr("%1 free").arg(Converter.readableBytes(Utils.storageBytesFree(mapsDirectory)))
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
             }
             Label {
                 text: mapsDirectory
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
                 maximumLineCount: 3
                 width: parent.width
                 wrapMode: Text.WrapAnywhere
@@ -285,17 +285,17 @@ MapPage {
             Label {
                 text: qsTr("Hillshade provider")
                 color: styleMap.popover.highlightedColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
             }
             Label {
                 text: (hillshadeProvider != null ? hillshadeProvider.name : qsTr("Not configured"))
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
             }
             Label {
                 text: (hillshadeProvider != null ? hillshadeProvider.copyright : "")
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
                 maximumLineCount: 3
                 width: parent.width
                 wrapMode: Text.WrapAnywhere
