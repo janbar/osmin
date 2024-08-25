@@ -122,7 +122,7 @@ MapPage {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Up to distance %1").arg(Converter.readableDistance(distanceTypes[distanceSelector.value]))
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("small")
+                font.pixelSize: units.fs("small")
             }
             Slider {
                 id: distanceSelector
@@ -275,7 +275,7 @@ MapPage {
                     Label {
                         id: labelLabel
                         width: suggestionView.width - poiIcon.width - units.gu(1)
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                         color: styleMap.view.primaryColor
                         textFormat: Text.StyledText
                         text: qsTr(label)
@@ -283,7 +283,7 @@ MapPage {
                     Label {
                         id: descriptionLabel
                         width: suggestionView.width - poiIcon.width - units.gu(1)
-                        font.pointSize: units.fs("small")
+                        font.pixelSize: units.fs("small")
                         wrapMode: Text.WordWrap
                         visible: distanceId > 0
                         text: qsTr("Up to distance %1").arg(Converter.readableDistance(distanceTypes[distanceId]))
@@ -340,7 +340,7 @@ MapPage {
                     Label {
                         id: entryLabel
                         width: searchView.width - entryIcon.width - units.gu(1)
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                         color: styleMap.view.primaryColor
                         textFormat: Text.StyledText
                         text: (type === "coordinate") ? Converter.readableCoordinatesGeocaching(lat, lon)
@@ -370,14 +370,14 @@ MapPage {
                             return str;
                         }
                         color: styleMap.view.secondaryColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                         visible: region.length > 0
                     }
                     Label{
                         id: entryDistance
                         width: searchView.width - entryIcon.width - units.gu(1)
                         color: styleMap.view.highlightedColor
-                        font.pointSize: units.fs("medium")
+                        font.pixelSize: units.fs("medium")
                         text: Converter.readableDistance(distance) + " " + Converter.readableBearing(bearing)
                     }
                 }
@@ -562,7 +562,7 @@ MapPage {
                 borderPadding: units.gu(1.0)
                 opacity: 0.7
                 label.text: acceptLabel
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 label.color: "black"
                 height: units.gu(6)
                 onClicked: {
@@ -676,7 +676,7 @@ MapPage {
         anchors.topMargin: units.gu(8)
         anchors.horizontalCenter: parent.horizontalCenter
         color: styleMap.view.foregroundColor
-        font.pointSize: units.fs("large")
+        font.pixelSize: units.fs("large")
         text: qsTr("No data")
         visible: false
     }
