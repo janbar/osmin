@@ -66,7 +66,7 @@ Item {
             maximumLineCount: 4
             wrapMode: Text.Wrap
             color: foregroundColor
-            font.pointSize: units.fs("small")
+            font.pixelSize: units.fs("small")
             font.weight: Font.Normal
         }
 

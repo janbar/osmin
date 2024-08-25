@@ -349,7 +349,7 @@ MapPage {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         text: "© OpenStreetMap contributors"
-        font.pointSize: units.fs("x-small")
+        font.pixelSize: units.fs("x-small")
         font.weight: Font.Thin
         color: nightView ? "white" : "black"
         visible: !showToolbar && !navigation
@@ -393,7 +393,7 @@ MapPage {
         visible: mapView.state === "view" && !showToolbar && Tracker.isRecording
         borderPadding: units.gu(1.0)
         label.text: qsTr("Mark")
-        label.font.pointSize: units.fs("medium")
+        label.font.pixelSize: units.fs("medium")
         label.color: "black"
         opacity: 0.7
         height: units.gu(6)
@@ -482,7 +482,7 @@ MapPage {
             Label {
                 id: currentSpeed
                 text: Converter.readableSpeed(Tracker.currentSpeed)
-                font.pointSize: 1.5 * units.fs("x-large")
+                font.pixelSize: 1.5 * units.fs("x-large")
                 color: nightView ? "white" : "black"
             }
             Row {
@@ -490,13 +490,13 @@ MapPage {
                 Label {
                     id: duration
                     text: Converter.panelDurationHMS(Tracker.duration)
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: nightView ? "white" : "black"
                 }
                 Label {
                     id: distance
                     text: Converter.panelDistance(Tracker.distance)
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     color: nightView ? "white" : "black"
                 }
             }
@@ -507,7 +507,7 @@ MapPage {
                 enabled: false
                 height: units.gu(2)
                 borderPadding: 0
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 label.text: Converter.panelElevation(Tracker.elevation)
             }
         }
@@ -533,7 +533,7 @@ MapPage {
         opacity: 0.7
         height: units.gu(6)
         label.text: qsTr("Go")
-        label.font.pointSize: units.fs("medium")
+        label.font.pixelSize: units.fs("medium")
         label.color: "black"
         onClicked: {
             navigateTo(popLocationInfo.placeLat,

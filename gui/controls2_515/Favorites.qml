@@ -89,14 +89,14 @@ MapPage {
                         Label {
                             width: parent.width
                             color: styleMap.view.primaryColor
-                            font.pointSize: units.fs("medium")
+                            font.pixelSize: units.fs("medium")
                             font.bold: true
                             wrapMode: Text.WordWrap
                             maximumLineCount: 2
                             text: label
                         }
                         Label {
-                            font.pointSize: units.fs("x-small")
+                            font.pixelSize: units.fs("x-small")
                             color: styleMap.view.secondaryColor
                             text: Converter.readableCoordinatesGeocaching(lat, lon)
                         }
@@ -124,7 +124,7 @@ MapPage {
                     visible: favoritesPage.state === "default"
                     height: (visible ? implicitHeight : 0)
                     text: qsTr("Go there")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     onTriggered: {
                         mapPage.navigateTo(lat, lon, label);
                         stackView.pop();
@@ -132,7 +132,7 @@ MapPage {
                 },
                 MenuItem {
                     text: qsTr("Rename")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     onTriggered: {
                         dialogEdit.model = model;
                         dialogEdit.open();
@@ -147,7 +147,7 @@ MapPage {
                 },
                 MenuItem {
                     text: qsTr("Delete")
-                    font.pointSize: units.fs("medium")
+                    font.pixelSize: units.fs("medium")
                     onTriggered: {
                         dialogAction.title = qsTr("Delete favorite ?");
                         dialogAction.text = model.label;
@@ -252,7 +252,7 @@ MapPage {
                 borderPadding: units.gu(1.0)
                 opacity: 0.7
                 label.text: favoritesPage.state === "default" ? qsTr("Go") : qsTr("Accept")
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 label.color: "black"
                 height: units.gu(6)
                 onClicked: {
@@ -360,7 +360,7 @@ MapPage {
 
         TextField {
             id: inputLabel
-            font.pointSize: units.fs("medium")
+            font.pixelSize: units.fs("medium")
             placeholderText: qsTr("Enter the label")
             inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly
             EnterKey.type: Qt.EnterKeyDone

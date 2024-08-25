@@ -52,7 +52,7 @@ MapPage {
             Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: styleMap.view.foregroundColor
-                font.pointSize: units.fs("medium")
+                font.pixelSize: units.fs("medium")
                 horizontalAlignment: Text.AlignHCenter
                 text: "OSMin " + VersionString
             }
@@ -60,7 +60,7 @@ MapPage {
             Label {
                 color: styleMap.view.foregroundColor
                 elide: Text.ElideRight
-                font.pointSize: units.fs("large")
+                font.pixelSize: units.fs("large")
                 horizontalAlignment: Text.AlignHCenter
                 maximumLineCount: 10
                 text: qsTr("First of all to use OSMin, you need to download the map of your region. " +
@@ -77,7 +77,7 @@ MapPage {
                 height: units.gu(6)
                 label.text: qsTr("Download Maps")
                 label.color: styleMap.view.foregroundColor
-                label.font.pointSize: units.fs("medium")
+                label.font.pixelSize: units.fs("medium")
                 onClicked: {
                     stackView.pop();
                     stackView.push("qrc:/controls2/MapDownloads.qml");
