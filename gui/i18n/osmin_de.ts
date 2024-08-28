@@ -582,7 +582,7 @@
     </message>
     <message>
         <location filename="../controls2_515/SearchPlace.qml" line="123"/>
-        <location filename="../controls2_515/SearchPlace.qml" line="283"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="286"/>
         <source>Up to distance %1</source>
         <translation>Bis zur Entfernung %1</translation>
     </message>
@@ -662,27 +662,32 @@
         <translation>Quelle</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="236"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="234"/>
+        <source>Shelter</source>
+        <translation>Unterschlupf</translation>
+    </message>
+    <message>
+        <location filename="../controls2_515/SearchPlace.qml" line="239"/>
         <source>Via ferrata route</source>
         <translation>Klettersteig</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="341"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="344"/>
         <source>Unnamed</source>
         <translation>Unbenannt</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="602"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="605"/>
         <source>Add favorite</source>
         <translation>Favorit hinzufügen</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="616"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="619"/>
         <source>Delete favorite ?</source>
         <translation>Favorit löschen?</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="674"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="677"/>
         <source>No data</source>
         <translation>Keine Daten</translation>
     </message>

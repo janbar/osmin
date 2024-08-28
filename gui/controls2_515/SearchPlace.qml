@@ -230,6 +230,9 @@ MapPage {
         ListElement {
             label: QT_TR_NOOP("Spring"); distanceId: 1; iconType: "natural_spring";
             types: "natural_spring"; }
+        ListElement {
+            label: QT_TR_NOOP("Shelter"); distanceId: 1; iconType: "amenity_shelter";
+            types: "amenity_shelter"; }
 
         // and somethig for fun
         ListElement {

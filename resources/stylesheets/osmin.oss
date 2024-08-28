@@ -1413,6 +1413,10 @@ STYLE
      AREA.BORDER { color: @parkingBorderColor; width: 0.1mm; }
    }
 
+   [TYPE amenity_shelter] {
+     NODE.ICON { name: shelter; }
+   }
+
    [TYPE railway_station] AREA.ICON { symbol: railway_station; }
 
 

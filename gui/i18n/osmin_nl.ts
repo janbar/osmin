@@ -582,7 +582,7 @@
     </message>
     <message>
         <location filename="../controls2_515/SearchPlace.qml" line="123"/>
-        <location filename="../controls2_515/SearchPlace.qml" line="283"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="286"/>
         <source>Up to distance %1</source>
         <translation>Tot een afstand van %1</translation>
     </message>
@@ -662,27 +662,32 @@
         <translation>Natuurlijke waterbron</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="236"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="234"/>
+        <source>Shelter</source>
+        <translation>Schuilplaats</translation>
+    </message>
+    <message>
+        <location filename="../controls2_515/SearchPlace.qml" line="239"/>
         <source>Via ferrata route</source>
         <translation>Via ferrataroute</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="341"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="344"/>
         <source>Unnamed</source>
         <translation>Naamloos</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="602"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="605"/>
         <source>Add favorite</source>
         <translation>Toevoegen aan favorieten</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="616"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="619"/>
         <source>Delete favorite ?</source>
         <translation>Wil je deze favoriet verwijderen?</translation>
     </message>
     <message>
-        <location filename="../controls2_515/SearchPlace.qml" line="674"/>
+        <location filename="../controls2_515/SearchPlace.qml" line="677"/>
         <source>No data</source>
         <translation>Geen gegevens</translation>
     </message>

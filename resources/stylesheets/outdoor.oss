@@ -1561,7 +1561,10 @@ STYLE
 
  [MAG closer-] {
    [TYPE amenity_pharmacy] {
-     NODE.ICON { symbol: amenity_pharmacy;}
+     NODE.ICON { symbol: amenity_pharmacy; }
+   }
+   [TYPE amenity_shelter] {
+     NODE.ICON { name: shelter; }
    }
  }
 

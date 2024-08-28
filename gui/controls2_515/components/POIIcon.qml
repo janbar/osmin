@@ -63,6 +63,7 @@ MapIcon {
         'amenity_ferry_terminal': 'ferry',
         'amenity_toilets': 'toilet',
         'amenity_drinking_water': 'drinking-water',
+        'amenity_shelter': 'shelter',
 
         'railway_station': 'rail',
         'railway_subway': 'rail',
