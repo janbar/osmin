@@ -91,14 +91,14 @@ MapPage {
                             color: styleMap.view.primaryColor
                             font.pixelSize: units.fs("medium")
                             font.bold: true
-                            wrapMode: Text.WordWrap
-                            maximumLineCount: 2
                             text: label
+                            elide: Text.ElideRight
                         }
                         Label {
                             font.pixelSize: units.fs("x-small")
                             color: styleMap.view.secondaryColor
                             text: Converter.readableCoordinatesGeocaching(lat, lon)
+                            clip: true
                         }
                     }
                 }
