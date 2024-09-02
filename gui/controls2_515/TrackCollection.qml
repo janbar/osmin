@@ -149,6 +149,7 @@ MapPage {
                                 height: visible ? implicitHeight : 0
                                 color: styleMap.view.secondaryColor
                                 font.pixelSize: units.fs("x-small")
+                                clip: true
                                 text: fileModel.parsing ? (Math.round(fileModel.progress * 1000) / 10).toFixed(1) + " %"
                                                         : timestamp.toLocaleDateString() + " " + timestamp.toLocaleTimeString()
                             }
