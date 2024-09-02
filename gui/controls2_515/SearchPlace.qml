@@ -252,7 +252,7 @@ MapPage {
         model: poiTypesModel
         delegate: MouseArea {
             height: rowPoiType.height + units.gu(1)
-            width: parent.width
+            width: suggestionView.width
             Rectangle {
                 anchors.fill: parent
                 visible: parent.pressed
