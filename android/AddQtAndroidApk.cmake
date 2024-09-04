@@ -4,15 +4,16 @@ cmake_minimum_required(VERSION 3.8.2)
 #  macro add_qt_android_apk
 #
 # Requires:
-#  env ANDROID_SDK                The SDK root path
-#  env ANDROID_NDK                The NDK root path
-#  env JAVA_HOME                  Path Java JRE supported by SDK
+#  env ANDROID_SDK                  The SDK root path
+#  env ANDROID_NDK                  The NDK root path
+#  env JAVA_HOME                    Path Java JRE supported by SDK
 #
-#  ANDROID_ABI                    "arm64-v8a"
-#  ANDROID_SDK_MINVER             "24"
-#  ANDROID_SDK_TARGET             "26"
-#  ANDROID_NATIVE_API_LEVEL       Qt5.15 >=23
-#  QT_ANDROID_PLATFORM_LEVEL      SDK platform (i.e 29)
+#  ANDROID_ABI                      "arm64-v8a"
+#  ANDROID_SDK_MINVER               "24"
+#  ANDROID_SDK_TARGET               "26"
+#  ANDROID_NATIVE_API_LEVEL         Qt5.15 >=23
+#  ANDROID_SDK_BUILD_TOOLS_REVISION "29.0.2"
+#  QT_ANDROID_PLATFORM_LEVEL        SDK platform (i.e 29)
 
 # store the current source directory for future use
 set(QT_ANDROID_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
@@ -88,7 +89,6 @@ include(CMakeParseArguments)
 #     VERSION_CODE 12
 #     PACKAGE_NAME "org.mycompany.myapp"
 #     PACKAGE_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/package-sources
-#     BUILDTOOLS_REVISION "23.0.3"
 #     KEYSTORE ${CMAKE_CURRENT_LIST_DIR}/mykey.keystore myalias
 #     KEYSTORE_PASSWORD xxxx
 #     DEPENDS a_linked_target "path/to/a_linked_library.so" ...
@@ -127,7 +127,7 @@ include(CMakeParseArguments)
 macro(add_qt_android_apk TARGET SOURCE_TARGET)
 
     # parse the macro arguments
-    cmake_parse_arguments(ARG "INSTALL" "NAME;VERSION_CODE;PACKAGE_NAME;PACKAGE_SOURCES;KEYSTORE_PASSWORD;BUILDTOOLS_REVISION" "DEPENDS;PLUGINS;ASSETS;KEYSTORE" ${ARGN})
+    cmake_parse_arguments(ARG "INSTALL" "NAME;VERSION_CODE;PACKAGE_NAME;PACKAGE_SOURCES;KEYSTORE_PASSWORD" "DEPENDS;PLUGINS;ASSETS;KEYSTORE" ${ARGN})
 
     # target name
     set(QT_ANDROID_APP_TARGET "$<TARGET_NAME:${SOURCE_TARGET}>")
@@ -150,8 +150,11 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
     endif()
 
     # set the Android SDK build-tools revision
-    if(ARG_BUILDTOOLS_REVISION)
-        set(QT_ANDROID_SDK_BUILDTOOLS_REVISION ${ARG_BUILDTOOLS_REVISION})
+    if(ANDROID_SDK_BUILD_TOOLS_REVISION)
+        set(QT_ANDROID_SDK_BUILDTOOLS_REVISION ${ANDROID_SDK_BUILD_TOOLS_REVISION})
+    else()
+        set(ANDROID_SDK_BUILD_TOOLS_REVISION $ENV{ANDROID_SDK_BUILD_TOOLS_REVISION})
+        set(QT_ANDROID_SDK_BUILDTOOLS_REVISION ${ANDROID_SDK_BUILD_TOOLS_REVISION})
     endif()
 
     # get version code from arguments, or generate a fixed one if not provided
