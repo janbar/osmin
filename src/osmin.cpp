@@ -507,14 +507,15 @@ int startGUI(int argc, char* argv[])
   // bind flag Android
 #if defined(Q_OS_ANDROID)
   engine.rootContext()->setContextProperty("Android", QVariant(true));
+  engine.rootContext()->setContextProperty("DeviceMobile", QVariant(true));
 #else
   engine.rootContext()->setContextProperty("Android", QVariant(false));
-#endif
   // bind flag DeviceMobile
 #if defined(DEVICE_MOBILE)
   engine.rootContext()->setContextProperty("DeviceMobile", QVariant(true));
 #else
   engine.rootContext()->setContextProperty("DeviceMobile", QVariant(false));
+#endif
 #endif
   // select and bind styles available and known to work
   QStringList availableStyles;
