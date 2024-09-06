@@ -1169,7 +1169,7 @@ MapPage {
         target: mainView
         function onApplicationSuspendedChanged() {
             // On android disable navigation when the app is suspended
-            if ((Android || DeviceMobile) && applicationSuspended && navigation)
+            if (DeviceMobile && applicationSuspended && navigation)
                 navigation = false;
         }
         function onShowFavoritesChanged() {
