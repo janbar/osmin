@@ -25,7 +25,7 @@ jobs:
       - name: Setup Android SDK tools
         uses: android-actions/setup-android@v3
         with:
-          packages: "platform-tools platforms;android-29 build-tools;29.0.2 ndk;22.1.7171670"
+          packages: "platform-tools platforms;android-31 build-tools;31.0.0 ndk;22.1.7171670"
       - name: Dump Android NDK
         run: "ls ${ANDROID_HOME}/ndk"
 
@@ -63,8 +63,8 @@ jobs:
                     -DANDROID_SDK_MINVER=24
                     -DANDROID_SDK_TARGET=26
                     -DANDROID_NATIVE_API_LEVEL=24
-                    -DANDROID_SDK_BUILD_TOOLS_REVISION=29.0.2
-                    -DQT_ANDROID_PLATFORM_LEVEL=29
+                    -DANDROID_SDK_BUILD_TOOLS_REVISION=31.0.0
+                    -DQT_ANDROID_PLATFORM_LEVEL=31
                     -DQT_ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}
                     -DQT_ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/22.1.7171670
                     -DQt5_DIR=${Qt5_DIR}/lib/cmake/Qt5
