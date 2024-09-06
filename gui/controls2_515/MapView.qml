@@ -1167,8 +1167,8 @@ MapPage {
     Connections {
         target: mainView
         function onApplicationSuspendedChanged() {
-            // On android disable navigation when the app is suspended
-            if ((Android || DeviceMobile) && applicationSuspended && navigation)
+            // On device mobile (e.g Android) disable navigation when the app is suspended
+            if (DeviceMobile && applicationSuspended && navigation)
                 navigation = false;
         }
         function onShowFavoritesChanged() {
