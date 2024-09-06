@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2023
+ * Copyright (C) 2020-2024
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -106,6 +106,7 @@ void prepareTranslator(QGuiApplication& app, const QString& translationPath, con
 void signalCatched(int signal);
 void doExit(int code);
 bool testServiceUrl(const char *url, int timeout);
+QString basename(const QString& filepath);
 bool migration(const QString& version, const QString& pathapp, const QString& pathdata);
 
 QDir g_assetDir;  // base path of asset
@@ -311,7 +312,7 @@ int startGUI(int argc, char* argv[])
     {
       // launch the migration
       migration(QString::fromUtf8(_version), g_appDir.absolutePath(), g_dataDir.absolutePath());
-      QFile::remove(oldVersion.fileName());
+      oldVersion.remove();
       qWarning("Assets will be upgraded to version %s", APP_VERSION);
     }
   }
@@ -337,24 +338,24 @@ int startGUI(int argc, char* argv[])
             continue;
           else if (asset.isFile())
           {
-            QString filename;
+            QString filepath;
             if (folder.isEmpty())
-              filename = g_appResDir.absolutePath().append('/').append(asset.fileName());
+              filepath = g_appResDir.absolutePath().append('/').append(basename(asset.filePath()));
             else
-              filename = g_appResDir.absolutePath().append('/').append(folder).append('/').append(asset.fileName());
-            if ((!QFile::exists(filename) || QFile::remove(filename)) &&
-                QFile::copy(asset.absoluteFilePath(), filename))
+              filepath = g_appResDir.absolutePath().append('/').append(folder).append('/').append(basename(asset.filePath()));
+            if ((!QFile::exists(filepath) || QFile::remove(filepath)) &&
+                QFile::copy(asset.absoluteFilePath(), filepath))
               continue;
-            qWarning("Failed to create file %s", filename.toUtf8().constData());
+            qWarning("Failed to create file %s", filepath.toUtf8().constData());
             return EXIT_FAILURE;
           }
           else if (asset.isDir())
           {
-            QString dirname;
+            QString path;
             if (folder.isEmpty())
-              folders.push_back(dirname.append(asset.fileName()));
+              folders.push_back(path.append(basename(asset.filePath())));
             else
-              folders.push_back(dirname.append(folder).append('/').append(asset.fileName()));
+              folders.push_back(path.append(folder).append('/').append(basename(asset.filePath())));
             continue;
           }
         }
@@ -690,6 +691,17 @@ QObject* qUtilsInstance(QQmlEngine *engine, QJSEngine *scriptEngine)
   if (utils == nullptr)
     utils = new osmin::Utils();
   return utils;
+}
+
+QString basename(const QString& filepath)
+{
+  int p = filepath.lastIndexOf('/');
+  if (p < 0)
+    return filepath;
+  p += 1;
+  if (p == filepath.length())
+    return basename(filepath.mid(0, p - 1));
+  return filepath.mid(p);
 }
 
 bool migration(const QString& version, const QString& pathapp, const QString& pathdata)
