@@ -21,14 +21,15 @@
   <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
   <application android:label="@APP_NAME@"
-    android:name="org.qtproject.qt.android.bindings.QtApplication"
+    android:name=".QtAndroidApplication"
     android:icon="@mipmap/ic_launcher"
     android:hardwareAccelerated="true"
     android:allowBackup="true"
-    android:fullBackupOnly="false">
+    android:fullBackupOnly="false"
+    android:enableOnBackInvokedCallback="true">
 
     <activity android:label="@APP_NAME@"
-      android:name="org.qtproject.qt.android.bindings.QtActivity"
+      android:name=".QtAndroidActivity"
       android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
       android:screenOrientation="unspecified"
       android:exported="true">
