@@ -178,6 +178,22 @@ MapPage {
                                 x: parent.width - width
                                 transformOrigin: Menu.TopRight
                                 MenuItem {
+                                    text: qsTr("Share")
+                                    font.pixelSize: units.fs("medium")
+                                    onTriggered: {
+                                        var tidx = null;
+                                        if (availableList.tree.length > 0)
+                                            tidx = GPXListModel.index(index, 0, availableList.tree[0].index);
+                                        else
+                                            tidx = GPXListModel.index(index, 0);
+                                        PlatformExtras.shareContent(name,
+                                                                    GPXListModel.getItemURI(tidx),
+                                                                    "application/gpx+xml");
+                                    }
+                                    visible: Android && !dir
+                                    height: visible ? implicitHeight : 0
+                                }
+                                MenuItem {
                                     text: qsTr("Rename")
                                     font.pixelSize: units.fs("medium")
                                     onTriggered: {
