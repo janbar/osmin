@@ -257,6 +257,19 @@ int GPXListModel::maxTreeDepth()
   return TREE_DEPTH;
 }
 
+QString GPXListModel::getItemURI(const QModelIndex &index)
+{
+  QString absolutePath;
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
+  if (index.isValid())
+  {
+    GPXItem* item = static_cast<GPXItem*>(index.internalPointer());
+    absolutePath.append(m_root).append(QDir::separator()).append(item->path())
+        .append(QDir::separator()).append(item->name());
+  }
+  return absolutePath;
+}
+
 bool GPXListModel::renameItem(const QString& newName, const QModelIndex& index)
 {
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
@@ -310,7 +323,7 @@ bool GPXListModel::removeItem(const QModelIndex& index)
 QString GPXListModel::findFileById(int bid)
 {
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
-  for (GPXItem* item : std::as_const(m_items))
+  for (GPXItem* item : qAsConst(m_items))
   {
     if (item->bigId() == bid)
       return QDir(m_root).absolutePath().append(QDir::separator())
