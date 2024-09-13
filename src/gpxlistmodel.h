@@ -101,6 +101,7 @@ public:
 
   int maxTreeDepth();
 
+  Q_INVOKABLE QString getItemURI(const QModelIndex& index);
   Q_INVOKABLE bool renameItem(const QString& name, const QModelIndex& index);
   Q_INVOKABLE bool removeItem(const QModelIndex& index);
 
