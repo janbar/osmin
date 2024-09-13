@@ -21,11 +21,12 @@
   <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
   <application android:label="@APP_NAME@"
-    android:icon="@mipmap/ic_launcher"
     android:name=".QtAndroidApplication"
+    android:icon="@mipmap/ic_launcher"
     android:hardwareAccelerated="true"
     android:allowBackup="true"
-    android:fullBackupOnly="false">
+    android:fullBackupOnly="false"
+    android:enableOnBackInvokedCallback="true">
 
     <activity android:label="@APP_NAME@"
       android:name=".QtAndroidActivity"
