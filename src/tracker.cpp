@@ -280,77 +280,105 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
   else
     m_state = osmscout::PositionAgent::PositionState::OffRoute;
 
-  osmscout::Timestamp now = std::chrono::system_clock::now();
-  osmscout::Bearing bearing;
+  position_t now = {
+    std::chrono::system_clock::now(),
+    osmscout::GeoCoord(lat, lon),
+    osmscout::Bearing(),
+    alt,
+    0.0
+  };
 
-  if (positionValid)
+  // compute data for the last interval,
+  // starting with the last known position and up to now
+  if (!m_lastPosition || !positionValid)
   {
-    // compute data for the last interval,
-    // starting with the last known position and up to now
-    if (!m_lastPosition)
+    // On the first run, initialize the starting data
+    now.bearing = osmscout::Bearing::Degrees(m_azimuth);
+    m_currentAlt = alt; // could be nan
+    m_currentSpeed = 0.0;
+  }
+  else
+  {
+    // the duration should be non zero
+    auto duration = std::chrono::duration_cast<std::chrono::duration<double> >(now.time - m_lastPosition.time);
+    if (duration.count() > 0)
     {
-      // On the first run, initialize the starting data
-      m_currentAlt = alt;
-      m_currentSpeed = 0.0;
-      bearing = osmscout::Bearing::Degrees(m_azimuth);
+      // i use accel to validate the new interval: data won't be updated when value is excessive
+      // the vertical accuracy isn't good enough, therefore i estimate the move using horizontal data only
+      double dh = osmin::Utils::sphericalDistance(m_lastPosition.coord.GetLat(), m_lastPosition.coord.GetLon(), lat, lon);
+      double sh = dh / duration.count();
+      double accelh = std::fabs((sh - (m_lastPosition.speed / 3.6)) / duration.count());
+      now.speed = 3.6 * sh;
+
+      if (accelh < MAX_ACCEL)
+      {
+        // update tracking speed when moving
+        m_currentSpeed = now.speed;
+        if (now.speed > MOVING_SPEED)
+        {
+          m_distance += dh;
+          m_duration += duration.count();
+          if (now.speed > m_maxSpeed)
+            m_maxSpeed = now.speed;
+        }
+
+        // update tracking elevation when moving
+        if (!std::isnan(alt) && !std::isnan(m_lastPosition.elevation))
+        {
+          // hack to validate vertical deviation
+          if (dh > std::fabs(alt - m_lastPosition.elevation))
+          {
+            double dv = alt - m_currentAlt;
+            if (dv > ASC_THRESHOLD)
+              m_ascent += dv;
+            else if (dv < DES_THRESHOLD)
+              m_descent -= dv;
+
+            m_currentAlt = alt;
+          }
+        }
+
+        emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent, m_maxSpeed);
+
+        // when we are stationary the direction is calculated according to the azimuth of the device
+        // otherwise it is estimated according to the progress compared to the previous position
+        if (now.speed < COURSE_SPEED)
+          now.bearing = osmscout::Bearing::Degrees(m_azimuth);
+        else
+          now.bearing = osmscout::Bearing::Radians(osmin::Utils::sphericalBearingFinal(m_lastPosition.coord.GetLat(), m_lastPosition.coord.GetLon(), lat, lon));
+      }
+      else
+      {
+        // deviation is out of bounds !!!
+        // keep previous direction
+        now.bearing = m_lastPosition.bearing;
+      }
     }
     else
     {
-      // the duration should be non zero
-      auto sec = std::chrono::duration_cast<std::chrono::duration<double> >(now - m_lastPosition.time);
-      if (sec.count() > 0)
-      {
-        // i use accel to validate the new interval
-        // the new data won't be used when value is excessive
-        // the horizontal distance
-        double dh = osmin::Utils::sphericalDistance(m_lastPosition.coord.GetLat(), m_lastPosition.coord.GetLon(), lat, lon);
-        double dv = 0.0;
-        if (!std::isnan(alt) && !std::isnan(m_currentAlt))
-          dv = alt - m_currentAlt;
-        double s0 = std::sqrt(std::pow(dh, 2) + std::pow(dv, 2)) / sec.count();
-        double accel = std::fabs((s0 - (m_currentSpeed / 3.6)) / sec.count());
-        if (accel > MAX_ACCEL)
-        {
-          // reset elevation for the next run
-          m_currentAlt = alt;
-        }
-        else
-        {
-          // the vertical accuracy isn't good enough, therefore i estimate the speed using
-          // horizontal data only
-          double kmh = 3.6 * dh / sec.count();
-          // update tracking data when moving
-          if (kmh > MOVING_SPEED)
-          {
-            m_distance += dh;
-            m_duration += sec.count();
-            if (kmh > m_maxSpeed)
-              m_maxSpeed = kmh;
-            if (dv > ASC_THRESHOLD)
-            {
-              m_ascent += dv;
-              m_currentAlt = alt;
-            }
-            else if (dv < DES_THRESHOLD)
-            {
-              m_descent -= dv;
-              m_currentAlt = alt;
-            }
-          }
-          m_currentSpeed = kmh;
-          emit dataChanged(m_currentSpeed, m_distance, m_duration, m_ascent, m_descent, m_maxSpeed);
-        }
-      }
-      // when we are stationary the direction is calculated according to the azimuth of the device
-      // otherwise it is estimated according to the progress compared to the previous position
-      if (m_currentSpeed < COURSE_SPEED)
-        bearing = osmscout::Bearing::Degrees(m_azimuth);
-      else
-        bearing = osmscout::Bearing::Radians(osmin::Utils::sphericalBearingFinal(m_lastPosition.coord.GetLat(), m_lastPosition.coord.GetLon(), lat, lon));
+      // on zero duration, the deviation is null
+      now.speed = m_lastPosition.speed;
+      now.bearing = m_lastPosition.bearing;
+    }
 
-      if (m_recording)
+    if (m_recording)
+    {
+      if (!m_lastRecord)
       {
-        if (!m_lastRecord)
+        record();
+        m_lastRecord.time = m_lastPosition.time;
+        m_lastRecord.coord = m_lastPosition.coord;
+        m_lastRecord.bearing = m_lastPosition.bearing;
+        emit positionRecorded(m_lastRecord.coord);
+      }
+      else
+      {
+        double dh = osmin::Utils::sphericalDistance(m_lastRecord.coord.GetLat(), m_lastRecord.coord.GetLon(), lat, lon);
+        double da = std::fabs(now.bearing.AsRadians() - m_lastRecord.bearing.AsRadians());
+        if (da > M_PI_2)
+          da = std::fabs(da - M_PI);
+        // 0.17rad ~ 20deg
+        if (dh >= RECORD_INTERVAL || (da > 0.17 && dh > 5.0))
         {
           record();
           m_lastRecord.time = m_lastPosition.time;
@@ -358,38 +386,13 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
           m_lastRecord.bearing = m_lastPosition.bearing;
           emit positionRecorded(m_lastRecord.coord);
         }
-        else
-        {
-          double dh = osmin::Utils::sphericalDistance(m_lastRecord.coord.GetLat(), m_lastRecord.coord.GetLon(), lat, lon);
-          double da = std::fabs(bearing.AsRadians() - m_lastRecord.bearing.AsRadians());
-          if (da > M_PI_2)
-            da = std::fabs(da - M_PI);
-          // 0.17rad ~ 20deg
-          if (dh >= RECORD_INTERVAL || (da > 0.17 && dh > 5.0))
-          {
-            record();
-            m_lastRecord.time = m_lastPosition.time;
-            m_lastRecord.coord = m_lastPosition.coord;
-            m_lastRecord.bearing = m_lastPosition.bearing;
-            emit positionRecorded(m_lastRecord.coord);
-          }
-        }
       }
     }
-
-    // save last position
-    m_lastPosition.bearing = bearing;
-    m_lastPosition.coord.Set(lat, lon);
-    m_lastPosition.elevation = alt;
-    m_lastPosition.time = now;
-  }
-  else
-  {
-    // update azimuth only
-    m_lastPosition.bearing = osmscout::Bearing::Degrees(m_azimuth);
   }
 
-  emit positionChanged(m_state, m_lastPosition.coord, std::optional<osmscout::Bearing>(m_lastPosition.bearing));
+  // save last position
+  m_lastPosition = now;
+  emit positionChanged(m_state, now.coord, std::optional<osmscout::Bearing>(now.bearing));
 }
 
 void TrackerModule::onAzimuthChanged(double degrees)

@@ -198,6 +198,7 @@ private:
     osmscout::GeoCoord coord;
     osmscout::Bearing bearing;
     double elevation;
+    double speed;
     inline operator bool() const { return time.time_since_epoch() != osmscout::Timestamp::duration::zero(); }
   };
   position_t m_lastPosition;
