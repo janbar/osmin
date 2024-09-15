@@ -5,10 +5,13 @@ on:
     branches:
       - debug
       - master
+      - dev/1.13
+
   push:
     branches:
       - debug
       - master
+      - dev/1.13
 
 jobs:
   build:
