@@ -187,7 +187,8 @@ set(libosmscout_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/libosmscout")
 
 # First apply our patches in the source of lib
 list(APPEND libosmscout_patches
-    libosmscout.1.patch)
+    libosmscout.1.patch
+    libosmscout.2.patch)
 foreach(patch IN LISTS libosmscout_patches)
     execute_process(
         COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/${patch}
