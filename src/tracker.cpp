@@ -239,6 +239,7 @@ TrackerModule::TrackerModule(QThread* thread, const QString& root)
 , m_lastRecord()
 , m_distance(0)
 , m_duration(0)
+, m_originAlt(0)
 , m_ascent(0)
 , m_descent(0)
 , m_recording(false)
@@ -295,6 +296,7 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
     // On the first run, initialize the starting data
     now.bearing = osmscout::Bearing::Degrees(m_azimuth);
     m_currentAlt = alt; // could be nan
+    m_originAlt = NAN;
     m_currentSpeed = 0.0;
   }
   else
@@ -328,13 +330,27 @@ void TrackerModule::onLocationChanged(bool positionValid, double lat, double lon
           // hack to validate vertical deviation
           if (dh > std::fabs(alt - m_lastPosition.elevation))
           {
-            double dv = alt - m_currentAlt;
-            if (dv > ASC_THRESHOLD)
-              m_ascent += dv;
-            else if (dv < DES_THRESHOLD)
-              m_descent -= dv;
-
+            // update current elevation
             m_currentAlt = alt;
+
+            // initialize origin as needed
+            if (std::isnan(m_originAlt))
+              m_originAlt = alt;
+            else
+            {
+              // update statistics when threshold is reached compared to origin
+              double dv = alt - m_originAlt;
+              if (dv > ASC_THRESHOLD)
+              {
+                m_originAlt = alt;
+                m_ascent += dv;
+              }
+              else if (dv < DES_THRESHOLD)
+              {
+                m_originAlt = alt;
+                m_descent -= dv;
+              }
+            }
           }
         }
 

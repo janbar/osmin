@@ -212,6 +212,7 @@ private:
 
   double m_distance;
   double m_duration;
+  double m_originAlt;
   double m_ascent;
   double m_descent;
 
