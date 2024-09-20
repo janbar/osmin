@@ -1009,7 +1009,7 @@ MapPage {
                 overlayManager.addMark(0, mark.lat, mark.lon);
             }
             if (mark.screenY < widgetBottomY / 2)
-                map.up();
+                map.moveUp();
             popLocationInfo.searchLocation(mark.lat, mark.lon);
             visible = true;
         }
