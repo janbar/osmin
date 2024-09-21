@@ -50,6 +50,7 @@
 #include <QMagnetometer>
 #include <QGyroscope>
 #include <qsensorbackend.h>
+#include <list>
 
 #define FILTER_COEFFICIENT 0.98f
 #define EPSILON 0.000000001f
@@ -87,6 +88,9 @@ private:
     float _fusedOrientation[3];
     float _timestamp;
     bool _initState;
+
+    qreal _value;
+    std::list<qreal> _gaps;
 
     void checkValues();
     void calculateFusedOrientation();

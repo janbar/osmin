@@ -49,6 +49,8 @@
 #include <qmath.h>
 
 #define RADIANS_TO_DEGREES 57.2957795
+#define AVG_THRESHOLD 10.0
+#define AVG_BASECOUNT 9
 
 char const * const GenericCompass::id("builtin.compass");
 
@@ -144,10 +146,29 @@ void GenericCompass::checkValues()
             _fusedOrientation[0] = _orientation[0];
         }
         qreal newAzimuth = _fusedOrientation[0] * RADIANS_TO_DEGREES;
-        if (_compassReading.azimuth() != newAzimuth) { // TODO: run thru collection of QCompassFilter
-            _compassReading.setAzimuth(newAzimuth);
-            _compassReading.setTimestamp(produceTimestamp());
-            newReadingAvailable();
+
+        qreal gap = newAzimuth - _value;
+        gap += (gap > 180.0 ? -360.0 : gap < -180.0 ? 360.0 : 0);
+        if (std::abs(gap) < AVG_THRESHOLD) {
+          _gaps.push_back(gap);
+          qreal sum = 0.0;
+          for (auto v : _gaps) sum += v;
+          newAzimuth = _value + std::round(sum / _gaps.size());
+          newAzimuth += (newAzimuth < 0 ? 360.0 : newAzimuth >= 360.0 ? -360.0 : 0);
+        } else {
+          _gaps.clear();
+          _gaps.push_back(0);
+          _value = newAzimuth;
+        }
+
+        if (std::abs(newAzimuth - _compassReading.azimuth()) > 1.0) { // TODO: run thru collection of QCompassFilter
+          _compassReading.setAzimuth(newAzimuth);
+          _compassReading.setTimestamp(produceTimestamp());
+          emit newReadingAvailable();
+        }
+
+        if (_gaps.size() > AVG_BASECOUNT) {
+          _gaps.pop_front();
         }
     }
 }
