@@ -48,9 +48,9 @@ Item {
         property bool lockToPosition: false
         onTriggered: {
             var d = angle - map.view.angle;
+            d = (d > Math.PI ?  d - 2.0*Math.PI : (d < -Math.PI ? d + 2.0*Math.PI : d));
             if (d > 0.001 || d < -0.001) {
-                let a = (d > Math.PI ? angle - Math.PI*2.0 : d < -Math.PI ? angle + Math.PI*2.0 : angle);
-                map.rotateTo(a);
+                map.pivotBy(d);
             } else {
                 stop();
                 finished();
