@@ -1,0 +1,152 @@
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/InputHandler.h b/libosmscout-client-qt/include/osmscoutclientqt/InputHandler.h
+index 1b38b5c3f..d9f052f97 100644
+--- a/libosmscout-client-qt/include/osmscoutclientqt/InputHandler.h
++++ b/libosmscout-client-qt/include/osmscoutclientqt/InputHandler.h
+@@ -276,6 +276,7 @@ public:
+     virtual bool move(const QVector2D &vector); // move vector in pixels
+     virtual bool rotateTo(double angle);
+     virtual bool rotateBy(double angleChange);
++    virtual bool pivotBy(double angleChange);
+     virtual bool touch(const QTouchEvent &event);
+     virtual bool currentPosition(bool locationValid, osmscout::GeoCoord currentPosition);
+     virtual bool vehiclePosition(const VehiclePosition &vehiclePosition, bool autoRotateMap);
+@@ -306,8 +307,9 @@ private:
+     MapView startMapView;
+     QVector2D _move;
+     osmscout::Magnification targetMagnification;
+-    double targetAngle;
+-    int animationDuration;
++    double targetAngle = 0.0;
++    int animationDuration = 0;
++    bool linearProgression = false;
+ 
+     const int MOVE_ANIMATION_DURATION = 1000; // ms
+     const int ZOOM_ANIMATION_DURATION = 500; // ms
+@@ -335,6 +337,7 @@ public:
+     bool move(const QVector2D &vector) override; // move vector in pixels
+     bool rotateTo(double angle) override;
+     bool rotateBy(double angleChange) override;
++    bool pivotBy(double angleChange) override;
+     bool touch(const QTouchEvent &event) override;
+ };
+ 
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h b/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h
+index 637c60934..c45fe7f1f 100644
+--- a/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h
++++ b/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h
+@@ -216,6 +216,7 @@ public slots:
+   void rotateTo(double angle);
+   void rotateLeft();
+   void rotateRight();
++  void pivotBy(double angleChange);
+ 
+   void toggleDaylight();
+   void reloadStyle();
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/InputHandler.cpp b/libosmscout-client-qt/src/osmscoutclientqt/InputHandler.cpp
+index a7ed551c3..e461eec18 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/InputHandler.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/InputHandler.cpp
+@@ -218,6 +218,10 @@ bool InputHandler::rotateBy(double /*angleChange*/)
+ {
+     return false;
+ }
++bool InputHandler::pivotBy(double /*angleChange*/)
++{
++  return false;
++}
+ bool InputHandler::touch(const QTouchEvent &/*event*/)
+ {
+     return false;
+@@ -271,8 +275,11 @@ void MoveHandler::onTimeout()
+         progress = 1.0;
+         timer.stop();
+     }
+-    //double scale = std::log( progress * (M_E - 1) + 1);
+-    double scale = std::log10( progress * (10 - 1) + 1);
++    double scale = progress;
++    if (!linearProgression) {
++      //scale = std::log( progress * (M_E - 1) + 1);
++      scale = std::log10( progress * (10 - 1) + 1);
++    }
+ 
+     osmscout::MercatorProjection projection;
+ 
+@@ -359,6 +366,7 @@ bool MoveHandler::zoom(double zoomFactor, const QPoint &widgetPosition, const QR
+         }
+     }
+     //emit viewChanged(view);
++    linearProgression = false;
+     animationDuration = ZOOM_ANIMATION_DURATION;
+     animationStart.restart();
+     timer.setInterval(ANIMATION_TICK);
+@@ -377,6 +385,7 @@ bool MoveHandler::move(const QVector2D &move)
+     _move.setX(move.x());
+     _move.setY(move.y());
+ 
++    linearProgression = false;
+     animationDuration = MOVE_ANIMATION_DURATION;
+     animationStart.restart();
+     timer.setInterval(ANIMATION_TICK);
+@@ -429,6 +438,7 @@ bool MoveHandler::rotateTo(double angle)
+     _move.setX(0);
+     _move.setY(0);
+ 
++    linearProgression = false;
+     animationDuration = ROTATE_ANIMATION_DURATION;
+     animationStart.restart();
+     timer.setInterval(ANIMATION_TICK);
+@@ -449,6 +459,7 @@ bool MoveHandler::rotateBy(double angleChange)
+     _move.setX(0);
+     _move.setY(0);
+ 
++    linearProgression = false;
+     animationDuration = ROTATE_ANIMATION_DURATION;
+     animationStart.restart();
+     timer.setInterval(ANIMATION_TICK);
+@@ -458,6 +469,26 @@ bool MoveHandler::rotateBy(double angleChange)
+     return true;
+ }
+ 
++bool MoveHandler::pivotBy(double angleChange)
++{
++  startMapView = view;
++  targetMagnification = view.magnification;
++
++  targetAngle = view.angle.AsRadians()+angleChange;
++
++  _move.setX(0);
++  _move.setY(0);
++
++  linearProgression = true;
++  animationDuration = ROTATE_ANIMATION_DURATION;
++  animationStart.restart();
++  timer.setInterval(ANIMATION_TICK);
++  timer.start();
++  onTimeout();
++
++  return true;
++}
++
+ ZoomGestureHandler::ZoomGestureHandler(const MapView &view, const QPoint &p, double zoomDistance):
+     InputHandler(view),
+   startMag(view.magnification),
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp b/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
+index a50e2c186..23e90ca47 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
+@@ -516,6 +516,15 @@ void MapWidget::rotateRight()
+     }
+ }
+ 
++void MapWidget::pivotBy(double angleChange)
++{
++  vehicle.lastGesture.restart();
++  if (!inputHandler->pivotBy(angleChange)){
++    setupInputHandler(new MoveHandler(*view));
++    inputHandler->pivotBy(angleChange);
++  }
++}
++
+ void MapWidget::toggleDaylight()
+ {
+     DBThreadRef dbThread=OSMScoutQt::GetInstance().GetDBThread();
