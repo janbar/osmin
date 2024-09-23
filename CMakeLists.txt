@@ -5,6 +5,7 @@ project(osmin C CXX)
 
 option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
+option(BUILD_SIMULATOR "Build the simulation tool for OSMIN" OFF)
 
 set(APP_VERSION       "1.12.10")
 set(APP_VERSION_CODE  75)
@@ -251,4 +252,8 @@ else()
         "uninstall"
         ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
     )
+endif()
+
+if((NOT ANDROID) AND UNIX AND BUILD_SIMULATOR)
+  add_subdirectory(simulator)
 endif()
