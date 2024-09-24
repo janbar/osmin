@@ -101,6 +101,7 @@ private:
     static void getRotationMatrixFromVector(float *R, size_t lenR, float *rotationVector, size_t lenRotationVector);
     static bool getRotationMatrix(float *R, size_t lenR, float *I, size_t lenI, float *gravity, float *geomagnetic);
     static float *getOrientation(float *R, size_t lenR, float *values);
+    static quint64 produceTimestamp();
 
 private slots:
     void onAccelerometerChanged();

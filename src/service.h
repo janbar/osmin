@@ -32,15 +32,35 @@
 #define COMPASS_MIN_INTERVAL      250   // 250 ms
 #define POSITION_UPDATE_INTERVAL  1000  // 1 sec
 
-class BuiltInCompass;
-class BuiltInSensorPlugin;
+QT_BEGIN_NAMESPACE
+class QSensor;
 class QSensorBackend;
+QT_END_NAMESPACE
+
+class BuiltInSensorPlugin;
 
 class Service : public ServiceMessengerSource
 {
   Q_OBJECT
 public:
+  /**
+   * @brief Create Service with builtin data source
+   * @param url
+   * @param rootDir
+   */
   Service(const QString& url, const QString& rootDir);
+
+  /**
+   * @brief Create Service using the given data source
+   * @param url
+   * @param rootDir
+   * @param compassSource
+   * @param positionSource
+   */
+  Service(const QString& url, const QString& rootDir
+          , QSensor * compassSource
+          , QGeoPositionInfoSource * positionSource);
+
   virtual ~Service();
 
   enum PositioningMethods
@@ -98,9 +118,8 @@ private:
   QString m_url;
   QString m_rootDir;
   QSettings m_settings;
-  BuiltInCompass * m_compass;
+  QSensor * m_compass;
   BuiltInSensorPlugin * m_sensor;
-  QSensorBackend * m_SB;
 
   QGeoPositionInfoSource * m_position;
   bool m_positionActive = false;

@@ -18,6 +18,8 @@
 #ifndef BUILTINSENSORPLUGIN_H
 #define BUILTINSENSORPLUGIN_H
 
+#include "genericcompass.h"
+
 #include <QtSensors/qsensorplugin.h>
 #include <QtSensors/qsensorbackend.h>
 #include <QtSensors/qsensormanager.h>
@@ -31,14 +33,14 @@ class BuiltInSensorPlugin : public QObject, public QSensorPluginInterface, publi
 public:
   void registerSensors();
 
-  QSensorBackend *createBackend(QSensor *sensor);
+  GenericCompass *createBackend(QSensor *sensor);
 };
 
 class BuiltInCompass : public QSensor
 {
   Q_OBJECT
 public:
-  BuiltInCompass(QObject* parent = nullptr);
+  BuiltInCompass(QObject *parent = nullptr);
   virtual ~BuiltInCompass();
 };
 
