@@ -62,7 +62,6 @@ public:
 
 class GPXObjectTrack : public GPXObject
 {
-  friend class GPXFileModel;
 public:
   GPXObjectTrack(const osmscout::gpx::Track& track, int id) : m_track(track), m_id(id) { }
   int id() const override { return m_id; }
@@ -71,6 +70,8 @@ public:
   QString description() const override { return QString::fromUtf8(m_track.desc.value_or("").c_str()); }
   double length() const { return m_track.GetLength().AsMeter(); }
   QString displayColor() const;
+
+  const osmscout::gpx::Track& data() const { return m_track; };
 private:
   const osmscout::gpx::Track& m_track;
   int m_id;
@@ -78,7 +79,6 @@ private:
 
 class GPXObjectWayPoint : public GPXObject
 {
-  friend class GPXFileModel;
 public:
   GPXObjectWayPoint(const osmscout::gpx::Waypoint& waipoint, int id) : m_waypoint(waipoint), m_id(id) { }
   int id() const override { return m_id; }
@@ -89,6 +89,8 @@ public:
   double lat() const { return m_waypoint.coord.GetLat(); }
   double lon() const { return m_waypoint.coord.GetLon(); }
   double elevation() const { return m_waypoint.elevation.value_or(0.0); }
+
+  const osmscout::gpx::Waypoint& data() const { return m_waypoint; };
 private:
   const osmscout::gpx::Waypoint& m_waypoint;
   int m_id;

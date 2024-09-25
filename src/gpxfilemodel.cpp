@@ -337,7 +337,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
     if (item->type() == GPXObject::Track)
     {
       const GPXObjectTrack* obj = static_cast<const GPXObjectTrack*>(item);
-      for (auto const& segment : obj->m_track.segments)
+      for (auto const& segment : obj->data().segments)
       {
         std::vector<osmscout::Point> points;
         points.reserve(segment.points.size());
@@ -356,7 +356,7 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
     {
       const GPXObjectWayPoint* obj = static_cast<const GPXObjectWayPoint*>(item);
       osmscout::OverlayNode* node = new osmscout::OverlayNode();
-      node->addPoint(obj->m_waypoint.coord.GetLat(), obj->m_waypoint.coord.GetLon());
+      node->addPoint(obj->data().coord.GetLat(), obj->data().coord.GetLon());
       node->setTypeName(OVERLAY_NODE_WAYPOINT_TYPE);
       node->setName(obj->name());
       QVariant var;
