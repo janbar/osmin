@@ -118,10 +118,9 @@ private:
   QString m_url;
   QString m_rootDir;
   QSettings m_settings;
-  QSensor * m_compass;
-  BuiltInSensorPlugin * m_sensor;
-
-  QGeoPositionInfoSource * m_position;
+  QSensor * m_compass = nullptr;
+  BuiltInSensorPlugin * m_sensor = nullptr;
+  QGeoPositionInfoSource * m_position = nullptr;
   bool m_positionActive = false;
 
   QRemoteObjectHost * m_node = nullptr;

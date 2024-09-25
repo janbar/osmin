@@ -57,7 +57,8 @@ Service::~Service()
     delete m_tracker;
     delete m_node;
   }
-  delete m_sensor;
+  if (m_sensor)
+    delete m_sensor;
   qInfo("%s", __FUNCTION__);
 }
 
