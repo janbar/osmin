@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QString>
-
+#include <QVariantMap>
 
 namespace osmin
 {
@@ -39,6 +39,10 @@ namespace osmin
     Q_INVOKABLE static double sphericalDistance(double aLat, double aLon, double bLat, double bLon);
 
     Q_INVOKABLE static double sphericalBearingFinal(double aLat, double aLon, double bLat, double bLon);
+
+    static void sphericalTarget(double aLat, double aLon, double bearing, double distance, double * bLat, double * bLon);
+
+    Q_INVOKABLE static QVariantMap sphericalTarget(double aLat, double aLon, double bearing, double distance);
   };
 
 }

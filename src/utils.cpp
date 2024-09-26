@@ -54,6 +54,7 @@ quint64 Utils::storageBytesFree(const QString& path)
 }
 
 #define DEGTORAD(a) ((a)*M_PI/180.0)
+#define RADTODEG(a) ((a)*180.0/M_PI)
 
 /**
  * Calculating basic cost for the A* algorithm based on the
@@ -61,7 +62,7 @@ quint64 Utils::storageBytesFree(const QString& path)
  */
 double Utils::sphericalDistance(double aLat, double aLon, double bLat, double bLon)
 {
-  double r = 6371010.0; // Average radius of earth
+  static const double r = 6371010.0; // Average radius of earth
   double aLatRad=DEGTORAD(aLat);
   double bLatRad=DEGTORAD(bLat);
   double dLat=DEGTORAD(bLat-aLat);
@@ -80,6 +81,14 @@ namespace osmin
   {
     resSin = sin(x);
     resCos = cos(x);
+  }
+
+  static inline double realmod(double val, double modval)
+  {
+    double r = val - (modval * std::round(val / modval));
+    if (r < 0)
+      r += modval;
+    return r;
   }
 }
 
@@ -111,4 +120,44 @@ double Utils::sphericalBearingFinal(double aLat, double aLon, double bLat, doubl
     bearing+=M_PI;
 
   return bearing;
+}
+
+/**
+ * Taken the origin A over a sphere return target B at the given angle and distance.
+ */
+void Utils::sphericalTarget(double aLat, double aLon, double bearing, double distance, double * bLat, double * bLon)
+{
+  static const double minute = M_PI / 10800;
+  double lat = DEGTORAD(aLat);
+  double lon = DEGTORAD(aLon);
+  double drad = distance / 6371010.0;
+
+  double rLat, rLon;
+
+  if (lat > (M_PI/2 - minute)) {
+    rLon = (bearing <= M_PI ? bearing : bearing - M_PI);
+    rLat = M_PI/2 - drad;
+  } else if (lat < (minute - M_PI/2)) {
+      rLon = (bearing <= M_PI ? -bearing : M_PI - bearing);
+      rLat = drad - M_PI/2;
+  } else {
+    rLat = std::asin((std::sin(lat) * std::cos(drad)) +
+                     (std::cos(lat) * std::sin(drad) * std::cos(bearing)));
+    double dlon = std::atan2(std::sin(bearing) * std::sin(drad) * std::cos(lat),
+                             std::cos(drad) - std::sin(lat) * std::sin(rLat));
+    rLon = realmod(lon + dlon + M_PI, 2*M_PI ) - M_PI;
+  }
+
+  *bLat = RADTODEG(rLat);
+  *bLon = RADTODEG(rLon);
+}
+
+QVariantMap Utils::sphericalTarget(double aLat, double aLon, double bearing, double distance)
+{
+  double bLat, bLon;
+  sphericalTarget(aLat, aLon, bearing, distance, &bLat, &bLon);
+  QVariantMap value;
+  value.insert("lat", bLat);
+  value.insert("lon", bLon);
+  return value;
 }
