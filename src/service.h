@@ -27,6 +27,9 @@
 #include "rep_servicemessenger_source.h"
 #include "tracker.h"
 
+/* The name of the service end-point must include the revision of the API */
+#define SERVICE_URL                     "local:osmin59"
+
 #define SETTING_RECORDING_FILENAME      "trackerRecording"
 #define COMPASS_DATARATE          2     // default
 #define COMPASS_MIN_INTERVAL      250   // 250 ms

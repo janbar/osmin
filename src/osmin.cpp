@@ -55,10 +55,7 @@
 #define APP_VERSION "Undefined"
 #endif
 
-/* The name of the service end-point must include the revision of the API */
-#define SERVICE_URL                 "local:osmin59"
 #define SERVICE_FLAG                "-service"
-
 #define OSMIN_MODULE                "Osmin"         // QML module name
 #define DIR_MAPS                    "maps"
 #define DIR_VOICES                  "voices"
