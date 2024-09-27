@@ -31,7 +31,7 @@ public:
   ~GPXRunner();
 
   bool loadGPX(const QString& fileptah);
-  const GPXFile * file() { return _gpxfile; }
+  GPXFile * file() { return _gpxfile; }
   bool configureRun(int trackid, int tick, double speed, int startpts);
   bool isRunAborted() { return (_running ? _running->aborted : false); }
 

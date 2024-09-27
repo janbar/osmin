@@ -59,22 +59,22 @@ QString GPXFile::description() const
   return QString::fromUtf8(m_gpx.desc.value_or("").c_str());
 }
 
-QList<GPXObjectTrack> GPXFile::tracks() const
+QList<GPXObjectTrack> GPXFile::tracks()
 {
   int i = 0;
   QList<GPXObjectTrack> list;
-  for (const osmscout::gpx::Track& track : m_gpx.tracks)
+  for (osmscout::gpx::Track& track : m_gpx.tracks)
   {
     list << GPXObjectTrack(track, ++i);
   }
   return list;
 }
 
-QList<GPXObjectWayPoint> GPXFile::waypoints() const
+QList<GPXObjectWayPoint> GPXFile::waypoints()
 {
   int i = 0;
   QList<GPXObjectWayPoint> list;
-  for (const osmscout::gpx::Waypoint& waypoint : m_gpx.waypoints)
+  for (osmscout::gpx::Waypoint& waypoint : m_gpx.waypoints)
   {
     list << GPXObjectWayPoint(waypoint, ++i);
   }

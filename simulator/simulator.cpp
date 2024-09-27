@@ -244,7 +244,7 @@ void Simulator::onQuit()
 
 void Simulator::onListGPXRequested()
 {
-  const GPXFile * f = _gpxrunner.file();
+  GPXFile * f = _gpxrunner.file();
   if (f == nullptr)
     return;
   fprintf(stdout, "Path: %s\nName: %s\n",
