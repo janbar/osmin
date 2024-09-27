@@ -263,6 +263,7 @@ TrackerModule::~TrackerModule()
   onFlushRecording();
   if (m_t)
     m_t->quit();
+  delete m_formater;
   qInfo("%s", __FUNCTION__);
 }
 
