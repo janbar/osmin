@@ -3,10 +3,12 @@ name: build ubuntu 24.04
 on:
   pull_request:
     branches:
-      - simulator
+      - debug
+      - master
   push:
     branches:
-      - simulator
+      - debug
+      - master
 
 jobs:
   build:
