@@ -61,17 +61,15 @@ set(simulator_HEADERS
     ${OSMIN_SRC_DIR}/utils.h
 )
 
-qt5_generate_repc(simulator_SOURCES
-                  ${OSMIN_SRC_DIR}/servicemessenger.rep SOURCE)
-qt5_generate_repc(simulator_SOURCES
-                  ${OSMIN_SRC_DIR}/servicemessenger.rep REPLICA)
-
 add_executable(simulator ${simulator_SOURCES} ${simulator_HEADERS})
+
+qt6_add_repc_sources(simulator ${OSMIN_SRC_DIR}/servicemessenger.rep)
+qt6_add_repc_replicas(simulator ${OSMIN_SRC_DIR}/servicemessenger.rep)
 
 target_link_libraries(simulator PRIVATE
   ${LIBOSMSCOUT_LIBRARIES}
-  Qt5::RemoteObjects Qt5::Positioning
-  Qt5::Sensors Qt5::Core
+  Qt::RemoteObjects Qt::Positioning
+  Qt::Sensors Qt::Core
 )
 
 if(READLINE_FOUND)
