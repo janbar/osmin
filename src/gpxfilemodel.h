@@ -32,8 +32,8 @@ public:
 
   QString name() const;
   QString description() const;
-  QList<GPXObject*> tracks() const;
-  QList<GPXObject*> waypoints() const;
+  QList<GPXObjectTrack> tracks() const;
+  QList<GPXObjectWayPoint> waypoints() const;
 
 private:
   bool m_valid;
@@ -64,6 +64,7 @@ class GPXObjectTrack : public GPXObject
 {
 public:
   GPXObjectTrack(const osmscout::gpx::Track& track, int id) : m_track(track), m_id(id) { }
+  explicit GPXObjectTrack(const GPXObjectTrack& other) : m_track(other.m_track), m_id(other.m_id) { }
   int id() const override { return m_id; }
   ObjectType type() const override { return Track; }
   QString name() const override { return QString::fromUtf8(m_track.name.value_or(std::to_string(m_id)).c_str()); }
@@ -81,6 +82,7 @@ class GPXObjectWayPoint : public GPXObject
 {
 public:
   GPXObjectWayPoint(const osmscout::gpx::Waypoint& waipoint, int id) : m_waypoint(waipoint), m_id(id) { }
+  explicit GPXObjectWayPoint(const GPXObjectWayPoint& other) : m_waypoint(other.m_waypoint), m_id(other.m_id) { }
   int id() const override { return m_id; }
   ObjectType type() const override { return WayPoint; }
   QString name() const override { return QString::fromUtf8(m_waypoint.name.value_or(std::to_string(m_id)).c_str()); }

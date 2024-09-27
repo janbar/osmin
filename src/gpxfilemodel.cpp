@@ -59,24 +59,24 @@ QString GPXFile::description() const
   return QString::fromUtf8(m_gpx.desc.value_or("").c_str());
 }
 
-QList<GPXObject*> GPXFile::tracks() const
+QList<GPXObjectTrack> GPXFile::tracks() const
 {
   int i = 0;
-  QList<GPXObject*> list;
+  QList<GPXObjectTrack> list;
   for (const osmscout::gpx::Track& track : m_gpx.tracks)
   {
-    list << new GPXObjectTrack(track, ++i);
+    list << GPXObjectTrack(track, ++i);
   }
   return list;
 }
 
-QList<GPXObject*> GPXFile::waypoints() const
+QList<GPXObjectWayPoint> GPXFile::waypoints() const
 {
   int i = 0;
-  QList<GPXObject*> list;
+  QList<GPXObjectWayPoint> list;
   for (const osmscout::gpx::Waypoint& waypoint : m_gpx.waypoints)
   {
-    list << new GPXObjectWayPoint(waypoint, ++i);
+    list << GPXObjectWayPoint(waypoint, ++i);
   }
   return list;
 }
@@ -259,8 +259,10 @@ bool GPXFileModel::loadData()
     if ((ret = (m_file && m_file->isValid())))
     {
       QList<GPXObject*> data;
-      data.append(m_file->tracks());
-      data.append(m_file->waypoints());
+      for (GPXObjectTrack& t : m_file->tracks())
+        data.append(new GPXObjectTrack(t));
+      for (GPXObjectWayPoint& w : m_file->waypoints())
+        data.append(new GPXObjectWayPoint(w));
       beginInsertRows(QModelIndex(), 0, data.count()-1);
       for (GPXObject* item : data)
       {
