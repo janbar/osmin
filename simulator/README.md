@@ -42,7 +42,7 @@ Pos 45.91886 6.86974 Alt 1040 meters Ang 0°00'00.00"
 ```
 On osmin, the main button is now green. Press it so it's blue, and adjust the zoom.
 
-By typing the commands below, osmin should folows the movement.
+By typing the commands below, osmin should follows the movement.
 ```
 >>> angle 45
 >>> move 5
