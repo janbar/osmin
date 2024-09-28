@@ -7,8 +7,8 @@ option(INSTALL_TESTS "Install the tests on make install" OFF)
 option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 option(BUILD_SIMULATOR "Build the simulation tool for OSMIN" OFF)
 
-set(APP_VERSION       "1.12.10")
-set(APP_VERSION_CODE  75)
+set(APP_VERSION       "1.12.11")
+set(APP_VERSION_CODE  76)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
