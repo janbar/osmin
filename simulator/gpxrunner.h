@@ -1,7 +1,3 @@
-#ifndef GPXRUNNER_H
-#define GPXRUNNER_H
-
-#include <gpxfilemodel.h>
 /*
  * Copyright (C) 2024
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
@@ -18,6 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef GPXRUNNER_H
+#define GPXRUNNER_H
+
+#include <gpxfilemodel.h>
 #include <QObject>
 #include <QThread>
 #include <QList>
