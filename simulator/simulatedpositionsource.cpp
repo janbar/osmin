@@ -23,14 +23,18 @@
 
 std::mutex SimulatedPositionSource::_mutex;
 QGeoPositionInfo SimulatedPositionSource::_info;
+SimulatedPositionSource * SimulatedPositionSource::_instance = nullptr;
 
 SimulatedPositionSource::SimulatedPositionSource(QObject *parent)
     : QGeoPositionInfoSource(parent)
 {
   QGeoPositionInfoSource::setUpdateInterval(INTERVAL_MIN);
+  _instance = this;
+}
 
-  connect(&_updateTimer, &QTimer::timeout,
-          this, &SimulatedPositionSource::onTimeout);
+SimulatedPositionSource::~SimulatedPositionSource()
+{
+  _instance = nullptr;
 }
 
 void SimulatedPositionSource::setUpdateInterval(int msec)
@@ -39,8 +43,6 @@ void SimulatedPositionSource::setUpdateInterval(int msec)
   {
     // the base class store the value
     QGeoPositionInfoSource::setUpdateInterval(msec);
-    if (_updateTimer.isActive())
-      _updateTimer.setInterval(msec);
   }
 }
 
@@ -70,18 +72,24 @@ QGeoPositionInfoSource::Error SimulatedPositionSource::error() const
 
 void SimulatedPositionSource::startUpdates()
 {
-  if (!_updateTimer.isActive())
+  std::lock_guard<std::mutex> g(_mutex);
+  if (!_active)
   {
-    _updateTimer.setInterval(updateInterval());
-    _updateTimer.start();
+    connect(this, &SimulatedPositionSource::dataUpdated,
+            this, &SimulatedPositionSource::onDataUpdated,
+            Qt::QueuedConnection);
+    _active = true;
   }
 }
 
 void SimulatedPositionSource::stopUpdates()
 {
-  if (_updateTimer.isActive())
+  std::lock_guard<std::mutex> g(_mutex);
+  if (_active)
   {
-    _updateTimer.stop();
+    disconnect(this, &SimulatedPositionSource::dataUpdated,
+               this, &SimulatedPositionSource::onDataUpdated);
+    _active = false;
   }
 }
 
@@ -92,14 +100,10 @@ void SimulatedPositionSource::requestUpdate(int timeout)
   emit positionUpdated(_info);
 }
 
-void SimulatedPositionSource::onTimeout()
+void SimulatedPositionSource::onDataUpdated()
 {
   std::lock_guard<std::mutex> g(_mutex);
-  if (_info.timestamp() != _lastUpdate)
-  {
-    _lastUpdate = _info.timestamp();
-    emit positionUpdated(_info);
-  }
+  emit positionUpdated(_info);
 }
 
 void SimulatedPositionSource::resetData(double lat, double lon, double alt)
@@ -107,4 +111,5 @@ void SimulatedPositionSource::resetData(double lat, double lon, double alt)
   QGeoCoordinate coord(lat, lon, alt);
   std::lock_guard<std::mutex> g(_mutex);
   _info = QGeoPositionInfo(coord, QDateTime::currentDateTime());
+  emit _instance->dataUpdated();
 }

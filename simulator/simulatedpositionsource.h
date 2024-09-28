@@ -26,7 +26,7 @@ class SimulatedPositionSource : public QGeoPositionInfoSource
   Q_OBJECT
 public:
   explicit SimulatedPositionSource(QObject *parent = nullptr);
-  ~SimulatedPositionSource() = default;
+  ~SimulatedPositionSource();
 
   void setUpdateInterval(int msec) override;
   QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const override;
@@ -34,24 +34,27 @@ public:
   int minimumUpdateInterval() const override;
   Error error() const override;
 
-  static const QGeoPositionInfo& data() { return _info; };
+  static const QGeoPositionInfo& data() { return _info; }
   static void resetData(double lat, double lon, double alt);
 
-public Q_SLOTS:
+public slots:
   void startUpdates() override;
   void stopUpdates() override;
   void requestUpdate(int timeout = 0) override;
 
+signals:
+  void dataUpdated();
+
 private slots:
-  void onTimeout();
+  void onDataUpdated();
 
 private:
   Q_DISABLE_COPY(SimulatedPositionSource)
 
+  bool _active = false;
   static std::mutex _mutex;
   static QGeoPositionInfo _info;
-  QTimer _updateTimer;
-  QDateTime _lastUpdate;
+  static SimulatedPositionSource * _instance;
 };
 
 #endif // SIMULATEDPOSITIONSOURCE_H
