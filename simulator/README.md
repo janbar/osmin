@@ -34,18 +34,24 @@ RUN                        Resume the stopped run
 >>>
 ```
 
-On osmin, press the main button (Navigation mode) for the blue color. Then set the virtual position (latitude, longitude and optionally the elevation), and check osmin goes there, follows the movement.
+Set the virtual position (latitude, longitude and optionally the elevation).
 ```
 >>> goto 45.918858 6.869745 1040
 >>> status
 Pos 45.91886 6.86974 Alt 1040 meters Ang 0°00'00.00"
+```
+On osmin, the main button is now green. Press it so it's blue, and adjust the zoom.
+
+By typing the commands below, osmin should folows the movement.
+```
 >>> angle 45
 >>> move 5
 >>> move 5
 >>> right
 >>> move
 ```
-
+The tracker should calculate the current speed based on the time interval between the two commands "move 5", then send the value to osmin. Above a speed of 3 km/h, the azimuth is estimated on the movement. So, typing "right" will not change the direction shown by osmin if the speed is higher than 3 km/h. The last command "move" (i.e. move 0) makes the speed zero, and forces the compass angle to be used as the azimuth.
+ 
 To test a RUN from file GPX, first you have to load the file, and then start running of a selected track. You could specify only the track Id. Below, I set the speed and the start point. A RUN can be stopped by pressing the key CTRL+C, and resumed typing RUN without argument.
 ```
 >>> load test.gpx
