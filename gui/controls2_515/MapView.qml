@@ -1164,12 +1164,29 @@ MapPage {
         }
     }
 
+    property QtObject suspendedState: QtObject {
+        property bool navigation: false
+    }
+
     Connections {
         target: mainView
         function onApplicationSuspendedChanged() {
-            // On device mobile (e.g Android) disable navigation when the app is suspended
-            if (DeviceMobile && applicationSuspended && navigation)
-                navigation = false;
+            // On device mobile (e.g Android) disable all when the app is suspended
+            if (DeviceMobile) {
+                if (applicationSuspended) {
+                    rotateEnabled = false;
+                    map.lockToPosition = false;
+                    // save current state
+                    suspendedState.navigation = navigation;
+                    // disable navigation state
+                    if (navigation)
+                        navigation = false;
+                } else {
+                    // restore navigation state
+                    if (suspendedState.navigation)
+                        navigation = true;
+                }
+            }
         }
         function onShowFavoritesChanged() {
             if (showFavorites)
