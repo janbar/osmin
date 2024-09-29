@@ -120,6 +120,7 @@ void Simulator::onCommand(QStringList tokens)
                     "RIGHT                      Rotate right\n"
                     "ANGLE deg                  Rotate at angle of deg\n"
                     "MOVE [dm]                  Move forward dm or 0 (meters)\n"
+                    "PAUSE [sec]                Pause for a tick or duration (1..59 seconds)\n"
                     "LOAD gpx                   Load the GPX file\n"
                     "LIST                       List all tracks contained in the loaded file\n"
                     "RUN trkid [speed [pts]]    Run the identified track of the loaded file\n"
@@ -165,6 +166,19 @@ void Simulator::onCommand(QStringList tokens)
     osmin::Utils::sphericalTarget(coord.latitude(), coord.longitude(), bearing, dist,
                                   &lat, &lon);
     _position.resetData(lat, lon, coord.altitude());
+  }
+  else if (token.compare("PAUSE", Qt::CaseInsensitive) == 0)
+  {
+    if (tokens.isEmpty())
+      QThread::msleep(_positionSource->updateInterval());
+    else
+    {
+      int sec = tokens.front().toInt();
+      if (sec > 0 && sec < 60)
+        QThread::sleep(sec);
+      else
+        fprintf(stdout, "Invalid duration specified. A valid range is 1 to 59\n");
+    }
   }
   else if (token.compare("LOAD", Qt::CaseInsensitive) == 0 && !tokens.isEmpty())
   {
