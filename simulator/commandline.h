@@ -40,10 +40,6 @@ private:
   QStringList tokenize(const char *delimiters, bool trimnull = false);
 
   int readstdin(char *buf, size_t maxlen);
-#ifdef HAVE_READLINE
-  char * rl_line = nullptr; // hold the line
-  char * rl_pos = nullptr;  // read position
-#endif
 };
 
 #endif // COMMANDLINE_H

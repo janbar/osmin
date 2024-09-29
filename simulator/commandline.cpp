@@ -40,8 +40,6 @@ CommandLine::~CommandLine()
 {
   delete [] _buffer;
 #ifdef HAVE_READLINE
-  if (rl_line)
-    free(rl_line);
   clear_history();
 #endif
 }
@@ -85,55 +83,29 @@ QStringList CommandLine::tokenize(const char *delimiters, bool trimnull)
 #ifdef HAVE_READLINE
 int CommandLine::readstdin(char *buf, size_t maxlen)
 {
-  if (rl_pos)
-  {
-    if (*rl_pos == 0)
-    {
-      /* free old buffer before read new line */
-      free(rl_line);
-      rl_line = rl_pos = nullptr;
-    }
-    else
-    {
-      /* fill a chunk from previous read */
-      unsigned n = 0;
-      while (*rl_pos && n < (maxlen - 1))
-      {
-        buf[n] = *rl_pos;
-        ++rl_pos;
-        ++n;
-      }
-      if (*rl_pos == 0)
-        buf[n++] = '\n';
-      return n;
-    }
-  }
   /* get a new line */
-  rl_line = readline(PROMPT_STRING);
+  char * rl_line = readline(PROMPT_STRING);
   /* if the line has any text in it */
   if (rl_line)
   {
+    unsigned n = 0;
     if (*rl_line)
     {
       /* save it on the history */
       add_history(rl_line);
-      unsigned n = 0;
-      rl_pos = rl_line;
+      char * rl_pos = rl_line;
       while (*rl_pos && n < (maxlen - 1))
       {
         buf[n] = *rl_pos;
         ++rl_pos;
         ++n;
       }
-      if (*rl_pos == 0)
-        buf[n++] = '\n';
-      return n;
     }
-    else
-    {
-      *buf = '\n';
-      return 1;
-    }
+    /* must end with nl */
+    buf[n++] = '\n';
+    /* free line buffer */
+    free(rl_line);
+    return n;
   }
   /* EOF */
   return -1;
