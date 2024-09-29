@@ -149,7 +149,7 @@ void doExit(int code)
   QCoreApplication::quit();
 }
 
-void messageOutput(QtMsgType type, const QMessageLogContext &, const QString & msg)
+void messageOutput(QtMsgType type, const QMessageLogContext&, const QString& msg)
 {
   switch (type) {
   case QtDebugMsg:
