@@ -17,6 +17,8 @@
 #ifndef GPXRUNNER_H
 #define GPXRUNNER_H
 
+#include "globalposition.h"
+#include "globalazimuth.h"
 #include <gpxfilemodel.h>
 #include <QObject>
 #include <QThread>
@@ -27,7 +29,8 @@ class GPXRunner : public QThread
   Q_OBJECT
 
 public:
-  GPXRunner() { }
+  explicit GPXRunner(GlobalPosition& position, GlobalAzimuth& azimuth)
+      : _position(position), _azimuth(azimuth) { }
   ~GPXRunner();
 
   bool loadGPX(const QString& fileptah);
@@ -37,8 +40,6 @@ public:
 
 signals:
   void pointChanged(int pts);
-
-private slots:
 
 private:
 
@@ -67,6 +68,8 @@ private:
     bool aborted;
   };
 
+  GlobalPosition& _position;
+  GlobalAzimuth& _azimuth;
   GPXFile * _gpxfile = nullptr;
   Running * _running = nullptr;
 

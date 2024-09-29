@@ -52,12 +52,16 @@ public slots:
   void onRunFinished();
 
 private:
-  QSensor * _compassSource = nullptr;
+  GlobalAzimuth _azimuth;
+  GlobalPosition _position;
+
   SimulatedSensorPlugin * _compassPlugin = nullptr;
+  SimulatedSensor * _compassSource = nullptr;
   SimulatedPositionSource * _positionSource = nullptr;
+
+  GPXRunner * _gpxrunner;
   CommandLine * _cmd = nullptr;
   Converter _converter;
-  GPXRunner _gpxrunner;
 
   void prompt();
   static qreal normalizeAzimuth(qreal azimuth);

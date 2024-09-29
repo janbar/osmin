@@ -17,16 +17,16 @@
 #ifndef SIMULATEDPOSITIONSOURCE_H
 #define SIMULATEDPOSITIONSOURCE_H
 
-#include <mutex>
+#include "globalposition.h"
+
 #include <QtPositioning/QGeoPositionInfoSource>
-#include <QTimer>
 
 class SimulatedPositionSource : public QGeoPositionInfoSource
 {
   Q_OBJECT
 public:
-  explicit SimulatedPositionSource(QObject *parent = nullptr);
-  ~SimulatedPositionSource();
+  explicit SimulatedPositionSource(GlobalPosition& gp, QObject *parent = nullptr);
+  ~SimulatedPositionSource() = default;
 
   void setUpdateInterval(int msec) override;
   QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const override;
@@ -34,16 +34,10 @@ public:
   int minimumUpdateInterval() const override;
   Error error() const override;
 
-  static const QGeoPositionInfo& data() { return _info; }
-  static void resetData(double lat, double lon, double alt);
-
 public slots:
   void startUpdates() override;
   void stopUpdates() override;
   void requestUpdate(int timeout = 0) override;
-
-signals:
-  void dataUpdated();
 
 private slots:
   void onDataUpdated();
@@ -51,10 +45,8 @@ private slots:
 private:
   Q_DISABLE_COPY(SimulatedPositionSource)
 
+  GlobalPosition& _position;
   bool _active = false;
-  static std::mutex _mutex;
-  static QGeoPositionInfo _info;
-  static SimulatedPositionSource * _instance;
 };
 
 #endif // SIMULATEDPOSITIONSOURCE_H

@@ -17,19 +17,16 @@
 
 #include "simulatedcompass.h"
 
-#include <QDebug>
-
 #include <time.h>
 
 #define RADIANS_TO_DEGREES 57.2957795
 
 char const * const SimulatedCompass::id("simulated.compass");
-QCompassReading SimulatedCompass::_compassReading;
 
-SimulatedCompass::SimulatedCompass(QSensor *sensor)
-    : QSensorBackend(sensor)
+SimulatedCompass::SimulatedCompass(GlobalAzimuth& azimuth, QSensor *sensor)
+    : QSensorBackend(sensor), _azimuth(azimuth)
 {
-  setReading<QCompassReading>(&_compassReading);
+  setReading<QCompassReading>(&_reading);
   addDataRate(1.0, 10.0);
 
   connect(&_updateTimer, &QTimer::timeout,
@@ -38,22 +35,6 @@ SimulatedCompass::SimulatedCompass(QSensor *sensor)
 
 SimulatedCompass::~SimulatedCompass()
 {
-}
-
-quint64 SimulatedCompass::produceTimestamp()
-{
-  struct timespec tv;
-  int ok;
-
-#ifdef CLOCK_MONOTONIC_RAW
-  ok = clock_gettime(CLOCK_MONOTONIC_RAW, &tv);
-  if (ok != 0)
-#endif
-    ok = clock_gettime(CLOCK_MONOTONIC, &tv);
-  Q_ASSERT(ok == 0);
-
-  quint64 result = (tv.tv_sec * 1000000ULL) + (tv.tv_nsec * 0.001); // scale to microseconds
-  return result;
 }
 
 void SimulatedCompass::start()
@@ -78,14 +59,26 @@ void SimulatedCompass::stop()
   }
 }
 
-void SimulatedCompass::resetData(qreal azimuth)
-{
-  _compassReading.setCalibrationLevel(1.0);
-  _compassReading.setAzimuth(azimuth);
-  _compassReading.setTimestamp(produceTimestamp());
-}
-
 void SimulatedCompass::onTimeout()
 {
+  _reading.setAzimuth(_azimuth.data());
+  _reading.setCalibrationLevel(1.0);
+  _reading.setTimestamp(produceTimestamp());
   newReadingAvailable();
+}
+
+quint64 SimulatedCompass::produceTimestamp()
+{
+  struct timespec tv;
+  int ok;
+
+#ifdef CLOCK_MONOTONIC_RAW
+  ok = clock_gettime(CLOCK_MONOTONIC_RAW, &tv);
+  if (ok != 0)
+#endif
+    ok = clock_gettime(CLOCK_MONOTONIC, &tv);
+  Q_ASSERT(ok == 0);
+
+  quint64 result = (tv.tv_sec * 1000000ULL) + (tv.tv_nsec * 0.001); // scale to microseconds
+  return result;
 }

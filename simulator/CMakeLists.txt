@@ -22,6 +22,8 @@ if(SIMULATOR_WITH_READLINE)
 endif()
 
 set(simulator_SOURCES main.cpp
+    globalazimuth.cpp
+    globalposition.cpp
     simulatedcompass.cpp
     simulatedpositionsource.cpp
     simulatedsensorplugin.cpp
@@ -40,6 +42,8 @@ set(simulator_SOURCES main.cpp
 )
 set(simulator_HEADERS
     commandline.h
+    globalazimuth.h
+    globalposition.h
     gpxrunner.h
     simulatedcompass.h
     simulatedpositionsource.h

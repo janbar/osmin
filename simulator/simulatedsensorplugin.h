@@ -30,9 +30,13 @@ class SimulatedSensorPlugin : public QObject, public QSensorPluginInterface, pub
   Q_OBJECT
   Q_INTERFACES(QSensorPluginInterface)
 public:
+  SimulatedSensorPlugin(GlobalAzimuth& gc) : _compass(gc) { }
   void registerSensors() override;
 
   SimulatedCompass *createBackend(QSensor *sensor) override;
+
+private:
+  GlobalAzimuth& _compass;
 };
 
 class SimulatedSensor : public QSensor

@@ -17,7 +17,6 @@
 
 #include "gpxrunner.h"
 
-#include "simulatedpositionsource.h"
 #include <utils.h>
 
 #include <cmath>
@@ -96,7 +95,7 @@ bool GPXRunner::processNextPoint(int * waitfor)
     Point point = _running->midway.front();
     _running->midway.pop_front();
     fprintf(stdout, "[TRANSITION %d] %3.6f %3.6f %3.0f\n", _running->pts, point.lat, point.lon, point.alt);
-    SimulatedPositionSource::resetData(point.lat, point.lon, point.alt);
+    _position.resetData(point.lat, point.lon, point.alt);
     *waitfor = point.duration;
     return true;
   }
@@ -108,7 +107,7 @@ bool GPXRunner::processNextPoint(int * waitfor)
     return false;
 
   // apply current point
-  SimulatedPositionSource::resetData(
+  _position.resetData(
       point->coord.GetLat(),
       point->coord.GetLon(),
       point->elevation.value_or(0.0));

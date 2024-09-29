@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2024
  *      Jean-Luc Barriere <jlbarriere68@gmail.com>
  *
@@ -14,36 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SIMULATEDCOMPASS_H
-#define SIMULATEDCOMPASS_H
 
 #include "globalazimuth.h"
 
-#include <QObject>
-#include <qsensorbackend.h>
-#include <QTimer>
-
-class SimulatedCompass : public QSensorBackend
+void GlobalAzimuth::resetData(qreal azimuth)
 {
-  Q_OBJECT
-public:
-  static char const * const id;
-  SimulatedCompass(GlobalAzimuth& azimuth, QSensor *sensor);
-  ~SimulatedCompass();
-  void start() Q_DECL_OVERRIDE;
-  void stop() Q_DECL_OVERRIDE;
+  std::lock_guard<std::mutex> g(_mutex);
+  _azimuth = azimuth;
+}
 
-  void sensorError(int);
-
-private slots:
-  void onTimeout();
-
-private:
-  QTimer _updateTimer;
-
-  GlobalAzimuth& _azimuth;
-  QCompassReading _reading;
-  static quint64 produceTimestamp();
-};
-
-#endif // SIMULATEDCOMPASS_H
+qreal GlobalAzimuth::data() const
+{
+  std::lock_guard<std::mutex> g(_mutex);
+  return _azimuth;
+}

@@ -23,24 +23,27 @@
 #include <cmath>
 #include <cstdio>
 
-Simulator::Simulator() : QObject(nullptr)
+Simulator::Simulator()
+    : QObject(nullptr), _azimuth(), _position()
 {
   // setup the simulated compass sensor
-  _compassSource = new SimulatedSensor();
-  _compassPlugin = new SimulatedSensorPlugin();
+  _compassPlugin = new SimulatedSensorPlugin(_azimuth);
   _compassPlugin->registerSensors();
+  _compassSource = new SimulatedSensor();
   // setup the simulated position source
-  _positionSource = new SimulatedPositionSource();
+  _positionSource = new SimulatedPositionSource(_position);
 
   _compassSource->start();
   _positionSource->startUpdates();
 
-  connect(&_gpxrunner, SIGNAL(pointChanged(int)), this, SLOT(onPointChanged(int)));
-  connect(&_gpxrunner, SIGNAL(finished()), this, SLOT(onRunFinished()));
+  _gpxrunner = new GPXRunner(_position, _azimuth);
+  connect(_gpxrunner, SIGNAL(pointChanged(int)), this, SLOT(onPointChanged(int)));
+  connect(_gpxrunner, SIGNAL(finished()), this, SLOT(onRunFinished()));
 }
 
 Simulator::~Simulator()
 {
+  delete _gpxrunner;
   delete _positionSource;
   delete _compassPlugin;
   delete _compassSource;
@@ -69,9 +72,9 @@ void Simulator::disableCLI()
 
 bool Simulator::onKeyBreak()
 {
-  if (!_gpxrunner.isRunning())
+  if (!_gpxrunner->isRunning())
     return true;
-  _gpxrunner.requestInterruption();
+  _gpxrunner->requestInterruption();
   return false;
 }
 
@@ -94,12 +97,12 @@ void Simulator::onCommand(QStringList tokens)
   }
 
   // when runner is running, accept only the commands below
-  if (_gpxrunner.isRunning())
+  if (_gpxrunner->isRunning())
   {
     if (token.compare("BREAK", Qt::CaseInsensitive) == 0)
     {
-      if (_gpxrunner.isRunning())
-        _gpxrunner.requestInterruption();
+      if (_gpxrunner->isRunning())
+        _gpxrunner->requestInterruption();
     }
     // do not prompt here
     return;
@@ -117,7 +120,7 @@ void Simulator::onCommand(QStringList tokens)
                     "RIGHT                      Rotate right\n"
                     "ANGLE deg                  Rotate at angle of deg\n"
                     "MOVE [dm]                  Move forward dm or 0 (meters)\n"
-                    "LOAD gpx                   Load the file GPX\n"
+                    "LOAD gpx                   Load the GPX file\n"
                     "LIST                       List all tracks contained in the loaded file\n"
                     "RUN trkid [speed [pts]]    Run the identified track of the loaded file\n"
                     "RUN                        Resume the stopped run\n"
@@ -129,16 +132,16 @@ void Simulator::onCommand(QStringList tokens)
   }
   else if (token.compare("LEFT", Qt::CaseInsensitive) == 0)
   {
-    SimulatedCompass::resetData(normalizeAzimuth(SimulatedCompass::data().azimuth() - 90));
+    _azimuth.resetData(normalizeAzimuth(_azimuth.data() - 90));
   }
   else if (token.compare("RIGHT", Qt::CaseInsensitive) == 0)
   {
-    SimulatedCompass::resetData(normalizeAzimuth(SimulatedCompass::data().azimuth() + 90));
+    _azimuth.resetData(normalizeAzimuth(_azimuth.data() + 90));
   }
   else if (token.compare("ANGLE", Qt::CaseInsensitive) == 0 && !tokens.isEmpty())
   {
     qreal angle = tokens.front().toFloat();
-    SimulatedCompass::resetData(normalizeAzimuth(angle));
+    _azimuth.resetData(normalizeAzimuth(angle));
   }
   else if (token.compare("GOTO", Qt::CaseInsensitive) == 0 && tokens.length() >= 2)
   {
@@ -146,27 +149,27 @@ void Simulator::onCommand(QStringList tokens)
     tokens.pop_front();
     double lon = tokens.front().toDouble();
     tokens.pop_front();
-    double alt = SimulatedPositionSource::data().coordinate().altitude();
+    double alt = _position.data().coordinate().altitude();
     if (!tokens.isEmpty())
       alt = tokens.front().toDouble();
-    SimulatedPositionSource::resetData(lat, lon, alt);
+    _position.resetData(lat, lon, alt);
   }
   else if (token.compare("MOVE", Qt::CaseInsensitive) == 0)
   {
     double dist = 0.0;
     if (!tokens.isEmpty())
       dist = tokens.front().toDouble();
-    QGeoCoordinate coord = SimulatedPositionSource::data().coordinate();
-    double bearing = M_PI * SimulatedCompass::data().azimuth() / 180.0;
+    QGeoCoordinate coord = _position.data().coordinate();
+    double bearing = M_PI * _azimuth.data() / 180.0;
     double lat, lon;
     osmin::Utils::sphericalTarget(coord.latitude(), coord.longitude(), bearing, dist,
                                   &lat, &lon);
-    SimulatedPositionSource::resetData(lat, lon, coord.altitude());
+    _position.resetData(lat, lon, coord.altitude());
   }
   else if (token.compare("LOAD", Qt::CaseInsensitive) == 0 && !tokens.isEmpty())
   {
     token = tokens.front();
-    if (_gpxrunner.loadGPX(token))
+    if (_gpxrunner->loadGPX(token))
     {
       fprintf(stdout, "\nFile load succeeded.\n");
       onListGPXRequested();
@@ -174,7 +177,7 @@ void Simulator::onCommand(QStringList tokens)
   }
   else if (token.compare("LIST", Qt::CaseInsensitive) == 0)
   {
-    if (_gpxrunner.file() == nullptr)
+    if (_gpxrunner->file() == nullptr)
       fprintf(stdout, "No file loaded. Type LOAD, to load a file GPX\n");
     else
       onListGPXRequested();
@@ -203,11 +206,11 @@ void Simulator::onCommand(QStringList tokens)
             pts = 0;
         }
       }
-      if (_gpxrunner.configureRun(trackid, _positionSource->updateInterval(), speed, pts))
+      if (_gpxrunner->configureRun(trackid, _positionSource->updateInterval(), speed, pts))
       {
         fprintf(stdout, "Run is starting on track %d, interval=%d speed=%3f\n"
                         "Type CTRL+C to stop\n", trackid, _positionSource->updateInterval(), speed);
-        _gpxrunner.start();
+        _gpxrunner->start();
         return;
       }
       else
@@ -218,10 +221,10 @@ void Simulator::onCommand(QStringList tokens)
   }
   else if (token.compare("RUN", Qt::CaseInsensitive) == 0 && tokens.isEmpty())
   {
-    if (_gpxrunner.isRunAborted())
+    if (_gpxrunner->isRunAborted())
     {
       fprintf(stdout, "Run resumes\nType CTRL+C to stop\n");
-      _gpxrunner.start();
+      _gpxrunner->start();
       return;
     }
     else
@@ -244,7 +247,7 @@ void Simulator::onQuit()
 
 void Simulator::onListGPXRequested()
 {
-  GPXFile * f = _gpxrunner.file();
+  GPXFile * f = _gpxrunner->file();
   if (f == nullptr)
     return;
   fprintf(stdout, "Path: %s\nName: %s\n",
@@ -264,10 +267,11 @@ void Simulator::onListGPXRequested()
 
 void Simulator::onStatusRequested()
 {
-  QGeoCoordinate coord = SimulatedPositionSource::data().coordinate();
+  // read info from sources
+  QGeoCoordinate coord = _positionSource->lastKnownPosition().coordinate();
   QString pos = _converter.readableCoordinatesNumeric(coord.latitude(), coord.longitude());
   QString alt = _converter.readableElevation(coord.altitude());
-  QString ang = _converter.readableDegree(SimulatedCompass::data().azimuth());
+  QString ang = _converter.readableDegree(_compassSource->reading()->value(0).toDouble());
   fprintf(stdout, "Pos %s Alt %s Ang %s\n",
           pos.toStdString().c_str(),
           alt.toStdString().c_str(),
@@ -277,10 +281,11 @@ void Simulator::onStatusRequested()
 
 void Simulator::onPointChanged(int pts)
 {
-  QGeoCoordinate coord = SimulatedPositionSource::data().coordinate();
+  // read info from backend
+  QGeoCoordinate coord = _position.data().coordinate();
   QString pos = _converter.readableCoordinatesNumeric(coord.latitude(), coord.longitude());
   QString alt = _converter.readableElevation(coord.altitude());
-  QString ang = _converter.readableDegree(SimulatedCompass::data().azimuth());
+  QString ang = _converter.readableDegree(_azimuth.data());
   fprintf(stdout, "%d: Pos %s Alt %s Ang %s\n",
           pts,
           pos.toStdString().c_str(),
@@ -291,7 +296,7 @@ void Simulator::onPointChanged(int pts)
 
 void Simulator::onRunFinished()
 {
-  if (_gpxrunner.isRunAborted())
+  if (_gpxrunner->isRunAborted())
     fprintf(stdout, "Run is stopped\n");
   else
     fprintf(stdout, "Run has finished\n");

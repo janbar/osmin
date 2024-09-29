@@ -31,7 +31,7 @@ void SimulatedSensorPlugin::registerSensors()
 SimulatedCompass *SimulatedSensorPlugin::createBackend(QSensor *sensor)
 {
   if (sensor->identifier() == SimulatedCompass::id) {
-    return new SimulatedCompass(sensor);
+    return new SimulatedCompass(_compass, sensor);
   }
   return 0;
 }
