@@ -103,17 +103,16 @@ int CommandLine::readstdin(char *buf, size_t maxlen)
       if (n >= maxlen)
       {
         /* buffer is full */
-        qCritical("Line too long (%u)", n);
-        free(rl_line);
-        rl_line = rl_pos = nullptr;
-        *buf = '\n';
-        return 1;
+        return maxlen;
       }
     }
-    /* free old buffer before read new line */
+    /* free old buffer */
     free(rl_line);
     rl_line = rl_pos = nullptr;
+    buf[n++] = '\n';
+    return n;
   }
+
   /* get a new line */
   rl_line = readline(PROMPT_STRING);
   /* if the line has any text in it */
@@ -136,23 +135,14 @@ int CommandLine::readstdin(char *buf, size_t maxlen)
       if (n >= maxlen)
       {
         /* buffer is full */
-        qCritical("Line too long (%u)", n);
-        free(rl_line);
-        rl_line = rl_pos = nullptr;
-        *buf = '\n';
-        return 1;
-      }
-      else
-      {
-        buf[n++] = '\n';
-        return n;
+        return maxlen;
       }
     }
-    else
-    {
-      buf[n++] = '\n';
-      return n;
-    }
+    /* free old buffer */
+    free(rl_line);
+    rl_line = rl_pos = nullptr;
+    buf[n++] = '\n';
+    return n;
   }
   /* EOF */
   return -1;
