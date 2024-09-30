@@ -188,7 +188,8 @@ void GPXRunner::run()
   {
     while (wait > 0)
     {
-      if (isInterruptionRequested())
+      // check for thread interrupted, not this
+      if (QThread::currentThread()->isInterruptionRequested())
       {
         _running->aborted = true;
         break;

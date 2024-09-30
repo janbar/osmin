@@ -38,6 +38,8 @@ public:
   bool configureRun(int trackid, int tick, double speed, int startpts);
   bool isRunAborted() { return (_running ? _running->aborted : false); }
 
+  void run() override;
+
 signals:
   void pointChanged(int pts);
 
@@ -73,7 +75,6 @@ private:
   GPXFile * _gpxfile = nullptr;
   Running * _running = nullptr;
 
-  void run() override;
   bool processNextPoint(int * waitfor);
 
   /* file loader progress callback

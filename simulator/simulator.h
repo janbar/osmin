@@ -22,6 +22,7 @@
 #include "simulatedpositionsource.h"
 #include "commandline.h"
 #include "gpxrunner.h"
+#include "scriptrunner.h"
 
 #include <converter.h>
 
@@ -44,12 +45,13 @@ public:
   bool onKeyBreak() override;
 
 public slots:
-  void onCommand(QStringList tokens);
+  void onCommand(QString line);
   void onQuit();
   void onListGPXRequested();
   void onStatusRequested();
   void onPointChanged(int pts);
   void onRunFinished();
+  void onScriptFinished();
 
 private:
   GlobalAzimuth _azimuth;
@@ -60,11 +62,16 @@ private:
   SimulatedPositionSource * _positionSource = nullptr;
 
   GPXRunner * _gpxrunner;
+  QList<ScriptRunner*> _scripts;
+  QList<ScriptRunner*> _aborted;
   CommandLine * _cmd = nullptr;
   Converter _converter;
+  bool _prompt = false;
 
   void prompt();
   static qreal normalizeAzimuth(qreal azimuth);
+  QStringList tokenize(const char * text, const char * delimiters, bool trimnull = false);
+  bool loopDetected(const ScriptRunner& script) const;
 };
 
 #endif // SIMULATOR_H

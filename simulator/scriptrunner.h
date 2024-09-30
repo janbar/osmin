@@ -14,41 +14,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef COMMANDLINE_H
-#define COMMANDLINE_H
+#ifndef SCRIPTRUNNER_H
+#define SCRIPTRUNNER_H
 
-#include <QThread>
-#include <QList>
+#include <QObject>
 #include <QString>
+#include <QThread>
+#include <QFile>
+#include <QByteArray>
 
-class CommandLine : public QThread
+class Simulator;
+
+class ScriptRunner : public QThread
 {
   Q_OBJECT
-
-signals:
-  void newCommand(QString line);
-  void eof();
-
 public:
-  CommandLine();
-  ~CommandLine();
+  explicit ScriptRunner(Simulator& s)
+      : _simulator(s) { }
+  ~ScriptRunner();
 
-  /** Terminate the running thread, and reset state of the terminal.
-   *  Prefer this instead terminate(), which won't cleanup the state
-   *  of the terminal.
-   */
-  void forceInterruption();
-
-private:
-  char * _buffer;
+  bool configureScript(const QString& filepath);
+  bool isRunAborted() { return (_file ? _aborted : false); }
+  QString filepath() const;
 
   void run();
+  void recover();
+  bool isRecovery() const { return _redo; }
 
-  int readstdin(char *buf, size_t maxlen);
-#ifdef HAVE_READLINE
-  char * rl_line = nullptr; // hold the line
-  char * rl_pos = nullptr;  // read position
-#endif
+private:
+  bool processCommand();
+
+  bool _aborted = false;
+  bool _redo = false;
+  bool _finished = false;
+  Simulator& _simulator;
+  QFile * _file = nullptr;
+  QByteArray _command;
 };
 
-#endif // COMMANDLINE_H
+#endif // SCRIPTRUNNER_H

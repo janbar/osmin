@@ -22,8 +22,6 @@
 #include <readline/history.h>
 #endif
 
-#include <string>
-
 #define PROMPT_STRING ">>> "
 #define LINE_MAXSIZE  1024
 
@@ -46,40 +44,27 @@ CommandLine::~CommandLine()
 #endif
 }
 
+void CommandLine::forceInterruption() {
+    this->terminate();
+#ifdef HAVE_READLINE
+    // cleanup the state of the terminal
+    rl_cleanup_after_signal();
+#endif
+}
+
 void CommandLine::run()
 {
   int r = readstdin(_buffer, LINE_MAXSIZE);
   if (r > 0)
   {
+    // a line must be terminated by nl
     _buffer[r - 1] = '\0';
-    emit newCommand(tokenize(" ", true));
+    emit newCommand(QString(_buffer));
   }
   else
   {
     emit eof();
   }
-}
-
-QStringList CommandLine::tokenize(const char *delimiters, bool trimnull)
-{
-  QStringList tokens;
-  std::string tmp(_buffer);
-  std::string::size_type pa = 0, pb = 0;
-  unsigned n = 0;
-  // Counter n will break infinite loop. Max count is 255 tokens
-  while ((pb = tmp.find_first_of(delimiters, pb)) != std::string::npos && ++n < 255)
-  {
-    tokens.push_back(QString::fromStdString(tmp.substr(pa, pb - pa)));
-    do
-    {
-      pa = ++pb;
-    }
-    while (trimnull && tmp.find_first_of(delimiters, pb) == pb);
-  }
-
-  if (!trimnull || pa < tmp.size())
-    tokens.push_back(QString::fromStdString(tmp.substr(pa)));
-  return tokens;
 }
 
 #ifdef HAVE_READLINE
@@ -114,6 +99,7 @@ int CommandLine::readstdin(char *buf, size_t maxlen)
   }
 
   /* get a new line */
+  rl_catch_signals = 0;
   rl_line = readline(PROMPT_STRING);
   /* if the line has any text in it */
   if (rl_line)

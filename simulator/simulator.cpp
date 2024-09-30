@@ -22,6 +22,9 @@
 #include <QDebug>
 #include <cmath>
 #include <cstdio>
+#include <cassert>
+
+#define PAUSE_TICK  10 /* millisec */
 
 Simulator::Simulator()
     : QObject(nullptr), _azimuth(), _position()
@@ -43,6 +46,14 @@ Simulator::Simulator()
 
 Simulator::~Simulator()
 {
+  // running cmd must be terminated
+  if (_cmd && _cmd->isRunning())
+  {
+    _prompt = false;
+    _cmd->forceInterruption();
+    _cmd->wait();
+  }
+  qDeleteAll(_scripts);
   delete _gpxrunner;
   delete _positionSource;
   delete _compassPlugin;
@@ -54,8 +65,9 @@ void Simulator::enableCLI(CommandLine * cmd)
   if (cmd != nullptr)
   {
     _cmd = cmd;
-    connect(_cmd, SIGNAL(newCommand(QStringList)), this, SLOT(onCommand(QStringList)));
+    connect(_cmd, SIGNAL(newCommand(QString)), this, SLOT(onCommand(QString)));
     connect(_cmd, SIGNAL(eof()), this, SLOT(onQuit()));
+    _prompt = true; // enable prompt
     prompt();
   }
 }
@@ -64,7 +76,8 @@ void Simulator::disableCLI()
 {
   if (_cmd)
   {
-    disconnect(_cmd, SIGNAL(newCommand(QStringList)), this, SLOT(onCommand(QStringList)));
+    _prompt = false; // disable prompt
+    disconnect(_cmd, SIGNAL(newCommand(QString)), this, SLOT(onCommand(QString)));
     disconnect(_cmd, SIGNAL(eof()), this, SLOT(onQuit()));
     _cmd = nullptr;
   }
@@ -72,15 +85,25 @@ void Simulator::disableCLI()
 
 bool Simulator::onKeyBreak()
 {
-  if (!_gpxrunner->isRunning())
-    return true;
-  _gpxrunner->requestInterruption();
-  return false;
+  bool accepted = true;
+  if (_gpxrunner->isRunning())
+  {
+    // stop gpx runner
+    _gpxrunner->requestInterruption();
+    accepted = false;
+  }
+  if (!_scripts.isEmpty())
+  {
+    _scripts.front()->requestInterruption();
+    accepted = false;
+  }
+  return accepted;
 }
 
-void Simulator::onCommand(QStringList tokens)
+void Simulator::onCommand(QString line)
 {
   QString token;
+  QStringList tokens = tokenize(line.toStdString().c_str(), " ", true);
   while (!tokens.isEmpty())
   {
     token = tokens.front();
@@ -92,24 +115,19 @@ void Simulator::onCommand(QStringList tokens)
 
   if (token.compare("EXIT", Qt::CaseInsensitive) == 0)
   {
-    onQuit();
+    if (_prompt && _cmd)
+      onQuit();
+    else
+      fprintf(stdout, "Invalid command\n");
     return;
   }
 
-  // when runner is running, accept only the commands below
-  if (_gpxrunner->isRunning())
+  // the following commands are welcome
+  if (token.compare("BREAK", Qt::CaseInsensitive) == 0)
   {
-    if (token.compare("BREAK", Qt::CaseInsensitive) == 0)
-    {
-      if (_gpxrunner->isRunning())
-        _gpxrunner->requestInterruption();
-    }
-    // do not prompt here
-    return;
+    onKeyBreak();
   }
-
-  // else the following commands are welcome
-  if (token.compare("HELP", Qt::CaseInsensitive) == 0)
+  else if (token.compare("HELP", Qt::CaseInsensitive) == 0)
   {
     fprintf(stdout, "Commands:\n"
                     "HELP                       Print this help\n"
@@ -121,10 +139,13 @@ void Simulator::onCommand(QStringList tokens)
                     "ANGLE deg                  Rotate at angle of deg\n"
                     "MOVE [dm]                  Move forward dm or 0 (meters)\n"
                     "PAUSE [sec]                Pause for a tick or duration (1..59 seconds)\n"
+                    "BREAK                      Stop playback of the running script\n"
                     "LOAD gpx                   Load the GPX file\n"
                     "LIST                       List all tracks contained in the loaded file\n"
                     "RUN trkid [speed [pts]]    Run the identified track of the loaded file\n"
                     "RUN                        Resume the stopped run\n"
+                    "PLAY script                Play the script file\n"
+                    "PLAY                       Resume the stopped playback\n"
                     "\n");
   }
   else if (token.compare("STATUS", Qt::CaseInsensitive) == 0)
@@ -169,15 +190,29 @@ void Simulator::onCommand(QStringList tokens)
   }
   else if (token.compare("PAUSE", Qt::CaseInsensitive) == 0)
   {
-    if (tokens.isEmpty())
-      QThread::msleep(_positionSource->updateInterval());
+    // by default pause for the tick of position source
+    int millisec = _positionSource->updateInterval();
+    if (!tokens.isEmpty())
+      millisec = 1000 * tokens.front().toInt();
+    if (millisec < 1000 || millisec > 59000)
+      fprintf(stdout, "Invalid duration specified. A valid range is 1 to 59\n");
     else
     {
-      int sec = tokens.front().toInt();
-      if (sec > 0 && sec < 60)
-        QThread::sleep(sec);
+      if (_cmd && _cmd->thread() == QThread::currentThread())
+      {
+        // in interactive mode, the prompt will be delayed
+        QTimer::singleShot(millisec, this, &Simulator::prompt);
+        return;
+      }
       else
-        fprintf(stdout, "Invalid duration specified. A valid range is 1 to 59\n");
+      {
+        // the current thread will wait
+        while (millisec > 0 && !QThread::currentThread()->isInterruptionRequested())
+        {
+          QThread::msleep(PAUSE_TICK);
+          millisec -= PAUSE_TICK;
+        }
+      }
     }
   }
   else if (token.compare("LOAD", Qt::CaseInsensitive) == 0 && !tokens.isEmpty())
@@ -220,11 +255,27 @@ void Simulator::onCommand(QStringList tokens)
             pts = 0;
         }
       }
-      if (_gpxrunner->configureRun(trackid, _positionSource->updateInterval(), speed, pts))
+      if (!_scripts.empty() && _scripts.back()->isRecovery())
+      {
+        // run in the thread of the script
+        _gpxrunner->run();
+        if (_gpxrunner->isRunAborted())
+          _scripts.back()->recover();
+        return;
+      }
+      else if (_gpxrunner->configureRun(trackid, _positionSource->updateInterval(), speed, pts))
       {
         fprintf(stdout, "Run is starting on track %d, interval=%d speed=%3f\n"
                         "Type CTRL+C to stop\n", trackid, _positionSource->updateInterval(), speed);
-        _gpxrunner->start();
+        if (_scripts.empty())
+          _gpxrunner->start();
+        else
+        {
+          // run in the thread of the script
+          _gpxrunner->run();
+          if (_gpxrunner->isRunAborted())
+            _scripts.back()->recover();
+        }
         return;
       }
       else
@@ -235,6 +286,12 @@ void Simulator::onCommand(QStringList tokens)
   }
   else if (token.compare("RUN", Qt::CaseInsensitive) == 0 && tokens.isEmpty())
   {
+    if (!_scripts.empty())
+    {
+      // discard command in script
+      fprintf(stdout, "Invalid command\n");
+      return;
+    }
     if (_gpxrunner->isRunAborted())
     {
       fprintf(stdout, "Run resumes\nType CTRL+C to stop\n");
@@ -245,6 +302,90 @@ void Simulator::onCommand(QStringList tokens)
     {
       fprintf(stdout, "No run to resume\n");
     }
+  }
+  else if (token.compare("PLAY", Qt::CaseInsensitive) == 0 && !tokens.isEmpty())
+  {
+    token = tokens.front();
+    ScriptRunner * s;
+    // playing a child script
+    if (!_scripts.empty())
+    {
+      if (_aborted.empty())
+      {
+        s = new ScriptRunner(*this); // start a new
+        if (!s->configureScript(token))
+        {
+          fprintf(stdout, "Script cannot be processed\n");
+          delete s;
+          return;
+        }
+        if (loopDetected(*s))
+        {
+          qWarning("Loop detected: %s won't be played", token.toStdString().c_str());
+          delete s;
+          return;
+        }
+      }
+      else
+      {
+        // recover the aborted child
+        s = _aborted.back();
+        _aborted.pop_back();
+        // is last command recoverable ?
+        if (!_aborted.empty())
+          s->recover();
+      }
+      // processing
+      _scripts.push_back(s);
+      s->run();
+      _scripts.pop_back();
+      // an aborted script can be resumed, so keep it back
+      if (s->isRunAborted())
+        _aborted.push_back(s);
+      return;
+    }
+
+    // playing main script
+    s = new ScriptRunner(*this);
+    if (s->configureScript(token))
+    {
+      // clear old recovery
+      qDeleteAll(_aborted);
+      _aborted.clear();
+      // the main script owns the runner thread,
+      // and it will signal when finished
+      connect(s, SIGNAL(finished()), this, SLOT(onScriptFinished()));
+      fprintf(stdout, "Playback is starting\nType CTRL+C to stop\n");
+      _prompt = false; // disable prompt for next commands
+      _scripts.push_back(s);
+      s->start();
+      return;
+    }
+    fprintf(stdout, "Script cannot be processed\n");
+    delete s;
+  }
+  else if (token.compare("PLAY", Qt::CaseInsensitive) == 0 && tokens.isEmpty())
+  {
+    if (!_scripts.empty())
+    {
+      // discard command in script
+      fprintf(stdout, "Invalid command\n");
+      return;
+    }
+    if (!_aborted.empty())
+    {
+      fprintf(stdout, "Playback resumes\nType CTRL+C to stop\n");
+      _prompt = false; // disable prompt for next commands
+      _scripts.push_back(_aborted.back());
+      _aborted.pop_back();
+      // is last command recoverable ?
+      if (!_aborted.empty())
+        _scripts.back()->recover();
+      // restart the root script
+      _scripts.front()->start();
+      return;
+    }
+    fprintf(stdout, "No playback to resume\n");
   }
   else if (!token.isEmpty())
   {
@@ -317,10 +458,29 @@ void Simulator::onRunFinished()
   prompt();
 }
 
+void Simulator::onScriptFinished()
+{
+  if (!_scripts.empty() && _scripts.front()->isRunAborted())
+  {
+    fprintf(stdout, "Playback is stopped\n");
+    _aborted.push_back(_scripts.front());
+    _scripts.pop_front();
+  }
+  else
+  {
+    fprintf(stdout, "Playback has finished\n");
+    delete _scripts.front();
+    _scripts.pop_front();
+    assert(_scripts.empty() == true);
+  }
+  _prompt = true; // enable prompt
+  prompt();
+}
+
 void Simulator::prompt()
 {
   // it must wait the thread has finished or not started yet
-  if (_cmd && _cmd->wait())
+  if (_prompt && _cmd && _cmd->wait())
     _cmd->start();
 }
 
@@ -328,4 +488,36 @@ qreal Simulator::normalizeAzimuth(qreal azimuth)
 {
   azimuth = std::remainder(azimuth, 360);
   return (azimuth < 0 ? azimuth + 360 : azimuth);
+}
+
+QStringList Simulator::tokenize(const char * text, const char * delimiters, bool trimnull)
+{
+  QStringList tokens;
+  std::string tmp(text);
+  std::string::size_type pa = 0, pb = 0;
+  unsigned n = 0;
+  // Counter n will break infinite loop. Max count is 255 tokens
+  while ((pb = tmp.find_first_of(delimiters, pb)) != std::string::npos && ++n < 255)
+  {
+    tokens.push_back(QString::fromStdString(tmp.substr(pa, pb - pa)));
+    do
+    {
+      pa = ++pb;
+    }
+    while (trimnull && tmp.find_first_of(delimiters, pb) == pb);
+  }
+
+  if (!trimnull || pa < tmp.size())
+    tokens.push_back(QString::fromStdString(tmp.substr(pa)));
+  return tokens;
+}
+
+bool Simulator::loopDetected(const ScriptRunner &script) const
+{
+  for (const ScriptRunner * s : std::as_const(_scripts))
+  {
+    if (s->filepath() == script.filepath())
+      return true;
+  }
+  return false;
 }

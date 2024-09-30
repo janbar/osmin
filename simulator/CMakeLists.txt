@@ -22,14 +22,15 @@ if(SIMULATOR_WITH_READLINE)
 endif()
 
 set(simulator_SOURCES main.cpp
+    commandline.cpp
     globalazimuth.cpp
     globalposition.cpp
+    gpxrunner.cpp
+    scriptrunner.cpp
     simulatedcompass.cpp
     simulatedpositionsource.cpp
     simulatedsensorplugin.cpp
-    commandline.cpp
     simulator.cpp
-    gpxrunner.cpp
     ${OSMIN_SRC_DIR}/converter.cpp
     ${OSMIN_SRC_DIR}/csvparser.cpp
     ${OSMIN_SRC_DIR}/gpxfilemodel.cpp
@@ -45,6 +46,7 @@ set(simulator_HEADERS
     globalazimuth.h
     globalposition.h
     gpxrunner.h
+    scriptrunner.h
     simulatedcompass.h
     simulatedpositionsource.h
     simulatedsensorplugin.h
