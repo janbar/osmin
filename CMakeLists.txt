@@ -232,6 +232,11 @@ else()
     endif()
 
     set_target_properties(osmin PROPERTIES OUTPUT_NAME "${EXEC}")
+
+    if(UNIX AND BUILD_SIMULATOR)
+      add_subdirectory(simulator)
+    endif()
+
     install(TARGETS osmin RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
     file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
     install(
@@ -252,8 +257,4 @@ else()
         "uninstall"
         ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
     )
-endif()
-
-if((NOT ANDROID) AND UNIX AND BUILD_SIMULATOR)
-  add_subdirectory(simulator)
 endif()

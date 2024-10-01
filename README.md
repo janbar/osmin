@@ -32,18 +32,18 @@ Clone the sources
 ```
 git clone https://github.com/janbar/osmin.git
 ```
-Move to the sources path and configure the build
+Move to the sources path and configure the build.
 ```
 cd osmin
 git submodule init
-git submodule update
+git submodule update --force
 mkdir build
 ```
 To build for desktop, use the following command.
 ```
 cmake -B build -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
 ```
-To build for mobile devices, use the following command to enable behaviors for mobile.
+If the target device is a mobile, you should use the following command to **enable behaviors for mobile**.
 ```
 cmake -B build -DBUILD_DEVICE_MOBILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
 ```
