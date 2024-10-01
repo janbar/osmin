@@ -17,9 +17,9 @@ You can install osmin through the [IzzyOnDroid](https://apt.izzysoft.de/fdroid/i
 Alternatively the APKs are available on the Release page, for armv7(32bits) and arm64(64bits) devices.
 
 ## Develop/debug osmin
-You can build and test osmin on Unix (Linux, BSD, MacOS 10.14) supported by Qt 5.15. Before build from source you have to install the following dependencies.
+You can build and test osmin on Unix (Linux, BSD, MacOS 13) supported by Qt 5.15. Before build from source you have to install the following dependencies.
 
-git, cmake, clang/clang++ (**>=12.0**), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus.
+git, cmake, clang/clang++ (**>=14.0**), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus.
 
 As example type the following on Ubuntu (>=22.04) to install all requirements.
 ```
@@ -39,14 +39,15 @@ git submodule init
 git submodule update --force
 mkdir build
 ```
-To build for desktop, use the following command.
+To build for desktop including the simulation tool, use the following command.
 ```
-cmake -B build -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
+cmake -B build -DBUILD_SIMULATOR=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
 ```
 If the target device is a mobile, you should use the following command to **enable behaviors for mobile**.
 ```
 cmake -B build -DBUILD_DEVICE_MOBILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
 ```
+You could mix the options `BUILD_SIMULATOR` and `BUILD_DEVICE_MOBILE` to test the behaviors for mobile device with the simulation tool.
 Finally build it to make the target binary `osmin`.
 ```
 cmake --build build/ -j8
@@ -64,4 +65,5 @@ Installation of the APK can be achieved without issue. From release 1.11.0, **th
 ## About osmin on Unix desktop
 
 On startup, the application creates storage folders in the user's home directory: `osmin`. It contains user data, configuration files, downloaded maps or voices, and resources.
+The binary of the simulation tool is not installed in the system tree. It can be found in the build tree `simulator/osmin-simulator`.
 
