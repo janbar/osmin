@@ -89,3 +89,5 @@ The GPX track must contain time data. Otherwise, the simulator will use a fake 1
 
 Between 2 track points, the simulator will be able to create some calculated positions, to ensure the GPS sensor ticks as in real life.
 
+Finally, the simulator can play a scenario. This is a script file containing the list of commands to play, including the inclusion of other scripts, or the execution of GPX tracks. The playback of a scenario is interruptible and resumable, just like running a track.
+
