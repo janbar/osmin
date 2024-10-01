@@ -78,7 +78,7 @@ void ScriptRunner::run()
     _file->close();
 }
 
-void ScriptRunner::recover()
+void ScriptRunner::rollback()
 {
   qDebug("rollback %s : %s", filepath().toStdString().c_str(), _command.constData());
   _redo = true;

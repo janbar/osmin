@@ -44,13 +44,19 @@ public:
 
   bool onKeyBreak() override;
 
+  bool scriptRunning() { return !_scripts.empty(); }
+  bool scriptAborted() { return !_aborted.empty(); }
+
+signals:
+  void prompted();
+
 public slots:
   void onCommand(QString line);
   void onQuit();
   void onListGPXRequested();
   void onStatusRequested();
   void onPointChanged(int pts);
-  void onRunFinished();
+  void onGPXFinished();
   void onScriptFinished();
 
 private:
@@ -66,7 +72,7 @@ private:
   QList<ScriptRunner*> _aborted;
   CommandLine * _cmd = nullptr;
   Converter _converter;
-  bool _prompt = false;
+  bool _prompt = true;
 
   void prompt();
   static qreal normalizeAzimuth(qreal azimuth);

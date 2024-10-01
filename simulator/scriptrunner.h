@@ -37,9 +37,10 @@ public:
   bool isRunAborted() { return (_file ? _aborted : false); }
   QString filepath() const;
 
-  void run();
-  void recover();
-  bool isRecovery() const { return _redo; }
+  void run() override;
+
+  void rollback();
+  bool recoverable() const { return _redo; }
 
 private:
   bool processCommand();
