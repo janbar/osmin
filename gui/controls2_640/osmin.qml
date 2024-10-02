@@ -16,11 +16,11 @@
  */
 
 import QtQuick 2.9
+import QtQuick.Window 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
 import QtQuick.Controls.Material 2.2
 import QtQuick.Controls.Universal 2.2
-import QtQml 2.2
 import Qt.labs.settings 1.0
 import Qt5Compat.GraphicalEffects 6.0
 import Osmin 1.0 as Osmin
@@ -34,6 +34,31 @@ ApplicationWindow {
     // Design stuff
     width: 360
     height: 640
+
+    property bool wideAspect: height < units.gu(64)
+
+    // the azimuth magnetic should be flipped depending on screen orientation
+    function flipAzimuth(dip) {
+        var angle = 0.0;
+        if (Android) { // tested only on android
+            switch(screen.primaryOrientation) {
+            case Qt.LandscapeOrientation:
+                angle = -90.0; break;
+            case Qt.InvertedLandscapeOrientation:
+                angle = +90.0; break;
+            case Qt.InvertedPortraitOrientation:
+                angle = 180.0; break;
+            case Qt.PortraitOrientation:
+                angle = 0.0; break;
+            default:
+                break;
+            }
+        }
+        console.log("flip azimuth: screen=" + angle + "deg , dip=" + dip + "deg");
+        Osmin.Tracker.magneticDip = dip - angle;
+    }
+
+    Screen.onPrimaryOrientationChanged: flipAzimuth(settings.magneticDip)
 
     Settings {
         id: settings
@@ -50,7 +75,7 @@ ApplicationWindow {
         // Navigation settings
         property string systemOfUnits: "SI"
         property bool hillShadesEnabled: false
-        property bool renderingTypeTiled: false
+        property bool renderingTypeTiled: true
         property string lastVehicle: "car"
         property int maximumRouteStep: 255
         property int courseId: 0
@@ -120,7 +145,6 @@ ApplicationWindow {
 
     // property to detect if the UI has finished
     property bool loadedUI: false
-    property bool wideAspect: height < units.gu(64)
 
     // Constants
     readonly property int queueBatchSize: 100
@@ -333,7 +357,9 @@ ApplicationWindow {
         Osmin.Converter.southwest = qsTr("southwest");
         Osmin.Converter.southeast = qsTr("southeast");
         Osmin.Converter.system = settings.systemOfUnits;
-        Osmin.Tracker.magneticDip = settings.magneticDip;
+
+        // reset magnetic dip according to the screen orientation
+        flipAzimuth(settings.magneticDip);
 
         showFavorites = settings.showFavorites;
         positionSource.active = true;

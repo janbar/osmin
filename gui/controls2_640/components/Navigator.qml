@@ -122,7 +122,7 @@ Item {
             }
         }
 
-        onTargetReached: {
+        onTargetReached: function(targetBearing, targetDistance) {
             console.log("Navigator: Target reached");
             navigator.targetReached(targetDistance, targetBearing);
         }
