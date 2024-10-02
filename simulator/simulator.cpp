@@ -24,7 +24,9 @@
 #include <cstdio>
 #include <cassert>
 
-#define PAUSE_TICK  10 /* millisec */
+#define PAUSE_TICK          10 /* millisec */
+#define TOKEN_SEPARATOR     0x20
+#define TOKEN_ENCAPSULATOR  0x22
 
 Simulator::Simulator()
     : QObject(nullptr), _azimuth(), _position()
@@ -103,14 +105,11 @@ bool Simulator::onKeyBreak()
 void Simulator::onCommand(QString line)
 {
   QString token;
-  QStringList tokens = tokenize(line.toStdString().c_str(), " ", true);
-  while (!tokens.empty())
+  QStringList tokens = tokenize(line.toStdString().c_str());
+  if (!tokens.empty())
   {
     token = tokens.front();
     tokens.pop_front();
-    // break on token not empty
-    if (!token.isEmpty())
-      break;
   }
 
   if (token.compare("EXIT", Qt::CaseInsensitive) == 0)
@@ -495,26 +494,71 @@ qreal Simulator::normalizeAzimuth(qreal azimuth)
   return (azimuth < 0 ? azimuth + 360 : azimuth);
 }
 
-QStringList Simulator::tokenize(const char * text, const char * delimiters, bool trimnull)
+QStringList Simulator::tokenize(const char * buf)
 {
-  QStringList tokens;
-  std::string tmp(text);
-  std::string::size_type pa = 0, pb = 0;
-  unsigned n = 0;
-  // Counter n will break infinite loop. Max count is 255 tokens
-  while ((pb = tmp.find_first_of(delimiters, pb)) != std::string::npos && ++n < 255)
+  QStringList out;
+  std::string line(buf);
+  std::string::const_iterator pos = line.begin();
+  if (pos == line.end())
+    return out;
+  std::string token;
+  bool first =  true;
+  bool encap = false;
+  while (pos != line.end())
   {
-    tokens.push_back(QString::fromStdString(tmp.substr(pa, pb - pa)));
-    do
+    if (*pos == TOKEN_ENCAPSULATOR)
     {
-      pa = ++pb;
+      ++pos;
+      if (encap)
+      {
+        if (pos == line.end() || *pos != TOKEN_ENCAPSULATOR)
+        {
+          encap = false;
+          while (pos != line.end() && *pos != TOKEN_SEPARATOR) ++pos;
+        }
+        else
+        {
+          token.push_back(*pos);
+          ++pos;
+        }
+      }
+      else if (!first)
+      {
+        fprintf(stdout, "Invalid character in stream\n");
+        out.clear();
+        return out;
+      }
+      else
+      {
+        encap = true;
+      }
     }
-    while (trimnull && tmp.find_first_of(delimiters, pb) == pb);
+    else if (*pos == TOKEN_SEPARATOR && !encap)
+    {
+      // trim null token
+      if (!token.empty())
+      {
+        out.push_back(QString::fromStdString(token));
+        token.clear();
+      }
+      first = true;
+      ++pos;
+    }
+    else
+    {
+      first = false;
+      token.push_back(*pos);
+      ++pos;
+    }
   }
-
-  if (!trimnull || pa < tmp.size())
-    tokens.push_back(QString::fromStdString(tmp.substr(pa)));
-  return tokens;
+  if (encap)
+  {
+    fprintf(stdout, "Quoted string not terminated\n");
+    out.clear();
+  }
+  else if (!token.empty())
+    out.push_back(QString::fromStdString(token));
+  return out;
 }
 
 bool Simulator::loopDetected(const ScriptRunner &script) const

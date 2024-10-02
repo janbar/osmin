@@ -76,7 +76,7 @@ private:
 
   void prompt();
   static qreal normalizeAzimuth(qreal azimuth);
-  QStringList tokenize(const char * text, const char * delimiters, bool trimnull = false);
+  QStringList tokenize(const char * buf);
   bool loopDetected(const ScriptRunner& script) const;
 };
 
