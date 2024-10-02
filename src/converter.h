@@ -52,7 +52,9 @@ public:
   Q_INVOKABLE QString panelDurationHM(int seconds) const;
   Q_INVOKABLE QString panelDurationHMS(int seconds) const;
   Q_INVOKABLE QString readableDegreeGeocaching(double degree) const;
+  Q_INVOKABLE QString readableDegreeDMS(double degree) const;
   Q_INVOKABLE QString readableDegree(double degree) const;
+  Q_INVOKABLE QString readableCardinal(double degree) const;
   Q_INVOKABLE QString readableCoordinatesGeocaching(double lat, double lon) const;
   Q_INVOKABLE QString readableCoordinatesNumeric(double lat, double lon) const;
   Q_INVOKABLE QString readableCoordinates(double lat, double lon) const;

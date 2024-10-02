@@ -427,7 +427,7 @@ void Simulator::onStatusRequested()
   QGeoCoordinate coord = _positionSource->lastKnownPosition().coordinate();
   QString pos = _converter.readableCoordinatesNumeric(coord.latitude(), coord.longitude());
   QString alt = _converter.readableElevation(coord.altitude());
-  QString ang = _converter.readableDegree(_compassSource->reading()->value(0).toDouble());
+  QString ang = _converter.readableDegreeDMS(_compassSource->reading()->value(0).toDouble());
   fprintf(stdout, "Pos %s Alt %s Ang %s\n",
           pos.toStdString().c_str(),
           alt.toStdString().c_str(),

@@ -185,7 +185,7 @@ QString Converter::readableDegreeGeocaching(double degree) const
       .arg(minutes, 6, 'f', 3, '0');
 }
 
-QString Converter::readableDegree(double degree) const
+QString Converter::readableDegreeDMS(double degree) const
 {
   double minutes = (degree - std::floor(degree)) * 60.0;
   double seconds = (minutes - std::floor(minutes)) * 60.0;
@@ -193,6 +193,54 @@ QString Converter::readableDegree(double degree) const
       .arg(std::floor(degree), 0, 'f', 0)
       .arg(std::floor(minutes), 2, 'f', 0, '0')
       .arg(seconds, 5, 'f', 2, '0');
+}
+
+QString Converter::readableDegree(double degree) const
+{
+  return QString("%1°").arg(std::round(degree), 0, 'f', 0);
+}
+
+QString Converter::readableCardinal(double degree) const
+{
+  double n = std::round(std::remainder(degree, 360.0) / 22.5);
+  int c = (n < 0 ? int(n)+16 : int(n));
+  switch(c)
+  {
+  case 0:
+    return readableBearing("N");
+  case 1:
+    return readableBearing("N") + " " + readableBearing("NE");
+  case 2:
+    return readableBearing("NE");
+  case 3:
+    return readableBearing("E") + " " + readableBearing("NE");
+  case 4:
+    return readableBearing("E");
+  case 5:
+    return readableBearing("E") + " " + readableBearing("SE");
+  case 6:
+    return readableBearing("SE");
+  case 7:
+    return readableBearing("S") + " " + readableBearing("SE");
+  case 8:
+    return readableBearing("S");
+  case 9:
+    return readableBearing("S") + " " + readableBearing("SW");
+  case 10:
+    return readableBearing("SW");
+  case 11:
+    return readableBearing("W") + " " + readableBearing("SW");
+  case 12:
+    return readableBearing("W");
+  case 13:
+    return readableBearing("W") + " " + readableBearing("NW");
+  case 14:
+    return readableBearing("NW");
+  case 15:
+    return readableBearing("N") + " " + readableBearing("NW");
+  default:
+    return QString();
+  }
 }
 
 QString Converter::readableCoordinatesGeocaching(double lat, double lon) const
