@@ -111,6 +111,7 @@ bool GPXRunner::processNextPoint(int * waitfor)
       point->coord.GetLat(),
       point->coord.GetLon(),
       point->elevation.value_or(0.0));
+  _azimuth.resetData(point->course.value_or(0.0));
   emit pointChanged(_running->pts);
 
   quint64 tsP1 = 0;

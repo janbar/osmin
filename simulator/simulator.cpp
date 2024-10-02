@@ -441,7 +441,7 @@ void Simulator::onPointChanged(int pts)
   QGeoCoordinate coord = _position.data().coordinate();
   QString pos = _converter.readableCoordinatesNumeric(coord.latitude(), coord.longitude());
   QString alt = _converter.readableElevation(coord.altitude());
-  QString ang = _converter.readableDegree(_azimuth.data());
+  QString ang = _converter.readableDegreeDMS(_azimuth.data());
   fprintf(stdout, "%d: Pos %s Alt %s Ang %s\n",
           pts,
           pos.toStdString().c_str(),
