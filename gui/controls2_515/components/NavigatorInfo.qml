@@ -194,7 +194,7 @@ Item {
                 id: speed
                 anchors.verticalCenter: parent.verticalCenter
                 text: Converter.readableSpeed(navigator.currentSpeed > 0 ? navigator.currentSpeed : 0.0)
-                color: (navigator.maximumSpeed > 0 && navigator.maximumSpeed < navigator.currentSpeed
+                color: (navigator.maximumSpeed > 0 && navigator.maximumSpeed < (navigator.currentSpeed - 10.0)
                         ? "red" : styleMap.popover.foregroundColor)
                 font.pixelSize: units.fs("x-large")
             }
