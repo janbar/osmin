@@ -52,7 +52,7 @@ Item {
         delegate: Row {
             id: row
             spacing: units.gu(2)
-            width: parent.width
+            width: stepsView.width
             height: Math.max(stepInfo.implicitHeight, icon.height)
 
             WAYIcon {

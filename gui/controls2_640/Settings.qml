@@ -204,9 +204,9 @@ MapPage {
                 }
                 SpinBox {
                     id: magdipBox
-                    from: -300
+                    from: -1800
                     value: settings.magneticDip * 10
-                    to: 300
+                    to: 1800
                     stepSize: 10
                     font.pixelSize: units.fs("medium");
                     Layout.fillWidth: true
@@ -230,8 +230,8 @@ MapPage {
                     onValueModified: {
                         // save settings
                         settings.magneticDip = realValue;
-                        // setup tracker
-                        Tracker.magneticDip = realValue;
+                        // reconfigure azimuth
+                        mainView.flipAzimuth(realValue);
                     }
                 }
             }
