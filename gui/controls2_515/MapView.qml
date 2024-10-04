@@ -94,7 +94,7 @@ MapPage {
         // configure style from setting
         var flags = JSON.parse(settings.styleFlags);
         if (Array.isArray(flags)) {
-            flags.push({ "name": "daylight", "value": !nightView });
+            flags.push({ "name": "daylight", "value": MapExtras.dayLight });
             setStyleFlags(flags);
         }
 
@@ -111,7 +111,6 @@ MapPage {
         property double lon: 0.0
     }
 
-    property bool nightView: false
     property bool rotateEnabled: false
     property real rotation: 0.0 // rotation of the map (radians)
     property bool lockRotation: true // lock or unlock rotation of the map
@@ -351,7 +350,7 @@ MapPage {
         text: "© OpenStreetMap contributors"
         font.pixelSize: units.fs("x-small")
         font.weight: Font.Thin
-        color: nightView ? "white" : "black"
+        color: MapExtras.dayLight ? "black" : "white"
         visible: !showToolbar && !navigation
     }
 
@@ -483,7 +482,7 @@ MapPage {
                 id: currentSpeed
                 text: Converter.readableSpeed(Tracker.currentSpeed)
                 font.pixelSize: 1.5 * units.fs("x-large")
-                color: nightView ? "white" : "black"
+                color: MapExtras.dayLight ? "black" : "white"
             }
             Row {
                 spacing: units.gu(2)
@@ -491,19 +490,19 @@ MapPage {
                     id: duration
                     text: Converter.panelDurationHMS(Tracker.duration)
                     font.pixelSize: units.fs("medium")
-                    color: nightView ? "white" : "black"
+                    color: MapExtras.dayLight ? "black" : "white"
                 }
                 Label {
                     id: distance
                     text: Converter.panelDistance(Tracker.distance)
                     font.pixelSize: units.fs("medium")
-                    color: nightView ? "white" : "black"
+                    color: MapExtras.dayLight ? "black" : "white"
                 }
             }
             MapIcon {
                 id: elevation
                 source: "qrc:/images/trip/elevation.svg"
-                color: nightView ? "white" : "black"
+                color: MapExtras.dayLight ? "black" : "white"
                 enabled: false
                 height: units.gu(2)
                 borderPadding: 0
@@ -786,8 +785,7 @@ MapPage {
                         opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
-                            nightView = !nightView;
-                            MapExtras.setDaylight(!nightView);
+                            MapExtras.setDaylight(!MapExtras.dayLight);
                         }
                     }
                 }
@@ -929,8 +927,7 @@ MapPage {
                         opacity: 0.7
                         height: units.gu(6)
                         onClicked: {
-                            nightView = !nightView;
-                            map.toggleDaylight();
+                            MapExtras.setDaylight(!MapExtras.dayLight);
                         }
                     }
                 }
