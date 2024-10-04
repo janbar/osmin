@@ -30,6 +30,8 @@ class MapExtras : public QObject
 {
   Q_OBJECT
 
+  Q_PROPERTY(bool dayLight READ getDayLight NOTIFY dayLightChanged)
+
 public:
   explicit MapExtras(QObject *parent = nullptr);
   ~MapExtras();
@@ -42,6 +44,11 @@ public:
     return new MapExtras;
   }
 
+
+signals:
+  void dayLightChanged();
+
+public:
   /**
    * @brief Return the array of flags with properties { name: string, value: bool }
    * @return array of object
@@ -66,6 +73,8 @@ public:
    * @param enable true to enable, else false
    */
   Q_INVOKABLE void setDaylight(bool enable);
+
+  bool getDayLight() const { return m_dayLigth; }
 
   /**
    * @brief Add overlay for type and key
@@ -114,6 +123,9 @@ private:
   int m_newId = 0;
 
   int getOverlayId();
+
+  // style flags
+  bool m_dayLigth = true;
 };
 
 #endif // MAP_EXTRAS_H

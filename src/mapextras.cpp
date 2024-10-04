@@ -76,7 +76,8 @@ void MapExtras::setDaylight(bool enable)
 {
   osmscout::DBThreadRef dbThread = osmscout::OSMScoutQt::GetInstance().GetDBThread();
   if (dbThread->isInitialized())
-    dbThread->SetStyleFlag("daylight", enable);
+    dbThread->SetStyleFlag("daylight", enable)
+        .OnComplete([this, enable](bool ok){ if (ok) this->m_dayLigth = enable; });
 }
 
 int MapExtras::addOverlay(const QString& type, int key)
