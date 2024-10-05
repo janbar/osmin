@@ -333,7 +333,7 @@ MapPage {
     ScaleIndicator{
         id: scaleIndicator
         pixelSize: map.pixelSize
-        color: "black"
+        color: MapExtras.dayLight ? "black" : "lightGray"
         visible: !showToolbar
         anchors{
           bottom: parent.bottom
