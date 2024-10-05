@@ -13,7 +13,7 @@ include_directories(BEFORE SYSTEM
 
 option(BUILD_SIMULATOR_WITH_READLINE "Enable Readline support" ON)
 
-if(SIMULATOR_WITH_READLINE)
+if(BUILD_SIMULATOR_WITH_READLINE)
   find_package(Readline QUIET)
   if(READLINE_FOUND)
     include_directories(${Readline_INCLUDE_DIR})
