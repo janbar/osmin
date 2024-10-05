@@ -109,21 +109,13 @@ set(CMAKE_AUTOMOC ON)
 find_package(Qt5 ${QT_VERSION} COMPONENTS
     Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
     Multimedia RemoteObjects Positioning REQUIRED)
-if(UNIX AND NOT APPLE)
-    find_library(DBUS_LIBRARIES dbus-1)
-    if(DBUS_LIBRARIES)
-        find_package(Qt5 ${QT_VERSION} COMPONENTS DBus REQUIRED)
-        set(HAVE_DBUS 1)
-        message(STATUS "Enable DBus interfaces")
-    endif()
-endif()
 
 if(ANDROID)
     find_package(Qt5AndroidExtras REQUIRED)
 elseif(UNIX AND NOT APPLE)
     find_library(DBUS_LIBRARIES dbus-1)
     if(DBUS_LIBRARIES)
-        find_package(Qt5DBus REQUIRED)
+        find_package(Qt5 ${QT_VERSION} COMPONENTS DBus REQUIRED)
         set(HAVE_DBUS 1)
         message(STATUS "Enable DBus interfaces")
     endif()
@@ -238,7 +230,21 @@ else()
     endif()
 
     install(TARGETS osmin RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-    file(COPY "resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+     # set build commands to clean staged assets
+    list(APPEND OSMIN_ASSETS_COMMANDS
+        COMMAND ${CMAKE_COMMAND} -E
+        remove_directory "${CMAKE_CURRENT_BINARY_DIR}/resources")
+    list(APPEND OSMIN_ASSETS_COMMANDS
+        COMMAND ${CMAKE_COMMAND} -E
+        make_directory "${CMAKE_CURRENT_BINARY_DIR}/resources")
+    list(APPEND OSMIN_ASSETS_COMMANDS
+        COMMAND ${CMAKE_COMMAND} -E
+        copy_directory "${PROJECT_SOURCE_DIR}/resources"
+                       "${CMAKE_CURRENT_BINARY_DIR}/resources")
+    add_custom_target(osmin_assets ALL ${OSMIN_ASSETS_COMMANDS})
+    add_dependencies(osmin osmin_assets)
+
     install(
         DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXEC}
