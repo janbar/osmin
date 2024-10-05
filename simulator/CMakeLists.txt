@@ -53,11 +53,12 @@ set(simulator_HEADERS
     simulator.h
     simulatorbreaker.h
     ${OSMIN_SRC_DIR}/converter.h
-    ${OSMIN_SRC_DIR}/locked.h
+    ${OSMIN_SRC_DIR}/csvparser.h
     ${OSMIN_SRC_DIR}/gpxfilemodel.h
     ${OSMIN_SRC_DIR}/tracker.h
     ${OSMIN_SRC_DIR}/service.h
     ${OSMIN_SRC_DIR}/signalhandler.h
+    ${OSMIN_SRC_DIR}/utils.h
 )
 
 qt5_generate_repc(simulator_SOURCES
