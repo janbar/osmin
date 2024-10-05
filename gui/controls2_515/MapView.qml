@@ -1126,7 +1126,7 @@ MapPage {
             popNavigatorInfo.visible = Qt.binding(function() { return mapView.state === "view"; });
         }
 
-        onTargetReached: {
+        onTargetReached: function(targetDistance, targetBearing) {
             popInfo.open(qsTr("Target reached at %1 %2.").arg(Converter.readableDistance(targetDistance)).arg(Converter.readableBearing(targetBearing)));
         }
     }
