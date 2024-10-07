@@ -27,8 +27,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install -y \
-              libc++-dev libomp-dev liblzma-dev libxml2-dev \
-              libprotobuf-dev protobuf-compiler\
+              libc++-dev libomp-dev zlib1g-dev liblzma-dev libxml2-dev \
+              libdbus-1-dev libprotobuf-dev protobuf-compiler\
               libqt5remoteobjects5-bin libqt5quickwidgets5 \
               libqt5quickcontrols2-5 libqt5qmlmodels5 libqt5qml5 \
               libqt5positioning5 libqt5dbus5 libqt5remoteobjects5-dev \
