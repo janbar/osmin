@@ -19,12 +19,16 @@ Alternatively the APKs are available on the Release page, for armv7(32bits) and 
 ## Develop/debug osmin
 You can build and test osmin on Unix (Linux, BSD, MacOS 13) supported by Qt 5.15. Before build from source you have to install the following dependencies.
 
-git, cmake, clang/clang++ (**>=14.0**), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus, libdbus-1, zlib1g, libxml2, liblzma
+git, cmake, clang/clang++ (**>=14.0**), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
 
 
 As example type the following on Ubuntu (>=22.04) to install all requirements.
 ```
 sudo apt install git cmake clang curl wget libomp-dev zlib1g-dev libxml2-dev liblzma-dev libdbus-1-dev libssl-dev libreadline-dev libqt5remoteobjects5-bin libqt5quickwidgets5 libqt5quickcontrols2-5 libqt5qmlmodels5 libqt5qml5 libqt5positioning5 libqt5remoteobjects5-dev libqt5svg5-dev libqt5sensors5-dev libqt5dbus5 qtquickcontrols2-5-dev qtmultimedia5-dev qtpositioning5-dev qml-module-qtgraphicaleffects qml-module-qtquick2 qml-module-qtquick-layouts qml-module-qtquick-controls2 qml-module-qt-labs-settings
+```
+Or type the following on Fedora 40.
+```
+sudo dnf install git cmake clang curl wget libomp-devel zlib-ng-compat-devel libxml2-devel dbus-devel readline-devel openssl-devel qt5-qtbase-devel qt5-qtremoteobjects-devel qt5-qtsensors-devel qt5-qtsvg-devel qt5-qtdeclarative-devel qt5-qtmultimedia-devel qt5-qtquickcontrols2-devel qt5-qtlocation-devel qt5-qtdeclarative qt5-qtbase qt5-qtsvg qt5-qtbase-gui qt5-qtgraphicaleffects qt5-qtremoteobjects qt5-qtsensors qt5-qtquickcontrols2 qt5-qtimageformats qt5-qtlocation qt5-qtmultimedia qt5-qttools qt5-qtxmlpatterns qt5-qtmultimedia-devel qt5-qtlocation-devel qt5-linguist qt5-qttranslations
 ```
 
 ## Build on Unix from source
