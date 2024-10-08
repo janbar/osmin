@@ -40,7 +40,7 @@ ApplicationWindow {
     // the azimuth magnetic should be flipped depending on screen orientation
     function flipAzimuth(dip) {
         var angle = 0.0;
-        if (DeviceMobile) {
+        if (Android) { // tested only on android
             switch(screen.primaryOrientation) {
             case Qt.LandscapeOrientation:
                 angle = -90.0; break;
