@@ -16,7 +16,6 @@
  */
 
 import QtQuick 2.0
-import QtQml 2.2
 //import QtSensors 5.2 as Legacy
 import Osmin 1.0 as Osmin
 

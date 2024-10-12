@@ -16,7 +16,6 @@
  */
 
 import QtQuick 2.9
-import QtQml 2.2
 import Osmin 1.0
 
 QtObject {
