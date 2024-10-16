@@ -29,13 +29,13 @@ jobs:
       - name: Setup Android SDK tools
         uses: android-actions/setup-android@v3
         with:
-          packages: "platform-tools platforms;android-31 build-tools;31.0.0 ndk;26.1.10909125"
+          packages: "platform-tools platforms;android-31 build-tools;31.0.0 ndk;22.1.7171670"
       - name: Dump Android NDK
         run: "ls ${ANDROID_HOME}/ndk"
 
       - name: Configure ENV
         run:  |
-            echo "ANDROID_NDK=${ANDROID_HOME}/ndk/26.1.10909125" >> $GITHUB_ENV
+            echo "ANDROID_NDK=${ANDROID_HOME}/ndk/22.1.7171670" >> $GITHUB_ENV
             echo "QT_DIR=${HOME}/Qt/5.15.15/android" >> $GITHUB_ENV
 
       - name: Cache Qt
