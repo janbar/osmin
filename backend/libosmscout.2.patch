@@ -1,0 +1,18 @@
+diff --git a/libosmscout/src/osmscout/db/LocationIndex.cpp b/libosmscout/src/osmscout/db/LocationIndex.cpp
+index 991eead42..d34241f43 100644
+--- a/libosmscout/src/osmscout/db/LocationIndex.cpp
++++ b/libosmscout/src/osmscout/db/LocationIndex.cpp
+@@ -133,12 +133,7 @@ namespace osmscout {
+ 
+   void LocationIndex::FileScannerPool::Destroy(FileScanner* o) noexcept
+   {
+-    try{
+-      o->Close();
+-    } catch (const IOException& e) {
+-      log.Error() << e.GetDescription();
+-      o->CloseFailsafe();
+-    }
++    o->CloseFailsafe();
+     delete o;
+   }
+ 
