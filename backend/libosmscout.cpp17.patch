@@ -1,0 +1,17 @@
+diff --git a/libosmscout/include/osmscout/feature/ChargingStationFeature.h b/libosmscout/include/osmscout/feature/ChargingStationFeature.h
+index be79544e6..d70034c37 100644
+--- a/libosmscout/include/osmscout/feature/ChargingStationFeature.h
++++ b/libosmscout/include/osmscout/feature/ChargingStationFeature.h
+@@ -51,7 +51,11 @@ namespace osmscout {
+       uint8_t     capacity;
+       std::string output;
+ 
+-      std::strong_ordering operator<=>(const Socket& other) const = default;
++      bool operator==(const Socket& other) const {
++        return type == other.type &&
++               capacity == other.capacity &&
++               output == other.output;
++      }
+     };
+ 
+   private:
