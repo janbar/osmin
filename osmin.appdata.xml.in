@@ -15,8 +15,13 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>The main window</caption>
-      <image type="source">http://janbar.github.io/osmin/download/osmin.png</image>
+      <image type="source">https://raw.githubusercontent.com/janbar/osmin/master/screenshots/routing.png</image>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://raw.githubusercontent.com/janbar/osmin/master/screenshots/informations.png</image>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://raw.githubusercontent.com/janbar/osmin/master/screenshots/tracking.png</image>
     </screenshot>
   </screenshots>
   <releases>
