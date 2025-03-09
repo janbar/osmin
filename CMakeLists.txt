@@ -8,7 +8,7 @@ option(BUILD_DEVICE_MOBILE "Enable behaviors for mobile devices" OFF)
 option(BUILD_SIMULATOR "Build the simulation tool for OSMIN" OFF)
 
 set(APP_VERSION       "1.13.5")
-set(APP_VERSION_CODE  84)
+set(APP_VERSION_CODE  85)
 set(APP_ID            "io.github.janbar.osmin")
 set(APP_NAME          "osmin")
 
