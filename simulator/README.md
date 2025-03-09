@@ -26,10 +26,14 @@ LEFT                       Rotate left
 RIGHT                      Rotate right
 ANGLE deg                  Rotate at angle of deg
 MOVE [dm]                  Move forward dm or 0 (meters)
-LOAD gpx                   Load the file GPX
+PAUSE [sec]                Pause for a tick or duration (1..59 seconds)
+BREAK                      Stop playback of the running script
+LOAD gpx                   Load the GPX file
 LIST                       List all tracks contained in the loaded file
 RUN trkid [speed [pts]]    Run the identified track of the loaded file
 RUN                        Resume the stopped run
+PLAY script                Play the script file
+PLAY                       Resume the stopped playback
 
 >>>
 ```
@@ -62,7 +66,7 @@ Name: 2024-07-24T18:55:19
 Track 1: 2043 pts, 15 km [Track]
 ```
 
-The GPX track must contain time data. Otherwise, the simulator will use a fake 1sec interval.
+The GPX track must contain time data. Otherwise, the simulator will use a fake 1sec interval. The following sample will launch the run of the track 1 with speed 1.0 and starting from the point 1029.
 ```
 >>> run 1 1.0 1029
 1029: Pos 42.83893 2.47883 Alt 418 meters Ang 0°00'00.00"
