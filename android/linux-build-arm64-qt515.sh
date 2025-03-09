@@ -12,6 +12,7 @@ cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
 -DCMAKE_MAKE_PROGRAM=$ANDROID_NDK/prebuilt/linux-x86_64/bin/make \
 -DCMAKE_BUILD_TYPE=Release \
+-DANDROID_STL=c++_static \
 -DANDROID_ABI="arm64-v8a" \
 -DANDROID_SDK_MINVER=24 \
 -DANDROID_SDK_TARGET=26 \
