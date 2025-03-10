@@ -29,13 +29,13 @@ jobs:
       - name: Setup Android SDK tools
         uses: android-actions/setup-android@v3
         with:
-          packages: "platform-tools platforms;android-31 build-tools;31.0.0 ndk;26.3.11579264"
+          packages: "platform-tools platforms;android-34 build-tools;34.0.0 ndk;27.2.12479018"
       - name: Dump Android NDK
         run: "ls ${ANDROID_HOME}/ndk"
 
       - name: Configure ENV
         run:  |
-            echo "ANDROID_NDK=${ANDROID_HOME}/ndk/26.3.11579264" >> $GITHUB_ENV
+            echo "ANDROID_NDK=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
             echo "QT_DIR=${HOME}/Qt/5.15.15/android" >> $GITHUB_ENV
 
       - name: Cache Qt
@@ -64,11 +64,11 @@ jobs:
                   -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                   -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/linux-x86_64/bin/make \
                   -DANDROID_ABI=x86_64 -DANDROID_SDK_MINVER=24 -DANDROID_SDK_TARGET=26 \
-                  -DANDROID_NATIVE_API_LEVEL=24 -DANDROID_SDK_BUILD_TOOLS_REVISION=31.0.0 \
+                  -DANDROID_NATIVE_API_LEVEL=24 -DANDROID_SDK_BUILD_TOOLS_REVISION=34.0.0 \
                   -DANDROID_SDK_ROOT=${ANDROID_SDK_ROOT} \
                   -DANDROID_NDK=${ANDROID_NDK} \
                   -DANDROID_STL=c++_static \
-                  -DQT_ANDROID_PLATFORM_LEVEL=31 \
+                  -DQT_ANDROID_PLATFORM_LEVEL=34 \
                   -DQt5_DIR=${QT_DIR}/lib/cmake/Qt5 \
                   -DQt5Core_DIR=${QT_DIR}/lib/cmake/Qt5Core \
                   -DQt5Gui_DIR=${QT_DIR}/lib/cmake/Qt5Gui \
