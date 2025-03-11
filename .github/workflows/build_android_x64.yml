@@ -36,7 +36,7 @@ jobs:
       - name: Configure ENV
         run:  |
             echo "ANDROID_NDK=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
-            echo "QT_DIR=${HOME}/Qt/5.15.15/android" >> $GITHUB_ENV
+            echo "QT_DIR=${HOME}/Qt/5.15.16/android" >> $GITHUB_ENV
 
       - name: Cache Qt
         id: cache-qt
@@ -44,17 +44,17 @@ jobs:
         env:
           cache-name: cache-qt
         with:
-          path: ~/Qt/5.15.15/android
-          key: qtandroid-51515-ndk23
+          path: ~/Qt/5.15.16/android
+          key: qtandroid-51516-ndk23
 
       - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
         name: Install Qt
         continue-on-error: true
         run: |
-            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-5.15.15-android-ndk23-linux64.tar.xz
+            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-5.15.16-android-ndk23-linux64.tar.xz
             mkdir -p ~/Qt
-            tar xfJ qt-5.15.15-android-ndk23-linux64.tar.xz -C ~/Qt/
-            rm -f qt-5.15.15-android-ndk23-linux64.tar.xz
+            tar xfJ qt-5.15.16-android-ndk23-linux64.tar.xz -C ~/Qt/
+            rm -f qt-5.15.16-android-ndk23-linux64.tar.xz
 
       - name: Fetch submodules
         run: git submodule init && git submodule update
