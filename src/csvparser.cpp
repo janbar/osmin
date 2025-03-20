@@ -64,14 +64,22 @@ bool CSVParser::deserialize_chunk(bool next, container& out, const std::string& 
           ++pos;
         }
       }
-      else if (!first)
-      {
-        // error: Invalid character in stream
-        error = true;
-        break;
-      }
       else
       {
+        if (!first)
+        {
+          // remove trailing spaces then check again
+          while (!value.empty() && value.back() == 0x20)
+          {
+            value.pop_back();
+          }
+          if (!value.empty())
+          {
+            // error: Invalid character in stream
+            error = true;
+            break;
+          }
+        }
         encap = true;
       }
     }
