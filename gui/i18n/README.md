@@ -6,6 +6,12 @@
     lupdate ../controls2_515/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_de.ts
     lupdate ../controls2_515/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_es.ts
 
+    lupdate ../controls2_690/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_en.ts
+    lupdate ../controls2_690/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_fr.ts
+    lupdate ../controls2_690/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_nl.ts
+    lupdate ../controls2_690/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_de.ts
+    lupdate ../controls2_690/ ../../backend/libosmscout/libosmscout-client-qt -ts osmin_es.ts
+
 ### Release reviewed translations
 
     lrelease osmin_en.ts
