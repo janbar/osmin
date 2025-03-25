@@ -185,7 +185,7 @@ add_definitions(-DQT_STATICPLUGIN)
 
 include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
 
-qt_add_resources(osmin-resources gui/osmin_controls2_640.qrc)
+qt_add_resources(osmin-resources gui/osmin_controls2_690.qrc)
 
 #qt_add_executable(osmin ${osmin_SOURCES} ${osmin_HEADERS} ${osmin-resources} MANUAL_FINALIZATION)
 if(ANDROID)
