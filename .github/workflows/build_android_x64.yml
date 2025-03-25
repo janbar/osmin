@@ -32,8 +32,8 @@ jobs:
       - name: Configure ENV
         run:  |
             echo "ANDROID_NDK=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
-            echo "QT_DIR=${HOME}/Qt/6.7.2/android_x86_64" >> $GITHUB_ENV
-            echo "QT_HOST_PATH=${HOME}/Qt/6.7.2/android_x86_64/host" >> $GITHUB_ENV
+            echo "QT_DIR=${HOME}/Qt/6.9.0/android_x86_64" >> $GITHUB_ENV
+            echo "QT_HOST_PATH=${HOME}/Qt/6.9.0/gcc_64" >> $GITHUB_ENV
 
       - name: Cache Qt
         id: cache-qt
@@ -42,18 +42,18 @@ jobs:
           cache-name: cache-qt
         with:
           path: |
-              ~/Qt/6.7.2
+              ~/Qt/6.9.0
               ~/Qt/android_openssl
-          key: qtandroid-60702-ndk26
+          key: qtandroid_x86_64-60900-ndk26
 
       - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
         name: Install Qt
         continue-on-error: true
         run: |
-            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-6.7.2-android-ndk26-linux64.tar.xz
+            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-6.9.0-android_x86_64-ndk26-linux64.tar.xz
             wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/android_openssl-20240915.tar.xz
             mkdir -p ~/Qt
-            tar xfJ qt-6.7.2-android-ndk26-linux64.tar.xz -C ~/Qt/
+            tar xfJ qt-6.9.0-android_x86_64-ndk26-linux64.tar.xz -C ~/Qt/
             tar xfJ android_openssl-20240915.tar.xz -C ~/Qt/
             rm -f *.tar.xz
 
@@ -64,7 +64,9 @@ jobs:
         run: git submodule init && git submodule update
       - name: Configure build
         run: |
-            cmake -B build -DCMAKE_SYSTEM_NAME=Android -DCMAKE_PREFIX_PATH=${QT_DIR} \
+            cmake -B build -DCMAKE_SYSTEM_NAME=Android \
+                  -DCMAKE_PREFIX_PATH=${QT_DIR} \
+                  -DCMAKE_FIND_ROOT_PATH=${QT_DIR} \
                   -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                   -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/linux-x86_64/bin/make \
                   -DANDROID_ABI=x86_64 -DANDROID_SDK_MINVER=26 -DANDROID_SDK_TARGET=26 \
@@ -73,27 +75,6 @@ jobs:
                   -DANDROID_SDK_ROOT=${ANDROID_SDK_ROOT} \
                   -DANDROID_NDK=${ANDROID_NDK} \
                   -DQT_ANDROID_PLATFORM_LEVEL=34 \
-                  -DQt6_DIR=${QT_DIR}/lib/cmake/Qt6 \
-                  -DQt6Core_DIR=${QT_DIR}/lib/cmake/Qt6Core \
-                  -DQt6ZlibPrivate_DIR=${QT_DIR}/lib/cmake/Qt6ZlibPrivate \
-                  -DQt6Gui_DIR=${QT_DIR}/lib/cmake/Qt6Gui \
-                  -DQt6Qml_DIR=${QT_DIR}/lib/cmake/Qt6Qml \
-                  -DQt6QmlIntegration_DIR=${QT_DIR}/lib/cmake/Qt6QmlIntegration \
-                  -DQt6QmlBuiltins_DIR=${QT_DIR}/lib/cmake/Qt6QmlBuiltins \
-                  -DQt6Network_DIR=${QT_DIR}/lib/cmake/Qt6Network \
-                  -DQt6OpenGL_DIR=${QT_DIR}/lib/cmake/Qt6OpenGL \
-                  -DQt6Core5Compat_DIR=${QT_DIR}/lib/cmake/Qt6Core5Compat \
-                  -DQt6QuickTemplates2_DIR=${QT_DIR}/lib/cmake/Qt6QuickTemplates2 \
-                  -DQt6Quick_DIR=${QT_DIR}/lib/cmake/Qt6Quick \
-                  -DQt6QuickControls2_DIR=${QT_DIR}/lib/cmake/Qt6QuickControls2 \
-                  -DQt6Xml_DIR=${QT_DIR}/lib/cmake/Qt6Xml \
-                  -DQt6Svg_DIR=${QT_DIR}/lib/cmake/Qt6Svg \
-                  -DQt6Widgets_DIR=${QT_DIR}/lib/cmake/Qt6Widgets \
-                  -DQt6Sensors_DIR=${QT_DIR}/lib/cmake/Qt6Sensors \
-                  -DQt6Positioning_DIR=${QT_DIR}/lib/cmake/Qt6Positioning \
-                  -DQt6Multimedia_DIR=${QT_DIR}/lib/cmake/Qt6Multimedia \
-                  -DQt6QmlModels_DIR=${QT_DIR}/lib/cmake/Qt6QmlModels \
-                  -DQt6RemoteObjects_DIR=${QT_DIR}/lib/cmake/Qt6RemoteObjects \
                   -Wno-dev
       - name: Build
         run:  cmake --build build
