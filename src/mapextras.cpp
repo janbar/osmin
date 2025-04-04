@@ -29,6 +29,12 @@ MapExtras::~MapExtras()
   delete m_overlayLock;
 }
 
+void MapExtras::flushCaches(int seconds)
+{
+  osmscout::DBThreadRef dbThread = osmscout::OSMScoutQt::GetInstance().GetDBThread();
+  dbThread->FlushCaches(std::chrono::seconds(seconds));
+}
+
 QVariantList MapExtras::getStyleFlags()
 {
   QVariantList list;

@@ -123,6 +123,17 @@ endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 
+include(CheckFunctionExists)
+
+macro(HAVE_FUNCTION FUNCTION VARIABLE)
+  check_function_exists(${FUNCTION} ${VARIABLE})
+  if (${VARIABLE})
+    add_definitions("-D${VARIABLE}")
+  endif()
+endmacro()
+
+have_function(malloc_trim HAVE_MALLOC_TRIM)
+
 set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/utils.cpp
     src/csvparser.cpp
@@ -142,6 +153,7 @@ set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/remotepositionsource.cpp
     src/remotetracker.cpp
     src/mapextras.cpp
+    src/memorymanager.cpp
 )
 set(osmin_HEADERS src/converter.h src/platformextras.h
     src/locked.h
@@ -164,6 +176,7 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/remotepositionsource.h
     src/remotetracker.h
     src/mapextras.h
+    src/memorymanager.h
 )
 
 if(UNIX)

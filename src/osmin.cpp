@@ -39,6 +39,18 @@
 #include <QAndroidJniObject>
 #endif
 
+#ifdef DEVICE_MOBILE
+// Setup cache size and target for mobile
+#define ONLINE_TILE_CACHE      60    // number of tiles
+#define OFFLINE_TILE_CACHE     40    // number of tiles
+#define MEMORY_TARGET          500
+#else
+// Setup cache size and target for desktop
+#define ONLINE_TILE_CACHE      60    // number of tiles
+#define OFFLINE_TILE_CACHE     200   // number of tiles
+#define MEMORY_TARGET          1000
+#endif
+
 #define APP_TR_NAME       "osmin"                   // translations base name
 #define ORG_NAME          "io.github.janbar"        // organisation id
 #define APP_NAME          "osmin"                   // application name
@@ -86,6 +98,7 @@
 #include "favoritesmodel.h"
 #include "gpxlistmodel.h"
 #include "gpxfilemodel.h"
+#include "memorymanager.h"
 #include "qmlsortfiltermodel.h"
 #include "utils.h"
 
@@ -436,7 +449,7 @@ int startGUI(int argc, char* argv[])
         .AddMapProviders(g_usrResDir.absoluteFilePath("map-providers.json"))
         .AddVoiceProviders(g_usrResDir.absoluteFilePath("voice-providers.json"))
         .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
-        .WithTileCacheSizes(60, 200);
+        .WithTileCacheSizes(ONLINE_TILE_CACHE, OFFLINE_TILE_CACHE);
 
     // declare required types for tracks
     for (const QString& customType : GPXFileModel::customTypeSet())
@@ -536,6 +549,9 @@ int startGUI(int argc, char* argv[])
       return -1;
   }
 
+  MemoryManager::createInstance(MEMORY_TARGET);
+  MemoryManager::getInstance()->start();
+
   ret = app.exec();
 
   // next run won't be the first
@@ -544,6 +560,7 @@ int startGUI(int argc, char* argv[])
     settings.setValue("firstRun", QVariant::fromValue(false));
   }
 
+  MemoryManager::freeInstance();
   osmscout::OSMScoutQt::FreeInstance();
   serviceFrontend->terminate();
 
