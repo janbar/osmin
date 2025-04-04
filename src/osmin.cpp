@@ -39,6 +39,15 @@
 #include <QAndroidJniObject>
 #endif
 
+#ifdef DEVICE_MOBILE
+// Limit cache memory to avoid angering the crazy lowmemorykiller
+#define ONLINE_TILE_CACHE_MB   60
+#define OFFLINE_TILE_CACHE_MB  60
+#else
+#define ONLINE_TILE_CACHE_MB   60
+#define OFFLINE_TILE_CACHE_MB  200
+#endif
+
 #define APP_TR_NAME       "osmin"                   // translations base name
 #define ORG_NAME          "io.github.janbar"        // organisation id
 #define APP_NAME          "osmin"                   // application name
@@ -436,7 +445,7 @@ int startGUI(int argc, char* argv[])
         .AddMapProviders(g_usrResDir.absoluteFilePath("map-providers.json"))
         .AddVoiceProviders(g_usrResDir.absoluteFilePath("voice-providers.json"))
         .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
-        .WithTileCacheSizes(60, 200);
+        .WithTileCacheSizes(ONLINE_TILE_CACHE_MB, OFFLINE_TILE_CACHE_MB);
 
     // declare required types for tracks
     for (const QString& customType : GPXFileModel::customTypeSet())
