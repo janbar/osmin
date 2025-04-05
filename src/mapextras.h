@@ -49,6 +49,8 @@ signals:
   void dayLightChanged();
 
 public:
+  Q_INVOKABLE void flushCaches(int seconds);
+
   /**
    * @brief Return the array of flags with properties { name: string, value: bool }
    * @return array of object

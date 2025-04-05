@@ -42,10 +42,12 @@
 #ifdef DEVICE_MOBILE
 // Limit cache memory to avoid angering the crazy lowmemorykiller
 #define ONLINE_TILE_CACHE_MB   60
-#define OFFLINE_TILE_CACHE_MB  60
+#define OFFLINE_TILE_CACHE_MB  100
+#define MEMORY_TARGET          500
 #else
 #define ONLINE_TILE_CACHE_MB   60
 #define OFFLINE_TILE_CACHE_MB  200
+#define MEMORY_TARGET          1000
 #endif
 
 #define APP_TR_NAME       "osmin"                   // translations base name
@@ -95,6 +97,7 @@
 #include "favoritesmodel.h"
 #include "gpxlistmodel.h"
 #include "gpxfilemodel.h"
+#include "memorymanager.h"
 #include "qmlsortfiltermodel.h"
 #include "utils.h"
 
@@ -545,6 +548,8 @@ int startGUI(int argc, char* argv[])
       return -1;
   }
 
+  MemoryManagerPtr memoryManager(new MemoryManager(MEMORY_TARGET));
+
   ret = app.exec();
 
   // next run won't be the first
@@ -553,6 +558,7 @@ int startGUI(int argc, char* argv[])
     settings.setValue("firstRun", QVariant::fromValue(false));
   }
 
+  memoryManager->terminate();
   osmscout::OSMScoutQt::FreeInstance();
   serviceFrontend->terminate();
 
