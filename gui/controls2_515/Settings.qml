@@ -154,7 +154,7 @@ MapPage {
                     ]
 
                     currentIndex: settings.theme
-                    onActivated: {
+                    onActivated: function(index) {
                         settings.theme = index
                     }
 
@@ -184,7 +184,7 @@ MapPage {
                     currentIndex: (settings.systemOfUnits === "Imperial" ? 1 : 0)
                     Layout.fillWidth: true
                     font.pixelSize: units.fs("medium");
-                    onActivated: {
+                    onActivated: function(index) {
                         settings.systemOfUnits = Converter.systems()[index]
                     }
                     Component.onCompleted: {
