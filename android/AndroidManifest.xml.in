@@ -27,7 +27,7 @@
 
     <activity
       android:label="@APP_NAME@"
-      android:name="org.qtproject.qt5.android.bindings.QtActivity"
+      android:name=".QtAndroidActivity"
       android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
       android:screenOrientation="unspecified"
       android:exported="true">
