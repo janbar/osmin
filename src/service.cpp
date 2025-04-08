@@ -287,7 +287,10 @@ void Service::onTrackerRecordingChanged()
   QString recording = m_tracker->getRecording();
   QString setting = m_settings.value(SETTING_RECORDING_FILENAME).toString();
   if (setting != recording)
+  {
     m_settings.setValue(SETTING_RECORDING_FILENAME, QVariant::fromValue(recording));
+    m_settings.sync(); // save to permanent storage now
+  }
   emit tracker_recordingChanged(recording);
   emit tracker_isRecordingChanged(m_tracker->getIsRecording());
 }
