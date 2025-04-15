@@ -548,7 +548,8 @@ int startGUI(int argc, char* argv[])
       return -1;
   }
 
-  MemoryManagerPtr memoryManager(new MemoryManager(MEMORY_TARGET));
+  MemoryManager::createInstance(MEMORY_TARGET);
+  MemoryManager::getInstance()->start();
 
   ret = app.exec();
 
@@ -558,7 +559,7 @@ int startGUI(int argc, char* argv[])
     settings.setValue("firstRun", QVariant::fromValue(false));
   }
 
-  memoryManager->terminate();
+  MemoryManager::freeInstance();
   osmscout::OSMScoutQt::FreeInstance();
   serviceFrontend->terminate();
 

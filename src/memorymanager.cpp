@@ -20,15 +20,21 @@
 
 #include <osmscoutclientqt/OSMScoutQt.h>
 
+#include <QMutex>
+#include <QThread>
 #include <QDebug>
 
+#include <cassert>
 #include <unistd.h>
 #ifdef HAVE_MALLOC_TRIM
 #include <malloc.h>
 #endif
 
+MemoryManager * MemoryManager::_instance = nullptr;
+
 MemoryManager::MemoryManager(uint16_t rss_target_mb)
-    : m_t(new QThread())
+    : m_lock(new QMutex())
+    , m_t(new QThread())
 {
   m_t->setObjectName("memorymanager");
   this->moveToThread(m_t);
@@ -38,10 +44,42 @@ MemoryManager::MemoryManager(uint16_t rss_target_mb)
   m_page_size = sysconf(_SC_PAGESIZE);
   m_rss_target = ((size_t)rss_target_mb << 20) / m_page_size;
   m_rss_warn = m_rss_target - (m_rss_target >> 3); // 0.88
-  m_t->start();
+}
 
+void MemoryManager::createInstance(uint16_t rss_target_mb)
+{
+  assert(_instance == nullptr);
+  if (_instance == nullptr)
+    _instance = new MemoryManager(rss_target_mb);
+}
+
+MemoryManager * MemoryManager::getInstance()
+{
+  return _instance;
+}
+
+void MemoryManager::freeInstance()
+{
+  assert(_instance != nullptr);
+  if (_instance != nullptr)
+  {
+    delete _instance;
+    _instance = nullptr;
+  }
+}
+
+void MemoryManager::start()
+{
+  if (m_t->isRunning())
+    return;
+  m_t->start();
   qInfo("Memory target: %u MB", (unsigned)((m_rss_target * m_page_size) >> 20));
   qInfo("Memory flushing threshold: %u MB", (unsigned)((m_rss_warn * m_page_size) >> 20));
+}
+
+void MemoryManager::terminate()
+{
+  m_t->quit();
 }
 
 MemoryManager::~MemoryManager()
@@ -52,9 +90,18 @@ MemoryManager::~MemoryManager()
   qInfo("%s", __FUNCTION__);
 }
 
-void MemoryManager::terminate()
+void MemoryManager::flushCaches(unsigned keep, bool trim /*= false*/)
 {
-  m_t->quit();
+  QMutexLocker g(m_lock);
+  unsigned k = (keep > 0 ? (keep < 60 ? keep : 60) : 1);
+  qWarning("Flushing caches: rss=%u MB", (unsigned)((m_rss_usage * m_page_size) >> 20));
+  m_dbThread->FlushCaches(std::chrono::seconds(k));
+#ifdef HAVE_MALLOC_TRIM
+  if (trim && ::malloc_trim(0) == 0)
+  {
+    qWarning("No memory can be released back to the system");
+  }
+#endif
 }
 
 void MemoryManager::run()
@@ -73,20 +120,12 @@ void MemoryManager::run()
     if (m_rss_usage > m_rss_target)
     {
       cycle = 1;
-      qWarning("Flusing caches: rss=%u MB", (unsigned)((m_rss_usage * m_page_size) >> 20));
-      m_dbThread->FlushCaches(std::chrono::seconds(cycle));
-#ifdef HAVE_MALLOC_TRIM
-      if (::malloc_trim(0) == 0)
-      {
-        qWarning("No memory can be released back to the system");
-      }
-#endif
+      flushCaches(cycle, true);
     }
     else if (m_rss_usage > m_rss_warn)
     {
       cycle = 5;
-      qDebug("Flusing caches: rss=%u MB", (unsigned)((m_rss_usage * m_page_size) >> 20));
-      m_dbThread->FlushCaches(std::chrono::seconds(cycle));
+      flushCaches(cycle, false);
     }
     else
     {
@@ -104,6 +143,7 @@ void MemoryManager::onFinished()
 
 bool MemoryManager::statMemoryUsage()
 {
+  QMutexLocker g(m_lock);
   QFile inputFile("/proc/self/statm");
   if (!inputFile.open(QIODevice::ReadOnly))
   {
@@ -133,3 +173,40 @@ bool MemoryManager::statMemoryUsage()
   //qDebug("statm: res=%u shr=%u use=%u", (unsigned)res, (unsigned)shr, (unsigned)m_rss_usage);
   return true;
 }
+
+#if defined(Q_OS_ANDROID)
+#include <jni.h>
+
+static void onTrimMemory(JNIEnv *, jobject, jint keep)
+{
+  MemoryManager * mm = MemoryManager::getInstance();
+  if (mm)
+  {
+    mm->flushCaches((unsigned)keep, true);
+  }
+}
+
+static JNINativeMethod methods[] =
+{
+  { "onTrimMemory", "(I)V", (void *)onTrimMemory },
+};
+
+JNIEXPORT jint JNI_OnLoad(JavaVM * vm, void* /*reserved*/)
+{
+  JNIEnv* env;
+  // get the JNIEnv pointer.
+  if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK)
+    return JNI_ERR;
+
+  // search for Java class which declares the native methods
+  jclass javaClass = env->FindClass("io/github/janbar/osmin/NativeMethods");
+  if (!javaClass)
+    return JNI_ERR;
+
+  // register our native methods
+  if (env->RegisterNatives(javaClass, methods, sizeof(methods) / sizeof(methods[0])) < 0)
+    return JNI_ERR;
+
+  return JNI_VERSION_1_6;
+}
+#endif

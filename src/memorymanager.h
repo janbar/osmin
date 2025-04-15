@@ -20,29 +20,34 @@
 #include <osmscoutclient/DBThread.h>
 
 #include <QObject>
-#include <QThread>
-#include <QSharedPointer>
 
-class MemoryManager;
-
-typedef QSharedPointer<MemoryManager> MemoryManagerPtr;
+class QThread;
+class QMutex;
 
 class MemoryManager : public QObject
 {
   Q_OBJECT
 
 public:
-  MemoryManager(uint16_t rss_target_mb);
-  virtual ~MemoryManager();
   MemoryManager(const MemoryManager&) = delete;
 
+  static void createInstance(uint16_t rss_target_mb);
+  static MemoryManager * getInstance();
+  static void freeInstance();
+
+  void start();
   void terminate();
+  void flushCaches(unsigned keep, bool trim = false);
 
 private slots:
   void run();
   void onFinished();
 
 private:
+  MemoryManager(uint16_t rss_target_mb);
+  ~MemoryManager();
+  static MemoryManager * _instance;
+  QMutex * m_lock;
   QThread * m_t;
   osmscout::DBThreadRef m_dbThread;
   size_t m_page_size;
@@ -50,10 +55,9 @@ private:
   size_t m_rss_warn;
   size_t m_rss_usage;
 
-
   bool statMemoryUsage();
 };
 
-Q_DECLARE_METATYPE(MemoryManagerPtr)
+Q_DECLARE_METATYPE(MemoryManager*)
 
 #endif // MEMORYMANAGER_H
