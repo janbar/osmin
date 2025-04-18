@@ -19,7 +19,7 @@ Alternatively the APKs are available on the Release page, for armv7(32bits) and 
 ## Develop/debug osmin
 You can build and test osmin on Unix (Linux, BSD) supported by Qt 5.15. Before build from source you have to install the following dependencies.
 
-git, cmake, clang/clang++ (**>=18.0** standard C++20), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
+git, cmake (**>=3.20), clang/clang++ (**>=18.0** standard C++20), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
 
 
 As example type the following on Ubuntu (>=24.04) to install all requirements.
