@@ -235,7 +235,7 @@ ApplicationWindow {
                         }
                     }
 
-                    visible: !mainView.noZone
+                    visible: true
                     enabled: !mainView.jobRunning
                 }
             }
