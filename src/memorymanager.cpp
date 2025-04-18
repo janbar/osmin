@@ -44,6 +44,7 @@ MemoryManager::MemoryManager(uint16_t rss_target_mb)
   m_page_size = sysconf(_SC_PAGESIZE);
   m_rss_target = ((size_t)rss_target_mb << 20) / m_page_size;
   m_rss_warn = m_rss_target - (m_rss_target >> 3); // 0.88
+  m_rss_usage = 0; // initialize usage
 }
 
 void MemoryManager::createInstance(uint16_t rss_target_mb)
@@ -109,15 +110,15 @@ void MemoryManager::run()
   /*
    * collection of memory stat is performed every cycle
    * the possible states are low, target, or high, and the control cycle is
-   * updated accordingly such as 10, 5 or 1 second.
+   * updated accordingly such as 15, 5 or 1 second.
    */
-  unsigned cycle = 10;
+  unsigned cycle = 15;
   while (!m_t->isInterruptionRequested())
   {
     if (!statMemoryUsage())
-      break;
+      break; // not available
 
-    if (m_rss_usage > m_rss_target)
+    else if (m_rss_usage > m_rss_target)
     {
       cycle = 1;
       flushCaches(cycle, true);
@@ -129,7 +130,7 @@ void MemoryManager::run()
     }
     else
     {
-      cycle = 10;
+      cycle = 15;
     }
 
     // wait for a cycle or any interruption

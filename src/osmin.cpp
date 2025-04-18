@@ -40,13 +40,13 @@
 #endif
 
 #ifdef DEVICE_MOBILE
-// Limit cache memory to avoid angering the crazy lowmemorykiller
-#define ONLINE_TILE_CACHE_MB   60
-#define OFFLINE_TILE_CACHE_MB  100
+// Setup cache size and target
+#define ONLINE_TILE_CACHE      60 // number of tiles
+#define OFFLINE_TILE_CACHE     30 // number of tiles
 #define MEMORY_TARGET          500
 #else
-#define ONLINE_TILE_CACHE_MB   60
-#define OFFLINE_TILE_CACHE_MB  200
+#define ONLINE_TILE_CACHE      60 // number of tiles
+#define OFFLINE_TILE_CACHE     30 // number of tiles
 #define MEMORY_TARGET          1000
 #endif
 
@@ -448,7 +448,7 @@ int startGUI(int argc, char* argv[])
         .AddMapProviders(g_usrResDir.absoluteFilePath("map-providers.json"))
         .AddVoiceProviders(g_usrResDir.absoluteFilePath("voice-providers.json"))
         .WithCacheLocation(QStandardPaths::writableLocation(QStandardPaths::CacheLocation).append("/tiles"))
-        .WithTileCacheSizes(ONLINE_TILE_CACHE_MB, OFFLINE_TILE_CACHE_MB);
+        .WithTileCacheSizes(ONLINE_TILE_CACHE, OFFLINE_TILE_CACHE);
 
     // declare required types for tracks
     for (const QString& customType : GPXFileModel::customTypeSet())
