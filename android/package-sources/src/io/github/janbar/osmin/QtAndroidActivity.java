@@ -16,7 +16,7 @@ public class QtAndroidActivity extends QtActivity
             NativeMethods.onTrimMemory(5); // keep 5sec
         } else if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE) {
             Log.w("osmin", "Memory advise: RUNNING_MODERATE");
-            NativeMethods.onTrimMemory(15); // keep 15sec
+            NativeMethods.onTrimMemory(30); // keep 30sec
         }
         super.onTrimMemory(level);
         // adb shell am send-trim-memory io.github.janbar.osmin RUNNING_LOW

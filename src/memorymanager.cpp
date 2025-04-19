@@ -110,9 +110,9 @@ void MemoryManager::run()
   /*
    * collection of memory stat is performed every cycle
    * the possible states are low, target, or high, and the control cycle is
-   * updated accordingly such as 15, 5 or 1 second.
+   * updated accordingly such as 30, 5 or 1 second.
    */
-  unsigned cycle = 15;
+  unsigned cycle = 30;
   while (!m_t->isInterruptionRequested())
   {
     if (!statMemoryUsage())
@@ -130,7 +130,7 @@ void MemoryManager::run()
     }
     else
     {
-      cycle = 15;
+      cycle = 30;
     }
 
     // wait for a cycle or any interruption
