@@ -50,6 +50,16 @@ MapPage {
             selectPOI(null);
     }
 
+    Label {
+        id: releaseToReload
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: styleMap.view.labelColor
+        font.pixelSize: units.fs("small")
+        horizontalAlignment: Text.AlignHCenter
+        text: qsTr("Release to reload")
+        visible: !favoritesView.canReload
+    }
+
     MapListView {
         id: favoritesView
         contentHeight: contentHeight
@@ -64,6 +74,29 @@ MapPage {
             //filter.property: "normalized"
             //filter.pattern: new RegExp(Utils.normalizedInputString(filter.displayText), "i")
             //filterCaseSensitivity: Qt.CaseInsensitive
+        }
+
+        property bool canReload: true
+
+        onContentYChanged: function() {
+            if (canReload && atYBeginning && contentY < -units.gu(20)) {
+                canReload = false;
+                ToolBox.connectOnce(onDragEnded, function(){
+                    ToolBox.connectOnce(FavoritesModel.loaded, function(loaded){
+                        canReload = true;
+                    });
+                    loadLater.restart();
+                });
+            }
+        }
+
+        Timer {
+            id: loadLater
+            repeat: false
+            interval: 250
+            onTriggered: {
+                FavoritesModel.loadData();
+            }
         }
 
         delegate: SimpleListItem {
