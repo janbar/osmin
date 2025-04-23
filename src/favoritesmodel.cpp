@@ -311,8 +311,9 @@ bool FavoritesModel::loadData()
 {
   {
     osmin::LockGuard<QRecursiveMutex> g(m_lock);
-    if (!m_io) {
-      return false; }
+    if (!m_io)
+      return false;
+
     beginResetModel();
     if (m_items.count() > 0)
     {
