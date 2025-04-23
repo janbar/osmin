@@ -190,6 +190,24 @@ set(libosmscout_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/libosmscout")
 list(APPEND libosmscout_patches
 )
 foreach(patch IN LISTS libosmscout_patches)
+    message(STATUS "Patch ${patch} : CHECK")
+    execute_process(
+        COMMAND git apply --check ${CMAKE_CURRENT_SOURCE_DIR}/${patch}
+        WORKING_DIRECTORY ${libosmscout_SOURCE_DIR}
+        RESULT_VARIABLE presult
+        OUTPUT_QUIET ERROR_QUIET)
+    if(presult)
+        message(STATUS "Patch ${patch} : REVERT")
+        execute_process(
+            COMMAND git apply --reverse ${CMAKE_CURRENT_SOURCE_DIR}/${patch}
+            WORKING_DIRECTORY ${libosmscout_SOURCE_DIR}
+            RESULT_VARIABLE presult
+            OUTPUT_QUIET ERROR_QUIET)
+        if(presult)
+            message(FATAL_ERROR "Patch ${patch} failed")
+        endif()
+    endif()
+    message(STATUS "Patch ${patch} : APPLY")
     execute_process(
         COMMAND git apply ${CMAKE_CURRENT_SOURCE_DIR}/${patch}
         WORKING_DIRECTORY ${libosmscout_SOURCE_DIR})
