@@ -202,12 +202,12 @@ PopOver {
                 mapSettings.styleSheetFile = stylesheet;
                 settings.styleFlags = "[]"; // clear settings
                 // reset flags after style is loaded
-                ToolBox.connectWhileFalse(map.onFinishedChanged, function(){
-                    if (!map.finished)
-                        return false;
-                    flags.resetData();
-                    MapExtras.setDaylight(!mapView.nightView);
-                    return true;
+                ToolBox.connectWhileFalse(map.onFinishedChanged, function(finished){
+                    if (finished) {
+                        flags.resetData();
+                        MapExtras.setDaylight(!mapView.nightView);
+                    }
+                    return finished;
                 });
             }
             MapStyleModel { id: mapStyle }

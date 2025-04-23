@@ -178,6 +178,7 @@ PopOver {
                         var str = locationDescription(0);
                         placeFrom.address = str.length > 0 ? str : Converter.readableCoordinatesGeocaching(placeFrom.lat, placeFrom.lon);
                     }
+                    return ready;
                 }
                 function selectLocation(location, lat, lon, label) {
                     if (lat !== NaN && lon !== NaN && label !== "") {
@@ -265,6 +266,7 @@ PopOver {
                         var str = locationDescription(0);
                         placeTo.address = str.length > 0 ? str : Converter.readableCoordinatesGeocaching(placeTo.lat, placeTo.lon);
                     }
+                    return ready;
                 }
                 function selectLocation(location, lat, lon, label) {
                     if (lat !== NaN && lon !== NaN && label !== "") {
