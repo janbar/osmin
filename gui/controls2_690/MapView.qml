@@ -215,6 +215,7 @@ MapPage {
                    //rotateEnabled = true;
                    positionSource.active = true;
                }
+               return finished;
             });
         }
     }

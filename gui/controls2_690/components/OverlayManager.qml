@@ -181,6 +181,15 @@ QtObject {
         MapExtras.releaseOverlayIds(ovs);
     }
 
+    function reloadFavorites() {
+        if (internal.showFavorites) {
+            MapExtras.findOverlayKeys("FAVORITE").forEach(function(k){ removeFavoritePOI(k); });
+            for (var i = 0; i < FavoritesModel.rowCount(); ++i) {
+                addFavoritePOI(FavoritesModel.get(i).id)
+            }
+        }
+    }
+
     function showFavorites() {
         if (!internal.showFavorites) {
             internal.showFavorites = true;
@@ -189,6 +198,7 @@ QtObject {
             }
             FavoritesModel.appended.connect(addFavoritePOI);
             FavoritesModel.removed.connect(removeFavoritePOI);
+            FavoritesModel.loaded.connect(reloadFavorites);
         }
     }
 
@@ -198,6 +208,7 @@ QtObject {
             keys.forEach(function(k){ removeFavoritePOI(k); });
             FavoritesModel.appended.disconnect(addFavoritePOI);
             FavoritesModel.removed.disconnect(removeFavoritePOI);
+            FavoritesModel.loaded.disconnect(reloadFavorites);
             internal.showFavorites = false;
         }
     }
