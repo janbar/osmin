@@ -145,20 +145,34 @@ MapPage {
                             Label {
                                 visible: !dir
                                 width: parent.width
-                                height: visible ? implicitHeight : 0
+                                height: visible ? visibleHeight : 0
                                 color: styleMap.view.secondaryColor
                                 font.pixelSize: units.fs("x-small")
                                 clip: true
                                 text: fileModel.parsing ? (Math.round(fileModel.progress * 1000) / 10).toFixed(1) + " %"
                                                         : timestamp.toLocaleDateString() + " " + timestamp.toLocaleTimeString()
+
+                                // break binding loop
+                                property real visibleHeight: 0
+                                onImplicitHeightChanged: { fixHeight(); }
+                                function fixHeight() {
+                                    visibleHeight = implicitHeight;
+                                }
                             }
                             Label {
                                 visible: text !== ""
-                                height: visible ? implicitHeight : 0
+                                height: visible ? visibleHeight : 0
                                 color: styleMap.view.secondaryColor
                                 font.pixelSize: units.fs("x-small")
                                 text: fileModel.description
                                 wrapMode: Text.WordWrap
+
+                                // break binding loop
+                                property real visibleHeight: 0
+                                onImplicitHeightChanged: { fixHeight(); }
+                                function fixHeight() {
+                                    visibleHeight = implicitHeight;
+                                }
                             }
                         }
 

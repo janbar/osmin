@@ -90,8 +90,15 @@ MouseArea {
         Label {
             id: label
             anchors.verticalCenter: parent.verticalCenter
-            width: text !== "" && area.visible ? implicitWidth + units.gu(0.5) : 0
+            width: area.visible ? visibleWidth : 0
             font.pixelSize: units.fs("medium")
+
+            // break binding loop
+            property real visibleWidth: 0
+            onImplicitWidthChanged: { fixWidth(); }
+            function fixWidth() {
+                visibleWidth = (text !== "" ? implicitWidth + units.gu(0.5) : 0);
+            }
         }
     }
 
