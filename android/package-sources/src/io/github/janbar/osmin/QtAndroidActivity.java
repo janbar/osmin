@@ -10,13 +10,12 @@ public class QtAndroidActivity extends QtActivity
     public void onTrimMemory(int level) {
         if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL) {
             Log.w("osmin", "Memory advise: RUNNING_CRITICAL");
-            NativeMethods.onTrimMemory(1); // keep 1sec
+            NativeMethods.onTrimMemory(5); // keep 5sec
         } else if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
             Log.w("osmin", "Memory advise: RUNNING_LOW");
-            NativeMethods.onTrimMemory(5); // keep 5sec
+            NativeMethods.onTrimMemory(30); // keep 30sec
         } else if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE) {
             Log.w("osmin", "Memory advise: RUNNING_MODERATE");
-            NativeMethods.onTrimMemory(30); // keep 30sec
         }
         super.onTrimMemory(level);
         // adb shell am send-trim-memory io.github.janbar.osmin RUNNING_LOW
