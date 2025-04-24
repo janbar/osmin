@@ -28,7 +28,7 @@
 #include "tracker.h"
 
 /* The name of the service end-point must include the revision of the API */
-#define SERVICE_URL                     "local:osmin59"
+#define SERVICE_URL                     "local:osmin90"
 
 #define SETTING_RECORDING_FILENAME      "trackerRecording"
 #define COMPASS_DATARATE          2     // default
