@@ -40,13 +40,14 @@
 #endif
 
 #ifdef DEVICE_MOBILE
-// Setup cache size and target
+// Setup cache size and target for mobile
 #define ONLINE_TILE_CACHE      60    // number of tiles
-#define OFFLINE_TILE_CACHE     60    // number of tiles
+#define OFFLINE_TILE_CACHE     40    // number of tiles
 #define MEMORY_TARGET          500
 #else
+// Setup cache size and target for desktop
 #define ONLINE_TILE_CACHE      60    // number of tiles
-#define OFFLINE_TILE_CACHE     240   // number of tiles
+#define OFFLINE_TILE_CACHE     200   // number of tiles
 #define MEMORY_TARGET          1000
 #endif
 
