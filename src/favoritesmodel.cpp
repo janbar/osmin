@@ -19,6 +19,7 @@
 #include "csvparser.h"
 #include "utils.h"
 #include <cmath>
+#include <list>
 
 #define MAX_ROWCOUNT  100
 #define AREA_RADIUS   30.0
@@ -211,7 +212,7 @@ int FavoritesModel::append(double lat, double lon, const QString& label, const Q
 bool FavoritesModel::remove(int id)
 {
   int row = 0;
-  for (FavoriteItem* item : qAsConst(m_items))
+  for (const FavoriteItem* item : std::as_const(m_items))
   {
     if (item->id() == id)
     {
@@ -279,7 +280,7 @@ bool FavoritesModel::storeData()
   {
     succeeded = true;
     osmin::CSVParser csv(',', '"');
-    for (FavoriteItem* item : qAsConst(m_items))
+    for (const FavoriteItem* item : std::as_const(m_items))
     {
       osmin::CSVParser::container row;
       QString num;
@@ -323,7 +324,7 @@ bool FavoritesModel::loadData()
       endRemoveRows();
     }
 
-    QList<FavoriteItem*> data;
+    std::list<FavoriteItem*> data;
     if (m_io->open(QIODevice::ReadOnly | QIODevice::Text))
     {
       int c = 0;
@@ -351,7 +352,7 @@ bool FavoritesModel::loadData()
           item->setLabel(QString::fromUtf8(row[4].c_str()));
           if (row.size() > 5)
             item->setType(QString::fromUtf8(row[5].c_str()));
-          data << item;
+          data.push_back(item);
           //qDebug("Loading favorite item: %3.5f , %3.5f : %s [%s]", item->lat(), item->lon(),
           //       item->label().toUtf8().constData(), item->type().toUtf8().constData());
         }
@@ -360,10 +361,11 @@ bool FavoritesModel::loadData()
     }
 
     m_seq = 0; // reset the sequence for id
-    if (data.count() > 0)
+    if (data.size() > 0)
     {
-      beginInsertRows(QModelIndex(), 0, data.count()-1);
-      for (FavoriteItem* item : qAsConst(data))
+      beginInsertRows(QModelIndex(), 0, data.size()-1);
+      m_items.reserve(data.size());
+      for (FavoriteItem* item : data)
       {
         item->setId(++m_seq);
         m_items << item;
@@ -399,7 +401,7 @@ void FavoritesModel::clearData()
 int FavoritesModel::isFavorite(double lat, double lon)
 {
   osmin::LockGuard<QRecursiveMutex> g(m_lock);
-  for (FavoriteItem* item : qAsConst(m_items))
+  for (const FavoriteItem* item : std::as_const(m_items))
   {
     double r = osmin::Utils::sphericalDistance(item->lat(), item->lon(), lat, lon);
     if (r < AREA_RADIUS)
