@@ -35,8 +35,6 @@ if(NOT ZLIB_FOUND)
         URL_HASH MD5=9855b6d802d7fe5b7bd5b196a2271655
         PREFIX ${CMAKE_CURRENT_BINARY_DIR}
         UPDATE_DISCONNECTED ON)
-    set(BUILD_SHARED_LIBS OFF)
-    set(SKIP_INSTALL_ALL ON)
     add_subdirectory(
         ${CMAKE_CURRENT_BINARY_DIR}/zlib-src
         ${CMAKE_CURRENT_BINARY_DIR}/zlib-build
@@ -47,8 +45,8 @@ if(NOT ZLIB_FOUND)
     set(ZLIB_INCLUDE_DIR "${zlib_BINARY_DIR}")
     set(ZLIB_INCLUDE_DIRS "${zlib_SOURCE_DIR}" "${zlib_BINARY_DIR}")
     set(ZLIB_FOUND ON)
-    export(TARGETS zlib FILE ZLIBTargets.cmake)
-    add_library(ZLIB::ZLIB ALIAS zlib)
+    export(TARGETS ${ZLIB_LIBRARY} FILE ZLIBTargets.cmake)
+    add_library(ZLIB::ZLIB ALIAS ${ZLIB_LIBRARY})
     message(STATUS "Build ZLIB: ${zlib_BINARY_DIR}")
 endif()
 
