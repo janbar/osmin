@@ -120,13 +120,13 @@ void MemoryManager::run()
 
     else if (m_rss_usage > m_rss_target)
     {
-      cycle = 1;
-      flushCaches(cycle, true);
+      cycle = 5;
+      flushCaches(5, true);
     }
     else if (m_rss_usage > m_rss_warn)
     {
-      cycle = 5;
-      flushCaches(cycle, false);
+      cycle = 15;
+      flushCaches(30, false);
     }
     else
     {
