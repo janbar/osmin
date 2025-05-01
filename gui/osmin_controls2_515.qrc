@@ -54,6 +54,8 @@
         <file alias="controls2/components/DialogAction.qml">controls2_515/components/DialogAction.qml</file>
         <file alias="controls2/components/DialogAlert.qml">controls2_515/components/DialogAlert.qml</file>
         <file alias="controls2/components/DialogEnter.qml">controls2_515/components/DialogEnter.qml</file>
+        <file alias="controls2/components/LaneTurnIcon.qml">controls2_515/components/LaneTurnIcon.qml</file>
+        <file alias="controls2/components/LaneTurns.qml">controls2_515/components/LaneTurns.qml</file>
         <file>images/poi/aerialway.svg</file>
         <file>images/poi/airfield.svg</file>
         <file>images/poi/airport.svg</file>
@@ -278,5 +280,21 @@
         <file>images/zoomin.svg</file>
         <file>images/zoomout.svg</file>
         <file>images/poi/charging_station.svg</file>
+        <file>images/laneturn/empty.svg</file>
+        <file>images/laneturn/empty_outline.svg</file>
+        <file>images/laneturn/left.svg</file>
+        <file>images/laneturn/left_outline.svg</file>
+        <file>images/laneturn/right.svg</file>
+        <file>images/laneturn/right_outline.svg</file>
+        <file>images/laneturn/through.svg</file>
+        <file>images/laneturn/through_left-left.svg</file>
+        <file>images/laneturn/through_left-through.svg</file>
+        <file>images/laneturn/through_left.svg</file>
+        <file>images/laneturn/through_left_outline.svg</file>
+        <file>images/laneturn/through_outline.svg</file>
+        <file>images/laneturn/through_right-right.svg</file>
+        <file>images/laneturn/through_right-through.svg</file>
+        <file>images/laneturn/through_right.svg</file>
+        <file>images/laneturn/through_right_outline.svg</file>
     </qresource>
 </RCC>
