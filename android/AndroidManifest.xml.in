@@ -20,7 +20,7 @@
   <application
     android:label="@APP_NAME@"
     android:icon="@mipmap/ic_launcher"
-    android:name="org.qtproject.qt5.android.bindings.QtApplication"
+    android:name=".QtAndroidApplication"
     android:hardwareAccelerated="true"
     android:allowBackup="true"
     android:fullBackupOnly="false">

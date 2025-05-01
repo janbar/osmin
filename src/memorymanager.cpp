@@ -200,7 +200,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM * vm, void* /*reserved*/)
     return JNI_ERR;
 
   // search for Java class which declares the native methods
-  jclass javaClass = env->FindClass("io/github/janbar/osmin/NativeMethods");
+  jclass javaClass = env->FindClass("io/github/janbar/osmin/JNI");
   if (!javaClass)
     return JNI_ERR;
 
