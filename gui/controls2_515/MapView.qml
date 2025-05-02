@@ -986,23 +986,29 @@ MapPage {
         }
     }
 
-    LaneTurns {
+    Component {
         id: laneTurnsComponent
-        laneTurns: navigator.laneTurns
-        laneTurn: navigator.laneTurn
-        visible: navigator.laneSuggested
-        suggestedLaneFrom: navigator.suggestedLaneFrom
-        suggestedLaneTo: navigator.suggestedLaneTo
-        color: styleMap.popover.foregroundColor
-        bgColor: styleMap.popover.backgroundColor
-        bgOpacity: 0.5
+        LaneTurns {
+            laneTurns: navigator.laneTurns
+            laneTurn: navigator.laneTurn
+            visible: navigator.laneSuggested
+            suggestedLaneFrom: navigator.suggestedLaneFrom
+            suggestedLaneTo: navigator.suggestedLaneTo
+            color: styleMap.popover.foregroundColor
+            bgColor: styleMap.popover.backgroundColor
+            bgOpacity: 0.5
+            height: units.gu(14)
+        }
+    }
 
-        height: units.gu(14)
+    Loader {
         anchors {
             top: popNavigatorInfo.bottom
             topMargin: units.gu(3)
             horizontalCenter: parent.horizontalCenter
         }
+        sourceComponent: laneTurnsComponent
+        active: popNavigatorInfo.visible
     }
 
     LocationInfo {
