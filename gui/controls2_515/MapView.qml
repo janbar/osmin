@@ -1131,9 +1131,9 @@ MapPage {
         onShow: visible = true
         onVisibleChanged: {
             if (visible)
-                mapView.pushState("Tracking");
+                mapView.pushState("tracking");
             else
-                mapView.popState("Tracking");
+                mapView.popState("tracking");
         }
     }
 
