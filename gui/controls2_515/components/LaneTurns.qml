@@ -81,7 +81,6 @@ Item {
             var icon = iconComponent.createObject(
                         parentObj,
                         {
-                            id: "turnIcon" + i,
                             turnType: turn,
                             suggestedTurn: laneTurn,
                             color: parentObj.color,
