@@ -34,6 +34,11 @@ Item {
 
     property alias vehiclePosition: navigationModel.vehiclePosition
     property alias nextRouteStep: navigationModel.nextRouteStep
+    property alias laneTurns: navigationModel.laneTurns
+    property alias laneTurn: navigationModel.laneTurn
+    property alias laneSuggested: navigationModel.laneSuggested
+    property alias suggestedLaneFrom: navigationModel.suggestedLaneFrom
+    property alias suggestedLaneTo: navigationModel.suggestedLaneTo
     property alias currentSpeed: navigationModel.currentSpeed
     property alias maximumSpeed: navigationModel.maxAllowedSpeed
     property alias remainingDistance: navigationModel.remainingDistance
