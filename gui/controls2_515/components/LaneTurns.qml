@@ -16,7 +16,6 @@
  */
 
 import QtQuick 2.9
-import QtQuick.Controls 2.2
 
 Item {
     id: laneTurnsComponent
@@ -34,8 +33,8 @@ Item {
     property var iconObjects: []
     property real iconWidth: height * 0.5 // source icon sizes 5x10
 
-    Component.onCompleted: {
-        updateLane();
+    Component.onDestruction: {
+        iconObjects.forEach(function(e){ e.destroy(); });
     }
 
     Rectangle {
@@ -61,7 +60,7 @@ Item {
     }
 
     function updateLane() {
-        console.log("Update lane turns");
+        console.log("Lane turns [" + laneTurns.length + "] : " + laneTurn);
         if (iconComponent.status == Component.Error) {
             // Error Handling
             console.log("Error loading component:", iconComponent.errorString());
@@ -107,5 +106,4 @@ Item {
             parentObj.width += icon.width;
         }
     }
-
 }
