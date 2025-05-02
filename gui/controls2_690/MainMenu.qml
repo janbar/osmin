@@ -35,6 +35,7 @@ PopOver {
             comment: qsTr("Manage your favorite places.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/Favorites.qml");
+                ToolBox.connectOnce(page.popped, close);
                 ToolBox.connectOnce(page.showPosition, function(lat, lon){
                     if (lat !== NaN && lon !== NaN) {
                          map.showCoordinatesInstantly(lat, lon);
@@ -44,7 +45,8 @@ PopOver {
                          mark.screenY = map.height / 2;
                          if (navigation)
                              navigation = false;
-                         popLocationInfo.show();                                 }
+                         popLocationInfo.show();
+                    }
                 });
             }
         }
@@ -53,7 +55,10 @@ PopOver {
             name: qsTr("Routes")
             comment: qsTr("Navigate to a destination.")
             foo: function() {
+                // by opening the popover routing, the map must be visible,
+                // so close this to clear hidden state
                 popRouting.show();
+                close();
             }
         }
         ListElement {
@@ -62,6 +67,7 @@ PopOver {
             comment: qsTr("Manage the collection of saved tracks.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/TrackCollection.qml", { "mapView": mapView });
+                ToolBox.connectOnce(page.popped, close);
                 ToolBox.connectOnce(page.showPosition, function(lat, lon){
                     if (lat !== NaN && lon !== NaN) {
                          map.showCoordinatesInstantly(lat, lon);
@@ -71,7 +77,8 @@ PopOver {
                          mark.screenY = map.height / 2;
                          if (navigation)
                              navigation = false;
-                         popLocationInfo.show();                                 }
+                         popLocationInfo.show();
+                    }
                 });
             }
         }
@@ -80,6 +87,7 @@ PopOver {
             name: qsTr("Tracking")
             comment: qsTr("Statistics of the current track.")
             foo: function() {
+                ToolBox.connectOnce(popTracking.close, close);
                 popTracking.show();
             }
         }
@@ -88,6 +96,7 @@ PopOver {
             name: qsTr("Configure Map")
             comment: qsTr("Rendering and style of the map view.")
             foo: function() {
+                ToolBox.connectOnce(popConfigureMap.close, close);
                 popConfigureMap.show();
             }
         }
@@ -97,6 +106,7 @@ PopOver {
             comment: qsTr("Manage the map database.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/MapDownloads.qml");
+                ToolBox.connectOnce(page.popped, close);
             }
         }
         ListElement {
@@ -105,6 +115,7 @@ PopOver {
             comment: qsTr("Choose a voice for driving directions.")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/ConfigureVoice.qml");
+                ToolBox.connectOnce(page.popped, close);
             }
         }
 //        ListElement {
@@ -120,6 +131,7 @@ PopOver {
             comment: qsTr("General settings, units system and more ...")
             foo: function() {
                 var page = stackView.push("qrc:/controls2/Settings.qml");
+                ToolBox.connectOnce(page.popped, close);
             }
         }
 //        ListElement {
@@ -187,7 +199,6 @@ PopOver {
                 }
 
                 onClicked: {
-                    mainMenu.close();
                     model.foo();
                 }
             }

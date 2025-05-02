@@ -261,6 +261,7 @@ ApplicationWindow {
                     source: "qrc:/images/home.svg"
 
                     onClicked: {
+                        stackView.currentItem.popped();
                         stackView.pop()
                     }
 

@@ -223,21 +223,29 @@ MapPage {
     states: [
         State {
             name: "view"
+            PropertyChanges { target: map; visible: true; }
         },
         State {
             name: "locationInfo"
+            PropertyChanges { target: map; visible: true; }
             PropertyChanges { target: searchAroundPlace; visible: true; }
             PropertyChanges { target: addFavorite; visible: true; }
             PropertyChanges { target: goThere; visible: true; }
         },
         State {
-            name: "pickLocation"
-        },
-        State {
-            name: "measureDistance"
-        },
-        State {
+            /*
+             * map is visible behind the routing dialog to allow user to
+             * pick a place from or to
+             */
             name: "routing"
+            PropertyChanges { target: map; visible: true; }
+        },
+        State {
+            /*
+             * map is hidden until the front view is closed
+             */
+            name: "hidden"
+            PropertyChanges { target: map; visible: false; }
         }
     ]
     state: "view"
@@ -1022,10 +1030,6 @@ MapPage {
         }
         maximumHeight: widgetBottomY
         visible: false
-        onClose: {
-            visible = false;
-            overlayManager.removeMark(0);
-        }
         onShow: {
             if (mark.showOverlay) {
                 map.interactiveIcons = false;
@@ -1035,14 +1039,13 @@ MapPage {
                 map.moveUp();
             popLocationInfo.searchLocation(mark.lat, mark.lon);
             visible = true;
+            mapView.pushState("locationInfo");
         }
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("locationInfo");
-            else {
-                map.interactiveIcons = true;
-                mapView.popState("locationInfo");
-            }
+        onClose: {
+            visible = false;
+            overlayManager.removeMark(0);
+            map.interactiveIcons = true;
+            mapView.popState("locationInfo");
         }
     }
 
@@ -1058,14 +1061,8 @@ MapPage {
         maximumHeight: map.height - y /*- units.gu(8)*/
         height: maximumHeight
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("routing");
-            else
-                mapView.popState("routing");
-        }
+        onShow: { visible = true; mapView.pushState("routing"); }
+        onClose: { visible = false; mapView.popState("routing"); }
 
         function goTo(lat, lon, label) {
             placeTo.lat = lat;
@@ -1090,14 +1087,8 @@ MapPage {
         }
         height: map.height - y /*- units.gu(8)*/
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("mainMenu");
-            else
-                mapView.popState("mainMenu");
-        }
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
     }
 
     ConfigureMap {
@@ -1109,14 +1100,8 @@ MapPage {
         }
         height: map.height - y /*- units.gu(8)*/
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("configureMap");
-            else
-                mapView.popState("configureMap");
-        }
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
     }
 
     Tracking {
@@ -1128,14 +1113,8 @@ MapPage {
         }
         height: map.height - y /*- units.gu(8)*/
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("tracking");
-            else
-                mapView.popState("tracking");
-        }
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
     }
 
     ////////////////////////////////////////////////////////////////////////////

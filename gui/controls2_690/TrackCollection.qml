@@ -410,6 +410,7 @@ MapPage {
                 height: units.gu(6)
                 onClicked: {
                     showPosition(selectedPOI.lat, selectedPOI.lon);
+                    popped();
                     stackView.pop();
                 }
             }
