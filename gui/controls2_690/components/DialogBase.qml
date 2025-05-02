@@ -91,6 +91,7 @@ Dialog {
             spacing: dialog.contentSpacing
             width: background.width
             onWidthChanged: updateChildrenWidths();
+            topPadding: units.gu(1)
 
             Text {
                 horizontalAlignment: Text.AlignHCenter
