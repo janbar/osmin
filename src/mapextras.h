@@ -49,6 +49,7 @@ signals:
   void dayLightChanged();
 
 public:
+  Q_INVOKABLE int getLibraryFormatVersion();
   Q_INVOKABLE void flushCaches(int seconds);
 
   /**

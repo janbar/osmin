@@ -538,6 +538,7 @@ int startGUI(int argc, char* argv[])
   availableStyles.append("Material");
 #endif
   engine.rootContext()->setContextProperty("AvailableStyles", availableStyles);
+  engine.rootContext()->setContextProperty("QtVersion", QString(qVersion()));
 
   // handle signal exit(int) issued by the qml instance
   QObject::connect(&engine, &QQmlApplicationEngine::exit, doExit);
