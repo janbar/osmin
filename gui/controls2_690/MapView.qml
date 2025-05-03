@@ -1091,6 +1091,19 @@ MapPage {
         onClose: { visible = false; mapView.popState("hidden"); }
     }
 
+    About {
+        id: popAbout
+        anchors {
+            top: popInfo.bottom
+            left: parent.left
+            right: parent.right
+        }
+        height: map.height - y /*- units.gu(8)*/
+        visible: false
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
+    }
+
     ConfigureMap {
         id: popConfigureMap
         anchors {

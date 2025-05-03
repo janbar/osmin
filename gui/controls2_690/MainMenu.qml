@@ -134,13 +134,14 @@ PopOver {
                 ToolBox.connectOnce(page.popped, close);
             }
         }
-//        ListElement {
-//            art: "qrc:/images/help.svg"
-//            name: qsTr("Help")
-//            comment: qsTr("More about features and usage.")
-//            foo: function() {
-//            }
-//        }
+        ListElement {
+            art: "qrc:/images/help.svg"
+            name: qsTr("About")
+            comment: qsTr("About Osmin.")
+            foo: function() {
+                popAbout.show();
+            }
+        }
     }
 
     contents: Column {

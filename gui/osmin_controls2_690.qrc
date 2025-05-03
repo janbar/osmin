@@ -34,7 +34,7 @@
         <file alias="controls2/Favorites.qml">controls2_690/Favorites.qml</file>
         <file alias="controls2/components/DialogBase.qml">controls2_690/components/DialogBase.qml</file>
         <file alias="toolbox.js">toolbox.js</file>
-        <file alias="controls2/DialogAbout.qml">controls2_690/DialogAbout.qml</file>
+        <file alias="controls2/About.qml">controls2_690/About.qml</file>
         <file alias="controls2/Settings.qml">controls2_690/Settings.qml</file>
         <file alias="controls2/TrackCollection.qml">controls2_690/TrackCollection.qml</file>
         <file alias="controls2/components/CompassSensor.qml">controls2_690/components/CompassSensor.qml</file>

@@ -268,30 +268,6 @@ ApplicationWindow {
                     visible: (stackView.currentItem != null && !stackView.currentItem.isRoot)
                     enabled: visible
                 }
-
-                MapIcon {
-                    width: units.gu(5)
-                    height: width
-                    anchors.centerIn: parent
-                    source: "qrc:/images/contextual-menu.svg"
-
-                    visible: (stackView.currentItem == null || stackView.currentItem.isRoot)
-                    enabled: visible
-
-                    onClicked: optionsMenu.open()
-
-                    Menu {
-                        id: optionsMenu
-                        x: parent.width - width
-                        transformOrigin: Menu.TopRight
-
-                        MenuItem {
-                            text: qsTr("About")
-                            font.pixelSize: units.fs("medium")
-                            onTriggered: dialogAbout.open()
-                        }
-                    }
-                }
             }
         }
 
@@ -442,15 +418,6 @@ ApplicationWindow {
             return true;
         mainInfo.open(qsTr("Saving change failed"));
         return false;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    ////
-    //// Dialog
-    ////
-
-    DialogAbout {
-        id: dialogAbout
     }
 
     ////////////////////////////////////////////////////////////////////////////
