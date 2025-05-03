@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.8.2...3.20)
 
 # Provides:
 #  macro add_qt_android_apk
@@ -296,33 +296,48 @@ macro(add_qt_android_apk TARGET SOURCE_TARGET)
         set(TARGET_LEVEL_OPTIONS --android-platform android-${QT_ANDROID_PLATFORM_LEVEL})
     endif()
 
-    # determine the build type to pass to androiddeployqt
-    if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" AND NOT ARG_KEYSTORE)
-        set(QT_ANDROID_BUILD_TYPE --debug)
-    elseif()
-        set(QT_ANDROID_BUILD_TYPE --release)
-    endif()
-
     # create a custom command that will run the androiddeployqt utility to prepare the Android package
-    add_custom_target(
-        ${TARGET}
-        ALL
-        DEPENDS ${SOURCE_TARGET}
-        ${QT_ANDROID_PRE_COMMANDS}
-        # it seems that recompiled libraries are not copied if we don't remove them first
-        COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
-        COMMAND ${CMAKE_COMMAND} -E copy ${QT_ANDROID_APP_PATH} ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
-        COMMAND ${QT_HOST_PATH}/bin/androiddeployqt
-        --output ${QT_ANDROID_APP_BINARY_DIR}
-        --input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json
-        --gradle
-        ${QT_ANDROID_BUILD_TYPE}
-        ${TARGET_LEVEL_OPTIONS}
-        ${INSTALL_OPTIONS}
-        ${SIGN_OPTIONS}
-    )
+    # determine the build type to pass to androiddeployqt
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" AND ARG_KEYSTORE)
+        add_custom_target(
+            ${TARGET}
+            ALL
+            DEPENDS ${SOURCE_TARGET}
+            ${QT_ANDROID_PRE_COMMANDS}
+            # it seems that recompiled libraries are not copied if we don't remove them first
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+            COMMAND ${CMAKE_COMMAND} -E copy ${QT_ANDROID_APP_PATH} ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+            COMMAND ${QT_HOST_PATH}/bin/androiddeployqt
+            --output ${QT_ANDROID_APP_BINARY_DIR}
+            --input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json
+            --gradle
+            --release
+            ${TARGET_LEVEL_OPTIONS}
+            ${INSTALL_OPTIONS}
+            ${SIGN_OPTIONS}
+        )
+    else()
+        add_custom_target(
+            ${TARGET}
+            ALL
+            DEPENDS ${SOURCE_TARGET}
+            ${QT_ANDROID_PRE_COMMANDS}
+            # it seems that recompiled libraries are not copied if we don't remove them first
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+            COMMAND ${CMAKE_COMMAND} -E copy ${QT_ANDROID_APP_PATH} ${QT_ANDROID_APP_BINARY_DIR}/libs/${ANDROID_ABI}
+            COMMAND ${QT_HOST_PATH}/bin/androiddeployqt
+            --verbose
+            --output ${QT_ANDROID_APP_BINARY_DIR}
+            --input ${CMAKE_CURRENT_BINARY_DIR}/qtdeploy.json
+            --gradle
+            ${TARGET_LEVEL_OPTIONS}
+            ${INSTALL_OPTIONS}
+            ${SIGN_OPTIONS}
+        )
+    endif()
     # Extra for debugging APK: set android:debuggable="true" in AndroidManifest.xml
-    # androiddeployqt --gdbserver --no-strip --verbose
+    # androiddeployqt --gdbserver --verbose
 
 endmacro()
