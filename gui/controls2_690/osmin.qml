@@ -294,6 +294,10 @@ ApplicationWindow {
             top: parent.top
         }
         initialItem: "qrc:/controls2/Banner.qml"
+        pushEnter: Transition { }
+        pushExit: Transition { }
+        popEnter: Transition { }
+        popExit: Transition { }
     }
 
     property var mapPage: null
