@@ -166,6 +166,31 @@ bool PlatformExtras::shareContent(const QString &text, const QString &path, cons
 #endif
 }
 
+bool PlatformExtras::shareData(const QString &text, const QString &data, const QString &mimeType)
+{
+#if defined(Q_OS_ANDROID)
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject jsText = QJniObject::fromString(text);
+  QJniObject jsPath = QJniObject::fromString(data);
+  QJniObject jsType = QJniObject::fromString(mimeType);
+  jboolean ok = QJniObject::callStaticMethod<jboolean>("io/github/janbar/osmin/QtAndroidHelper",
+                                                       "shareData",
+                                                       "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
+                                                       activity.object(), jsText.object<jstring>(), jsPath.object<jstring>(), jsType.object<jstring>());
+  if(ok) {
+    return true;
+  } else {
+    return false;
+  }
+#else
+  // not implemented
+  (void)text;
+  (void)data;
+  (void)mimeType;
+  return false;
+#endif
+}
+
 void PlatformExtras::doPreventBlanking(bool on)
 {
   if (m_preventBlanking == on)

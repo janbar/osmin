@@ -47,5 +47,23 @@ public class QtAndroidHelper {
         }
         return false;
     }
+
+    public static boolean shareData(Context context, String text, String data, String mimeType) {
+        if (context instanceof Activity) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, text);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, data);
+            shareIntent.setType(mimeType);
+            // Verify that the intent will resolve to an activity
+            if (shareIntent.resolveActivity(((Activity) context).getPackageManager()) != null) {
+                ((Activity) context).startActivity(shareIntent);
+                return true;
+            } else {
+                Log.d("shareData", "Intent not resolved");
+            }
+        }
+        return false;
+    }
 }
 

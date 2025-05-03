@@ -194,10 +194,28 @@ PopOver {
         }
 
         Column {
-            Label {
-                text: qsTr("Coordinates")
-                color: styleMap.popover.highlightedColor
-                font.pixelSize: units.fs("medium")
+            Row {
+                spacing: units.gu(2)
+                Label {
+                    text: qsTr("Coordinates")
+                    color: styleMap.popover.highlightedColor
+                    font.pixelSize: units.fs("medium")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Button {
+                    text: qsTr("Share")
+                    font.pixelSize: units.fs("x-small")
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: {
+                        PlatformExtras.shareData("OSMin Position",
+                                                 "\nCoord DEC: " + Converter.readableCoordinates(positionSource._lat, positionSource._lon) +
+                                                 "\nCoord GEO: " + Converter.readableCoordinatesGeocaching(positionSource._lat, positionSource._lon) +
+                                                 "\nElevation: "+ Converter.panelElevation(positionSource._alt),
+                                                 "text/plain");
+                    }
+                    visible: Android
+                    height: visible ? implicitHeight : 0
+                }
             }
             Label {
                 text: Converter.readableCoordinatesGeocaching(positionSource._lat, positionSource._lon)
@@ -205,15 +223,18 @@ PopOver {
                 color: foregroundColor
             }
         }
-        Column {
+        Row {
+            spacing: units.gu(2)
             Label {
                 text: qsTr("Elevation")
                 color: styleMap.popover.highlightedColor
                 font.pixelSize: units.fs("medium")
+                anchors.verticalCenter: parent.verticalCenter
             }
             Label {
                 text: Converter.readableElevation(positionSource._alt)
                 font.pixelSize: units.fs("large")
+                anchors.verticalCenter: parent.verticalCenter
                 color: foregroundColor
             }
         }

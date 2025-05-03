@@ -166,6 +166,20 @@ MapPage {
                     }
                 },
                 MenuItem {
+                    text: qsTr("Share")
+                    font.pixelSize: units.fs("medium")
+                    onTriggered: {
+                        PlatformExtras.shareData("OSMin POI",
+                                                 "\nLabel: " + model.label +
+                                                 "\nCoord DEC: " + Converter.readableCoordinates(model.lat, model.lon) +
+                                                 "\nCoord GEO: " + Converter.readableCoordinatesGeocaching(model.lat, model.lon) +
+                                                 "\nElevation: "+ Converter.panelElevation(model.alt),
+                                                 "text/plain");
+                    }
+                    visible: Android
+                    height: visible ? implicitHeight : 0
+                },
+                MenuItem {
                     text: qsTr("Rename")
                     font.pixelSize: units.fs("medium")
                     onTriggered: {

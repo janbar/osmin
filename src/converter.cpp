@@ -266,8 +266,8 @@ QString Converter::readableCoordinatesGeocaching(double lat, double lon) const
   if (lat != lat || lon != lon)
     return QString("-");
   QString str;
-  str.append(lat > 0 ? "N" : "S").append(" ").append(readableDegreeGeocaching(std::abs(lat))).append(" ")
-      .append(lon > 0 ? "E" : "W").append(" ").append(readableDegreeGeocaching(std::abs(lon)));
+  str.append(lat > 0 ? "N" : "S").append(" ").append(readableDegreeGeocaching(std::fabs(lat))).append(" ")
+      .append(lon > 0 ? "E" : "W").append(" ").append(readableDegreeGeocaching(std::fabs(lon)));
   return str;
 }
 
@@ -282,10 +282,9 @@ QString Converter::readableCoordinates(double lat, double lon) const
 {
   if (lat != lat || lon != lon)
     return QString("-");
-  QString str;
-  str.append(readableDegree(abs(lat))).append(lat > 0 ? "N" : "S")
-      .append(" ").append(readableDegree(abs(lon))).append(lon > 0 ? "E" : "W");
-  return str;
+  return QString("%1 %2 %3 %4")
+      .arg(std::fabs(lat), 0, 'f', 5, '0').arg(lat > 0 ? "N" : "S")
+      .arg(std::fabs(lon), 0, 'f', 5, '0').arg(lon > 0 ? "E" : "W");
 }
 
 QString Converter::readableBytes(quint64 bytes) const
