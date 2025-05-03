@@ -3,11 +3,13 @@ name: build android_x64
 on:
   pull_request:
     branches:
-      - qt6
+      - debug
+      - master
 
   push:
     branches:
-      - qt6
+      - debug
+      - master
 
 jobs:
   build:
