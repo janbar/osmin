@@ -517,6 +517,7 @@ MapPage {
                 borderPadding: 0
                 label.font.pixelSize: units.fs("medium")
                 label.text: Converter.panelElevation(Tracker.elevation)
+                visible: !isNaN(Tracker.elevation)
             }
         }
     }
