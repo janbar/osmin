@@ -209,7 +209,6 @@ if(ANDROID)
     add_definitions(-DDEVICE_MOBILE)
     add_definitions(-frtti) # dynamic_cast: https://github.com/android/ndk/issues/519
     set_property(TARGET osmin PROPERTY SUFFIX "_${ANDROID_ABI}.so")
-#set_property(TARGET osmin APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android/package-sources")
     target_link_libraries(osmin PRIVATE android log Qt6::CorePrivate)
 
     # Provides dependency openssl
