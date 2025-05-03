@@ -54,6 +54,8 @@ QStringList Converter::systems() const
 
 QString Converter::readableDistance(double distance) const
 {
+  if (distance != distance)
+    return QString("-");
   switch (m_system)
   {
   case SYSTEM_IMPERIAL:
@@ -77,6 +79,8 @@ QString Converter::readableDistance(double distance) const
 
 QString Converter::panelDistance(double distance) const
 {
+  if (distance != distance)
+    return QString("-");
   switch (m_system)
   {
   case SYSTEM_IMPERIAL:
@@ -100,6 +104,8 @@ QString Converter::panelDistance(double distance) const
 
 QString Converter::readableSpeed(double speed) const
 {
+  if (speed != speed)
+    return QString("-");
   switch (m_system)
   {
   case SYSTEM_IMPERIAL:
@@ -132,6 +138,8 @@ QString Converter::readableBearing(const QString& bearing) const
 
 QString Converter::readableElevation(double elevation) const
 {
+  if (elevation != elevation)
+    return QString("-");
   switch (m_system)
   {
   case SYSTEM_IMPERIAL:
@@ -146,6 +154,8 @@ QString Converter::readableElevation(double elevation) const
 
 QString Converter::panelElevation(double elevation) const
 {
+  if (elevation != elevation)
+    return QString("-");
   switch (m_system)
   {
   case SYSTEM_IMPERIAL:
@@ -179,6 +189,8 @@ QString Converter::panelDurationHMS(int seconds) const
 
 QString Converter::readableDegreeGeocaching(double degree) const
 {
+  if (degree != degree)
+    return QString("-");
   double minutes = (degree - std::floor(degree)) * 60.0;
   return QString("%1°%2'")
       .arg(std::floor(degree), 0, 'f', 0)
@@ -187,6 +199,8 @@ QString Converter::readableDegreeGeocaching(double degree) const
 
 QString Converter::readableDegreeDMS(double degree) const
 {
+  if (degree != degree)
+    return QString("-");
   double minutes = (degree - std::floor(degree)) * 60.0;
   double seconds = (minutes - std::floor(minutes)) * 60.0;
   return QString("%1°%2'%3\"")
@@ -197,11 +211,15 @@ QString Converter::readableDegreeDMS(double degree) const
 
 QString Converter::readableDegree(double degree) const
 {
+  if (degree != degree)
+    return QString("-");
   return QString("%1°").arg(std::round(degree), 0, 'f', 0);
 }
 
 QString Converter::readableCardinal(double degree) const
 {
+  if (degree != degree)
+    return QString("-");
   double n = std::round(std::remainder(degree, 360.0) / 22.5);
   int c = (n < 0 ? int(n)+16 : int(n));
   switch(c)
@@ -245,23 +263,28 @@ QString Converter::readableCardinal(double degree) const
 
 QString Converter::readableCoordinatesGeocaching(double lat, double lon) const
 {
+  if (lat != lat || lon != lon)
+    return QString("-");
   QString str;
-  str.append(lat > 0 ? "N" : "S").append(" ").append(readableDegreeGeocaching(std::abs(lat))).append(" ")
-      .append(lon > 0 ? "E" : "W").append(" ").append(readableDegreeGeocaching(std::abs(lon)));
+  str.append(lat > 0 ? "N" : "S").append(" ").append(readableDegreeGeocaching(std::fabs(lat))).append(" ")
+      .append(lon > 0 ? "E" : "W").append(" ").append(readableDegreeGeocaching(std::fabs(lon)));
   return str;
 }
 
 QString Converter::readableCoordinatesNumeric(double lat, double lon) const
 {
+  if (lat != lat || lon != lon)
+    return QString("-");
   return QString("%1 %2").arg(lat, 0, 'f', 5, '0').arg(lon, 0, 'f', 5, '0');
 }
 
 QString Converter::readableCoordinates(double lat, double lon) const
 {
-  QString str;
-  str.append(readableDegree(abs(lat))).append(lat > 0 ? "N" : "S")
-      .append(" ").append(readableDegree(abs(lon))).append(lon > 0 ? "E" : "W");
-  return str;
+  if (lat != lat || lon != lon)
+    return QString("-");
+  return QString("%1 %2 %3 %4")
+      .arg(std::fabs(lat), 0, 'f', 5, '0').arg(lat > 0 ? "N" : "S")
+      .arg(std::fabs(lon), 0, 'f', 5, '0').arg(lon > 0 ? "E" : "W");
 }
 
 QString Converter::readableBytes(quint64 bytes) const

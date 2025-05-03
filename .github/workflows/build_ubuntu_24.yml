@@ -28,23 +28,40 @@ jobs:
         run: |
           sudo apt-get install -y \
               libc++-dev libomp-dev zlib1g-dev liblzma-dev libxml2-dev \
-              libdbus-1-dev libprotobuf-dev protobuf-compiler\
-              libqt5remoteobjects5-bin libqt5quickwidgets5 \
-              libqt5quickcontrols2-5 libqt5qmlmodels5 libqt5qml5 \
-              libqt5positioning5 libqt5dbus5 libqt5remoteobjects5-dev \
-              libqt5svg5-dev libqt5sensors5-dev \
-              qttools5-dev qttools5-dev-tools qtdeclarative5-dev \
-              qtquickcontrols2-5-dev qtmultimedia5-dev qtpositioning5-dev \
-              qml-module-qtquick2 qml-module-qtgraphicaleffects \
-              qml-module-qtquick-layouts qml-module-qtquick-controls2 \
-              qml-module-qt-labs-settings \
-              libreadline-dev
+              libdbus-1-dev libprotobuf-dev protobuf-compiler libssl-dev \
+              libgl1-mesa-dev libreadline-dev libpulse0 mesa-vulkan-drivers
+
+      - name: Configure ENV
+        run:  |
+            echo "QT_DIR=${HOME}/Qt/6.9.0/gcc_64" >> $GITHUB_ENV
+            echo "QT_HOST_PATH=${HOME}/Qt/6.9.0/gcc_64" >> $GITHUB_ENV
+
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-qt
+        with:
+          path: |
+              ~/Qt/6.9.0
+          key: qtgcc_64-60900
+
+      - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
+        name: Install Qt
+        continue-on-error: true
+        run: |
+            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-6.9.0-gcc_64-linux64.tar.xz
+            mkdir -p ~/Qt
+            tar xfJ qt-6.9.0-gcc_64-linux64.tar.xz -C ~/Qt/
+            rm -f *.tar.xz
 
       - name: Fetch submodules
         run: git submodule init && git submodule update
       - name: Configure build
         run: |
           cmake -B build \
+              -DCMAKE_PREFIX_PATH=${QT_DIR} \
+              -DCMAKE_FIND_ROOT_PATH=${QT_DIR} \
               -DBUILD_DEVICE_MOBILE=ON \
               -DBUILD_SIMULATOR=ON -DBUILD_SIMULATOR_WITH_READLINE=ON \
               -Wno-dev

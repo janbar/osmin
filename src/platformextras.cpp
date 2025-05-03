@@ -26,8 +26,9 @@
 #define AUTO_MOUNT        "/run/media/"
 
 #elif defined(Q_OS_ANDROID)
-#include <QtAndroid>
-#include <QAndroidJniEnvironment>
+#include <QtCore/private/qandroidextras_p.h>
+#include <QJniObject>
+#include <QCoreApplication>
 #define AUTO_MOUNT        "/storage/"
 
 #else
@@ -69,10 +70,10 @@ PlatformExtras::~PlatformExtras()
 QString PlatformExtras::getDataDir()
 {
 #ifdef Q_OS_ANDROID
-  QAndroidJniObject activity = QtAndroid::androidActivity();
-  QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
-  QAndroidJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
-  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject nullstr = QJniObject::fromString("");
+  QJniObject file = activity.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
+  QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
   return path.toString();
 #else
   return QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
@@ -84,9 +85,9 @@ QString PlatformExtras::getAppDir()
 #ifdef Q_OS_ANDROID
   // from Android 14, only internal storage can be used for resources
   // file descriptors can be hold during the life of the instance
-  QAndroidJniObject activity = QtAndroid::androidActivity();
-  QAndroidJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
-  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject file = activity.callObjectMethod("getFilesDir", "()Ljava/io/File;");
+  QJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
   return path.toString();
 #else
   return getDataDir();
@@ -140,6 +141,56 @@ void PlatformExtras::setPreventBlanking(bool on, int mask)
   }
 }
 
+bool PlatformExtras::shareContent(const QString &text, const QString &path, const QString &mimeType)
+{
+#if defined(Q_OS_ANDROID)
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject jsText = QJniObject::fromString(text);
+  QJniObject jsPath = QJniObject::fromString(path);
+  QJniObject jsType = QJniObject::fromString(mimeType);
+  jboolean ok = QJniObject::callStaticMethod<jboolean>("io/github/janbar/osmin/QtAndroidHelper",
+                                                              "shareContent",
+                                                              "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
+                                                              activity.object(), jsText.object<jstring>(), jsPath.object<jstring>(), jsType.object<jstring>());
+  if(ok) {
+    return true;
+  } else {
+    return false;
+  }
+#else
+  // not implemented
+  (void)text;
+  (void)path;
+  (void)mimeType;
+  return false;
+#endif
+}
+
+bool PlatformExtras::shareData(const QString &text, const QString &data, const QString &mimeType)
+{
+#if defined(Q_OS_ANDROID)
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject jsText = QJniObject::fromString(text);
+  QJniObject jsPath = QJniObject::fromString(data);
+  QJniObject jsType = QJniObject::fromString(mimeType);
+  jboolean ok = QJniObject::callStaticMethod<jboolean>("io/github/janbar/osmin/QtAndroidHelper",
+                                                       "shareData",
+                                                       "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
+                                                       activity.object(), jsText.object<jstring>(), jsPath.object<jstring>(), jsType.object<jstring>());
+  if(ok) {
+    return true;
+  } else {
+    return false;
+  }
+#else
+  // not implemented
+  (void)text;
+  (void)data;
+  (void)mimeType;
+  return false;
+#endif
+}
+
 void PlatformExtras::doPreventBlanking(bool on)
 {
   if (m_preventBlanking == on)
@@ -147,13 +198,13 @@ void PlatformExtras::doPreventBlanking(bool on)
   m_preventBlanking = on;
 #if defined(Q_OS_ANDROID)
   {
-    QtAndroid::runOnAndroidThread([on]
+    QNativeInterface::QAndroidApplication::runOnAndroidMainThread([on]
     {
-      QAndroidJniObject activity = QtAndroid::androidActivity();
-      QAndroidJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidHelper",
-                                                "preventBlanking",
-                                                "(Landroid/content/Context;Z)V",
-                                                activity.object(), (on ? JNI_TRUE : JNI_FALSE));
+      auto activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+      QJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidHelper",
+                                         "preventBlanking",
+                                         "(Landroid/content/Context;Z)V",
+                                         activity.object(), (on ? JNI_TRUE : JNI_FALSE));
     });
   }
 #elif defined(HAVE_DBUS)

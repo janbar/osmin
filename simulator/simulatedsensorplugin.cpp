@@ -22,10 +22,17 @@
 
 void SimulatedSensorPlugin::registerSensors()
 {
+#if QT_VERSION < 0x060000 //QT_VERSION_CHECK(6, 0, 0)
   if (!QSensorManager::isBackendRegistered(QCompass::type, SimulatedCompass::id)) {
     qInfo("Register sensor backend: %s", SimulatedCompass::id);
     QSensorManager::registerBackend(QCompass::type, SimulatedCompass::id, this);
   }
+#else
+  if (!QSensorManager::isBackendRegistered(QCompass::sensorType, SimulatedCompass::id)) {
+    qInfo("Register sensor backend: %s", SimulatedCompass::id);
+    QSensorManager::registerBackend(QCompass::sensorType, SimulatedCompass::id, this);
+  }
+#endif
 }
 
 SimulatedCompass *SimulatedSensorPlugin::createBackend(QSensor *sensor)

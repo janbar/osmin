@@ -19,19 +19,20 @@ The APKs are available on the Release page, for armv7(32bits) and arm64(64bits) 
 Alternatively you can install osmin through the [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/io.github.janbar.osmin) F-Droid repo, which should be available by enabling IzzyOnDroid from Settings > Repositories, otherwise, please refer to instructions at [IzzyOnDroid](https://apt.izzysoft.de/fdroid/) main page.
 
 ## Develop/debug osmin
-You can build and test osmin on Unix (Linux, BSD) supported by Qt 5.15. Before build from source you have to install the following dependencies.
+You can build and test osmin on Unix (Linux, BSD) supported by Qt 6.9. Before build from source you have to install the following dependencies.
 
-git, cmake (**>=3.20), clang/clang++ (**>=18.0** standard C++20), OpenMP, Qt5Core (**>=5.15**), Qt5Gui, Qt5Qml, Qt5Quick, Qt5QuickControls2, Qt5Widgets, Qt5Xml, Qt5Svg, Qt5Network, Qt5Sensors, Qt5Multimedia, Qt5RemoteObjects, Qt5Positioning, Qt5DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
+git, cmake (**>=3.20), clang/clang++ (**>=18.0** standard C++20), OpenMP, Qt5Core (**>=6.9.0**), Qt6Gui, Qt6Qml, Qt6Quick, Qt6QuickControls2, Qt6Widgets, Qt6Xml, Qt6Svg, Qt6Network, Qt6Sensors, Qt6Multimedia, Qt6RemoteObjects, Qt6Positioning, Qt6DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
 
 
-As example type the following on Ubuntu (>=24.04) to install all requirements.
+As example type the following on Ubuntu (>=24.04) to install the base requirements.
 ```
-sudo apt install git cmake clang curl wget libomp-dev zlib1g-dev libxml2-dev liblzma-dev libdbus-1-dev libssl-dev libreadline-dev libqt5remoteobjects5-bin libqt5quickwidgets5 libqt5quickcontrols2-5 libqt5qmlmodels5 libqt5qml5 libqt5positioning5 libqt5remoteobjects5-dev libqt5svg5-dev libqt5sensors5-dev libqt5dbus5 qtquickcontrols2-5-dev qtmultimedia5-dev qtpositioning5-dev qml-module-qtgraphicaleffects qml-module-qtquick2 qml-module-qtquick-layouts qml-module-qtquick-controls2 qml-module-qt-labs-settings
+sudo apt install git cmake clang curl wget libomp-dev zlib1g-dev libxml2-dev liblzma-dev libdbus-1-dev libssl-dev libgl1-mesa-dev libreadline-dev libpulse0 mesa-vulkan-drivers
 ```
 Or type the following on Fedora 40.
 ```
-sudo dnf install git cmake clang curl wget libomp-devel zlib-ng-compat-devel libxml2-devel dbus-devel readline-devel openssl-devel qt5-qtbase-devel qt5-qtremoteobjects-devel qt5-qtsensors-devel qt5-qtsvg-devel qt5-qtdeclarative-devel qt5-qtmultimedia-devel qt5-qtquickcontrols2-devel qt5-qtlocation-devel qt5-qtdeclarative qt5-qtbase qt5-qtsvg qt5-qtbase-gui qt5-qtgraphicaleffects qt5-qtremoteobjects qt5-qtsensors qt5-qtquickcontrols2 qt5-qtimageformats qt5-qtlocation qt5-qtmultimedia qt5-qttools qt5-qtxmlpatterns qt5-qtmultimedia-devel qt5-qtlocation-devel qt5-linguist qt5-qttranslations
+sudo dnf install git cmake clang curl wget libomp-devel zlib-ng-compat-devel libxml2-devel dbus-devel openssl-devel mesa-libGL-devel readline-devel pulseaudio-libs mesa-vulkan-drivers
 ```
+If your distribution doesn't provide the Qt-6.9 libraries, you have to install them using the Qt Online Installer.
 
 ## Build on Unix from source
 
@@ -45,14 +46,15 @@ cd osmin
 git submodule init
 git submodule update --force
 mkdir build
+export QT_ROOT=$HOME/Qt/6.9.0/gcc_64
 ```
-To build for desktop including the simulation tool, use the following command.
+To build arch x86_64 for desktop including the simulation tool, use the following command.
 ```
-cmake -B build -DBUILD_SIMULATOR=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
+cmake -B build -DBUILD_SIMULATOR=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_PREFIX_PATH=${QT_ROOT} -DCMAKE_FIND_ROOT_PATH=${QT_ROOT} .
 ```
 If the target device is a mobile, you should use the following command to **enable behaviors for mobile**.
 ```
-cmake -B build -DBUILD_DEVICE_MOBILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ .
+cmake -B build -DBUILD_DEVICE_MOBILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_PREFIX_PATH=${QT_ROOT} -DCMAKE_FIND_ROOT_PATH=${QT_ROOT} .
 ```
 You could mix the options `BUILD_SIMULATOR` and `BUILD_DEVICE_MOBILE` to test the behaviors for mobile device with the simulation tool.
 Finally build it to make the target binary `osmin`.

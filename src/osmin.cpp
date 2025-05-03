@@ -34,9 +34,10 @@
 #include <locale>
 
 #ifdef Q_OS_ANDROID
-#include <QtAndroid>
-#include <QAndroidService>
-#include <QAndroidJniObject>
+//#include <QtAndroid>
+//#include <QAndroidService>
+#include <QtCore/private/qandroidextras_p.h>
+#include <QJniObject>
 #endif
 
 #ifdef DEVICE_MOBILE
@@ -181,12 +182,7 @@ int startService(int argc, char* argv[])
 #ifdef Q_OS_ANDROID
   QAndroidService app(argc, argv);
   // retrieve the data directory for the 'service' instance
-  // PlatformExtras::getDataDir() cannot be used here, because this is not 'activity' instance
-  QAndroidJniObject service = QtAndroid::androidService();
-  QAndroidJniObject nullstr = QAndroidJniObject::fromString("");
-  QAndroidJniObject file = service.callObjectMethod("getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;", nullstr.object<jstring>());
-  QAndroidJniObject path = file.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;");
-  g_dataDir = QDir(path.toString());
+  g_dataDir = QDir(PlatformExtras::getDataDir());
 #else
   QCoreApplication app(argc, argv);
   g_dataDir = QDir(PlatformExtras::getDataDir());
@@ -220,7 +216,6 @@ int startGUI(int argc, char* argv[])
   QGuiApplication::setApplicationName(APP_NAME);
   QGuiApplication::setApplicationDisplayName(APP_DISPLAY_NAME);
   QGuiApplication::setOrganizationName(ORG_NAME);
-  QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QGuiApplication app(argc, argv);
   setupApp(app);
 
@@ -235,12 +230,19 @@ int startGUI(int argc, char* argv[])
   g_dataDir = QDir(PlatformExtras::getDataDir());
 
 #ifdef Q_OS_ANDROID
-  // request permissions for fine location
+  // request required permissions for location
   {
-    QStringList androidPermissions;
-    androidPermissions.append("android.permission.ACCESS_COARSE_LOCATION");
-    androidPermissions.append("android.permission.ACCESS_FINE_LOCATION");
-    QtAndroid::requestPermissionsSync(androidPermissions);
+    QStringList permissions;
+    permissions.append("android.permission.ACCESS_COARSE_LOCATION");
+    permissions.append("android.permission.ACCESS_FINE_LOCATION");
+    permissions.append("android.permission.ACCESS_BACKGROUND_LOCATION");
+    for(QString& p : permissions)
+    {
+      auto result = QtAndroidPrivate::requestPermission(p)
+        .then([](QtAndroidPrivate::PermissionResult result) { return result; });
+      result.waitForFinished();
+      qInfo("%s : %s", p.toStdString().c_str(), result.result() != QtAndroidPrivate::PermissionResult::Denied ? "AUTHORIZED" : "DENIED");
+    }
   }
 
   // create path for app resources
@@ -279,10 +281,11 @@ int startGUI(int argc, char* argv[])
 
   // fork the service process
 #if defined(Q_OS_ANDROID)
-  QAndroidJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidService",
-                                                "startQtAndroidService",
-                                                "(Landroid/content/Context;)V",
-                                                QtAndroid::androidActivity().object());
+  auto activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+  QJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidService",
+                                     "startQtAndroidService",
+                                     "(Landroid/content/Context;)V",
+                                     activity.object());
 #else
   QScopedPointer<QProcess> psvc(new QProcess());
   if (!testServiceUrl(SERVICE_URL, 100))
@@ -535,6 +538,7 @@ int startGUI(int argc, char* argv[])
   availableStyles.append("Material");
 #endif
   engine.rootContext()->setContextProperty("AvailableStyles", availableStyles);
+  engine.rootContext()->setContextProperty("QtVersion", QString(qVersion()));
 
   // handle signal exit(int) issued by the qml instance
   QObject::connect(&engine, &QQmlApplicationEngine::exit, doExit);
@@ -565,10 +569,10 @@ int startGUI(int argc, char* argv[])
   serviceFrontend->terminate();
 
 #if defined(Q_OS_ANDROID)
-  QAndroidJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidService",
-                                                "stopQtAndroidService",
-                                                "(Landroid/content/Context;)V",
-                                                QtAndroid::androidActivity().object());
+  QJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidService",
+                                     "stopQtAndroidService",
+                                     "(Landroid/content/Context;)V",
+                                     activity.object());
 #else
   if (psvc->state() != QProcess::NotRunning)
   {
