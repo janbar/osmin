@@ -131,7 +131,7 @@ Item {
             Row {
                 id: rowStep
                 opacity: navigationInfo.state === "running" ? 1.0 : 0.0
-                spacing: units.gu(2)
+                spacing: units.gu(1)
                 width: parent.width
                 height: Math.max(distanceToNextStep.implicitHeight + contentSpacing + nextStepDescription.implicitHeight, icon.height)
 
@@ -188,7 +188,7 @@ Item {
             id: headInfo
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width
-            spacing: units.gu(1)
+            spacing: 0
 
             Label {
                 id: speed
