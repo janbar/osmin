@@ -1,0 +1,63 @@
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp b/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
+index 4b66d6b08..081677237 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
+@@ -418,10 +418,12 @@ void TiledMapRenderer::onLoadJobFinished(QMap<QString,QMap<osmscout::TileKey,osm
+             (double)loadXFrom + (double)width/2.0,
+             (double)loadYFrom + (double)height/2.0);
+ 
+-    double osmTileDimension = (double)OSMTile::osmTileOriginalWidth() * (mapDpi / OSMTile::tileDPI() ); // pixels
++    uint32_t osmTileDimension = (double)OSMTile::osmTileOriginalWidth() * (1.618 * mapDpi / OSMTile::tileDPI() ); // pixels
++    osmTileDimension = 64 * (osmTileDimension >> 6);
++    double finalDpi = (double(osmTileDimension) / double(OSMTile::osmTileOriginalWidth())) * OSMTile::tileDPI();
+ 
+-    QImage canvas((double)width * osmTileDimension,
+-                  (double)height * osmTileDimension,
++    QImage canvas(width * osmTileDimension,
++                  height * osmTileDimension,
+                   QImage::Format_ARGB32_Premultiplied); // TODO: verify best format with profiler (callgrind)
+ 
+     QColor transparent = QColor::fromRgbF(1, 1, 1, 0.0);
+@@ -468,7 +470,7 @@ void TiledMapRenderer::onLoadJobFinished(QMap<QString,QMap<osmscout::TileKey,osm
+     osmscout::MercatorProjection projection;
+     osmscout::Magnification magnification(loadZ);
+ 
+-    projection.Set(tileVisualCenter, /* angle */ 0, magnification, mapDpi,
++    projection.Set(tileVisualCenter, /* angle */ 0, magnification, finalDpi,
+                    canvas.width(), canvas.height());
+     projection.SetLinearInterpolationUsage(loadZ.Get() >= 10);
+ 
+@@ -519,8 +521,8 @@ void TiledMapRenderer::onLoadJobFinished(QMap<QString,QMap<osmscout::TileKey,osm
+                 for (uint32_t x = loadXFrom; x <= loadXTo; ++x){
+ 
+                     QImage tile = canvas.copy(
+-                            (double)(x - loadXFrom) * osmTileDimension,
+-                            (double)(y - loadYFrom) * osmTileDimension,
++                            (x - loadXFrom) * osmTileDimension,
++                            (y - loadYFrom) * osmTileDimension,
+                             osmTileDimension, osmTileDimension
+                             );
+ 
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/TiledRenderingHelper.cpp b/libosmscout-client-qt/src/osmscoutclientqt/TiledRenderingHelper.cpp
+index f8dd8776d..9f6b45b9d 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/TiledRenderingHelper.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/TiledRenderingHelper.cpp
+@@ -65,16 +65,10 @@ bool TiledRenderingHelper::RenderTiles(QPainter &painter,
+     }
+   }
+ 
+-  // enable subpixel rendering so that magnification up to 2x remains
+-  // as smooth as possible
+-  static constexpr double pitchFactor = 1.5;
+-  // the magnification level is adjusted taking into account the pixel
+-  // ratio of the request and the fixed dpi of the OSM tile
+   projection.Set(request.coord,
+                  0,
+-                 Magnification(request.magnification.GetMagnification()
+-                               * pitchFactor * request.dpi / OSMTile::tileDPI()),
+-                 OSMTile::tileDPI() / pitchFactor,
++                 request.magnification,
++                 request.dpi,
+                  width,
+                  height);
+ 
