@@ -975,7 +975,6 @@ MapPage {
             left: parent.left
             right: parent.right
         }
-        maximumHeight: units.gu(16)
         visible: false
         onClose: {
             navigator.stop();
