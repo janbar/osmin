@@ -141,6 +141,7 @@ MapPage {
             onPressAndHold: {
                 if (favoritesPage.state === "default") {
                     mapPage.navigateTo(lat, lon, label);
+                    popped();
                     stackView.pop();
                 }
             }
@@ -159,6 +160,7 @@ MapPage {
                     font.pixelSize: units.fs("medium")
                     onTriggered: {
                         mapPage.navigateTo(lat, lon, label);
+                        popped();
                         stackView.pop();
                     }
                 },
@@ -293,6 +295,7 @@ MapPage {
                     } else {
                         selectPOI({ "lat": preview.mark.lat, "lon": preview.mark.lon, "label": preview.mark.label, "type": preview.mark.type });
                     }
+                    popped();
                     stackView.pop();
                 }
             }
@@ -310,6 +313,7 @@ MapPage {
                 height: units.gu(6)
                 onClicked: {
                     showPosition(preview.mark.lat, preview.mark.lon);
+                    popped();
                     stackView.pop();
                 }
             }

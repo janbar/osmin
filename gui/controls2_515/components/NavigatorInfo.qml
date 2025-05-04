@@ -26,12 +26,11 @@ Item {
     property color backgroundColor: styleMap.popover.backgroundColor
     property color foregroundColor: styleMap.popover.foregroundColor
     property real edgeMargins: 0.0
-    property real backgroundRadius: 0.0
     property real backgroundOpacity: 1.0
     property real contentEdgeMargins: units.gu(1)
     property real contentSpacing: units.gu(1)
     readonly property real headerHeight: units.gu(6)
-    property real maximumHeight: parent.height
+    readonly property real minimumHeight: contentsColumn.height + headerHeight
 
     signal show
     signal close // triggered on button close pressed
@@ -40,17 +39,17 @@ Item {
     focus: true
     height: minimumHeight
 
-    function resizeBox() {
-        height = maximumHeight;
+    function minimize() {
+        height = Qt.binding(function(){ return minimumHeight; });
     }
 
-    function resizeFull() {
+    function maximize() {
         height = Qt.binding(function(){ return parent.height; });
     }
 
     onVisibleChanged: {
         if (visible) {
-            resizeBox();
+            minimize();
         }
     }
 
@@ -97,40 +96,37 @@ Item {
         anchors.margins: edgeMargins
         color: backgroundColor
         opacity: backgroundOpacity
-        radius: backgroundRadius
     }
 
     // content box
     Rectangle {
-        id: contentBox
+        id: contentsBox
         anchors.top: popover.top
         anchors.topMargin: navigationInfo.headerHeight
         anchors.left: popover.left
         anchors.right: popover.right
-        height: navigationInfo.maximumHeight - navigationInfo.headerHeight
+        height: navigationInfo.minimumHeight - navigationInfo.headerHeight
         color: styleMap.view.highlightedColor
         opacity: overview.active ? 0.2 : 0.0
     }
 
     Flickable {
         id: contents
-        anchors.fill: contentBox
-        anchors.topMargin: contentEdgeMargins
+        anchors.fill: contentsBox
         anchors.leftMargin: contentEdgeMargins
         anchors.rightMargin: contentEdgeMargins
-        anchors.bottomMargin: contentEdgeMargins
         contentHeight: contentsColumn.height
         boundsBehavior: Flickable.StopAtBounds
         clip: true
 
         Column {
             id: contentsColumn
-            spacing: contentSpacing
+            spacing: 0
             width: parent.width
             Row {
                 id: rowStep
                 opacity: navigationInfo.state === "running" ? 1.0 : 0.0
-                spacing: units.gu(2)
+                spacing: units.gu(1)
                 width: parent.width
                 height: Math.max(distanceToNextStep.implicitHeight + contentSpacing + nextStepDescription.implicitHeight, icon.height)
 
@@ -146,12 +142,13 @@ Item {
                     label.text: navigator.nextRouteStep.type === "leave-roundabout" ? navigator.nextRouteStep.roundaboutExit : ""
                 }
                 Column {
+                    anchors.verticalCenter: parent.verticalCenter
                     spacing: contentSpacing
                     Label {
                         id: distanceToNextStep
                         text: Converter.readableDistance(navigator.nextRouteStep.distanceTo)
                         color: styleMap.popover.foregroundColor
-                        font.pixelSize: units.fs("x-large")
+                        font.pixelSize: units.fs("large")
                     }
                     Text {
                         id: nextStepDescription
@@ -169,25 +166,24 @@ Item {
         id: reroutingIndicator
         running: navigator.routeRunning
         height: units.gu(7)
-        anchors.verticalCenter: contentBox.verticalCenter
-        anchors.right: contentBox.right
+        anchors.verticalCenter: contentsBox.verticalCenter
+        anchors.right: contentsBox.right
         visible: running
     }
 
     Item {
-        id: board
+        id: header
         anchors.verticalCenter: closeButton.verticalCenter
         anchors.left: popover.left
         anchors.right: closeButton.left
         anchors.leftMargin: contentEdgeMargins
         anchors.rightMargin: contentEdgeMargins
-        height: minimumHeight
-
+        height: headerHeight
         Row {
             id: headInfo
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width
-            spacing: units.gu(1)
+            spacing: 0
 
             Label {
                 id: speed
@@ -246,14 +242,14 @@ Item {
     // show/hide overview
     MouseArea {
         id: showHideOverview
-        anchors.fill: contentBox
+        anchors.fill: contentsBox
         onClicked: {
             if (!overview.active) {
-                navigationInfo.resizeFull();
+                navigationInfo.maximize();
                 overview.active = true;
             } else {
                 overview.active = false;
-                navigationInfo.resizeBox();
+                navigationInfo.minimize();
             }
         }
     }
@@ -262,7 +258,7 @@ Item {
         id: resume
         source: "qrc:/images/trip/route.svg"
         height: units.gu(7)
-        anchors.centerIn: contentBox
+        anchors.centerIn: contentsBox
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: contentEdgeMargins
@@ -281,10 +277,10 @@ Item {
     Loader {
         id: overview
         active: false
-        height: navigationInfo.height - navigationInfo.headerHeight - contentBox.height;
+        height: navigationInfo.height - navigationInfo.headerHeight - contentsBox.height;
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: contentBox.bottom
+        anchors.top: contentsBox.bottom
         asynchronous: true
         sourceComponent: RouteOverview {
             routingModel: navigator.routingModel

@@ -222,21 +222,29 @@ MapPage {
     states: [
         State {
             name: "view"
+            PropertyChanges { target: map; visible: true; }
         },
         State {
             name: "locationInfo"
+            PropertyChanges { target: map; visible: true; }
             PropertyChanges { target: searchAroundPlace; visible: true; }
             PropertyChanges { target: addFavorite; visible: true; }
             PropertyChanges { target: goThere; visible: true; }
         },
         State {
-            name: "pickLocation"
-        },
-        State {
-            name: "measureDistance"
-        },
-        State {
+            /*
+             * map is visible behind the routing dialog to allow user to
+             * pick a place from or to
+             */
             name: "routing"
+            PropertyChanges { target: map; visible: true; }
+        },
+        State {
+            /*
+             * map is hidden until the front view is closed
+             */
+            name: "hidden"
+            PropertyChanges { target: map; visible: false; }
         }
     ]
     state: "view"
@@ -508,6 +516,7 @@ MapPage {
                 borderPadding: 0
                 label.font.pixelSize: units.fs("medium")
                 label.text: Converter.panelElevation(Tracker.elevation)
+                visible: !isNaN(Tracker.elevation)
             }
         }
     }
@@ -965,7 +974,6 @@ MapPage {
             left: parent.left
             right: parent.right
         }
-        maximumHeight: units.gu(16)
         visible: false
         onClose: {
             navigator.stop();
@@ -975,6 +983,7 @@ MapPage {
                 mapView.navigation = false;
             }
         }
+        backgroundOpacity: { parent.height > 3 * minimumHeight ? 1.0 : 0.6 }
     }
 
     Connections {
@@ -986,30 +995,30 @@ MapPage {
         }
     }
 
-//    Component {
-//        id: laneTurnsComponent
-//        LaneTurns {
-//            laneTurns: navigator.laneTurns
-//            laneTurn: navigator.laneTurn
-//            visible: navigator.laneSuggested
-//            suggestedLaneFrom: navigator.suggestedLaneFrom
-//            suggestedLaneTo: navigator.suggestedLaneTo
-//            color: styleMap.popover.foregroundColor
-//            bgColor: styleMap.popover.backgroundColor
-//            bgOpacity: 0.5
-//            height: units.gu(14)
-//        }
-//    }
-//
-//    Loader {
-//        anchors {
-//            top: popNavigatorInfo.bottom
-//            topMargin: units.gu(3)
-//            horizontalCenter: parent.horizontalCenter
-//        }
-//        sourceComponent: laneTurnsComponent
-//        active: popNavigatorInfo.visible
-//    }
+    // Component {
+    //     id: laneTurnsComponent
+    //     LaneTurns {
+    //         laneTurns: navigator.laneTurns
+    //         laneTurn: navigator.laneTurn
+    //         visible: navigator.laneSuggested
+    //         suggestedLaneFrom: navigator.suggestedLaneFrom
+    //         suggestedLaneTo: navigator.suggestedLaneTo
+    //         color: styleMap.popover.foregroundColor
+    //         bgColor: styleMap.popover.backgroundColor
+    //         bgOpacity: 0.5
+    //         height: units.gu(14)
+    //     }
+    // }
+
+    // Loader {
+    //     anchors {
+    //         top: popNavigatorInfo.bottom
+    //         topMargin: units.gu(3)
+    //         horizontalCenter: parent.horizontalCenter
+    //     }
+    //     sourceComponent: laneTurnsComponent
+    //     active: popNavigatorInfo.visible
+    // }
 
     LocationInfo {
         id: popLocationInfo
@@ -1021,10 +1030,6 @@ MapPage {
         }
         maximumHeight: widgetBottomY
         visible: false
-        onClose: {
-            visible = false;
-            overlayManager.removeMark(0);
-        }
         onShow: {
             if (mark.showOverlay) {
                 map.interactiveIcons = false;
@@ -1034,14 +1039,13 @@ MapPage {
                 map.moveUp();
             popLocationInfo.searchLocation(mark.lat, mark.lon);
             visible = true;
+            mapView.pushState("locationInfo");
         }
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("locationInfo");
-            else {
-                map.interactiveIcons = true;
-                mapView.popState("locationInfo");
-            }
+        onClose: {
+            visible = false;
+            overlayManager.removeMark(0);
+            map.interactiveIcons = true;
+            mapView.popState("locationInfo");
         }
     }
 
@@ -1057,14 +1061,8 @@ MapPage {
         maximumHeight: map.height - y /*- units.gu(8)*/
         height: maximumHeight
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("routing");
-            else
-                mapView.popState("routing");
-        }
+        onShow: { visible = true; mapView.pushState("routing"); }
+        onClose: { visible = false; mapView.popState("routing"); }
 
         function goTo(lat, lon, label) {
             placeTo.lat = lat;
@@ -1089,14 +1087,21 @@ MapPage {
         }
         height: map.height - y /*- units.gu(8)*/
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("mainMenu");
-            else
-                mapView.popState("mainMenu");
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
+    }
+
+    About {
+        id: popAbout
+        anchors {
+            top: popInfo.bottom
+            left: parent.left
+            right: parent.right
         }
+        height: map.height - y /*- units.gu(8)*/
+        visible: false
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
     }
 
     ConfigureMap {
@@ -1108,14 +1113,8 @@ MapPage {
         }
         height: map.height - y /*- units.gu(8)*/
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("configureMap");
-            else
-                mapView.popState("configureMap");
-        }
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
     }
 
     Tracking {
@@ -1127,14 +1126,8 @@ MapPage {
         }
         height: map.height - y /*- units.gu(8)*/
         visible: false
-        onClose: visible = false
-        onShow: visible = true
-        onVisibleChanged: {
-            if (visible)
-                mapView.pushState("tracking");
-            else
-                mapView.popState("tracking");
-        }
+        onShow: { visible = true; mapView.pushState("hidden"); }
+        onClose: { visible = false; mapView.popState("hidden"); }
     }
 
     ////////////////////////////////////////////////////////////////////////////

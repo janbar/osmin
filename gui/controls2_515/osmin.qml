@@ -261,35 +261,12 @@ ApplicationWindow {
                     source: "qrc:/images/home.svg"
 
                     onClicked: {
+                        stackView.currentItem.popped();
                         stackView.pop()
                     }
 
                     visible: (stackView.currentItem != null && !stackView.currentItem.isRoot)
                     enabled: visible
-                }
-
-                MapIcon {
-                    width: units.gu(5)
-                    height: width
-                    anchors.centerIn: parent
-                    source: "qrc:/images/contextual-menu.svg"
-
-                    visible: (stackView.currentItem == null || stackView.currentItem.isRoot)
-                    enabled: visible
-
-                    onClicked: optionsMenu.open()
-
-                    Menu {
-                        id: optionsMenu
-                        x: parent.width - width
-                        transformOrigin: Menu.TopRight
-
-                        MenuItem {
-                            text: qsTr("About")
-                            font.pixelSize: units.fs("medium")
-                            onTriggered: dialogAbout.open()
-                        }
-                    }
                 }
             }
         }
@@ -317,6 +294,10 @@ ApplicationWindow {
             top: parent.top
         }
         initialItem: "qrc:/controls2/Banner.qml"
+        pushEnter: Transition { }
+        pushExit: Transition { }
+        popEnter: Transition { }
+        popExit: Transition { }
     }
 
     property var mapPage: null
@@ -456,15 +437,6 @@ ApplicationWindow {
             return true;
         mainInfo.open(qsTr("Saving change failed"));
         return false;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    ////
-    //// Dialog
-    ////
-
-    DialogAbout {
-        id: dialogAbout
     }
 
     ////////////////////////////////////////////////////////////////////////////

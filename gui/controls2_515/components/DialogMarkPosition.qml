@@ -104,7 +104,7 @@ DialogBase {
                     height: units.gu(6)
                     enabled: true
                     source: iconSource
-                    color: iconColor !== undefined ? iconColor : styleMap.dialog.foregroundColor
+                    color: { iconColor ? iconColor : styleMap.dialog.foregroundColor }
                     onClicked: {
                         symbols.currentIndex = index;
                     }

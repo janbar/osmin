@@ -361,22 +361,41 @@ MapPage {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     padding: units.gu(1)
-                    Label {
+                    Row {
                         width: parent.width
-                        font.pixelSize: units.fs("medium")
-                        font.bold: true
-                        color: "black"
-                        elide: Text.ElideRight
-                        text: selectedPOI.label
+                        Label {
+                            width: parent.width - units.gu(10)
+                            font.pixelSize: units.fs("medium")
+                            font.bold: true
+                            color: "black"
+                            elide: Text.ElideRight
+                            text: selectedPOI.label
+                            horizontalAlignment: Label.AlignLeft
+                        }
+                        Label {
+                            width: units.gu(8)
+                            font.pixelSize: units.fs("small")
+                            color: "black"
+                            text: (selectedPOI.elevation > 0 ? " Δ " + Converter.panelElevation(selectedPOI.elevation) : "")
+                            horizontalAlignment: Label.AlignRight
+                        }
                     }
-                    Label {
+                    Row {
                         width: parent.width
-                        font.pixelSize: units.fs("small")
-                        color: "black"
-                        elide: Text.ElideRight
-                        text: Converter.readableCoordinatesNumeric(selectedPOI.lat, selectedPOI.lon) +
-                              (selectedPOI.elevation > 0 ? " Δ " + Converter.panelElevation(selectedPOI.elevation) : "") +
-                              " | " + Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon)
+                        Label {
+                            width: parent.width / 2 - units.gu(1)
+                            font.pixelSize: units.fs("small")
+                            color: "black"
+                            text: Converter.readableCoordinates(selectedPOI.lat, selectedPOI.lon)
+                            horizontalAlignment: Label.AlignLeft
+                        }
+                        Label {
+                            width: parent.width / 2 - units.gu(1)
+                            font.pixelSize: units.fs("small")
+                            color: "black"
+                            text: Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon)
+                            horizontalAlignment: Label.AlignRight
+                        }
                     }
                 }
             }
@@ -393,6 +412,7 @@ MapPage {
                 height: units.gu(6)
                 onClicked: {
                     showPosition(selectedPOI.lat, selectedPOI.lon);
+                    popped();
                     stackView.pop();
                 }
             }

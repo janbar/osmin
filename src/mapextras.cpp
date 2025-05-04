@@ -29,6 +29,11 @@ MapExtras::~MapExtras()
   delete m_overlayLock;
 }
 
+int MapExtras::getLibraryFormatVersion()
+{
+  return static_cast<int>(osmscout::Database::GetLibraryFileFormatVersion());
+}
+
 void MapExtras::flushCaches(int seconds)
 {
   osmscout::DBThreadRef dbThread = osmscout::OSMScoutQt::GetInstance().GetDBThread();
