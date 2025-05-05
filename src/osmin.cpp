@@ -34,8 +34,6 @@
 #include <locale>
 
 #ifdef Q_OS_ANDROID
-//#include <QtAndroid>
-//#include <QAndroidService>
 #include <QtCore/private/qandroidextras_p.h>
 #include <QJniObject>
 #endif
