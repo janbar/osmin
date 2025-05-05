@@ -194,6 +194,7 @@ PopOver {
         }
 
         Column {
+            spacing: units.gu(1)
             Row {
                 spacing: units.gu(2)
                 Label {
@@ -222,23 +223,14 @@ PopOver {
                 font.pixelSize: units.fs("large")
                 color: foregroundColor
             }
-        }
-        Row {
-            spacing: units.gu(2)
             Label {
-                text: qsTr("Elevation")
-                color: styleMap.popover.highlightedColor
-                font.pixelSize: units.fs("medium")
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            Label {
-                text: Converter.readableElevation(positionSource._alt)
+                text: "Δ " + Converter.readableElevation(positionSource._alt)
                 font.pixelSize: units.fs("large")
-                anchors.verticalCenter: parent.verticalCenter
                 color: foregroundColor
             }
         }
         Column {
+            spacing: units.gu(1)
             Label {
                 text: qsTr("Bearing")
                 color: styleMap.popover.highlightedColor
