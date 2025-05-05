@@ -21,7 +21,7 @@ Alternatively you can install osmin through the [IzzyOnDroid](https://apt.izzyso
 ## Develop/debug osmin
 You can build and test osmin on Unix (Linux, BSD) supported by Qt 6.9. Before build from source you have to install the following dependencies.
 
-git, cmake (**>=3.20), clang/clang++ (**>=18.0** standard C++20), OpenMP, Qt5Core (**>=6.9.0**), Qt6Gui, Qt6Qml, Qt6Quick, Qt6QuickControls2, Qt6Widgets, Qt6Xml, Qt6Svg, Qt6Network, Qt6Sensors, Qt6Multimedia, Qt6RemoteObjects, Qt6Positioning, Qt6DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
+git, cmake (**>=3.20), clang/clang++ (**>=18.0** standard C++20), OpenMP, Qt6Core (**>=6.9.0**), Qt6Gui, Qt6Qml, Qt6Quick, Qt6QuickControls2, Qt6Widgets, Qt6Xml, Qt6Svg, Qt6Network, Qt6Sensors, Qt6Multimedia, Qt6RemoteObjects, Qt6Positioning, Qt6DBus, libdbus-1, zlib1g, libxml2, liblzma, OpenSSL
 
 
 As example type the following on Ubuntu (>=24.04) to install the base requirements.
