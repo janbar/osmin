@@ -19,22 +19,26 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQml 2.2
 import Osmin 1.0
+import "../../toolbox.js" as ToolBox
 
 Item {
     id: profile
     property var model: null
 
     Component.onCompleted: {
-        canvas.onAvailableChanged.connect(function(){
-            if (canvas.available === true) {
+        if (canvas.available !== true) {
+            ToolBox.connectOnce(canvas.onAvailableChanged, function(){
                 canvas.getContext("2d");
                 profile.onModelChanged.connect(redraw);
                 redraw();
-            } else {
-                profile.onModelChanged.disconnect(redraw);
-            }
-        });
+            });
+        } else {
+            canvas.getContext("2d");
+            profile.onModelChanged.connect(redraw);
+            redraw();
+        }
     }
+
     onWidthChanged: function() { redraw(); }
     onHeightChanged: function() { redraw(); }
 
