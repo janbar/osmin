@@ -45,7 +45,8 @@ MapPage {
         id: availableList
         contentHeight: units.gu(8)
         width: parent.width
-        height: parent.height - mapPreview.height
+        height: parent.height - widget.height
+        clip: true
 
         property var tree: []
 
@@ -299,8 +300,13 @@ MapPage {
                             anchors.fill: parent
                             onClicked: {
                                 // show the map preview
-                                if (type === 1) // waypoint
+                                if (type === 1) { // waypoint
+                                    selectedTrack = null;
                                     selectedPOI = { "lat": lat, "lon": lon, "label": name, "elevation": elevation };
+                                } else if (type === 0) {
+                                    selectedPOI = null;
+                                    selectedTrack = fileModel.createTrackProfile(id, parent.width);
+                                }
                             }
                         }
                     }
@@ -346,130 +352,223 @@ MapPage {
     }
 
     property var selectedPOI: null
+    property var selectedTrack: null
 
-    Loader {
-        id: mapPreview
-         // active the preview on selection
-        active: selectedPOI !== null
-        height: active ? parent.height / 2 : 0
+    Column {
+        id: widget
+        spacing: 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        asynchronous: true
-        sourceComponent: Item {
-            id: preview
-            anchors.fill: parent
-            property alias map: map
-            Map {
-                id: map
-                showCurrentPosition: true
-                anchors.fill: parent
-            }
 
-            Rectangle {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                color: "white"
-                opacity: 0.7
-                height: about.height
-                Column {
-                    id: about
+        Loader {
+            id: mapPreview
+             // active the preview on selection
+            active: selectedPOI !== null
+            height: active ? trackCollection.height / 2 : 0
+            anchors.left: parent.left
+            anchors.right: parent.right
+            asynchronous: true
+            sourceComponent: Item {
+                id: preview
+                anchors.fill: parent
+                property alias map: map
+                Map {
+                    id: map
+                    showCurrentPosition: true
+                    anchors.fill: parent
+                }
+
+                Rectangle {
+                    anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    padding: units.gu(1)
-                    Row {
-                        width: parent.width
+                    color: "white"
+                    opacity: 0.7
+                    height: about.height
+                    Column {
+                        id: about
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        padding: units.gu(1)
+                        Row {
+                            width: parent.width
+                            Label {
+                                width: parent.width - units.gu(10)
+                                font.pixelSize: units.fs("medium")
+                                font.bold: true
+                                color: "black"
+                                elide: Text.ElideRight
+                                text: selectedPOI.label
+                                horizontalAlignment: Label.AlignLeft
+                            }
+                            Label {
+                                width: units.gu(8)
+                                font.pixelSize: units.fs("small")
+                                color: "black"
+                                text: (selectedPOI.elevation > 0 ? " Δ " + Converter.panelElevation(selectedPOI.elevation) : "")
+                                horizontalAlignment: Label.AlignRight
+                            }
+                        }
+                        Row {
+                            width: parent.width
+                            Label {
+                                width: parent.width / 2 - units.gu(1)
+                                font.pixelSize: units.fs("small")
+                                color: "black"
+                                text: Converter.readableCoordinates(selectedPOI.lat, selectedPOI.lon)
+                                horizontalAlignment: Label.AlignLeft
+                            }
+                            Label {
+                                width: parent.width / 2 - units.gu(1)
+                                font.pixelSize: units.fs("small")
+                                color: "black"
+                                text: Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon)
+                                horizontalAlignment: Label.AlignRight
+                            }
+                        }
+                    }
+                }
+                MapIcon {
+                    id: buttonShowPosition
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.margins: units.gu(1)
+                    source: "qrc:/images/trip/here.svg"
+                    color: "black"
+                    backgroundColor: "white"
+                    borderPadding: units.gu(1.0)
+                    opacity: 0.7
+                    height: units.gu(6)
+                    onClicked: {
+                        showPosition(selectedPOI.lat, selectedPOI.lon);
+                        popped();
+                        stackView.pop();
+                    }
+                }
+                MapIcon {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.margins: units.gu(1)
+                    source: "qrc:/images/close.svg"
+                    color: "black"
+                    backgroundColor: "white"
+                    borderPadding: units.gu(1.5)
+                    opacity: 0.7
+                    height: units.gu(6)
+                    onClicked: {
+                        selectedPOI = null; // deactivate the preview
+                    }
+                }
+            }
+
+            onStatusChanged: {
+                if (active && status === Loader.Ready) {
+                    console.log("Activate map preview");
+                    trackCollection.selectedPOIChanged.connect(showSelectedLocation);
+                    showSelectedLocation();
+                } else if (!active) {
+                    console.log("Deactivate map preview");
+                    trackCollection.selectedPOIChanged.disconnect(showSelectedLocation);
+                }
+            }
+
+            function showSelectedLocation() {
+                if (selectedPOI != null && item != null) {
+                    console.log("Show selected location on map preview");
+                    item.map.showCoordinatesInstantly(selectedPOI.lat, selectedPOI.lon);
+                    item.map.addPositionMark(0, selectedPOI.lat, selectedPOI.lon);
+                    item.map.removeAllOverlayObjects();
+                }
+            }
+        }
+
+        Loader {
+            id: trackProfiler
+             // active the profiler on selection
+            active: selectedTrack !== null
+            height: active ? trackCollection.height / 3 : 0
+            anchors.left: parent.left
+            anchors.right: parent.right
+            asynchronous: true
+            sourceComponent: Item {
+                anchors.fill: parent
+
+                property alias profile: graphic
+
+                // the graphic header
+                Rectangle {
+                    id: graphicHeader
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: units.gu(6)
+                    color: styleMap.view.backgroundColor
+
+                    // the file name and track name
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: units.gu(1)
+                        width: parent.width - units.gu(7)
+
                         Label {
-                            width: parent.width - units.gu(10)
-                            font.pixelSize: units.fs("medium")
+                            width: parent.width
+                            font.pixelSize: units.fs("small")
                             font.bold: true
-                            color: "black"
-                            elide: Text.ElideRight
-                            text: selectedPOI.label
-                            horizontalAlignment: Label.AlignLeft
+                            color: styleMap.popover.foregroundColor
+                            text: graphic.model.fileName
+                            elide: Label.ElideRight
                         }
                         Label {
-                            width: units.gu(8)
+                            width: parent.width
                             font.pixelSize: units.fs("small")
-                            color: "black"
-                            text: (selectedPOI.elevation > 0 ? " Δ " + Converter.panelElevation(selectedPOI.elevation) : "")
-                            horizontalAlignment: Label.AlignRight
+                            color: styleMap.popover.foregroundColor
+                            text: graphic.model.trackName
+                            elide: Label.ElideRight
                         }
                     }
-                    Row {
-                        width: parent.width
-                        Label {
-                            width: parent.width / 2 - units.gu(1)
-                            font.pixelSize: units.fs("small")
-                            color: "black"
-                            text: Converter.readableCoordinates(selectedPOI.lat, selectedPOI.lon)
-                            horizontalAlignment: Label.AlignLeft
-                        }
-                        Label {
-                            width: parent.width / 2 - units.gu(1)
-                            font.pixelSize: units.fs("small")
-                            color: "black"
-                            text: Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon)
-                            horizontalAlignment: Label.AlignRight
+
+                    // the button to close this
+                    MapIcon {
+                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.margins: units.gu(0.5)
+                        source: "qrc:/images/close.svg"
+                        color: styleMap.popover.foregroundColor
+                        borderPadding: units.gu(1)
+                        height: units.gu(5)
+                        onClicked: {
+                            selectedTrack = null; // deactivate the track profiler
                         }
                     }
                 }
-            }
-            MapIcon {
-                id: buttonShowPosition
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.margins: units.gu(1)
-                source: "qrc:/images/trip/here.svg"
-                color: "black"
-                backgroundColor: "white"
-                borderPadding: units.gu(1.0)
-                opacity: 0.7
-                height: units.gu(6)
-                onClicked: {
-                    showPosition(selectedPOI.lat, selectedPOI.lon);
-                    popped();
-                    stackView.pop();
+
+                TrackProfile {
+                    id: graphic
+                    anchors.top: graphicHeader.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                 }
             }
-            MapIcon {
-                id: buttonClose
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.margins: units.gu(1)
-                source: "qrc:/images/close.svg"
-                color: "black"
-                backgroundColor: "white"
-                borderPadding: units.gu(1.5)
-                opacity: 0.7
-                height: units.gu(6)
-                onClicked: {
-                    selectedPOI = null; // deactivate the preview
+
+            onStatusChanged: {
+                if (active && status === Loader.Ready) {
+                    console.log("Activate track profiler");
+                    trackCollection.selectedTrackChanged.connect(showTrackProfile);
+                    showTrackProfile();
+                } else if (!active) {
+                    console.log("Deactivate track profiler");
+                    trackCollection.selectedTrackChanged.disconnect(showTrackProfile);
                 }
             }
-        }
 
-        onStatusChanged: {
-            if (active && status === Loader.Ready) {
-                console.log("Activate map preview");
-                trackCollection.selectedPOIChanged.connect(showSelectedLocation);
-                showSelectedLocation();
-            } else if (!active) {
-                console.log("Deactivate map preview");
-                trackCollection.selectedPOIChanged.disconnect(showSelectedLocation);
+            function showTrackProfile() {
+                if (selectedTrack != null && item != null) {
+                    item.profile.model = selectedTrack;
+                }
             }
-        }
-
-        function showSelectedLocation() {
-            console.log("Show selected location on map preview");
-            item.map.showCoordinatesInstantly(selectedPOI.lat, selectedPOI.lon);
-            item.map.addPositionMark(0, selectedPOI.lat, selectedPOI.lon);
-            item.map.removeAllOverlayObjects();
-        }
-
-        Behavior on height {
-            NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
         }
     }
 
@@ -538,4 +637,5 @@ MapPage {
     DialogAlert {
         id: dialogAlert
     }
+
 }

@@ -19,6 +19,7 @@
 #include "osmscoutgpx/GpxFile.h"
 
 #include <QThread>
+#include <QFileInfo>
 
 GPXFile::GPXFile()
 : m_valid(false)
@@ -47,6 +48,11 @@ void GPXFile::breakParse()
 bool GPXFile::isAborted() const
 {
   return (m_breaker && m_breaker->IsAborted());
+}
+
+QString GPXFile::filename() const
+{
+  return QFileInfo(m_path).fileName();
 }
 
 QString GPXFile::name() const
@@ -367,6 +373,116 @@ QVariantList GPXFileModel::createOverlayObjects(int id /*=-1*/)
     }
   }
   return list;
+}
+
+QVariantMap GPXFileModel::createTrackProfile(int id, int width)
+{
+  osmin::LockGuard<QRecursiveMutex> g(m_lock);
+  QVariantMap data;
+  for (const GPXObject* item : std::as_const(m_items))
+  {
+    if (item->id() != id)
+      continue;
+    if (item->type() == GPXObject::Track)
+    {
+      const GPXObjectTrack* obj = static_cast<const GPXObjectTrack*>(item);
+      double length = obj->length();
+
+      // setup x
+      int cx = 0;
+      for (auto const& segment : obj->data().segments)
+        cx += segment.points.size();
+      if (width > 0 && width < cx)
+        cx = width;
+
+      // fill y data
+      QList<double> wlist;
+      wlist.assign(cx, std::nan(""));
+      const osmscout::gpx::TrackPoint * from = nullptr;
+      double minele = 0.0;
+      double maxele = 0.0;
+      double d = std::nan(""); // progress from start
+      std::optional<osmscout::Timestamp> startTime;
+      std::optional<osmscout::Timestamp> endTime;
+      for (auto const& segment : obj->data().segments)
+      {
+        // for all segments
+        for (auto const& p : segment.points)
+        {
+          if (std::isnan(d))
+          {
+            // begining
+            d = 0.0;
+            startTime = p.timestamp;
+          }
+          if (from)
+          {
+            endTime = p.timestamp;
+            d += from->coord.GetDistance(p.coord).AsMeter();
+            int idx = std::round(double(cx - 1) * d / length);
+            if (idx >= cx)
+            {
+              d = length;
+              qWarning("Truncate data out of range !!!");
+              break;
+            }
+            if (p.elevation.has_value())
+            {
+              double e = p.elevation.value();
+              double o = wlist.at(idx);
+              if (!std::isnan(e) && (std::isnan(o) || std::fabs(e) > std::fabs(o)))
+                wlist[idx] = e;
+              if (e < minele)
+                minele = e;
+              if (e > maxele)
+                maxele = e;
+            }
+            from = &p;
+          }
+          else
+          {
+            wlist[0] = p.elevation.value_or(std::nan(""));
+            from = &p;
+            minele = maxele = wlist[0];
+          }
+        }
+      }
+
+      // cleanup data
+      QVariantList dlist;
+      QVariantList elist;
+      dlist.reserve(cx);
+      elist.reserve(cx);
+      for (int idx = 0; idx < wlist.size(); ++idx)
+      {
+        if (!std::isnan(wlist[idx]))
+        {
+          dlist.push_back(length * double(idx) / double(cx -1));
+          elist.push_back(wlist[idx]);
+          //qDebug("x = %f , y = %f", dlist.back().value<double>(), elist.back().value<double>());
+        }
+      }
+      wlist.clear();
+
+      // create the object to return
+      data.insert("filePath",  m_file->path());
+      data.insert("fileName",  m_file->filename());
+      data.insert("trackName", obj->name());
+      double duration = 0;
+      if (startTime.has_value() && endTime.has_value())
+        duration = std::chrono::duration<double>(endTime.value() - startTime.value()).count();
+      if (duration > 0)
+        data.insert("duration", duration);
+      else
+        data.insert("duration", std::nan(""));
+      data.insert("distance", length);
+      data.insert("minElevation", minele);
+      data.insert("maxElevation", maxele);
+      data.insert("dataX", dlist);
+      data.insert("dataY", elist);
+    }
+  }
+  return data;
 }
 
 GPXFileModel::Callback::Callback(GPXFileModel& model)
