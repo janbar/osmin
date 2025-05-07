@@ -66,9 +66,9 @@ MapPage {
                 SpinBox {
                     id: fontScaleBox
                     enabled: !Android
-                    from: 50
+                    from: 70
                     value: settings.fontScaleFactor * 100
-                    to: 150
+                    to: 140
                     stepSize: 10
                     font.pixelSize: units.fs("medium");
                     Layout.fillWidth: true
