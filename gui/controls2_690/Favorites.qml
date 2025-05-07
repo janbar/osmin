@@ -247,6 +247,15 @@ MapPage {
                 }
             }
 
+            // visual seprator line
+            Rectangle {
+                anchors.top: parent.top
+                width: parent.width
+                color: styleMap.popover.foregroundColor
+                height: units.dp(1)
+                opacity: 0.3
+            }
+
             property int isFavoriteMark: 0
             property QtObject mark: QtObject {
                 property bool selected: false   // is the selected location
@@ -360,15 +369,6 @@ MapPage {
             else
                 item.mark.label = Converter.readableCoordinatesGeocaching(selectedPOI.lat, selectedPOI.lon);
             //console.log("Selected location: \"" + item.mark.label + "\", " + item.mark.type);
-        }
-
-        Behavior on height {
-            NumberAnimation { duration: 300; easing.type: Easing.InOutQuad;
-                onStopped: {
-                    console.log("Animate is stopped");
-                    favoritesView.positionViewAtIndex(favoritesView.currentIndex, ListView.Contain);
-                }
-            }
         }
     }
 
