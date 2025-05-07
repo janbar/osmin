@@ -365,7 +365,9 @@ MapPage {
             id: mapPreview
              // active the preview on selection
             active: selectedPOI !== null
-            height: active ? trackCollection.height / 2 : 0
+            height: active
+                    ? Math.max(trackCollection.height / 2, Math.min(trackCollection.height, units.gu(24)))
+                    : 0
             anchors.left: parent.left
             anchors.right: parent.right
             asynchronous: true
