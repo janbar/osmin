@@ -220,7 +220,9 @@ MapPage {
         id: mapPreview
          // active the preview on selection
         active: selectedPOI !== null
-        height: active ? parent.height / 2 : 0
+        height: active
+                ? Math.max(parent.height / 2, Math.min(parent.height, units.gu(24)))
+                : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
