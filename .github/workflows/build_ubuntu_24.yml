@@ -60,6 +60,8 @@ jobs:
       - name: Configure build
         run: |
           cmake -B build \
+              -DCMAKE_C_COMPILER=/usr/bin/clang \
+              -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
               -DCMAKE_PREFIX_PATH=${QT_DIR} \
               -DCMAKE_FIND_ROOT_PATH=${QT_DIR} \
               -DBUILD_DEVICE_MOBILE=ON \
