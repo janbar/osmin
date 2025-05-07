@@ -379,6 +379,15 @@ MapPage {
                     anchors.fill: parent
                 }
 
+                // visual seprator line
+                Rectangle {
+                    anchors.top: parent.top
+                    width: parent.width
+                    color: styleMap.popover.foregroundColor
+                    height: units.dp(1)
+                    opacity: 0.3
+                }
+
                 Rectangle {
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
@@ -487,7 +496,9 @@ MapPage {
             id: trackProfiler
              // active the profiler on selection
             active: selectedTrack !== null
-            height: active ? trackCollection.height / 3 : 0
+            height: active
+                    ? Math.max(trackCollection.height / 3, Math.min(trackCollection.height, units.gu(24)))
+                    : 0
             anchors.left: parent.left
             anchors.right: parent.right
             asynchronous: true
@@ -550,6 +561,15 @@ MapPage {
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
+                }
+
+                // visual seprator line
+                Rectangle {
+                    anchors.top: parent.top
+                    width: parent.width
+                    color: styleMap.popover.foregroundColor
+                    height: units.dp(1)
+                    opacity: 0.3
                 }
             }
 
