@@ -32,8 +32,8 @@ Page {
 
     Component.onCompleted: {
         if (installedMaps.rowCount() === 0)
-            mainView.launcherMode = 1;  // launch the welcome page
+            mainView.bonjour = 1;
         else
-            mainView.launcherMode = 2;  // run quick startup
+            mainView.bonjour = 2;
     }
 }
