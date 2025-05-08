@@ -302,7 +302,7 @@ ApplicationWindow {
 
     property var mapPage: null
     property var hillshadeProvider: null
-    property int launcherMode: 0
+    property int bonjour: 0
 
     Component.onCompleted: {
         // resize main view according to user settings
@@ -347,18 +347,18 @@ ApplicationWindow {
         launcher.start();
     }
 
-    // The initial stacked page (banner) will set the startup mode.
-    // I don't want use a signal for that, so we just loop until the change.
+    // The initial stacked page (banner) will set the status of installed maps
+    // Don't use a signal for that, but loop until the change.
     Timer {
         id: launcher
         interval: 500
         onTriggered: {
-            if (launcherMode === 0)
+            if (bonjour === 0) {
                 restart();
-            else {
+            } else {
                 stackView.clear();
                 mapPage = stackView.push("qrc:/controls2/MapView.qml");
-                if (launcherMode === 1) {
+                if (bonjour === 1) {
                     stackView.push("qrc:/controls2/Welcome.qml");
                 }
                 stop();

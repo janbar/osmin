@@ -42,10 +42,8 @@ MapPage {
 
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
-                antialiasing: true
                 fillMode: Image.PreserveAspectFit
                 height: units.gu(10)
-                smooth: true
                 source: "qrc:/images/osmin.png"
             }
 
