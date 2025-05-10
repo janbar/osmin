@@ -110,6 +110,7 @@ class GPXFileModel : public QAbstractListModel
   Q_PROPERTY(bool failure READ dataFailure NOTIFY loaded)
   Q_PROPERTY(bool fileValid READ isValid NOTIFY loaded)
   Q_PROPERTY(QString filePath READ filePath NOTIFY loaded)
+  Q_PROPERTY(QString fileName READ fileName NOTIFY loaded)
   Q_PROPERTY(QString description READ description NOTIFY loaded)
 
 public:
@@ -155,27 +156,11 @@ public:
   double progress() { return m_progress; }
   bool isValid() const { return m_file ? m_file->isValid() : false; }
   QString filePath() const { return m_file ? m_file->path() : ""; }
+  QString fileName() const { return m_file ? m_file->filename() : ""; }
   QString description() const { return m_file ? m_file->description() : ""; }
 
   Q_INVOKABLE QVariantList createOverlayObjects(int id = -1);
-
-  /**
-   * @brief Create a track profile
-   * @param id the track id
-   * @param width the maximum number of points
-   * @return an object like
-   *
-   * filePath     : file path
-   * fileName     : name of the file excluding the path
-   * trackName    : track name
-   * duration     : total track duration in seconds
-   * distance     : total track distance in meters
-   * minElevation : minimum elevation
-   * maxElevation : maximum elevation
-   * dataX        : array of point distance
-   * dataY        : array of point elevation
-   */
-  Q_INVOKABLE QVariantMap createTrackProfile(int id, int width);
+  Q_INVOKABLE GPXObjectTrack * getTrackById(int id);
 
 signals:
   void parsingChanged();
@@ -213,6 +198,8 @@ private:
 };
 
 Q_DECLARE_METATYPE(GPXFile)
+Q_DECLARE_METATYPE(GPXObjectTrack)
+Q_DECLARE_METATYPE(GPXObjectWayPoint)
 
 #endif /* GPXFILEMODEL_H */
 

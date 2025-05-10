@@ -56,7 +56,6 @@
         <file alias="controls2/components/DialogEnter.qml">controls2_690/components/DialogEnter.qml</file>
         <file alias="controls2/components/LaneTurnIcon.qml">controls2_690/components/LaneTurnIcon.qml</file>
         <file alias="controls2/components/LaneTurns.qml">controls2_690/components/LaneTurns.qml</file>
-        <file alias="controls2/components/TrackProfile.qml">controls2_690/components/TrackProfile.qml</file>
         <file>images/poi/aerialway.svg</file>
         <file>images/poi/airfield.svg</file>
         <file>images/poi/airport.svg</file>

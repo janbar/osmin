@@ -98,6 +98,7 @@
 #include "gpxlistmodel.h"
 #include "gpxfilemodel.h"
 #include "memorymanager.h"
+#include "elevationchart.h"
 #include "qmlsortfiltermodel.h"
 #include "utils.h"
 
@@ -481,7 +482,9 @@ int startGUI(int argc, char* argv[])
   qRegisterMetaType<GPXListModel::GPXRoles>("GPXListModel::Roles");
   qmlRegisterType<GPXFileModel>(OSMIN_MODULE, 1, 0, "GPXFileModel");
   qRegisterMetaType<GPXFileModel::GPXObjectRoles>("GPXFileModel::Roles");
+  qRegisterMetaType<GPXObjectTrack>("GPXObjectTrack");
   qRegisterMetaType<QList<osmscout::OverlayObject*> >("QList<osmscout::OverlayObject*>");
+  qmlRegisterType<ElevationChart>(OSMIN_MODULE, 1, 0, "ElevationChart");
   qmlRegisterSingletonType<RemoteService>(OSMIN_MODULE, 1, 0, "Service", qRemoteServiceInstance);
   qRegisterMetaType<RemoteService::ServiceStatus>("Service::ServiceStatus");
   qRegisterMetaType<RemoteService::PositioningMethods>("Service::PositioningMethods");
