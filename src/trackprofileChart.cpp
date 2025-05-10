@@ -15,25 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import QtQuick.Controls 2.2
-import QtQml 2.2
-import Osmin 1.0
-import "../../toolbox.js" as ToolBox
+#include "trackprofileChart.h"
 
-Item {
-    id: profile
-    property alias chart: profileChart
+#include <QElapsedTimer>
 
-    ElevationChart {
-        id: profileChart
-        width: parent.width
-        height: parent.height
-        lineWidth: 1
-        lineColor: styleMap.popover.foregroundColor
-        gradientTopColor: Qt.rgba(0, 0, 0, 0.6)
-        textColor: styleMap.popover.foregroundColor
-        textPixelSize: units.fs("x-small")
-        textPadding: 0
-    }
+TrackProfileChart::TrackProfileChart(QQuickItem* parent)
+  :osmscout::ElevationChartWidget(parent)
+{
+}
+
+void TrackProfileChart::draw(QObject * way)
+{
+  setWay(way);
 }

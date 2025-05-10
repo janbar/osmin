@@ -305,7 +305,8 @@ MapPage {
                                     selectedPOI = { "lat": lat, "lon": lon, "label": name, "elevation": elevation };
                                 } else if (type === 0) {
                                     selectedPOI = null;
-                                    selectedTrack = fileModel.createTrackProfile(id, parent.width);
+                                    var lobj = fileModel.createOverlayObjects(id);
+                                    selectedTrack = lobj[0];
                                 }
                             }
                         }
@@ -530,14 +531,14 @@ MapPage {
                             font.pixelSize: units.fs("small")
                             font.bold: true
                             color: styleMap.popover.foregroundColor
-                            text: graphic.model.fileName
+                            text: "filename" //graphic.model.fileName
                             elide: Label.ElideRight
                         }
                         Label {
                             width: parent.width
                             font.pixelSize: units.fs("small")
                             color: styleMap.popover.foregroundColor
-                            text: graphic.model.trackName
+                            text: "trackname" //graphic.model.trackName
                             elide: Label.ElideRight
                         }
                     }
@@ -588,7 +589,7 @@ MapPage {
 
             function showTrackProfile() {
                 if (selectedTrack != null && item != null) {
-                    item.profile.model = selectedTrack;
+                    item.profile.chart.way = selectedTrack;
                 }
             }
         }

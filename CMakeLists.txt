@@ -150,6 +150,7 @@ set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/remotetracker.cpp
     src/mapextras.cpp
     src/memorymanager.cpp
+    src/trackprofileChart.cpp
 )
 set(osmin_HEADERS src/converter.h src/platformextras.h
     src/locked.h
@@ -173,6 +174,7 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/remotetracker.h
     src/mapextras.h
     src/memorymanager.h
+    src/trackprofileChart.h
 )
 
 if(UNIX)

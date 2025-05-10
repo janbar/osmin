@@ -14,26 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef TRACKPROFILECHART_H
+#define TRACKPROFILECHART_H
 
-import QtQuick 2.9
-import QtQuick.Controls 2.2
-import QtQml 2.2
-import Osmin 1.0
-import "../../toolbox.js" as ToolBox
+#include <osmscoutclientqt/ElevationChartWidget.h>
 
-Item {
-    id: profile
-    property alias chart: profileChart
+class TrackProfileChart : public osmscout::ElevationChartWidget
+{
+  Q_OBJECT
 
-    ElevationChart {
-        id: profileChart
-        width: parent.width
-        height: parent.height
-        lineWidth: 1
-        lineColor: styleMap.popover.foregroundColor
-        gradientTopColor: Qt.rgba(0, 0, 0, 0.6)
-        textColor: styleMap.popover.foregroundColor
-        textPixelSize: units.fs("x-small")
-        textPadding: 0
-    }
-}
+signals:
+  void redraw();
+
+public:
+  TrackProfileChart(QQuickItem* parent = nullptr);
+  ~TrackProfileChart() override = default;
+
+  Q_INVOKABLE void draw(QObject * way);
+};
+
+#endif // TRACKPROFILECHART_H
