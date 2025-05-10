@@ -243,7 +243,7 @@ Item {
                 if (context) {
                     context.beginPath()
                     context.lineWidth = lw
-                    for (var i = 1; i < pointCurves[id].length; i++) {
+                    for (var i = 0; i < pointCurves[id].length; ++i) {
                         var posiX = origX + pointCurves[id][i].x
                         var posiY = origY + pointCurves[id][i].y
                         context.lineTo(posiX, posiY)
