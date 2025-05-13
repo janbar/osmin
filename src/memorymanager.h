@@ -21,12 +21,13 @@
 
 #include <QObject>
 
-class QThread;
-class QMutex;
+class MemoryManagerThread;
 
 class MemoryManager : public QObject
 {
   Q_OBJECT
+
+  MemoryManagerThread * m_t;
 
 public:
   MemoryManager(const MemoryManager&) = delete;
@@ -39,23 +40,10 @@ public:
   void terminate();
   void flushCaches(unsigned keep, bool trim = false);
 
-private slots:
-  void run();
-  void onFinished();
-
 private:
   MemoryManager(uint16_t rss_target_mb);
   ~MemoryManager();
   static MemoryManager * _instance;
-  QMutex * m_lock;
-  QThread * m_t;
-  osmscout::DBThreadRef m_dbThread;
-  size_t m_page_size;
-  size_t m_rss_target;
-  size_t m_rss_warn;
-  size_t m_rss_usage;
-
-  bool statMemoryUsage();
 };
 
 Q_DECLARE_METATYPE(MemoryManager*)
