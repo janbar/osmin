@@ -211,32 +211,6 @@ void ElevationChart::paint(QPainter * painter)
 
   //qDebug("minEle=%f, maxEle=%f", m_minElevation, m_maxElevation);
 
-  qreal h = 0.0;
-  // trace min and max
-  h += bbox.height();
-  traceLine(painter, viewport, 0, h, viewport.width(), h, m_backgroundColor, 1);
-  traceText(painter, viewport, bbox, m_backgroundColor,
-            fontXS, Qt::AlignVCenter| Qt::AlignLeft,
-            "0");
-  traceText(painter, viewport, bbox, m_backgroundColor,
-            fontSM, Qt::AlignTop | Qt::AlignHCenter,
-            m_converter->panelElevation(m_minElevation));
-  traceText(painter, viewport, bbox, m_backgroundColor,
-            fontXS, Qt::AlignVCenter| Qt::AlignRight,
-            m_converter->panelDistance(m_distance));
-
-  h = bbox.height() + ratio_h * (m_maxElevation - m_minElevation);
-  QRectF mbox(0, h, viewport.width(), 1.2*m_fontSizeSM);
-  traceLine(painter, viewport, 0, h, viewport.width(), h, m_lineColor, 1);
-  traceText(painter, viewport, mbox, m_foregroundColor,
-            fontSM, Qt::AlignBottom | Qt::AlignHCenter,
-            m_converter->panelElevation(m_maxElevation));
-  if (m_duration > 0)
-  {
-    traceText(painter, viewport, tbox, m_foregroundColor,
-              fontXS, Qt::AlignVCenter | Qt::AlignRight,
-              m_converter->panelDurationHMS(m_duration));
-  }
   // trace intermediates
   double sub = 5000;
   if (delta < 50)
@@ -257,7 +231,7 @@ void ElevationChart::paint(QPainter * painter)
       sub = 2000;
 
   double ele = sub + sub * std::floor(m_minElevation / sub);
-  h = bbox.height() + ratio_h * (ele - m_minElevation);
+  qreal h = bbox.height() + ratio_h * (ele - m_minElevation);
   if (h > (2 * bbox.height()))
   {
       traceLine(painter, viewport, 0, h, viewport.width(), h, m_textColor, 1);
@@ -282,6 +256,32 @@ void ElevationChart::paint(QPainter * painter)
       traceText(painter, viewport, QRect(0, h, viewport.width(), m_fontSizeXS),
                 m_textColor, fontXS, Qt::AlignBottom | Qt::AlignHCenter,
                 m_converter->panelElevation(ele));
+  }
+
+  // trace min and max
+  h = bbox.height();
+  traceLine(painter, viewport, 0, h, viewport.width(), h, m_backgroundColor, 1);
+  traceText(painter, viewport, bbox, m_backgroundColor,
+            fontXS, Qt::AlignVCenter| Qt::AlignLeft,
+            "0");
+  traceText(painter, viewport, bbox, m_backgroundColor,
+            fontSM, Qt::AlignTop | Qt::AlignHCenter,
+            m_converter->panelElevation(m_minElevation));
+  traceText(painter, viewport, bbox, m_backgroundColor,
+            fontXS, Qt::AlignVCenter| Qt::AlignRight,
+            m_converter->panelDistance(m_distance));
+
+  h = bbox.height() + ratio_h * (m_maxElevation - m_minElevation);
+  QRectF mbox(0, h, viewport.width(), 1.2*m_fontSizeSM);
+  traceLine(painter, viewport, 0, h, viewport.width(), h, m_lineColor, 1);
+  traceText(painter, viewport, mbox, m_foregroundColor,
+            fontSM, Qt::AlignBottom | Qt::AlignHCenter,
+            m_converter->panelElevation(m_maxElevation));
+  if (m_duration > 0)
+  {
+    traceText(painter, viewport, tbox, m_foregroundColor,
+              fontXS, Qt::AlignVCenter | Qt::AlignRight,
+              m_converter->panelDurationHMS(m_duration));
   }
 
   m_succeeded = true;
@@ -316,7 +316,12 @@ void ElevationChart::traceCurve(QPainter * painter, const QRect& v, qreal x0, qr
   }
   path.lineTo(posiX, v.height() - y0);
   path.lineTo(x0, v.height() - y0);
-
+  QPen pen;
+  pen.setColor(c);
+  pen.setWidthF(1);
+  pen.setStyle(Qt::SolidLine);
+  painter->setPen(pen);
+  painter->drawPath(path);
   QBrush brush;
   brush.setColor(c);
   brush.setStyle(Qt::SolidPattern);
