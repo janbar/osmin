@@ -46,6 +46,4 @@ private:
   static MemoryManager * _instance;
 };
 
-Q_DECLARE_METATYPE(MemoryManager*)
-
 #endif // MEMORYMANAGER_H
