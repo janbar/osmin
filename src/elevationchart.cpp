@@ -52,13 +52,6 @@ void ElevationChart::loadGPXObjectTrack(GPXObjectTrack * obj, int sampleCount)
     emit loaded();
     return;
   }
-  // const GPXObjectTrack* trk = static_cast<const GPXObjectTrack*>(obj);
-  // if (trk == nullptr)
-  // {
-  //   qWarning("Cannot cast %p to GPXObjectTrack !!!", obj);
-  //   emit loaded();
-  //   return;
-  // }
 
   double length = obj->length();
 
