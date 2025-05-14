@@ -305,7 +305,7 @@ MapPage {
                                     selectedPOI = { "lat": lat, "lon": lon, "label": name, "elevation": elevation };
                                 } else if (type === 0) {
                                     selectedPOI = null;
-                                    selectedTrack = fileModel.createTrackProfile(id, parent.width);
+                                    selectedTrack = { "fileName": fileModel.fileName, "trackName": name, "track": fileModel.getTrackById(id) };
                                 }
                             }
                         }
@@ -507,9 +507,9 @@ MapPage {
             sourceComponent: Item {
                 anchors.fill: parent
 
-                property alias profile: graphic
+                property alias chart: elevationChart
 
-                // the graphic header
+                // the chart header
                 Rectangle {
                     id: graphicHeader
                     anchors.top: parent.top
@@ -530,14 +530,14 @@ MapPage {
                             font.pixelSize: units.fs("small")
                             font.bold: true
                             color: styleMap.popover.foregroundColor
-                            text: graphic.model.fileName
+                            text: selectedTrack.fileName
                             elide: Label.ElideRight
                         }
                         Label {
                             width: parent.width
                             font.pixelSize: units.fs("small")
                             color: styleMap.popover.foregroundColor
-                            text: graphic.model.trackName
+                            text: selectedTrack.trackName
                             elide: Label.ElideRight
                         }
                     }
@@ -557,12 +557,29 @@ MapPage {
                     }
                 }
 
-                TrackProfile {
-                    id: graphic
+                ElevationChart {
+                    id: elevationChart
+                    converter: Converter
                     anchors.top: graphicHeader.bottom
                     anchors.bottom: parent.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
+                    foregroundColor: styleMap.popover.foregroundColor
+                    backgroundColor: styleMap.popover.backgroundColor
+                    lineColor: "red"
+                    textColor: "gray"
+                    fontSizeSM: units.fs("small")
+                    fontSizeXS: units.fs("x-small")
+                }
+
+                Label {
+                    id: empty
+                    anchors.centerIn: parent
+                    font.pixelSize: units.fs("medium")
+                    text: qsTr("No data available")
+                    verticalAlignment: Label.AlignVCenter
+                    horizontalAlignment: Label.AlignHCenter
+                    visible: !elevationChart.succeeded
                 }
 
                 // visual seprator line
@@ -588,7 +605,8 @@ MapPage {
 
             function showTrackProfile() {
                 if (selectedTrack != null && item != null) {
-                    item.profile.model = selectedTrack;
+                    var samples = Math.min(trackCollection.width, trackCollection.height) / 2;
+                    item.chart.loadGPXObjectTrack(selectedTrack.track, samples);
                 }
             }
         }
