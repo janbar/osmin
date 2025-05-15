@@ -261,30 +261,17 @@ void ElevationChart::paint(QPainter * painter)
 
   double ele = sub + sub * std::floor(m_minElevation / sub);
   qreal h = bbox.height() + ratio_h * (ele - m_minElevation);
-  if (h > (2 * bbox.height()))
+  while (h < (viewport.height() - 2 * tbox.height()))
   {
+    if (h > (2 * bbox.height()))
+    {
       traceLine(painter, viewport, 0, h, viewport.width(), h, m_textColor, 1);
       traceText(painter, viewport, QRect(0, h, viewport.width(), m_fontSizeXS),
                 m_textColor, fontXS, Qt::AlignBottom | Qt::AlignHCenter,
                 m_converter->panelElevation(ele));
-  }
-  h += ratio_h * sub;
-  ele += sub;
-  if (h > (2 * bbox.height()) && h < (viewport.height() - 2 * tbox.height()))
-  {
-      traceLine(painter, viewport, 0, h, viewport.width(), h, m_textColor, 1);
-      traceText(painter, viewport, QRect(0, h, viewport.width(), m_fontSizeXS),
-                m_textColor, fontXS, Qt::AlignBottom | Qt::AlignHCenter,
-                m_converter->panelElevation(ele));
-  }
-  h += ratio_h * sub;
-  ele += sub;
-  if (h < (viewport.height() - 2 * tbox.height()))
-  {
-      traceLine(painter, viewport, 0, h, viewport.width(), h, m_textColor, 1);
-      traceText(painter, viewport, QRect(0, h, viewport.width(), m_fontSizeXS),
-                m_textColor, fontXS, Qt::AlignBottom | Qt::AlignHCenter,
-                m_converter->panelElevation(ele));
+    }
+    h += ratio_h * sub;
+    ele += sub;
   }
 
   // trace min and max
