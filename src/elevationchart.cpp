@@ -54,15 +54,27 @@ void ElevationChart::loadGPXObjectTrack(GPXObjectTrack * obj, int sampleCount)
   }
 
   double length = obj->length();
+  // check zero length
+  if (length < 1.0)
+  {
+    emit loaded();
+    return;
+  }
 
-  // setup x
+  // define the number of sample to compute
   int cx = 0;
   for (auto const& segment : obj->data().segments)
     cx += segment.points.size();
-  if (sampleCount > 0 && sampleCount < cx)
+  if (sampleCount < cx)
     cx = sampleCount;
+  // requires at least 2 samples
+  if (cx < 2)
+  {
+    emit loaded();
+    return;
+  }
 
-  // fill y data
+  // fill elevation data from the track
   QList<double> wlistMax;
   QList<double> wlistMin;
   wlistMax.assign(cx, std::nan(""));
@@ -132,11 +144,28 @@ void ElevationChart::loadGPXObjectTrack(GPXObjectTrack * obj, int sampleCount)
   {
     if (!std::isnan(wlistMax[idx]))
     {
+      // add a fake start index when the first sample has been discarded
+      if (m_distances.empty() && idx > 0)
+      {
+        m_distances.push_back(0.0);
+        m_minElevations.push_back(wlistMin[idx]);
+        m_maxElevations.push_back(wlistMax[idx]);
+        //qDebug("x = %f , y = [ %f , %f ]", m_distances.back(), m_minElevations.back(), m_maxElevations.back());
+      }
+      // add the valid sample
       m_distances.push_back(length * double(idx) / double(cx - 1));
       m_minElevations.push_back(wlistMin[idx]);
       m_maxElevations.push_back(wlistMax[idx]);
-      //qDebug("x = %f , y = [ %f , %f ]", distances.back(), minElevations.back(), maxElevations.back());
+      //qDebug("x = %f , y = [ %f , %f ]", m_distances.back(), m_minElevations.back(), m_maxElevations.back());
     }
+  }
+  // add a fake end index when the last sample has been discarded
+  if (!m_distances.empty() && m_distances.back() < length)
+  {
+    m_distances.push_back(length);
+    m_minElevations.push_back(m_minElevations.back());
+    m_maxElevations.push_back(m_maxElevations.back());
+    //qDebug("x = %f , y = [ %f , %f ]", m_distances.back(), m_minElevations.back(), m_maxElevations.back());
   }
   wlistMax.clear();
   wlistMin.clear();
@@ -150,7 +179,7 @@ void ElevationChart::loadGPXObjectTrack(GPXObjectTrack * obj, int sampleCount)
   m_maxElevation = maxele;
   m_samples = m_distances.size();
   //qDebug("samples = %d , distance = %f , duration = %f , minEle = %f , maxEle = %f",
-  //       m_samples,m_distance, m_duration , minele, maxele);
+  //       m_samples, m_distance, m_duration , minele, maxele);
   emit loaded();
 }
 
@@ -175,7 +204,7 @@ void ElevationChart::paint(QPainter * painter)
   QFont fontXS = painter->font();
   fontXS.setPixelSize(m_fontSizeXS);
 
-  if (m_samples <= 0)
+  if (m_samples < 2)
   {
     m_succeeded = false;
     emit finished();
@@ -337,6 +366,7 @@ void ElevationChart::traceText(QPainter *painter, const QRect& v, const QRectF& 
 
 void ElevationChart::reset()
 {
+  m_samples = 0;
   m_distances.clear();
   m_minElevations.clear();
   m_maxElevations.clear();
