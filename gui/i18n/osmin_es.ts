@@ -250,38 +250,38 @@
         <translation>Compartir</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="182"/>
-        <location filename="../controls2_690/Favorites.qml" line="376"/>
+        <location filename="../controls2_690/Favorites.qml" line="183"/>
+        <location filename="../controls2_690/Favorites.qml" line="379"/>
         <source>Rename</source>
         <translation>Renombrar</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="197"/>
+        <location filename="../controls2_690/Favorites.qml" line="198"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="200"/>
+        <location filename="../controls2_690/Favorites.qml" line="201"/>
         <source>Delete favorite ?</source>
         <translation>¿Eliminar el favorito?</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="302"/>
+        <location filename="../controls2_690/Favorites.qml" line="314"/>
         <source>Go</source>
         <translation>Ir</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="302"/>
+        <location filename="../controls2_690/Favorites.qml" line="314"/>
         <source>Accept</source>
         <translation>Aceptar</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="404"/>
+        <location filename="../controls2_690/Favorites.qml" line="407"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Favorites.qml" line="414"/>
+        <location filename="../controls2_690/Favorites.qml" line="417"/>
         <source>Enter the label</source>
         <translation>Introducir el nombre</translation>
     </message>
@@ -533,7 +533,7 @@
 <context>
     <name>NavigatorInfo</name>
     <message>
-        <location filename="../controls2_690/components/NavigatorInfo.qml" line="277"/>
+        <location filename="../controls2_690/components/NavigatorInfo.qml" line="273"/>
         <source>Resume navigation</source>
         <translation>Reanudar la navegación</translation>
     </message>
@@ -868,43 +868,48 @@
         <translation>Colección de rutas</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="70"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="71"/>
         <source>Parsing file has failed. The format is not supported or data are corrupted.</source>
         <translation>Ha fallado el análisis del archivo. El formato no es compatible o los datos están dañados.</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="195"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="196"/>
         <source>Share</source>
         <translation>Compartir</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="211"/>
-        <location filename="../controls2_690/TrackCollection.qml" line="459"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="212"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="617"/>
         <source>Rename</source>
         <translation>Renombrar</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="232"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="233"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="235"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="236"/>
         <source>Delete folder ?</source>
         <translation>¿Eliminar la carpeta?</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="235"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="236"/>
         <source>Delete file ?</source>
         <translation>¿Eliminar el fichero?</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="489"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="579"/>
+        <source>No data available</source>
+        <translation>No hay datos disponibles</translation>
+    </message>
+    <message>
+        <location filename="../controls2_690/TrackCollection.qml" line="647"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../controls2_690/TrackCollection.qml" line="499"/>
+        <location filename="../controls2_690/TrackCollection.qml" line="657"/>
         <source>Enter the name</source>
         <translation>Introducir el nombre</translation>
     </message>
@@ -931,22 +936,21 @@
         <translation>Duración</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Tracking.qml" line="200"/>
+        <location filename="../controls2_690/Tracking.qml" line="201"/>
         <source>Coordinates</source>
         <translation>Coordenadas</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Tracking.qml" line="206"/>
+        <location filename="../controls2_690/Tracking.qml" line="207"/>
         <source>Share</source>
         <translation>Compartir</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Tracking.qml" line="228"/>
         <source>Elevation</source>
-        <translation>Altitud</translation>
+        <translation type="vanished">Altitud</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Tracking.qml" line="242"/>
+        <location filename="../controls2_690/Tracking.qml" line="235"/>
         <source>Bearing</source>
         <translation>Orientación</translation>
     </message>
@@ -999,12 +1003,12 @@
         <translation>Bienvenido</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Welcome.qml" line="66"/>
+        <location filename="../controls2_690/Welcome.qml" line="64"/>
         <source>First of all to use OSMin, you need to download the map of your region. Online maps are not activated with this software, in order to better assist you in navigating outside the areas covered by a network.</source>
         <translation>En primer lugar, para utilizar OSMin, debe descargar el mapa de su región. Los mapas en línea no se activan con este software, con el fin de ayudarle mejor a navegar fuera de las zonas cubiertas por una red.</translation>
     </message>
     <message>
-        <location filename="../controls2_690/Welcome.qml" line="78"/>
+        <location filename="../controls2_690/Welcome.qml" line="76"/>
         <source>Download Maps</source>
         <translation>Descargar mapas</translation>
     </message>
