@@ -79,6 +79,16 @@ public:
 
   bool getDayLight() const { return m_dayLigth; }
 
+  /*
+   * The following functions are dedicated to managing overlay groups. Each group is
+   * identified by a type string (ROUTE, MARK, RECORD, COURSE, FAVORITE, etc) and a
+   * key number. This allows you to identify multiple groups of the same type.
+   * A group can contain a single object, such as a FAVORITE or a MARK, or multiple
+   * objects, such as a COURSE composed of a WAY and multiple POIs.
+   * Each registred overlay will be uniquely identified by an ID. This ID will be
+   * useful for adding or deleting it from the basemap.
+   */
+
   /**
    * @brief Add overlay for type and key
    * @param type
