@@ -984,7 +984,7 @@ MapPage {
                 mapView.navigation = false;
             }
         }
-        backgroundOpacity: { parent.height > 3 * minimumHeight ? 1.0 : 0.6 }
+        backgroundOpacity: { parent.height > 4 * minimumHeight ? 1.0 : 0.6 }
     }
 
     Connections {
