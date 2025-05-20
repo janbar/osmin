@@ -27,7 +27,7 @@ jobs:
       - name: Setup Android SDK tools
         uses: android-actions/setup-android@v3
         with:
-          packages: "platform-tools platforms;android-34 build-tools;34.0.0 ndk;27.2.12479018"
+          packages: "platform-tools platforms;android-35 build-tools;35.0.0 ndk;27.2.12479018"
       - name: Dump Android NDK
         run: "ls ${ANDROID_HOME}/ndk"
 
@@ -73,10 +73,10 @@ jobs:
                   -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/linux-x86_64/bin/make \
                   -DANDROID_ABI=x86_64 -DANDROID_SDK_MINVER=26 -DANDROID_SDK_TARGET=26 \
                   -DANDROID_NATIVE_API_LEVEL=24 \
-                  -DANDROID_SDK_BUILD_TOOLS_REVISION=31.0.0 \
+                  -DANDROID_SDK_BUILD_TOOLS_REVISION=35.0.0 \
                   -DANDROID_SDK_ROOT=${ANDROID_SDK_ROOT} \
                   -DANDROID_NDK=${ANDROID_NDK} \
-                  -DQT_ANDROID_PLATFORM_LEVEL=34 \
+                  -DQT_ANDROID_PLATFORM_LEVEL=35 \
                   -Wno-dev
       - name: Build
         run:  cmake --build build
