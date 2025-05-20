@@ -7,6 +7,10 @@ import android.view.KeyEvent;
 import android.window.OnBackInvokedDispatcher;
 import android.content.ComponentCallbacks2;
 
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+
 import org.qtproject.qt.android.QtActivityBase;
 
 public class QtAndroidActivity extends QtActivityBase
@@ -27,6 +31,17 @@ public class QtAndroidActivity extends QtActivityBase
                                         KeyEvent.KEYCODE_PAGE_UP,
                                         new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_PAGE_UP));
                             });
+        }
+
+        // handle immersive mode from android-35
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+            // configure the behavior of the hidden system bars.
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            // hide system bars
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
         }
     }
 
