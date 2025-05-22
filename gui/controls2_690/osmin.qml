@@ -391,7 +391,10 @@ ApplicationWindow {
                 else
                     stackView.currentItem.goUpClicked();
             } else {
-                 postponeKeyBackPressed.start();
+                postponeKeyBackPressed.start();
+                // On android the app can be stacked to back
+                // if (mapPage && mapPage.state === "view")
+                //     Osmin.PlatformExtras.moveToBack();
             }
         }
     }
