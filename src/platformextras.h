@@ -73,6 +73,7 @@ public:
   static QStringList getStorageDirs();
 
   Q_INVOKABLE void setPreventBlanking(bool on, int mask);
+  Q_INVOKABLE void moveToBack();
   Q_INVOKABLE bool shareContent(const QString &text, const QString &path, const QString &mimeType);
   Q_INVOKABLE bool shareData(const QString &text, const QString &data, const QString &mimeType);
 

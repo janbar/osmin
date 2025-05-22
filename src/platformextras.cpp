@@ -141,6 +141,17 @@ void PlatformExtras::setPreventBlanking(bool on, int mask)
   }
 }
 
+void PlatformExtras::moveToBack()
+{
+#if defined(Q_OS_ANDROID)
+  QJniObject activity = QNativeInterface::QAndroidApplication::context();
+  QJniObject::callStaticMethod<void>("io/github/janbar/osmin/QtAndroidHelper",
+                                     "moveToBack",
+                                     "(Landroid/content/Context;)V",
+                                     activity.object());
+#endif
+}
+
 bool PlatformExtras::shareContent(const QString &text, const QString &path, const QString &mimeType)
 {
 #if defined(Q_OS_ANDROID)

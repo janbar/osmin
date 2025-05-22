@@ -27,6 +27,12 @@ public class QtAndroidHelper {
         }
     }
 
+    public static void moveToBack(Context context) {
+        if (context instanceof Activity) {
+            ((Activity) context).moveTaskToBack(true);
+        }
+    }
+
     public static boolean shareContent(Context context, String text, String path, String mimeType) {
         if (context instanceof Activity) {
             File file = new File(path);
