@@ -146,6 +146,8 @@ Item {
         navigator.routingModel = null;
         if (currentRouting)
             currentRouting.destroy();
+        if (connected)
+            position.dataUpdated.disconnect(locationChanged);
     }
 
     // cancel running routing
