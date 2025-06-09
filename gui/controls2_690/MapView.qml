@@ -204,11 +204,13 @@ MapPage {
             }
         }
 
+        function positionUpdated(valid, lat, lon, accValid, acc, alt) {
+            locationChanged(valid, lat, lon, accValid, acc);
+        }
+
         Component.onCompleted: {
             map.setVehicleScaleFactor(0.1); // hide vehicle
-            positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
-                locationChanged(valid, lat, lon, accValid, acc);
-            });
+            positionSource.dataUpdated.connect(positionUpdated);
             ToolBox.connectWhileFalse(map.finishedChanged, function(finished){
                if (finished) {
                    console.log("Configure after finished map");
@@ -217,6 +219,10 @@ MapPage {
                }
                return finished;
             });
+        }
+
+        Component.onDestruction: {
+            positionSource.dataUpdated.disconnect(positionUpdated);
         }
     }
 
