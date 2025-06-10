@@ -66,7 +66,7 @@ PopOver {
             name: qsTr("Tracks")
             comment: qsTr("Manage the collection of saved tracks.")
             foo: function() {
-                var page = stackView.push("qrc:/controls2/TrackCollection.qml", { "mapView": mapView });
+                var page = stackView.push("qrc:/controls2/TrackCollection.qml", { "mapPage": mapPage });
                 ToolBox.connectOnce(page.popped, close);
                 ToolBox.connectOnce(page.showPosition, function(lat, lon){
                     if (lat !== NaN && lon !== NaN) {

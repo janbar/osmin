@@ -357,7 +357,7 @@ ApplicationWindow {
                 restart();
             } else {
                 stackView.clear();
-                mapPage = stackView.push("qrc:/controls2/MapView.qml");
+                mapPage = stackView.push("qrc:/controls2/MapLoader.qml");
                 if (bonjour === 1) {
                     stackView.push("qrc:/controls2/Welcome.qml");
                 }

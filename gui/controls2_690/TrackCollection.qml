@@ -33,9 +33,10 @@ MapPage {
         availableList.tree = v;
     }
 
-    property var mapView: null
+    property var mapPage: null
 
     signal showPosition(double lat, double lon)
+    signal courseIdChanged()
 
     Component.onCompleted: {
         GPXListModel.loadData();
@@ -95,30 +96,34 @@ MapPage {
                            checked: false
                            onClicked: {
                                if (display.checked) {
-                                   mapView.removeCourse();
+                                   mapPage.removeCourse();
                                    if (!fileModel.fileValid) {
                                        ToolBox.connectOnce(fileModel.loaded, function(succeeded){
-                                           if (succeeded)
-                                               mapView.addCourse(bigId, fileModel.createOverlayObjects());
-                                           else
+                                           if (succeeded) {
+                                               mapPage.addCourse(bigId, fileModel.createOverlayObjects());
+                                               courseIdChanged();
+                                           } else {
                                                display.checked = false;
+                                           }
                                        });
                                        fileModel.parseFile(model.absoluteFilePath);
                                     } else {
                                        fileModel.loadData();
-                                       mapView.addCourse(bigId, fileModel.createOverlayObjects());
+                                       mapPage.addCourse(bigId, fileModel.createOverlayObjects());
+                                       courseIdChanged();
                                    }
                                } else {
-                                   mapView.removeCourse();
+                                   mapPage.removeCourse();
+                                   courseIdChanged();
                                }
                            }
                            Component.onCompleted: {
-                               display.checked = (mapView.courseId === bigId);
+                               display.checked = (settings.courseId === bigId);
                            }
                            Connections {
-                               target: mapView
+                               target: trackCollection
                                function onCourseIdChanged() {
-                                   display.checked = (mapView.courseId === bigId);
+                                   display.checked = (settings.courseId === bigId);
                                }
                            }
                         }
@@ -212,8 +217,10 @@ MapPage {
                                     text: qsTr("Rename")
                                     font.pixelSize: units.fs("medium")
                                     onTriggered: {
-                                        if (display.checked)
-                                            mapView.removeCourse();
+                                        if (display.checked) {
+                                            mapPage.removeCourse();
+                                            courseIdChanged();
+                                        }
                                         dialogEdit.model = model;
                                         dialogEdit.open();
                                         ToolBox.connectOnce(dialogEdit.requestUpdate, renameItem);
@@ -240,8 +247,10 @@ MapPage {
                                     }
                                     function deleteItem(accepted) {
                                         if (accepted) {
-                                            if (display.checked)
-                                                mapView.removeCourse();
+                                            if (display.checked) {
+                                                mapPage.removeCourse();
+                                                courseIdChanged();
+                                            }
                                             var index = null;
                                             if (availableList.tree.length > 0)
                                                 index = GPXListModel.index(model.index, 0, availableList.tree[0].index);
