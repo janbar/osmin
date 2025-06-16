@@ -5,8 +5,8 @@ mkdir -p $BUILD_DIR
 export JAVA_HOME=$HOME/bin/java/jdk-21.0.4
 export ANDROID_SDK_ROOT=$HOME/bin/android/sdk
 export ANDROID_NDK=$HOME/bin/android/sdk/ndk/27.2.12479018
-export QT_DIR=$HOME/bin/Qt/6.9.0/android_armv7
-export QT_HOST_PATH=$HOME/bin/Qt/6.9.0/gcc_64
+export QT_DIR=$HOME/bin/Qt/6.9.1/android_armv7
+export QT_HOST_PATH=$HOME/bin/Qt/6.9.1/gcc_64
 
 cmake .. -B $BUILD_DIR -DCMAKE_SYSTEM_NAME=Android \
 -DCMAKE_PREFIX_PATH=${QT_DIR} \
