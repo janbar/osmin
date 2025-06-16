@@ -19,8 +19,8 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQml 2.2
 import QtQml.Models 2.3
-import "./components"
-import "../toolbox.js" as ToolBox
+import "components"
+import "components/toolbox.js" as ToolBox
 
 PopOver {
     id: mainMenu
@@ -66,7 +66,7 @@ PopOver {
             name: qsTr("Tracks")
             comment: qsTr("Manage the collection of saved tracks.")
             foo: function() {
-                var page = stackView.push("qrc:/controls2/TrackCollection.qml", { "mapView": mapView });
+                var page = stackView.push("qrc:/controls2/TrackCollection.qml", { "mapPage": mapPage });
                 ToolBox.connectOnce(page.popped, close);
                 ToolBox.connectOnce(page.showPosition, function(lat, lon){
                     if (lat !== NaN && lon !== NaN) {

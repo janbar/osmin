@@ -2,8 +2,8 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQml 2.2
 import Osmin 1.0
-import "./components"
-import "../toolbox.js" as ToolBox
+import "components"
+import "components/toolbox.js" as ToolBox
 
 MapPage {
     id: searchPage

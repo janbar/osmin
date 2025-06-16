@@ -24,8 +24,8 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls.Universal 2.2
 import Qt5Compat.GraphicalEffects 6.0
 import Osmin 1.0 as Osmin
-import "../toolbox.js" as ToolBox
-import "./components"
+import "components"
+import "components/toolbox.js" as ToolBox
 
 ApplicationWindow {
     id: mainView
@@ -357,7 +357,7 @@ ApplicationWindow {
                 restart();
             } else {
                 stackView.clear();
-                mapPage = stackView.push("qrc:/controls2/MapView.qml");
+                mapPage = stackView.push("qrc:/controls2/MapLoader.qml");
                 if (bonjour === 1) {
                     stackView.push("qrc:/controls2/Welcome.qml");
                 }

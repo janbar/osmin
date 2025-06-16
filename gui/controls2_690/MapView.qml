@@ -20,13 +20,11 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQml 2.2
 import Osmin 1.0
-import "./components"
-import "../toolbox.js" as ToolBox
+import "components"
+import "components/toolbox.js" as ToolBox
 
-MapPage {
+Item {
     id: mapView
-    pageTitle: qsTr("Map View")
-    showHeader: false // hide the header bar
 
     ////////////////////////////////////////////////////////////////////////////
     ////
@@ -43,11 +41,6 @@ MapPage {
     ////
 
     property real widgetBottomY: (map.height / 2) * 1.05 // the map view should be visible below
-
-    property bool preventBlanking: navigation && !applicationSuspended
-    onPreventBlankingChanged: {
-        PlatformExtras.setPreventBlanking(preventBlanking, 1); // lock bit 1
-    }
 
     function showPositionInfo() {
         if (positionSource._posValid) {
@@ -103,6 +96,13 @@ MapPage {
             overlayManager.showFavorites();
     }
 
+    Component.onDestruction: {
+        if (rotateEnabled)
+            Tracker.trackerPositionChanged.disconnect(handleRotation);
+        if (navigation)
+            PlatformExtras.setPreventBlanking(false, 1);
+    }
+
     property QtObject mark: QtObject {
         property bool showOverlay: true
         property real screenX: 0.0
@@ -125,6 +125,8 @@ MapPage {
         else
             rotator.stop();
     }
+
+    property alias map: map
 
     Map {
         id: map
@@ -204,11 +206,13 @@ MapPage {
             }
         }
 
+        function positionUpdated(valid, lat, lon, accValid, acc, alt) {
+            locationChanged(valid, lat, lon, accValid, acc);
+        }
+
         Component.onCompleted: {
             map.setVehicleScaleFactor(0.1); // hide vehicle
-            positionSource.dataUpdated.connect(function(valid, lat, lon, accValid, acc, alt){
-                locationChanged(valid, lat, lon, accValid, acc);
-            });
+            positionSource.dataUpdated.connect(positionUpdated);
             ToolBox.connectWhileFalse(map.finishedChanged, function(finished){
                if (finished) {
                    console.log("Configure after finished map");
@@ -217,6 +221,10 @@ MapPage {
                }
                return finished;
             });
+        }
+
+        Component.onDestruction: {
+            positionSource.dataUpdated.disconnect(positionUpdated);
         }
     }
 
@@ -290,6 +298,8 @@ MapPage {
             mapView.rotation = 0.0;
             lockRotation = true;
         }
+        // setup prevent blanking: lock bit 1
+        PlatformExtras.setPreventBlanking(navigation, 1);
     }
 
     property int positionState: !positionSource._posValid ? 0 : (!navigation ? 1 : 2)
@@ -521,6 +531,8 @@ MapPage {
             }
         }
     }
+
+    property alias overlayManager: overlayManager
 
     OverlayManager {
         id: overlayManager
@@ -1136,6 +1148,8 @@ MapPage {
     //// Navigation
     ////
 
+    property alias navigator: navigator
+
     Navigator {
         id: navigator
         position: positionSource
@@ -1181,30 +1195,8 @@ MapPage {
         }
     }
 
-    property QtObject suspendedState: QtObject {
-        property bool navigation: false
-    }
-
     Connections {
         target: mainView
-        function onApplicationSuspendedChanged() {
-            // On device mobile (e.g Android) disable all when the app is suspended
-            if (DeviceMobile) {
-                if (applicationSuspended) {
-                    rotateEnabled = false;
-                    map.lockToPosition = false;
-                    // save current state
-                    suspendedState.navigation = navigation;
-                    // disable navigation state
-                    if (navigation)
-                        navigation = false;
-                } else {
-                    // restore navigation state
-                    if (suspendedState.navigation)
-                        navigation = true;
-                }
-            }
-        }
         function onShowFavoritesChanged() {
             if (showFavorites)
                 overlayManager.showFavorites();
@@ -1217,20 +1209,6 @@ MapPage {
     ////
     //// Courses
     ////
-
-    // Store the selected course
-    property int courseId: 0
-
-    function addCourse(bid, overlays) {
-        if (overlayManager.addCourse(bid, overlays)) {
-            settings.courseId = courseId = bid;
-        }
-    }
-
-    function removeCourse() {
-        overlayManager.removeAllCourses();
-        settings.courseId = courseId = 0;
-    }
 
     GPXFileModel {
         id: courseFile
@@ -1248,8 +1226,9 @@ MapPage {
         var file = GPXListModel.findFileById(bid);
         if (file !== "") {
             ToolBox.connectOnce(courseFile.loaded, function(succeeded){
-                if (succeeded)
-                    mapView.addCourse(bid, courseFile.createOverlayObjects());
+                if (succeeded && overlayManager.addCourse(bid, courseFile.createOverlayObjects())) {
+                    settings.courseId = bid;
+                }
             });
             courseFile.parseFile(file);
             return true;
@@ -1264,11 +1243,7 @@ MapPage {
     ////
 
     onRotateEnabledChanged: {
-        configureRotation(rotateEnabled);
-    }
-
-    function configureRotation(enabled) {
-        if (enabled) {
+        if (rotateEnabled) {
             Tracker.trackerPositionChanged.connect(handleRotation);
         } else {
             Tracker.trackerPositionChanged.disconnect(handleRotation);

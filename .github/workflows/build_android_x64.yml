@@ -34,8 +34,8 @@ jobs:
       - name: Configure ENV
         run:  |
             echo "ANDROID_NDK=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
-            echo "QT_DIR=${HOME}/Qt/6.9.0/android_x86_64" >> $GITHUB_ENV
-            echo "QT_HOST_PATH=${HOME}/Qt/6.9.0/gcc_64" >> $GITHUB_ENV
+            echo "QT_DIR=${HOME}/Qt/6.9.1/android_x86_64" >> $GITHUB_ENV
+            echo "QT_HOST_PATH=${HOME}/Qt/6.9.1/gcc_64" >> $GITHUB_ENV
 
       - name: Cache Qt
         id: cache-qt
@@ -44,18 +44,18 @@ jobs:
           cache-name: cache-qt
         with:
           path: |
-              ~/Qt/6.9.0
+              ~/Qt/6.9.1
               ~/Qt/android_openssl
-          key: qtandroid_x86_64-60900-ndk26
+          key: qtandroid_x86_64-60901-ndk26
 
       - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
         name: Install Qt
         continue-on-error: true
         run: |
-            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-6.9.0-android_x86_64-ndk26-linux64.tar.xz
+            wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/qt-6.9.1-android_x86_64-ndk26-linux64.tar.xz
             wget -q ${{secrets.PRIVATE_URL_DOWNLOAD}}/qt/android_openssl-20240915.tar.xz
             mkdir -p ~/Qt
-            tar xfJ qt-6.9.0-android_x86_64-ndk26-linux64.tar.xz -C ~/Qt/
+            tar xfJ qt-6.9.1-android_x86_64-ndk26-linux64.tar.xz -C ~/Qt/
             tar xfJ android_openssl-20240915.tar.xz -C ~/Qt/
             rm -f *.tar.xz
 

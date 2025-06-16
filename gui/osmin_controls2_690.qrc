@@ -33,7 +33,7 @@
         <file alias="controls2/components/SearchField.qml">controls2_690/components/SearchField.qml</file>
         <file alias="controls2/Favorites.qml">controls2_690/Favorites.qml</file>
         <file alias="controls2/components/DialogBase.qml">controls2_690/components/DialogBase.qml</file>
-        <file alias="toolbox.js">toolbox.js</file>
+        <file alias="controls2/components/toolbox.js">controls2_690/components/toolbox.js</file>
         <file alias="controls2/About.qml">controls2_690/About.qml</file>
         <file alias="controls2/Settings.qml">controls2_690/Settings.qml</file>
         <file alias="controls2/TrackCollection.qml">controls2_690/TrackCollection.qml</file>
@@ -56,6 +56,7 @@
         <file alias="controls2/components/DialogEnter.qml">controls2_690/components/DialogEnter.qml</file>
         <file alias="controls2/components/LaneTurnIcon.qml">controls2_690/components/LaneTurnIcon.qml</file>
         <file alias="controls2/components/LaneTurns.qml">controls2_690/components/LaneTurns.qml</file>
+        <file alias="controls2/MapLoader.qml">controls2_690/MapLoader.qml</file>
         <file>images/poi/aerialway.svg</file>
         <file>images/poi/airfield.svg</file>
         <file>images/poi/airport.svg</file>
