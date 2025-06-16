@@ -16,8 +16,8 @@
  */
 
 import QtQuick 2.9
-import "./components"
-import "../toolbox.js" as ToolBox
+import "components"
+import "components/toolbox.js" as ToolBox
 
 MapPage {
     pageTitle: qsTr("Map View")

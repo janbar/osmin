@@ -20,8 +20,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQml 2.2
 import Osmin 1.0
-import "./components"
-import "../toolbox.js" as ToolBox
+import "components"
+import "components/toolbox.js" as ToolBox
 
 Item {
     id: mapView

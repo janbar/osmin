@@ -21,7 +21,7 @@ import QtQml 2.2
 import QtQml.Models 2.3
 import QtQuick.Layouts 1.3
 import Osmin 1.0
-import "./components"
+import "components"
 
 MapPage {
     id: settingsPage

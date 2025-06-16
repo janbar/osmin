@@ -24,8 +24,8 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls.Universal 2.2
 import Qt5Compat.GraphicalEffects 6.0
 import Osmin 1.0 as Osmin
-import "../toolbox.js" as ToolBox
-import "./components"
+import "components"
+import "components/toolbox.js" as ToolBox
 
 ApplicationWindow {
     id: mainView

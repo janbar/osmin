@@ -20,7 +20,7 @@ import QtQuick.Controls 2.2
 import QtQml 2.2
 import QtQml.Models 2.3
 import Osmin 1.0
-import "./components"
+import "components"
 
 MapPage {
     id: configureVoice

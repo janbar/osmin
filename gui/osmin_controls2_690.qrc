@@ -33,7 +33,7 @@
         <file alias="controls2/components/SearchField.qml">controls2_690/components/SearchField.qml</file>
         <file alias="controls2/Favorites.qml">controls2_690/Favorites.qml</file>
         <file alias="controls2/components/DialogBase.qml">controls2_690/components/DialogBase.qml</file>
-        <file alias="toolbox.js">toolbox.js</file>
+        <file alias="controls2/components/toolbox.js">controls2_690/components/toolbox.js</file>
         <file alias="controls2/About.qml">controls2_690/About.qml</file>
         <file alias="controls2/Settings.qml">controls2_690/Settings.qml</file>
         <file alias="controls2/TrackCollection.qml">controls2_690/TrackCollection.qml</file>
