@@ -1222,7 +1222,9 @@ Item {
     }
 
     function loadGPX(bid) {
-        GPXListModel.loadData();
+        if (!GPXListModel.count) {
+            GPXListModel.loadData();
+        }
         var file = GPXListModel.findFileById(bid);
         if (file !== "") {
             ToolBox.connectOnce(courseFile.loaded, function(succeeded){
