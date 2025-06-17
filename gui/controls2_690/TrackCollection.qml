@@ -51,6 +51,14 @@ MapPage {
 
         property var tree: []
 
+        Connections {
+            target: GPXListModel
+            function onLoaded() {
+                /* purge the tree */
+                availableList.tree = [];
+            }
+        }
+
         model: DelegateModel {
             id: delegateModel
             model: GPXListModel
