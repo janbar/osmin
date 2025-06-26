@@ -1,0 +1,155 @@
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h b/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h
+index f2dac2fd6..48cf38e93 100644
+--- a/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h
++++ b/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h
+@@ -33,7 +33,6 @@
+ #include <QSettings>
+ #include <QMutex>
+ #include <QPainter>
+-#include <QScreen>
+ 
+ #include <variant>
+ 
+@@ -205,8 +204,6 @@ public slots:
+   virtual void onShowAltLanguageChanged(bool);
+   virtual void onUnitsChanged(const QString&);
+ 
+-  virtual void SetScreen(const QScreen*);
+-
+ protected:
+   MapRenderer(QThread *thread,
+               SettingsRef settings,
+diff --git a/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h b/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h
+index f6ae12020..1cf430d57 100644
+--- a/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h
++++ b/libosmscout-client-qt/include/osmscoutclientqt/MapWidget.h
+@@ -188,7 +188,6 @@ signals:
+   void styleErrorsChanged();
+   void databaseLoaded(osmscout::GeoBox);
+   void renderingTypeChanged(QString type);
+-  void screenChanged(QScreen*);
+ 
+   void objectPicked(const ObjectFileRef object);
+ 
+@@ -321,8 +320,6 @@ private slots:
+ 
+   void onResize();
+ 
+-  void onWindowChanged(QQuickWindow *window);
+-
+ private:
+   void setupInputHandler(InputHandler *newGesture);
+ 
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp b/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp
+index b71cd5102..d60772631 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp
+@@ -159,24 +159,6 @@ void MapRenderer::onUnitsChanged(const QString& units)
+   emit Redraw();
+ }
+ 
+-void MapRenderer::SetScreen(const QScreen *screen)
+-{
+-  bool changed=false;
+-  {
+-    QMutexLocker locker(&lock);
+-    if (std::holds_alternative<ScreenPixelRatio>(this->pixelRatio)
+-        && std::get<ScreenPixelRatio>(this->pixelRatio).ratio != screen->devicePixelRatio()) {
+-      this->pixelRatio = ScreenPixelRatio{screen->devicePixelRatio()};
+-      log.Debug() << "Screen pixel ratio: " << screen->devicePixelRatio();
+-      changed = true;
+-    }
+-  }
+-  if (changed) {
+-    InvalidateVisualCache();
+-    emit Redraw();
+-  }
+-}
+-
+ void MapRenderer::addOverlayObject(int id, const OverlayObjectRef& obj)
+ {
+   {
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp b/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
+index 981a0415b..b2418bf0a 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
+@@ -27,7 +27,6 @@
+ #include <QtSvg/QSvgRenderer>
+ #include <QtGlobal>
+ #include <QQuickWindow>
+-#include <QGuiApplication>
+ 
+ namespace osmscout {
+ 
+@@ -71,7 +70,6 @@ MapWidget::MapWidget(QQuickItem* parent)
+ 
+     connect(this, &QQuickItem::widthChanged, this, &MapWidget::onResize);
+     connect(this, &QQuickItem::heightChanged, this, &MapWidget::onResize);
+-    connect(this, &QQuickItem::windowChanged, this, &MapWidget::onWindowChanged);
+ 
+     connect(&iconAnimation, &IconAnimation::update, this, &MapWidget::redraw);
+ 
+@@ -114,26 +112,6 @@ void MapWidget::setupRenderer()
+ 
+     connect(renderer, &MapRenderer::Redraw,
+             this, &MapWidget::redraw);
+-
+-    connect(this, &MapWidget::screenChanged,
+-            renderer, &MapRenderer::SetScreen,
+-            Qt::QueuedConnection);
+-
+-    QQuickWindow *window = this->window();
+-    if (window) {
+-      emit screenChanged(window->screen());
+-    } else {
+-      emit screenChanged(QGuiApplication::primaryScreen());
+-    }
+-}
+-
+-void MapWidget::onWindowChanged(QQuickWindow *window)
+-{
+-    if (window) {
+-      emit screenChanged(window->screen());
+-      connect(window, &QWindow::screenChanged,
+-              this, &MapWidget::screenChanged);
+-    }
+ }
+ 
+ void MapWidget::translateToTouch(QMouseEvent* event, Qt::TouchPointStates states)
+diff --git a/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp b/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
+index 5cac0a11a..6f1581891 100644
+--- a/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
++++ b/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
+@@ -445,29 +445,9 @@ void TiledMapRenderer::onLoadJobFinished(QMap<QString,QMap<osmscout::TileKey,osm
+ 
+     // For HiDPI screens (screenPixelRatio > 1) tiles as up-scaled before displaying. When there is ratio 2.0, 100px on Qt canvas
+     // is displayed as 200px on the screen. To provide best results on HiDPI screen, we upscale tiles by this pixel ratio.
+-    double finalDpi = mapDpi * (std::holds_alternative<ScreenPixelRatio>(this->pixelRatio) ?
+-                                std::get<ScreenPixelRatio>(this->pixelRatio).ratio : std::get<FixedPixelRatio>(this->pixelRatio).ratio);
+-
+-    uint32_t tileDimension = double(OSMTile::osmTileOriginalWidth()) * (finalDpi / OSMTile::tileDPI()); // pixels
+-
+-    GLPowerOfTwoTexture glPowerOfTwoTextureSnap = this->glPowerOfTwoTexture;
+-    if (glPowerOfTwoTextureSnap!=GLPowerOfTwoTexture::NoScaling) {
+-        double next = qNextPowerOfTwo(tileDimension - 1);
+-        if (glPowerOfTwoTextureSnap==GLPowerOfTwoTexture::Upscaling) {
+-            tileDimension = next;
+-        } else if (glPowerOfTwoTextureSnap==GLPowerOfTwoTexture::Downscaling && next!=tileDimension) {
+-            tileDimension = next / 2;
+-        } else {
+-            assert(glPowerOfTwoTextureSnap==GLPowerOfTwoTexture::Nearest);
+-            if ((next - tileDimension) < (tileDimension - (next / 2))) {
+-              tileDimension = next;
+-            } else {
+-              tileDimension = next / 2;
+-            }
+-        }
+-    }
+-
+-    finalDpi = (double(tileDimension) / double(OSMTile::osmTileOriginalWidth())) * OSMTile::tileDPI();
++    uint32_t tileDimension = double(OSMTile::osmTileOriginalWidth()) * (1.618 * mapDpi / OSMTile::tileDPI()); // pixels
++    tileDimension = 64 * (tileDimension >> 6);
++    double finalDpi = (double(tileDimension) / double(OSMTile::osmTileOriginalWidth())) * OSMTile::tileDPI();
+ 
+     QImage canvas(width * tileDimension,
+                   height * tileDimension,
