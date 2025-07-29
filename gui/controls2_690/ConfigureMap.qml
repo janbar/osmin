@@ -248,7 +248,7 @@ PopOver {
                 color: styleMap.popover.foregroundColor
                 text: model.name
                 checked: model.value
-                onClicked: {
+                onClicked: function(checked) {
                     model.value = checked;
                     MapExtras.setStyleFlag(model.name, checked);
                     saveStyleFlags();
