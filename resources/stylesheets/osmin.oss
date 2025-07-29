@@ -104,6 +104,7 @@ CONST
   UINT labelPrioLanduse             = 25;
   UINT labelPrioLeisure             = 26;
 
+  UINT labelPrioVolcano             = 28;
   UINT labelPrioPeak                = 29;
 
   UINT labelPrioHighwayServices     = 34;
@@ -128,6 +129,16 @@ CONST
 
   // For debugging :-)
   COLOR red                        = #ff0000;
+
+  // Default label color
+  IF daylight {
+    COLOR labelColor               = #000000;
+    COLOR emphasizeColor           = #ffffff;
+  } 
+  ELSE {
+    COLOR labelColor               = #a0a0a0;
+    COLOR emphasizeColor           = #707070;
+  }
 
   // Ground tiles
 
@@ -220,6 +231,7 @@ CONST
   COLOR wetlandColor               = #bdd8d8;
 
   COLOR peakLabelColor             = #9c5329;
+  COLOR volcanoLabelColor          = #90181a;
 
   // Ways
   COLOR bridgeColor                = #000000; // black
@@ -351,6 +363,7 @@ CONST
   COLOR busSymbolColor             = #7885b0;
   COLOR hospitalSymbolColor        = #da0092;
   COLOR peakSymbolColor            = #9c5e29;
+  COLOR volcanoSymbolColor         = #dd2427;
   COLOR pharmacySymbolColor        = #da0092;
   COLOR postSymbolColor            = #e8f000;
   COLOR railwaySymbolColor         = @railwayColor;
@@ -453,10 +466,15 @@ STYLE
         NODE.TEXT#peakName { label: Name.name; style: emphasize; color: @peakLabelColor; priority: @labelPrioPeak; size: 0.9; position: 1; }
         NODE.TEXT#ele { label: Ele.inLocaleUnit; style: emphasize; color: @peakLabelColor; priority: @labelPrioPeak; size: 0.9; position: 2;}
       }
+      [TYPE natural_volcano] {
+        NODE.TEXT#volcanoName { label: IName; style: emphasize; emphasizeColor: @emphasizeColor; color: @volcanoLabelColor; priority: @labelPrioVolcano; size: 0.9; position: 1; }
+        NODE.TEXT#ele { label: Ele.inLocaleUnit; style: emphasize; emphasizeColor: @emphasizeColor; color: @volcanoLabelColor; priority: @labelPrioVolcano; size: 0.9; position: 2;}
+      }
     }
 
     [MAG city-] {
       [TYPE natural_peak] NODE.ICON { symbol: natural_peak; }
+      [TYPE natural_volcano] NODE.ICON { symbol: natural_volcano; }
     }
   }  
 

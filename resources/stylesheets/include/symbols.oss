@@ -108,6 +108,11 @@ CONST
       AREA { color: @peakSymbolColor; }
     }
 
+  SYMBOL natural_volcano
+    POLYGON -0.75,0 0.75,0 0.0,-1.5 {
+      AREA { color: @volcanoSymbolColor; }
+    }
+
   SYMBOL railway_station
     RECTANGLE 0,0 2 x 2 {
       AREA { color: @railwaySymbolColor; }

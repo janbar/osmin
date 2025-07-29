@@ -51,6 +51,7 @@ CONST
   UINT labelPrioLanduse             = 25;
   UINT labelPrioLeisure             = 26;
 
+  UINT labelPrioVolcano             = 28;
   UINT labelPrioPeak                = 29;
   UINT labelPrioSpring              = 30;
 
@@ -178,6 +179,7 @@ CONST
   COLOR railwayLabelColor           = darken(@railwayColor, 0.5);
 
   COLOR peakLabelColor              = #9c5329;
+  COLOR volcanoLabelColor           = #90181a;
   COLOR mountainPassLabelColor      = #9c5329;
   COLOR cliffColor                  = #440000;
 
@@ -256,6 +258,7 @@ CONST
   COLOR busSymbolColor             = #7885b0;
   COLOR hospitalSymbolColor        = #da0092;
   COLOR peakSymbolColor            = #9c5e29;
+  COLOR volcanoSymbolColor         = #dd2427;
   COLOR pharmacySymbolColor        = #da0092;
   COLOR postSymbolColor            = #e8f000;
   COLOR railwaySymbolColor         = @railwayColor;
@@ -370,7 +373,8 @@ STYLE
 
  [MAG suburb-] {
    [TYPE natural_peak] NODE.ICON { symbol: natural_peak; }
-  }
+   [TYPE natural_volcano] NODE.ICON { symbol: natural_volcano; }
+ }
 
  [MAG detail-] {
    [TYPE natural_glacier,
@@ -388,6 +392,10 @@ STYLE
    [TYPE natural_peak] {
      NODE.TEXT#peakName { label: Name.name; style: emphasize; color: @peakLabelColor; priority: @labelPrioPeak; size: 0.9; position: 1; }
      NODE.TEXT#ele { label: Ele.inLocaleUnit; style: emphasize; color: @peakLabelColor; priority: @labelPrioPeak; size: 0.9; position: 2;}
+   }
+   [TYPE natural_volcano] {
+     NODE.TEXT#volcanoName { label: IName; style: emphasize; emphasizeColor: @emphasizeColor; color: @volcanoLabelColor; priority: @labelPrioVolcano; size: 0.9; position: 1; }
+     NODE.TEXT#ele { label: Ele.inLocaleUnit; style: emphasize; emphasizeColor: @emphasizeColor; color: @volcanoLabelColor; priority: @labelPrioVolcano; size: 0.9; position: 2;}
    }
 
   [TYPE natural_cave_entrance] {

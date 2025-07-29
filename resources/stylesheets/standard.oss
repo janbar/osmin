@@ -115,6 +115,7 @@ CONST
   UINT labelPrioLanduse             = 25;
   UINT labelPrioLeisure             = 26;
 
+  UINT labelPrioVolcano             = 34;
   UINT labelPrioPeak                = 29;
   UINT labelPrioSpring              = 30;
 
@@ -233,6 +234,9 @@ CONST
 
   COLOR peakSymbolColor            = #9c5e29;
   COLOR peakLabelColor             = #9c5329;
+
+  COLOR volcanoSymbolColor         = #dd2427;
+  COLOR volcanoLabelColor          = #90181a;
 
   // Ways
   COLOR bridgeColor                = #000000; // black
@@ -455,6 +459,10 @@ STYLE
         NODE.TEXT#ele { label: Ele.inLocaleUnit; style: emphasize; emphasizeColor: @emphasizeColor; color: @peakLabelColor; priority: @labelPrioPeak; size: 0.9; position: 2;}
       }
     }
+    [TYPE natural_volcano] {
+      NODE.TEXT#volcanoName { label: IName; style: emphasize; emphasizeColor: @emphasizeColor; color: @volcanoLabelColor; priority: @labelPrioVolcano; size: 0.9; position: 1; }
+      NODE.TEXT#ele { label: Ele.inLocaleUnit; style: emphasize; emphasizeColor: @emphasizeColor; color: @volcanoLabelColor; priority: @labelPrioVolcano; size: 0.9; position: 2;}
+    }
 
     [MAG veryClose-] {
       [TYPE natural_spring] {
@@ -465,6 +473,7 @@ STYLE
 
     [MAG city-] {
       [TYPE natural_peak] NODE.ICON { symbol: natural_peak; }
+      [TYPE natural_volcano] NODE.ICON { symbol: natural_volcano; }
     }
   }
 
