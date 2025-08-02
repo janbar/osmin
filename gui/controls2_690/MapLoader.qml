@@ -49,6 +49,12 @@ MapPage {
         }
     }
 
+    function navigateTo(lat, lon, label) {
+        if (loader.status === Loader.Ready) {
+            mapView.navigateTo(lat, lon ,label);
+        }
+    }
+
     property QtObject suspendedState: QtObject {
         property bool rotateEnabled: false
         property bool lockRotation: false
