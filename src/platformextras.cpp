@@ -125,6 +125,18 @@ QStringList PlatformExtras::getStorageDirs()
   return dirs;
 }
 
+int PlatformExtras::platformVersion()
+{
+#ifdef Q_OS_ANDROID
+  jint v = QJniObject::callStaticMethod<jint>("io/github/janbar/osmin/QtAndroidHelper",
+                                                  "platformVersion",
+                                                  "()I");
+  return (int)v;
+#else
+  return 0;
+#endif
+}
+
 void PlatformExtras::setPreventBlanking(bool on, int mask)
 {
   if (on)

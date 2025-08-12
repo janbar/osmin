@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,6 +16,10 @@ import androidx.core.content.FileProvider;
 public class QtAndroidHelper {
 
     private static final String TAG = "helper";
+
+    public static int platformVersion() {
+        return Build.VERSION.SDK_INT;
+    }
 
     public static void preventBlanking(Context context, boolean on) {
         if (context instanceof Activity) {

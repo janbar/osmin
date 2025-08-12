@@ -184,14 +184,15 @@ ApplicationWindow {
     //// Application main view
     ////
 
+    property int topEdge: 0
+    property int bottomEdge: 0
     header: Rectangle {
         id: mainToolBar
         Material.foreground: styleMap.view.foregroundColor
         Material.background: styleMap.view.backgroundColor
-        height: units.gu(6)
-        width: parent.width
         color: styleMap.view.backgroundColor
-        visible: stackView.currentItem && stackView.currentItem.showHeader ? true : false
+        width: parent.width
+        height: stackView.currentItem && stackView.currentItem.showHeader ? units.gu(6) + (wideAspect ? 0 : topEdge) : (wideAspect ? 0 : topEdge)
 
         state: "default"
         states: [
@@ -202,7 +203,10 @@ ApplicationWindow {
 
         RowLayout {
             spacing: 0
-            anchors.fill: parent
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: units.gu(0.5)
+            width: parent.width
+            visible: stackView.currentItem && stackView.currentItem.showHeader ? true : false
 
             Item {
                 width: units.gu(6)
@@ -309,6 +313,12 @@ ApplicationWindow {
         if (!Android) {
             mainView.width = (settings.widthGU >= minSizeGU ? units.gu(settings.widthGU) : units.gu(minSizeGU));
             mainView.height = (settings.heightGU >= minSizeGU ? units.gu(settings.heightGU) : units.gu(minSizeGU));
+        } else {
+            if (PlatformVersion >= 35) {
+                // inserts for the system bars
+                topEdge = units.gu(6);
+                bottomEdge = units.gu(4);
+            }
         }
         // dump map settings
         console.log("Settings: devDPI=" + mapSettings.physicalDPI.toFixed(0))

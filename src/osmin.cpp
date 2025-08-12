@@ -509,6 +509,7 @@ int startGUI(int argc, char* argv[])
   QQmlApplicationEngine engine;
   // bind version string
   engine.rootContext()->setContextProperty("VersionString", QString(APP_VERSION));
+  engine.rootContext()->setContextProperty("PlatformVersion", QVariant(PlatformExtras::platformVersion()));
   // bind arguments
   engine.rootContext()->setContextProperty("ApplicationArguments", app.arguments());
   // bind SCALE_FACTOR

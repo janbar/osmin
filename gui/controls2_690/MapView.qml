@@ -672,7 +672,7 @@ Item {
         id: footerToolbar
         height: units.gu(8)
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: showToolbar && !edgeToolbar.visible ? 0 : - height
+        anchors.bottomMargin: showToolbar && !edgeToolbar.visible ? 0 : - height*2
         anchors.left: parent.left
         anchors.right: parent.right
         z: 99
