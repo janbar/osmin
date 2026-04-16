@@ -341,6 +341,8 @@ void Simulator::onCommand(QString line)
       // an aborted script can be resumed, so keep it back
       if (s->isRunAborted())
         _aborted.push_back(s);
+      else
+        delete s;
       return;
     }
 
