@@ -471,7 +471,6 @@ void Simulator::onScriptFinished()
     fprintf(stdout, "Playback has finished\n");
     delete _scripts.front();
     _scripts.pop_front();
-    assert(scriptRunning() == false);
   }
   _prompt = true; // enable prompt
   prompt();
