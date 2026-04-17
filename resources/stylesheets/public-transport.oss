@@ -1,11 +1,7 @@
 OSS
 
-FLAG
-  daylight     = true;
-
 ORDER WAYS
   GROUP _route
-  GROUP _track, _highlighted
   GROUP railway_rail, railway_tram, railway_light_rail, 
       railway_narrow_gauge, railway_preserved, 
       railway_funicular,
@@ -21,7 +17,7 @@ ORDER WAYS
 
 CONST
   COLOR waterColor                 = #d0e2f0;
-  COLOR seaColor                   = #9acffd;
+  COLOR seaColor                  = #9acffd;
   COLOR landColor                  = #f1eee9;
   COLOR unknownColor               = @waterColor;
 
@@ -34,28 +30,32 @@ SYMBOL place_town
   CIRCLE 0,0 1.32 {
     AREA {color: #ff000040; }
   }
+ 
+SYMBOL railway_station
+  CIRCLE 0,0 1.0 {
+    AREA {color: #60005070; }
+  }
 
+SYMBOL railway_halt
+  CIRCLE 0,0 0.5 {
+    AREA {color: #00800080; }
+  }
+SYMBOL railway_tram_stop
+  RECTANGLE 0,0 1 x 1 {
+    AREA { color: #90307080; }
+  }
 SYMBOL ferry_terminal
   RECTANGLE 0,0 1 x 1 {
     AREA { color: #30307080; }
   }
-
 SYMBOL highway_bus_stop
   RECTANGLE 0,0 1 x 1 {
     AREA { color: #10107080; }
   }
-
 SYMBOL subway_entrance
   POLYGON -0.4,0 -0.4,-0.8 0,-0.4 0.4,-0.8 0.4,0 1,0 0,1 -1,0 {
     AREA { color: #60005070; }
   }
-
-MODULE "include/route"
-MODULE "include/track"
-MODULE "include/waypoint"
-
-MODULE "include/aeroway"
-MODULE "include/railway"
 
 STYLE
   [TYPE _tile_sea] AREA {color: @seaColor;}

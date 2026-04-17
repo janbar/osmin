@@ -1,16 +1,49 @@
 OSS
+/*
+  See http://libosmscout.sourceforge.net/documentation/stylesheet/
+  for an description of the style sheet syntax.
+ */
+
+/*
+  Some general rules in the design of this specific style sheet:
+
+  Labels:
+  * A possible icon will always show on top
+  * The main label (the name of the object) will always be shown below the icon (else on top)
+  * A possible additional label (height of a peak) will be placed below the main label.
+*/
 
 FLAG
   daylight          = true;
+  waterway          = true;
+  wood              = true;
+  elevationContours = true;
   cycloRoutes       = true;
   hikingRoutes      = true;
+
+  IF daylight {
+    _natural         = true;
+    _railway         = true;
+    _leisure         = true;
+    _building        = true;
+    _minorBuilding   = true;
+  }
+  ELSE {
+    _natural         = false;
+    _railway         = false;
+    _leisure         = false;
+    _building        = false;
+    _minorBuilding   = false;
+  }
 
 ORDER WAYS
   GROUP _route
   GROUP _track, _highlighted
-  GROUP highway_motorway, highway_motorway_trunk, highway_motorway_primary
-  GROUP aerialway_gondola, aerialway_chair_lift, aerialway_drag_lift
+  GROUP highway_motorway
+  GROUP highway_motorway_trunk
+  GROUP highway_motorway_primary
   GROUP highway_trunk
+  GROUP aerialway_gondola, aerialway_chair_lift, aerialway_drag_lift
   GROUP highway_primary
   GROUP highway_secondary
   GROUP highway_tertiary
@@ -20,61 +53,85 @@ ORDER WAYS
         aeroway_runway, aeroway_taxiway
   GROUP highway_living_street, highway_service, highway_bus_guideway,
         railway_tram, railway_light_rail, railway_subway, public_transport_platform,
-        railway_narrow_gauge, railway_preserved, railway_funicular
+        railway_narrow_gauge, railway_preserved
   GROUP highway_track, highway_pedestrian, highway_path, highway_cycleway,
         highway_footway, highway_bridleway, highway_construction,
-        leisure_track,
-        waterway_stream, route_ferry
+        leisure_track
   GROUP highway_steps, barrier_fence
-  GROUP waterway_river, waterway_canal, waterway_drain, waterway_ditch
-  GROUP waterway_weir, waterway_waterfall
+  GROUP waterway_weir, waterway_waterfall, route_ferry
+  GROUP waterway_river, waterway_canal, waterway_drain, waterway_ditch, waterway_stream
   GROUP elevation_contour_major, elevation_contour_medium, elevation_contour_minor
 
+MODULE "include/land_sea_color"
+
 CONST
+  MAG stepsMag                      = veryClose;
+  MAG labelPathsMag                 = veryClose;
+
+  MAG specialBuildingMag            = close;
+  MAG labelSpecialBuildingMag       = closer;
+
+  MAG buildingMag                   = closer;
+  MAG labelBuildingMag              = veryClose;
+
+  MAG minorBuildingMag              = veryClose;
+
+  // road width
+  WIDTH motorwayWidth               = 20m;
+  WIDTH trunkWidth                  = 18m;
+  WIDTH primaryWidth                = 14m;
+  WIDTH secondaryWidth              = 12m;
+  WIDTH tertiaryWidth               = 10m;
+  WIDTH roadWidth                   =  8m;
+  WIDTH wayWidth                    =  8m;
+
   // Label priorities
-  UINT labelPrioContinent           = 1;
-  UINT labelPrioIsland              = 1;
-  UINT labelPrioCountry             = 2;
-  UINT labelPrioState               = 3;
-  UINT labelPrioRegion              = 4;
-  UINT labelPrioCounty              = 5;
-  UINT labelPrioMillionCity         = 6;
-  UINT labelPrioBigCity             = 7;
-  UINT labelPrioCity                = 8;
-  UINT labelPrioTown                = 9;
-  UINT labelPrioVillage             = 10;
-  UINT labelPrioHamlet              = 11;
-  UINT labelPrioSuburb              = 12;
-  UINT labelPrioLocality            = 13;
 
-  UINT labelPrioNatural             = 20;
-  UINT labelPrioLanduse             = 25;
-  UINT labelPrioLeisure             = 26;
+  // Prio 1-20 are reserved for places upto cities and bigger
 
-  UINT labelPrioVolcano             = 28;
-  UINT labelPrioPeak                = 29;
-  UINT labelPrioSpring              = 30;
+  UINT labelShieldMotorway          = 20;
+  UINT labelShieldTrunk             = 21;
+  UINT labelShieldPrimary           = 22;
 
-  UINT labelPrioHighwayServices     = 34;
-  UINT labelPrioRailwayStation      = 35;
+  UINT labelPrioAeroway             = 25;
+  UINT labelPrioFerry               = 25;
+  UINT labelPrioPublicTransportWay  = 25;
+  UINT labelPrioHighway             = 26;
+  UINT labelPrioOtherWays           = 27;
 
-  UINT labelPrioSpecialBuilding     = 37;
-  UINT labelPrioMajorBuilding       = 38;
+  UINT labelPrioNatural             = 30;
+  UINT labelPrioLanduse             = 31;
+  UINT labelPrioLeisure             = 32;
 
-  UINT labelPrioRailwayHalt         = 40;
-  UINT labelPrioTramHalt            = 40;
+  UINT labelPrioVolcano             = 34;
+  UINT labelPrioPeak                = 35;
+  UINT labelPrioSpring              = 36;
 
-  UINT labelPrioHighwayArea         = 43;
+  UINT labelPrioHighwayServices     = 40;
+  UINT labelPrioRailwayStation      = 41;
 
-  UINT labelPrioAmenity             = 45;
-  UINT labelPrioShop                = 50;
+  UINT labelPrioSpecialBuilding     = 45;
+  UINT labelPrioMajorBuilding       = 46;
 
-  UINT labelPrioHighwayJunction     = 55;
+  UINT labelPrioRailwayHalt         = 50;
+  UINT labelPrioTramHalt            = 50;
+
+  UINT labelPrioHighwayArea         = 55;
+
+  UINT labelPrioAmenity             = 60;
+  UINT labelPrioShop                = 61;
+  UINT labelPrioHistoric            = 62;
+  UINT labelPrioOffice              = 63;
+
+  UINT labelPrioHighwayJunction     = 70;
 
   UINT labelPrioBuilding            = 100;
 
+  UINT labelPrioElevationContour    = 500;
+
+
   // For debugging :-)
-  COLOR red                         = #ff0000;
+  COLOR red                        = #ff0000;
 
   // Default label color
   IF daylight {
@@ -86,132 +143,171 @@ CONST
     COLOR emphasizeColor           = #707070;
   }
 
-  // Ground tiles
-
   IF daylight {
-    COLOR waterColor                = #9acffd;
-    COLOR waterLabelColor           = darken(@waterColor, 0.5);
-    COLOR landColor                 = #f1eee9;
-    COLOR unknownColor              = @landColor;
+    COLOR waterLabelColor          = darken(@waterColor, 0.5);
   }
   ELSE {
-    COLOR waterColor                = darken(#9acffd, 0.5);
-    COLOR waterLabelColor           = darken(@waterColor, 0.5);
-    COLOR landColor                 = #333333;
-    COLOR unknownColor              = @landColor;
+    COLOR waterLabelColor          = darken(@waterColor, 0.5);
   }
-  COLOR coastColor                  = lighten(@waterColor, 0.5);
 
-  COLOR blackColor                  = #000000;
+  // Borders
+  COLOR countryBorderColor         = #ff0000;
+
+  // Contour
+  COLOR majorContourColor          = #9f9f9f;
+  COLOR mediumContourColor         = #a5a5a5;
+  COLOR minorContourColor          = #aaaaaa;
 
   // Landuse, water
   IF daylight {
-    COLOR allotmentsColor           = #c8b084;
+    COLOR allotmentsColor          = #c8b084;
+    COLOR sandColor                 = #fbefcb;
+    COLOR rockColor                 = #cccccc;
     COLOR farmColor                 = #ead8bd;
-    COLOR beachColor                = #fefab8;
-    COLOR brownFieldColor           = #ebd7fe;
-    COLOR cemeteryColor             = #a9caae;
-    COLOR commercialColor           = #efc8c8;
-    COLOR constructionColor         = #9d9d6c;
-    COLOR farmyardColor             = #dcbe92;
-    COLOR fellColor                 = #f9f9f9;
-    COLOR glacierColor              = #ddecec;
-    COLOR heathColor                = #d6d99f;
-    COLOR grassColor                = #cfeca8;
-    COLOR greenFieldColor           = #dcdcc8;
-    COLOR industrialColor           = #dfd1d6;
-    COLOR landFillColor             = #b6b591;
     COLOR villageGreenColor         = #cfeca8;
     COLOR golfCourseColor           = #c7f1a3;
-    COLOR quarryColor               = #b3b3b3;
-    COLOR recreationColor           = #bce2ca;
-    COLOR residentialColor          = #dcdcdc;
-    COLOR retailColor               = #feeaea;
-    COLOR woodColor                 = #aed1a0;
-    COLOR scrubColor                = #b5e2b5;
-    COLOR sandColor                 = #fbefcb;
-    COLOR vineyardColor             = #b3e2a8;
-    COLOR wetlandColor              = #bdd8d8;
     COLOR wetlandMarshColor         = #efe8ff;
-    COLOR rockColor                 = #cccccc;
   }
   ELSE {
-    COLOR allotmentsColor           = darken(#c8b084, 0.5);
+    COLOR allotmentsColor          = darken(#c8b084,0.5);
+    COLOR sandColor                 = darken(#fbefcb, 0.5);
+    COLOR rockColor                 = darken(#cccccc, 0.5);
     COLOR farmColor                 = darken(#ead8bd, 0.5);
-    COLOR beachColor                = darken(#fefab8, 0.5);
-    COLOR brownFieldColor           = darken(#ebd7fe, 0.5);
-    COLOR cemeteryColor             = darken(#a9caae, 0.5);
-    COLOR commercialColor           = darken(#efc8c8, 0.5);
-    COLOR constructionColor         = darken(#9d9d6c, 0.5);
-    COLOR farmyardColor             = darken(#dcbe92, 0.5);
-    COLOR fellColor                 = darken(#f9f9f9, 0.5);
-    COLOR glacierColor              = darken(#ddecec, 0.5);
-    COLOR heathColor                = darken(#d6d99f, 0.5);
-    COLOR grassColor                = darken(#cfeca8, 0.5);
-    COLOR greenFieldColor           = darken(#dcdcc8, 0.5);
-    COLOR industrialColor           = darken(#dfd1d6, 0.5);
-    COLOR landFillColor             = darken(#b6b591, 0.5);
     COLOR villageGreenColor         = darken(#cfeca8, 0.5);
     COLOR golfCourseColor           = darken(#c7f1a3, 0.5);
-    COLOR quarryColor               = darken(#b3b3b3, 0.5);
-    COLOR recreationColor           = darken(#bce2ca, 0.5);
-    COLOR residentialColor          = darken(#dcdcdc, 0.5);
-    COLOR retailColor               = darken(#feeaea, 0.5);
-    COLOR woodColor                 = darken(#aed1a0, 0.5);
-    COLOR scrubColor                = darken(#b5e2b5, 0.5);
-    COLOR sandColor                 = darken(#fbefcb, 0.5);
-    COLOR vineyardColor             = darken(#b3e2a8, 0.5);
-    COLOR wetlandColor              = darken(#bdd8d8, 0.5);
     COLOR wetlandMarshColor         = darken(#efe8ff, 0.5);
-    COLOR rockColor                 = darken(#cccccc, 0.5);
   }
 
-  COLOR militaryColor               = #fe989822;
+  COLOR beachColor                 = #eecc55;
 
-  COLOR natureReserveColor          = #abde9622;
-  COLOR natureReserveLabelColor     = #566f4bb0;
-  COLOR natureReserveBorderColor    = #82a77180;
+  COLOR brownFieldColor            = #b6b592;//#ebd7fe;
+  COLOR brownFieldLabelColor       = darken(@brownFieldColor, 0.5);
 
-  COLOR fuelSymbolColor             = #4bb2da;
-  COLOR onewayArrowColor            = #00000050;
+  COLOR cemeteryColor              = #a9caae;
+  COLOR commercialColor            = #efc8c8;
+  COLOR constructionColor          = #9d9d6c;
 
-  COLOR railwayColor                = #bb75d9;
-  COLOR railwayLabelColor           = darken(@railwayColor, 0.5);
-
-  COLOR peakLabelColor              = #9c5329;
-  COLOR volcanoLabelColor           = #90181a;
-  COLOR mountainPassLabelColor      = #9c5329;
-  COLOR cliffColor                  = #440000;
-
-  COLOR guidepostLabelColor         = #5e3118;
-  COLOR tourismLabelColor           = #5e3118;
-
-  // Ways
-  COLOR bridgeColor                 = #000000; // black
+  COLOR farmlandColor              = #ead8bd;
+  COLOR farmyardColor              = #dcbe92;
+  COLOR fellColor                  = #f9f9f9;
 
   IF daylight {
-    COLOR motorwayColor             = #ffff88; // yellow
-    COLOR motorwayBColor            = #ff8600; // orange
-    COLOR trunkColor                = #f9b29c;
-    COLOR primaryColor              = #fcd6a4;
-    COLOR secondaryColor            = #f7fabf;
-    COLOR tertiaryColor             = #ffffff;
-    COLOR roadColor                 = #ffffff;
-    COLOR roadBColor                = #bfbfbf;
-    COLOR livingStreetColor         = #ededed;
+    COLOR woodColor                = #aed1a0;
   }
   ELSE {
-    COLOR motorwayColor             = darken(#ffff88, 0.3);
-    COLOR motorwayBColor            = darken(#ff8600, 0.7);
-    COLOR trunkColor                = darken(#f9b29c, 0.3);
-    COLOR primaryColor              = darken(#fcd6a4, 0.3);
-    COLOR secondaryColor            = darken(#f7fabf, 0.3);
-    COLOR tertiaryColor             = darken(#ffffff, 0.3);
-    COLOR roadColor                 = darken(#ffffff, 0.3);
-    COLOR roadBColor                = darken(#bfbfbf, 0.3);
-    COLOR livingStreetColor         = darken(#ededed, 0.3);
+    COLOR woodColor                = darken(#aed1a0, 0.5);
   }
-  COLOR cyclewayColor               = #ec47c7;
+  COLOR woodLabelColor             = darken(@woodColor, 0.5);
+
+  COLOR glacierColor               = #ddecec;
+  COLOR grassColor                 = #cfeca8;
+  COLOR greenFieldColor            = #dcdcc8;
+  COLOR heathColor                 = #ffffc0;
+  COLOR industrialColor            = #dfd1d6;
+  COLOR damColor                   = #b2a7ab;
+
+  IF daylight {
+    COLOR landFillColor            = #b6b591;
+  }
+  ELSE {
+    COLOR landFillColor            = darken(#b6b591, 0.5);
+  }
+
+  COLOR marshColor                 = #efe8ff;
+
+  COLOR quarryColor                = #b3b3b3;
+  COLOR recreationColor            = #bce2ca;
+
+  IF daylight {
+    COLOR residentialColor         = #ebebeb;
+  }
+  ELSE {
+    COLOR residentialColor         = darken(#ebebeb, 0.5);
+  }
+  COLOR residentialLabelColor      = darken(@residentialColor, 0.5);
+
+  COLOR retailColor                = #feeaea;
+  COLOR retailLabelColor           = darken(@retailColor, 0.5);
+
+  COLOR scrubColor                 = #b5e2b5;
+  COLOR vineyardColor              = #b3e2a8;
+  COLOR wetlandColor               = #bdd8d8;
+
+  COLOR peakSymbolColor            = #9c5e29;
+  COLOR peakLabelColor             = #9c5329;
+
+  COLOR volcanoSymbolColor         = #dd2427;
+  COLOR volcanoLabelColor          = #90181a;
+
+  // Ways
+  COLOR bridgeColor                = #000000; // black
+  COLOR cyclewayColor              = #ec47c7;
+
+  IF daylight {
+    COLOR motorwayColor            = #ff8600; // orange
+    COLOR trunkColor               = #f9b29c;
+    COLOR primaryColor             = #ec4044; // red
+    COLOR secondaryColor           = #fdac44; // orange
+    COLOR tertiaryColor            = #fef271; // yelow
+    COLOR roadColor                = #ffffff; // white
+    COLOR roadBColor               = #bfbfbf;
+    COLOR livingStreetColor        = #bababa; // grey
+    COLOR pedestrianColor          = #ededed;
+
+    COLOR wayLabelColor            = #000000; // black
+  }
+  ELSE {
+    COLOR motorwayColor            = darken(#ff8600, 0.7);
+    COLOR trunkColor               = darken(#f9b29c, 0.3);
+    COLOR primaryColor             = darken(#ec4044, 0.3);
+    COLOR secondaryColor           = darken(#fdac44, 0.3);
+    COLOR tertiaryColor            = darken(#fef271, 0.3);
+    COLOR roadColor                = darken(#ffffff, 0.5);
+    COLOR roadBColor               = darken(#bfbfbf, 0.5);
+    COLOR livingStreetColor        = darken(#bababa, 0.5);
+    COLOR pedestrianColor          = darken(#ededed, 0.7);
+
+    COLOR wayLabelColor            = #cccccc;
+  }
+
+  COLOR thinRoadColor              = #999999;
+  COLOR thinMotorwayColor          = lighten(@motorwayColor,0.3);
+  COLOR thinTrunkColor             = lighten(@trunkColor,0.3);
+  COLOR thinPrimaryColor           = lighten(@primaryColor,0.3);
+  COLOR thinSecondaryColor         = #fdd654;
+  COLOR thinTertiaryColor          = #fefe73;
+
+  COLOR motorwayShieldColor        = @motorwayColor;
+  COLOR motorwayJunctionLabelColor = lighten(@motorwayColor, 0.5);
+  COLOR trunkShieldColor           = @trunkColor;
+  COLOR primaryShieldColor         = @primaryColor;
+
+  COLOR viaFerrataEasyColor        = darken(#fdac44, 0.4);
+  COLOR viaFerrataModerateColor    = #fdac44;
+  COLOR viaFerrataDifficultColor   = #ec4044;
+  COLOR viaFerrataExtremeColor     = #ff0000;
+
+  // Buildings
+  COLOR buildingColor              = #d9d9d9;
+  COLOR buildingBorderColor        = darken(@buildingColor, 0.3);
+  COLOR buildingLabelColor         = darken(@buildingColor, 0.5);
+
+  // Travel
+  COLOR onewayArrowColor           = #00000028;
+
+  COLOR busSymbolColor             = #7885b0;
+
+  // Leisure
+  COLOR natureReserveColor         = #abde9622;
+  COLOR natureReserveLabelColor    = #566f4bb0;
+  COLOR natureReserveBorderColor   = #82a77180;
+
+  COLOR playgroundColor            = #affdbb;
+  COLOR playgroundBorderColor      = darken(@playgroundColor, 0.3);
+
+  COLOR pitchColor                 = #90d3b9;
+  COLOR pitchBorderColor           = #b0b0b0;
+  COLOR pitchLabelColor            = darken(@pitchColor,0.5);
 
   // Amenity
   IF daylight {
@@ -222,46 +318,67 @@ CONST
     COLOR amenityColor             = darken(#f0f0d8, 0.5);
     COLOR amenityBuildingColor     = darken(#d9b8b8, 0.5);
   }
-  COLOR amenityLabelColor           = #1f1e1b;
-  COLOR postColor                   = #ffcc00;
-
-  // Man made
-  COLOR historicCityWallsColor      = #994444;
-
-  // Contour
-  COLOR minorContourColor           = #558855;
-  COLOR mediumContourColor          = #447744;
-  COLOR majorContourColor           = #446644;
-
-  COLOR countryBorderColor          = #9f6bff99;
-
-  COLOR viaFerrataEasyColor         = darken(#fdac44, 0.4);
-  COLOR viaFerrataModerateColor     = #fdac44;
-  COLOR viaFerrataDifficultColor    = #ec4044;
-  COLOR viaFerrataExtremeColor      = #ff0000;
+  COLOR amenitySymbolColor         = darken(@amenityColor, 0.4);
+  COLOR amenityLabelColor          = darken(@amenityBuildingColor, 0.5);
+  COLOR amenityBuildingBorderColor = darken(@amenityBuildingColor, 0.3);
 
   IF daylight {
-    COLOR aerodromeColor           = #d5ddbd;
-    COLOR aerodromeTerminalColor   = #cc99ff;
-    COLOR aerodromeRunwayColor     = #bbbbcc;
-    COLOR aerodromeApron           = #e8d1fe;
+    COLOR parkingColor             = #f6eeb6;
+    COLOR parkingBuildingColor     = #c4c393;
   }
   ELSE {
-    COLOR aerodromeColor           = darken(#d5ddbd, 0.6);
-    COLOR aerodromeTerminalColor   = darken(#cc99ff, 0.6);
-    COLOR aerodromeRunwayColor     = darken(#bbbbcc, 0.6);
-    COLOR aerodromeApron           = darken(#e8d1fe, 0.6);
+    COLOR parkingColor             = darken(#f6eeb6, 0.5);
+    COLOR parkingBuildingColor       = darken(#c4c393, 0.5);
   }
+  COLOR parkingBorderColor         = darken(@parkingColor, 0.3);
+  COLOR parkingBuildingBorderColor = darken(@parkingBuildingColor, 0.3);
 
-  // Symbols
-  COLOR amenitySymbolColor         = darken(@amenityColor, 0.4);
-  COLOR busSymbolColor             = #7885b0;
   COLOR hospitalSymbolColor        = #da0092;
-  COLOR peakSymbolColor            = #9c5e29;
-  COLOR volcanoSymbolColor         = #dd2427;
+  COLOR hospitalColor              = darken(@amenityColor, 0.1);
+  COLOR hospitalBorderColor        = darken(@hospitalColor, 0.3);
+  COLOR hospitalBuildingColor      = darken(@amenityBuildingColor, 0.1);
+  COLOR hospitalBuildingBorderColor = darken(@hospitalBuildingColor, 0.3);
+
   COLOR pharmacySymbolColor        = #da0092;
+
+  COLOR postColor                  = #e8f000;
   COLOR postSymbolColor            = #e8f000;
-  COLOR railwaySymbolColor         = @railwayColor;
+  COLOR postBuildingColor          = #d2d900;
+  COLOR postBuildingBorderColor    = darken(@postBuildingColor, 0.3);
+  COLOR postLabelColor             = darken(@postColor, 0.5);
+
+  COLOR wallColor                  = #663e1b;
+
+  COLOR mountainPassLabelColor      = #9c5329;
+  COLOR cliffColor                  = #440000;
+
+  // Others
+  COLOR fuelSymbolColor             = #4bb2da;
+  COLOR guidepostLabelColor         = #5e3118;
+  COLOR historicCityWallsColor      = #994444;
+
+MODULE "include/symbols"
+MODULE "include/route"
+MODULE "include/land_sea"
+
+MODULE "include/track"
+MODULE "include/waypoint"
+
+MODULE "include/basemap"
+MODULE "include/place"
+
+MODULE "include/roads"
+MODULE "include/man_made"
+
+MODULE "include/aeroway"
+MODULE "include/railway"
+
+MODULE "include/historic"
+MODULE "include/military"
+MODULE "include/office"
+MODULE "include/religious"
+MODULE "include/shop"
+MODULE "include/tourism"
 
 SYMBOL embankment
   RECTANGLE 0,2.5 0.1 x 5 {
@@ -297,11 +414,6 @@ SYMBOL cliff
     AREA { color: @cliffColor;}
   }
 
-MODULE "include/symbols"
-MODULE "include/route"
-MODULE "include/track"
-MODULE "include/waypoint"
-
 STYLE
  // -------------------------------------------------------
  //
@@ -329,27 +441,13 @@ STYLE
  // boundary_*
  //
  [MAG continent-] {
-  //[TYPE boundary_administrative] WAY {color: @red; displayWidth: 0.4mm; dash: 5,5;}
   [TYPE boundary_country] {
     WAY {color: @countryBorderColor; displayWidth: 0.2mm;}
     AREA.BORDER { color: @countryBorderColor; width: 0.2mm;}
     WAY.SYMBOL { symbol: border; }
   }
-   //[TYPE boundary_country] AREA {borderDash: 5,5; borderWidth: 0.5mm; borderColor: @countryBorderColor;}
-  //[TYPE boundary_state] WAY {color: @red; displayWidth: 0.2mm; dash: 5,5;}
-   //[TYPE boundary_county] WAY {color: @red; displayWidth: 0.1mm; dash: 5,5;}
-   //[TYPE boundary_country] WAY {color: @red; displayWidth: 0.4mm; dash: 5,5;}
-   //[TYPE _tile_coastline] WAY {color: #ff0000; displayWidth: 0.1mm;}
  }
-/*
- [MAG stateOver-] {
-  [TYPE boundary_country] {
-    //WAY {color: @countryBorderColor; displayWidth: 0.7mm;}
-    AREA { borderColor: @countryBorderColor; borderWidth: 0.7mm;}
-    WAY.SYMBOL { symbol: border; }
-  }
- }
-*/
+
  // -------------------------------------------------------
  //
  // natural_* (without coastline)
@@ -545,10 +643,10 @@ STYLE
  [MAG continent-] {
    [TYPE highway_motorway] {
      [SIZE 10m 0.45mm:3px<] {
-       WAY#outline { color: @motorwayBColor; width: 10m; displayWidth: 1.5mm; priority: -1; joinCap: butt; zIndex: -1; }
+       WAY#outline { color: @motorwayColor; width: 10m; displayWidth: 1.5mm; priority: -1; joinCap: butt; zIndex: -1; }
        WAY { color: @motorwayColor; width: 7m;}
      }
-     [SIZE 10m <0.45mm:3px] WAY { color: @motorwayBColor; displayWidth: 0.45mm;}
+     [SIZE 10m <0.45mm:3px] WAY { color: @motorwayColor; displayWidth: 0.45mm;}
    }
  }
 
@@ -603,10 +701,10 @@ STYLE
 
    [TYPE highway_motorway_link] {
      [SIZE 10m 0.45mm:3px<] {
-       WAY#outline { color: darken(@motorwayBColor,0.4); width: 6m; displayWidth: 0.5mm; priority: -1; joinCap: butt; zIndex: -1;}
-       WAY { color: @motorwayBColor; width: 6m;}
+       WAY#outline { color: darken(@motorwayColor,0.4); width: 6m; displayWidth: 0.5mm; priority: -1; joinCap: butt; zIndex: -1;}
+       WAY { color: @motorwayColor; width: 6m;}
      }
-     [SIZE 10m <0.45mm:3px] WAY { color: lighten(@motorwayBColor,0.3); displayWidth: 0.45mm;}
+     [SIZE 10m <0.45mm:3px] WAY { color: lighten(@motorwayColor,0.3); displayWidth: 0.45mm;}
    }
 
    [TYPE highway_trunk_link] {
@@ -719,7 +817,7 @@ STYLE
      WAY {color: #b3b3b3; width: 1.5m; dash: 20,10; joinCap: butt; }
    }
 
-   [TYPE highway_construction] WAY {color: @motorwayBColor; displayWidth: 0.1mm; width: 2m; dash: 8,8; joinCap: butt;}
+   [TYPE highway_construction] WAY {color: @motorwayColor; displayWidth: 0.1mm; width: 2m; dash: 8,8; joinCap: butt;}
 
    [TYPE highway_pedestrian] {
      [SIZE 3m 0.1mm:3px<] WAY {color: #ebeaea; width: 3m; }
@@ -753,13 +851,13 @@ STYLE
      [FEATURE Tunnel SIZE 10m 0.45mm:3px<] {
        WAY#outline { dash: 0.5,0.5; }
        WAY { color: lighten(@motorwayColor,0.3);}
-       WAY#outline { color: @motorwayBColor; width: 10m; displayWidth: 1.5mm; priority: -1;}
+       WAY#outline { color: @motorwayColor; width: 10m; displayWidth: 1.5mm; priority: -1;}
        WAY { color: @motorwayColor; width: 7m;}
      }
      [FEATURE Bridge SIZE 10m 0.45mm:3px<] {
        WAY#lbridge {color: @bridgeColor; displayWidth: 0.25mm; offset: -5m; displayOffset: -0.9mm;zIndex: -2;}
        WAY#rbridge {color: @bridgeColor; displayWidth: 0.25mm; offset: 5m; displayOffset: 0.9mm; zIndex: -2;}
-       WAY#outline { color: @motorwayBColor; width: 10m; displayWidth: 1.5mm; priority: -1; zIndex: -1;}
+       WAY#outline { color: @motorwayColor; width: 10m; displayWidth: 1.5mm; priority: -1; zIndex: -1;}
        WAY { color: @motorwayColor; width: 7m;}
      }
    }
@@ -779,7 +877,7 @@ STYLE
    [TYPE highway_motorway_link SIZE 6m 0.45mm:3px<] {
      [FEATURE Tunnel] {
        WAY#outline { dash: 0.5,0.5; }
-       WAY { color: lighten(@motorwayBColor,0.3);}
+       WAY { color: lighten(@motorwayColor,0.3);}
      }
 
      [FEATURE Bridge] {
@@ -1074,30 +1172,6 @@ STYLE
    }
  }
 
- // WAY.SHIELD
-
-// [MAG state-] {
-//   [TYPE highway_motorway] WAY.SHIELD { label: Ref.name; size: 1.5; color: #ffffff; backgroundColor: @motorwayBColor; borderColor: #ffffff; priority: 20;}
-// }
-
-// [MAG proximity-] {
-//   [TYPE highway_trunk] WAY.SHIELD { label: Ref.name; size: 1.5; color: #ffffff; backgroundColor: @trunkColor; borderColor: #ffffff; priority: 20;}
-// }
-
-// [MAG cityOver-] {
-//   [TYPE highway_primary] WAY.SHIELD { label: Ref.name; color: #ffffff; backgroundColor: @primaryColor; borderColor: #ffffff; priority: 20;}
-// }
-
-//[MAG close-] {
-//   [TYPE highway_secondary] WAY.SHIELD { label: Ref.name; color: @blackColor; backgroundColor: @secondaryColor; borderColor: @blackColor; priority: 10;}
-//   [TYPE highway_tertiary] WAY.SHIELD { label: Ref.name; color: #777777; backgroundColor: @tertiaryColor; borderColor: #777777; priority: 5;}
-// }
-
-// Enforcements
-//[MAG close-] {
-//  [TYPE speed_camera] NODE.ICON { name: radar;}
-// }
-
  // Labels
 
  [MAG city-] {
@@ -1144,8 +1218,6 @@ STYLE
    [TYPE leisure_building,
          sport_building,
          shop] AREA.TEXT { label: Name.name; }
-
-   //[TYPE highway_traffic_signals_name] NODE.TEXT { label: Name.name; style: emphasize; size: 1.5; color: #880000;}
  }
 
  [MAG veryClose-] {
