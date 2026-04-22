@@ -101,6 +101,7 @@
 #include "elevationchart.h"
 #include "qmlsortfiltermodel.h"
 #include "utils.h"
+#include "packed.h"
 
 #include "service.h"
 #include "servicefrontend.h"
@@ -350,16 +351,27 @@ int startGUI(int argc, char* argv[])
             continue;
           else if (asset.isFile())
           {
-            QString filepath;
-            if (folder.isEmpty())
-              filepath = g_appResDir.absolutePath().append('/').append(basename(asset.filePath()));
+            if (!asset.filePath().endsWith(".pack"))
+            {
+              QString filepath;
+              if (folder.isEmpty())
+                filepath = g_appResDir.absolutePath().append('/').append(basename(asset.filePath()));
+              else
+                filepath = g_appResDir.absolutePath().append('/').append(folder).append('/').append(basename(asset.filePath()));
+              if ((!QFile::exists(filepath) || QFile::remove(filepath)) &&
+                  QFile::copy(asset.absoluteFilePath(), filepath))
+                continue;
+              qWarning("Failed to create file %s", filepath.toUtf8().constData());
+              return EXIT_FAILURE;
+            }
             else
-              filepath = g_appResDir.absolutePath().append('/').append(folder).append('/').append(basename(asset.filePath()));
-            if ((!QFile::exists(filepath) || QFile::remove(filepath)) &&
-                QFile::copy(asset.absoluteFilePath(), filepath))
-              continue;
-            qWarning("Failed to create file %s", filepath.toUtf8().constData());
-            return EXIT_FAILURE;
+            {
+              QString dirpath = g_appResDir.absolutePath().append('/').append(folder);
+              if (osmin::unpack(asset.absoluteFilePath(), dirpath))
+                continue;
+              qWarning("Failed to unpack asset %s", asset.absoluteFilePath().toUtf8().constData());
+              return EXIT_FAILURE;
+            }
           }
           else if (asset.isDir())
           {
