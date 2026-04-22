@@ -103,6 +103,9 @@ endif()
 
 add_subdirectory(backend)
 
+find_package(ZLIB REQUIRED)
+message(STATUS "Found ZLIB: ${ZLIB_LIBRARIES}")
+
 set(CMAKE_AUTOMOC ON)
 find_package(Qt6 ${QT_VERSION} COMPONENTS
     Core Gui Qml Quick QuickControls2 Widgets Xml Svg Network Sensors
@@ -151,6 +154,8 @@ set(osmin_SOURCES src/osmin.cpp src/converter.cpp src/platformextras.cpp
     src/mapextras.cpp
     src/memorymanager.cpp
     src/elevationchart.cpp
+    src/compressor.cpp
+    src/packed.cpp
 )
 set(osmin_HEADERS src/converter.h src/platformextras.h
     src/locked.h
@@ -175,6 +180,8 @@ set(osmin_HEADERS src/converter.h src/platformextras.h
     src/mapextras.h
     src/memorymanager.h
     src/elevationchart.h
+    src/compressor.h
+    src/packed.h
 )
 
 if(UNIX)
@@ -185,7 +192,10 @@ endif()
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
 add_definitions(-DQT_STATICPLUGIN)
 
-include_directories(${PROJECT_BINARY_DIR} ${LIBOSMSCOUT_INCLUDE_DIRS})
+include_directories(
+    ${PROJECT_BINARY_DIR}
+    ${LIBOSMSCOUT_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS})
 
 qt_add_resources(osmin-resources gui/osmin_controls2_690.qrc)
 
@@ -198,7 +208,7 @@ endif()
 qt6_add_repc_sources(osmin src/servicemessenger.rep)
 qt6_add_repc_replicas(osmin src/servicemessenger.rep)
 
-target_link_libraries(osmin PRIVATE ${LIBOSMSCOUT_LIBRARIES})
+target_link_libraries(osmin PRIVATE ${LIBOSMSCOUT_LIBRARIES} ${ZLIB_LIBRARIES})
 target_link_libraries(osmin PRIVATE
     Qt::RemoteObjects Qt::Positioning
     Qt::QuickControls2 Qt::Qml Qt::Quick
@@ -298,4 +308,12 @@ if(ANDROID)
         KEYSTORE ${KEYSTORE_FILE} ${KEYSTORE_ALIAS}
         KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
   )
+endif()
+
+# Build packaging tools
+if(NOT ANDROID)
+    add_executable(pack src/pack.cpp src/packed.cpp src/compressor.cpp)
+    target_link_libraries(pack PRIVATE ${ZLIB_LIBRARIES} Qt::Core)
+    add_executable(unpack src/unpack.cpp src/packed.cpp src/compressor.cpp)
+    target_link_libraries(unpack PRIVATE ${ZLIB_LIBRARIES} Qt::Core)
 endif()

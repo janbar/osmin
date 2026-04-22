@@ -56,6 +56,10 @@ if(NOT ZLIB_FOUND)
     message(STATUS "Build ZLIB: ${zlib_BINARY_DIR}")
 endif()
 
+set(ZLIB_LIBRARY ${ZLIB_LIBRARY} PARENT_SCOPE)
+set(ZLIB_INCLUDE_DIR ${ZLIB_INCLUDE_DIR} PARENT_SCOPE)
+set(ZLIB_FOUND ${ZLIB_FOUND} PARENT_SCOPE)
+
 # Provides internal iconv
 if(NOT ICONV_FOUND)
     download_project(PROJ iconv
