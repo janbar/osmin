@@ -495,7 +495,7 @@ MapPage {
                 showCurrentPosition: true
                 anchors.fill: parent
 
-                onTap: {
+                onTap: function(screenX, screenY, lat, lon) {
                     // on tap change the location
                     preview.mark.selected = false;  // not the selected location
                     preview.mark.lat = lat;
@@ -520,7 +520,7 @@ MapPage {
 
             LocationInfoModel{
                 id: locationInfoModel
-                onReadyChange: {
+                onReadyChange: function(ready) {
                     if (ready && rowCount() > 0) {
                         var str = "";
                         var mi = index(0, 0)
