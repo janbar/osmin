@@ -112,8 +112,8 @@
 
 int startService(int argc, char* argv[]);
 int startGUI(int argc, char* argv[]);
-void setupApp(QGuiApplication& app);
-void prepareTranslator(QGuiApplication& app, const QString& translationPath, const QString& translationPrefix, const QLocale& locale);
+void setupApp(QGuiApplication& app, QTranslator& translator);
+void prepareTranslator(QTranslator& translator, const QString& translationPath, const QString& translationPrefix, const QLocale& locale);
 void signalCatched(int signal);
 void doExit(int code);
 bool testServiceUrl(const char *url, int timeout);
@@ -217,7 +217,8 @@ int startGUI(int argc, char* argv[])
   QGuiApplication::setApplicationDisplayName(APP_DISPLAY_NAME);
   QGuiApplication::setOrganizationName(ORG_NAME);
   QGuiApplication app(argc, argv);
-  setupApp(app);
+  QTranslator translator;
+  setupApp(app, translator);
 
   // check installed asset
   g_assetDir = QDir(PlatformExtras::getAssetDir(APP_ID));
@@ -599,7 +600,7 @@ int startGUI(int argc, char* argv[])
   return ret;
 }
 
-void setupApp(QGuiApplication& app)
+void setupApp(QGuiApplication& app, QTranslator& translator)
 {
 
   SignalHandler *sh = new SignalHandler(&app);
@@ -612,31 +613,26 @@ void setupApp(QGuiApplication& app)
   QLocale locale = QLocale::system();
   qInfo("User locale setting is %s", std::locale().name().c_str());
   // set translators
-  prepareTranslator(app, QString(":/i18n"), QString(APP_TR_NAME), locale);
+  prepareTranslator(translator, QString(":/i18n"), QString(APP_TR_NAME), locale);
 #ifdef Q_OS_MAC
   QDir appDir(app.applicationDirPath());
   if (appDir.cdUp() && appDir.cd("Resources/translations"))
-    prepareTranslator(app, appDir.absolutePath(), "qt", locale);
+    prepareTranslator(translator, appDir.absolutePath(), "qt", locale);
 #elif defined(Q_OS_ANDROID)
-  prepareTranslator(app, "assets:/translations", "qt", locale);
+  prepareTranslator(translator, "assets:/translations", "qt", locale);
 #endif
+  app.installTranslator(&translator);
   app.setWindowIcon(QIcon(QPixmap(":/images/osmin.png")));
 }
 
-void prepareTranslator(QGuiApplication& app, const QString& translationPath, const QString& translationPrefix, const QLocale& locale)
+void prepareTranslator(QTranslator& translator, const QString& translationPath, const QString& translationPrefix, const QLocale& locale)
 {
   QString i18Path(translationPath);
   i18Path.append("/").append(translationPrefix).append("_").append(locale.name().left(2)).append(".qm");
-  QTranslator * translator = new QTranslator();
-  if (!translator->load(locale, translationPrefix, QString("_"), translationPath))
-  {
-      qWarning("no file found for translations '%s' (using default).", i18Path.toUtf8().constData());
-  }
+  if (!translator.load(locale, translationPrefix, QString("_"), translationPath))
+    qWarning("no file found for translations '%s' (using default).", i18Path.toUtf8().constData());
   else
-  {
-      app.installTranslator(translator);
-      qInfo("using file '%s' for translations.", i18Path.toUtf8().constData());
-  }
+    qInfo("using file '%s' for translations.", i18Path.toUtf8().constData());
 }
 
 void signalCatched(int signal)
