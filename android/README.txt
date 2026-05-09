@@ -12,6 +12,17 @@
 - ANDROID_SDK_MINVER >= 26
 - ANDROID_SDK_TARGET >= 26
 
+### Update the build template in the Qt tree to enable assets compression
+
+File: $QT_DIR/src/android/templates/build.gradle
+
+android {
+    packagingOptions {
+        dex.useLegacyPackaging = true
+        jniLibs.useLegacyPackaging = true
+    }
+}
+
 ### Configure the build:
 
 The template of the manifest must be created depending of QT/NDK versions.
