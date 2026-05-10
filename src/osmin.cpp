@@ -635,18 +635,19 @@ void prepareTranslator(QGuiApplication& app, const QString& translationPath, con
     qInfo("using file '%s' for translations.", i18Path.toUtf8().constData());
     app.installTranslator(translator);
 
-    // try to load qt base translations
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QString qt_translationPath(QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-#else
-    QString qt_translationPath(QLibraryInfo::path(QLibraryInfo::TranslationsPath));
-#endif
-    QTranslator * qt_translator = new QTranslator(&app);
-    if (qt_translator->load(locale, "qtbase", "_", qt_translationPath))
-    {
-      qInfo("using file '%s' for translations.", qt_translationPath.toUtf8().constData());
-      app.installTranslator(qt_translator);
-    }
+  // for instance not used, so disable qt base translations and save memory
+//     // try to load qt base translations
+// #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+//     QString qt_translationPath(QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+// #else
+//     QString qt_translationPath(QLibraryInfo::path(QLibraryInfo::TranslationsPath));
+// #endif
+//     QTranslator * qt_translator = new QTranslator(&app);
+//     if (qt_translator->load(locale, "qtbase", "_", qt_translationPath))
+//     {
+//       qInfo("using file '%s' for translations.", qt_translationPath.toUtf8().constData());
+//       app.installTranslator(qt_translator);
+//     }
   }
   else
   {
