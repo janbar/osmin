@@ -33,7 +33,7 @@ endif()
 
 # find the Qt directory
 if(NOT Qt6Core_DIR)
-    find_package(Qt6 COMPONENT Core REQUIRED)
+    find_package(Qt6 COMPONENTS Core REQUIRED)
 endif()
 get_filename_component(QT_ANDROID_QT_DIR "${Qt6Core_DIR}/../../.." ABSOLUTE)
 message(STATUS "Found Qt for Android: ${QT_ANDROID_QT_DIR}")
