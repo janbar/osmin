@@ -23,6 +23,7 @@
 #include <QMutex>
 #include <QThread>
 #include <QTimer>
+#include <QFile>
 #include <QDebug>
 
 #include <cassert>
