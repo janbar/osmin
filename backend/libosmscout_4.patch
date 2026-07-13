@@ -1,8 +1,8 @@
 diff --git a/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h b/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h
-index f2dac2fd6..48cf38e93 100644
+index 275369c8b..34ffc49f3 100644
 --- a/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h
 +++ b/libosmscout-client-qt/include/osmscoutclientqt/MapRenderer.h
-@@ -33,7 +33,6 @@
+@@ -35,7 +35,6 @@
  #include <QSettings>
  #include <QMutex>
  #include <QPainter>
@@ -10,7 +10,7 @@ index f2dac2fd6..48cf38e93 100644
  
  #include <variant>
  
-@@ -205,8 +204,6 @@ public slots:
+@@ -209,8 +208,6 @@ public slots:
    virtual void onShowAltLanguageChanged(bool);
    virtual void onUnitsChanged(const QString&);
  
@@ -41,7 +41,7 @@ index f6ae12020..1cf430d57 100644
    void setupInputHandler(InputHandler *newGesture);
  
 diff --git a/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp b/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp
-index b71cd5102..d60772631 100644
+index 2ccda6a18..f4eae66f5 100644
 --- a/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp
 +++ b/libosmscout-client-qt/src/osmscoutclientqt/MapRenderer.cpp
 @@ -159,24 +159,6 @@ void MapRenderer::onUnitsChanged(const QString& units)
@@ -70,7 +70,7 @@ index b71cd5102..d60772631 100644
  {
    {
 diff --git a/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp b/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
-index 981a0415b..b2418bf0a 100644
+index d72f0871e..663170ff1 100644
 --- a/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
 +++ b/libosmscout-client-qt/src/osmscoutclientqt/MapWidget.cpp
 @@ -27,7 +27,6 @@
@@ -78,10 +78,10 @@ index 981a0415b..b2418bf0a 100644
  #include <QtGlobal>
  #include <QQuickWindow>
 -#include <QGuiApplication>
+ #include <QDir>
  
  namespace osmscout {
- 
-@@ -71,7 +70,6 @@ MapWidget::MapWidget(QQuickItem* parent)
+@@ -72,7 +71,6 @@ MapWidget::MapWidget(QQuickItem* parent)
  
      connect(this, &QQuickItem::widthChanged, this, &MapWidget::onResize);
      connect(this, &QQuickItem::heightChanged, this, &MapWidget::onResize);
@@ -89,7 +89,7 @@ index 981a0415b..b2418bf0a 100644
  
      connect(&iconAnimation, &IconAnimation::update, this, &MapWidget::redraw);
  
-@@ -114,26 +112,6 @@ void MapWidget::setupRenderer()
+@@ -115,26 +113,6 @@ void MapWidget::setupRenderer()
  
      connect(renderer, &MapRenderer::Redraw,
              this, &MapWidget::redraw);
@@ -117,10 +117,10 @@ index 981a0415b..b2418bf0a 100644
  
  void MapWidget::translateToTouch(QMouseEvent* event, Qt::TouchPointStates states)
 diff --git a/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp b/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
-index 5cac0a11a..6f1581891 100644
+index 17b2dcabf..b8a3eaa4b 100644
 --- a/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
 +++ b/libosmscout-client-qt/src/osmscoutclientqt/TiledMapRenderer.cpp
-@@ -445,29 +445,9 @@ void TiledMapRenderer::onLoadJobFinished(QMap<QString,QMap<osmscout::TileKey,osm
+@@ -446,29 +446,9 @@ void TiledMapRenderer::onLoadJobFinished(QMap<QString,QMap<osmscout::TileKey,osm
  
      // For HiDPI screens (screenPixelRatio > 1) tiles as up-scaled before displaying. When there is ratio 2.0, 100px on Qt canvas
      // is displayed as 200px on the screen. To provide best results on HiDPI screen, we upscale tiles by this pixel ratio.
