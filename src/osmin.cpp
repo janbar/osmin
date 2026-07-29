@@ -115,6 +115,7 @@ int startService(int argc, char* argv[]);
 int startGUI(int argc, char* argv[]);
 void setupApp(QGuiApplication& app);
 void prepareTranslator(QGuiApplication& app, const QString& translationPath, const QString& translationPrefix, const QLocale& locale);
+void fixSettings(QSettings& settings);
 void signalCatched(int signal);
 void doExit(int code);
 bool testServiceUrl(const char *url, int timeout);
@@ -562,6 +563,8 @@ int startGUI(int argc, char* argv[])
   importStaticPlugins(&engine);
 #endif
 
+  fixSettings(settings);
+
   engine.load(QUrl("qrc:/controls2/osmin.qml"));
   if (engine.rootObjects().isEmpty()) {
       qWarning() << "Failed to load QML";
@@ -647,6 +650,25 @@ void prepareTranslator(QGuiApplication& app, const QString& translationPath, con
   {
     qWarning("no file found for translations '%s' (using default).", i18Path.toUtf8().constData());
     delete translator;
+  }
+}
+
+void fixSettings(QSettings& settings)
+{
+  bool reset = false;
+  double d;
+  d = settings.value("scaleFactor", 1.0).toDouble();
+  reset = reset || d < 0.5 || d > 4.0;
+  d = settings.value("fontScaleFactor", 1.0).toDouble();
+  reset = reset || d < 0.7 || d > 1.4;
+
+  if (reset)
+  {
+    settings.remove("scaleFactor");
+    settings.remove("fontScaleFactor");
+    settings.remove("widthGU");
+    settings.remove("heightGU");
+    settings.sync();
   }
 }
 
